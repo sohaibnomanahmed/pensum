@@ -1,12 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:leaf/profile/profile_service.dart';
+
 import '../authentication/authentication_service.dart';
 
 class FirebaseService {
   // init firebase services
+  static final firestore = FirebaseFirestore.instance;
   static final authentication = AuthenticationService();
-  // static final firestore = FirestoreService();
-  // static final storage = StorageService();
-  // static final databasePresence = DatabasePresenceService();
-  // static final firebaseMessaging = FirebaseMessagingService();
+  static final profile = ProfileService(firestore);
+  
 }
 
 class NativeService{

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:leaf/authentication/authentication_provider.dart';
 import 'package:provider/provider.dart';
 
+import 'create_account_bottom_sheet.dart';
+import 'forgot_password_bottom_sheet.dart';
+
 class AuthenticationForm extends StatefulWidget {
   @override
   _AuthenticationFormState createState() => _AuthenticationFormState();
@@ -9,12 +12,12 @@ class AuthenticationForm extends StatefulWidget {
 
 class _AuthenticationFormState extends State<AuthenticationForm> {
   final _formKey = GlobalKey<FormState>();
-  String _email;
-  String _password;
+  var _email = '';
+  var _password = '';
 
   @override
   Widget build(BuildContext context) {
-    var isLoading = context.watch<AuthenticationProvider>().isLoading;
+    final isLoading = context.watch<AuthenticationProvider>().isLoading;
     return Form(
       key: _formKey,
       child: Column(
@@ -25,11 +28,8 @@ class _AuthenticationFormState extends State<AuthenticationForm> {
           TextFormField(
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
-                labelText: 'Email',
-                isDense: true,
-                border: InputBorder.none,
-                filled: true,
-                fillColor: Colors.grey[200]),
+              labelText: 'Email',
+            ),
             validator: (value) => (value.isEmpty || !value.contains('@'))
                 ? 'Please enter a valid email address.'
                 : null,
@@ -41,11 +41,8 @@ class _AuthenticationFormState extends State<AuthenticationForm> {
           // password text field
           TextFormField(
             decoration: InputDecoration(
-                labelText: 'Password',
-                isDense: true,
-                border: InputBorder.none,
-                filled: true,
-                fillColor: Colors.grey[200]),
+              labelText: 'Password',
+            ),
             obscureText: true,
             validator: (value) => (value.isEmpty || value.length < 7)
                 ? 'Password must be at least 7 characters long.'
@@ -54,7 +51,22 @@ class _AuthenticationFormState extends State<AuthenticationForm> {
           ),
           Container(
             alignment: Alignment.centerRight,
-            child: TextButton(onPressed: () {}, child: Text('Forgot password')),
+            child: TextButton(
+              onPressed: () {
+                FocusScope.of(context).unfocus();
+                showModalBottomSheet(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(5.0),
+                    ),
+                  ),
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (_) => ForgotPasswordBottomSheet(),
+                );
+              },
+              child: Text('Forgot password'),
+            ),
           ),
           // log in button
           ElevatedButton(
@@ -67,7 +79,7 @@ class _AuthenticationFormState extends State<AuthenticationForm> {
                       FocusScope.of(context).unfocus();
                       // save values
                       _formKey.currentState.save();
-                      var result =
+                      final result =
                           await context.read<AuthenticationProvider>().signIn(
                                 email: _email,
                                 password: _password,
@@ -99,7 +111,19 @@ class _AuthenticationFormState extends State<AuthenticationForm> {
                 : Text('Log in'),
           ),
           // create account button
-          TextButton(onPressed: () {}, child: Text('Already have an account'))
+          TextButton(onPressed: () {
+            FocusScope.of(context).unfocus();
+            showModalBottomSheet(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(5.0),
+                    ),
+                  ),
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (_) => CreateAccountBottomSheet(),
+                );
+          }, child: Text('Create an account'))
         ],
       ),
     );

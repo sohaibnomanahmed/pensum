@@ -1,13 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
+import '../profile/models/profile.dart';
 import '../global/services.dart';
 
 class AuthenticationProvider with ChangeNotifier {
   final _authenticationService = FirebaseService.authentication;
+  final _profileService = FirebaseService.profile;
 
   var _isLoading = false;
-  var _errorMessage;
+  var _unknownMessage = 'Error: please check your network connection';
+  String _errorMessage;
 
   // getters
   bool get isLoading => _isLoading;
@@ -19,8 +22,12 @@ class AuthenticationProvider with ChangeNotifier {
    * tries to create a user in using firebase, if the successfull returns true
    * if an error occurs, cathes the exception, store error message and return false
    */
-  Future<bool> createUser(
-      {@required String email, @required String password}) async {
+  Future<bool> createUser({
+    @required String firstname,
+    @required String lastname,
+    @required String email,
+    @required String password,
+  }) async {
     _isLoading = true;
     notifyListeners();
     try {
@@ -32,11 +39,25 @@ class AuthenticationProvider with ChangeNotifier {
       if (!user.emailVerified) {
         await user.sendEmailVerification();
       }
+      // create profile data in firestore
+      final profile = Profile(
+        uid: user.uid,
+        firstname: firstname,
+        lastname: lastname,
+        imageUrl: 'https://firebasestorage.googleapis.com/v0/b/leaf-e52aa.appspot.com/o/profile.png?alt=media&token=ef36af4e-c528-4851-b429-53f867672b33',
+        userItems: {}
+      );
+      await _profileService.setProfile(uid: user.uid, profile: profile);
     } on FirebaseAuthException catch (error) {
       _errorMessage = error.message;
+      if (error.code == 'unknown') {
+        _errorMessage = _unknownMessage;
+      }
       _isLoading = false;
       notifyListeners();
       return false;
+    } catch (error){
+      print(error.toString());
     }
     _isLoading = false;
     notifyListeners();
@@ -44,7 +65,7 @@ class AuthenticationProvider with ChangeNotifier {
   }
 
   /*
-   * tries to sign the user in using firebase, if the successfull returns true
+   * tries to sign a user in using firebase, if the successfull returns true
    * if an error occurs, cathes the exception, store error message and return false
    */
   Future<bool> signIn(
@@ -63,7 +84,11 @@ class AuthenticationProvider with ChangeNotifier {
         return false;
       }
     } on FirebaseAuthException catch (error) {
+      print(error.code);
       _errorMessage = error.message;
+      if (error.code == 'unknown') {
+        _errorMessage = _unknownMessage;
+      }
       _isLoading = false;
       notifyListeners();
       return false;
@@ -74,7 +99,7 @@ class AuthenticationProvider with ChangeNotifier {
   }
 
   /*
-   * tries to log the user out using firebase, if the successfull returns true
+   * tries to log the current user out using firebase, if the successfull returns true
    * if an error occurs, cathes the exception, store error message and return false
    */
   Future<bool> signOut() async {
@@ -84,6 +109,9 @@ class AuthenticationProvider with ChangeNotifier {
       await _authenticationService.signOut();
     } on FirebaseAuthException catch (error) {
       _errorMessage = error.message;
+      if (error.code == 'unknown') {
+        _errorMessage = _unknownMessage;
+      }
       _isLoading = false;
       notifyListeners();
       return false;
@@ -94,17 +122,19 @@ class AuthenticationProvider with ChangeNotifier {
   }
 
   /*
-   * tries to reset users passwrod using firebase, if the successfull returns true
+   * tries to reset a users password using firebase, if the successfull returns true
    * if an error occurs, cathes the exception, store error message and return false
    */
-  Future<bool> resetPassword() async {
+  Future<bool> resetPassword(String email) async {
     _isLoading = true;
     notifyListeners();
     try {
-      final email = _authenticationService.currentUser.email;
       await _authenticationService.resetPassword(email);
     } on FirebaseAuthException catch (error) {
       _errorMessage = error.message;
+      if (error.code == 'unknown') {
+        _errorMessage = _unknownMessage;
+      }
       _isLoading = false;
       notifyListeners();
       return false;
@@ -115,7 +145,7 @@ class AuthenticationProvider with ChangeNotifier {
   }
 
   /*
-   * tries to delete the user using firebase, if the successfull returns true
+   * tries to delete the current user using firebase, if the successfull returns true
    * if an error occurs, cathes the exception, store error message and return false
    */
   Future<bool> deleteUser(String password) async {
@@ -125,11 +155,15 @@ class AuthenticationProvider with ChangeNotifier {
       // get email of current user
       final email = _authenticationService.currentUser.email;
       // sicen deleting user is a sensitive opperation, wee need to reauthenticate
-      await _authenticationService.reauthenticate(email: email, password: password);
+      await _authenticationService.reauthenticate(
+          email: email, password: password);
       // delete the current user
       await _authenticationService.deleteUser();
     } on FirebaseAuthException catch (error) {
       _errorMessage = error.message;
+      if (error.code == 'unknown') {
+        _errorMessage = _unknownMessage;
+      }
       _isLoading = false;
       notifyListeners();
       return false;

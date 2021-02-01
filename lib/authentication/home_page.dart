@@ -6,11 +6,31 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Center(
-        child: TextButton(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () async {
+              var result =
+                  await context.read<AuthenticationProvider>().signOut();
+              if (!result) {
+                // remove snackbar if existing and show a new with error message
+                final scaffoldMessenger = ScaffoldMessenger.of(context);
+                scaffoldMessenger.hideCurrentSnackBar();
+                scaffoldMessenger.showSnackBar(
+                  SnackBar(
+                    backgroundColor: Theme.of(context).errorColor,
+                    content: Text(
+                      context.read<AuthenticationProvider>().errorMessage,
+                    ),
+                  ),
+                );
+              }
+            },
+            icon: Icon(Icons.exit_to_app),
+          ),
+          IconButton(
           onPressed: () async {
-            var result = await context.read<AuthenticationProvider>().signOut();
+            var result = await context.read<AuthenticationProvider>().deleteUser('1234567');
             if (!result) {
               // remove snackbar if existing and show a new with error message
               final scaffoldMessenger = ScaffoldMessenger.of(context);
@@ -25,9 +45,11 @@ class HomePage extends StatelessWidget {
               );
             }
           },
-          child: Text('Sign out'),
+          icon: Icon(Icons.delete),
         ),
+        ],
       ),
+      body: Center(child: Text('Home screen!')),
     );
   }
 }
