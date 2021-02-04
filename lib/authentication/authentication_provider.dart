@@ -35,10 +35,6 @@ class AuthenticationProvider with ChangeNotifier {
       final userCredentials = await _authenticationService.createUser(
           email: email, password: password);
       final user = userCredentials.user;
-      // send email varification
-      if (!user.emailVerified) {
-        await user.sendEmailVerification();
-      }
       // create profile data in firestore
       final profile = Profile(
         uid: user.uid,
@@ -48,6 +44,12 @@ class AuthenticationProvider with ChangeNotifier {
         userItems: {}
       );
       await _profileService.setProfile(uid: user.uid, profile: profile);
+      // send email varification
+      if (!user.emailVerified) {
+        await user.sendEmailVerification();
+        // log user out so he/she can log inn
+        await _authenticationService.signOut();
+      }
     } on FirebaseAuthException catch (error) {
       _errorMessage = error.message;
       if (error.code == 'unknown') {
@@ -57,7 +59,7 @@ class AuthenticationProvider with ChangeNotifier {
       notifyListeners();
       return false;
     } catch (error){
-      print(error.toString());
+      print('Error during auth: $error');
     }
     _isLoading = false;
     notifyListeners();

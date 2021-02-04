@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import 'authentication/authentication_provider.dart';
-import 'authentication/authentication_service.dart';
 import 'authentication/authentication_page.dart';
 import 'authentication/home_page.dart';
 
@@ -13,7 +12,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await FirebaseAuth.instance.authStateChanges().isEmpty;
-  //await AuthenticationService.authStateStart;
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(MyApp());
 }
@@ -38,8 +36,6 @@ class MyApp extends StatelessWidget {
         ),
         home: Consumer<User>(
           builder: (context, user, child) {
-            // TODO not working when logging in
-            print(user);
             return (user == null || !user.emailVerified)
                 ? AuthenticationPage()
                 : HomePage();

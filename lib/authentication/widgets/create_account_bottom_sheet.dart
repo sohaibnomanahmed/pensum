@@ -30,9 +30,9 @@ class _CreateAccountBottomSheetState extends State<CreateAccountBottomSheet> {
             children: [
               Container(
                 alignment: Alignment.centerLeft,
-                child: GestureDetector(
-                  onTap: () => Navigator.of(context).pop(),
-                  child: Icon(
+                child: IconButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  icon: Icon(
                     Icons.close,
                     color: Theme.of(context).primaryColorDark,
                   ),

@@ -14,4 +14,13 @@ class ProfileService {
         .doc(uid)
         .set(profile.toMap(), SetOptions(merge: true));
   }
+
+  // get user data stream
+  Stream<Profile> getUserStream(String uid){
+    return firestore
+        .collection('profiles')
+        .doc(uid)
+        .snapshots()
+        .map((profile) => Profile.fromMap(profile));
+  }
 }

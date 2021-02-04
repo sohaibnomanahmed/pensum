@@ -5,7 +5,6 @@ class AuthenticationService{
   FirebaseAuth _auth = FirebaseAuth.instance;
 
   // getters
-  static Future<bool> get authStateStart => FirebaseAuth.instance.authStateChanges().isEmpty;
   User get currentUser => _auth.currentUser;
   Stream<User> get authState => _auth.authStateChanges();
 
