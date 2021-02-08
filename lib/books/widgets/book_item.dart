@@ -16,18 +16,23 @@ class BookItem extends StatelessWidget {
           PhysicalModel(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
-              child: Image.network(
-                book.image,
-                fit: BoxFit.cover,
-                height: 100,
-                width: 70,
-                errorBuilder: (_, __, ___) => Container(
-                  // TODO theme color?
-                  child: Icon(Icons.wifi_off_rounded, color: Colors.grey[600],),
-                  height: 100,
-                  width: 70,
-                ),
-              ),
+              child: (book == null)
+                  ? Container(color: Colors.grey, height:100, width: 70,)
+                  : Image.network(
+                      book.image,
+                      fit: BoxFit.cover,
+                      height: 100,
+                      width: 70,
+                      errorBuilder: (_, __, ___) => Container(
+                        child: Icon(
+                          Icons.wifi_off_rounded,
+                          //color: Colors.grey[600],
+                          color: Theme.of(context).disabledColor,
+                        ),
+                        height: 100,
+                        width: 70,
+                      ),
+                    ),
             ),
             borderRadius: BorderRadius.circular(10.0),
             color: Colors.transparent,
@@ -41,10 +46,19 @@ class BookItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(book.titles.first,
-                    style: Theme.of(context).textTheme.bodyText1),
-                Text(book.getAuthors),
-                Text(book.year, style: Theme.of(context).textTheme.caption),
+                (book == null)
+                    ? Container(
+                        height: 14, color: Colors.grey, width: double.infinity)
+                    : Text(book.titles.first,
+                        style: Theme.of(context).textTheme.bodyText1),
+                (book == null)
+                    ? Container(
+                        height: 14, color: Colors.grey, width: double.infinity)
+                    :Text(book.getAuthors),
+                (book == null)
+                    ? Container(
+                        height: 14, color: Colors.grey, width: double.infinity)
+                    :Text(book.year, style: Theme.of(context).textTheme.caption),
               ],
             ),
           ),

@@ -9,6 +9,7 @@ class SettingsPage extends StatelessWidget {
     final isLoading = context.watch<AuthenticationProvider>().isLoading;
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         actions: [
           IconButton(
             onPressed: isLoading ? null : () async {

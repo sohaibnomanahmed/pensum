@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import 'authentication/authentication_provider.dart';
@@ -13,6 +14,11 @@ Future<void> main() async {
   await Firebase.initializeApp();
   await FirebaseAuth.instance.authStateChanges().isEmpty;
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent, // for Android
+    statusBarIconBrightness: Brightness.dark, // for Android
+    statusBarBrightness: Brightness.dark // for IOS
+  ));
   runApp(MyApp());
 }
 
@@ -33,6 +39,7 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         theme: ThemeData(
           primarySwatch: Colors.teal,
+          textTheme: GoogleFonts.ralewayTextTheme(Theme.of(context).textTheme),
         ),
         home: Consumer<User>(
           builder: (context, user, child) {

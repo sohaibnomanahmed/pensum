@@ -44,6 +44,19 @@ class BooksService {
         .toList();
   }
 
+  // fetch book titles
+  Stream<Map> fetchBookTitles() {
+    return firestore
+        .collection('books')
+        .doc('metadata')
+        .snapshots()
+        .map(
+      (snapshot) {
+        return snapshot.data()['titles'];
+      },
+    );
+  }
+
   // Search books by title
   Future<List<Book>> searchBooksByTitle(String title) async {
     final books = await firestore

@@ -9,7 +9,7 @@ class AuthenticationProvider with ChangeNotifier {
   final _profileService = FirebaseService.profile;
 
   var _isLoading = false;
-  var _unknownMessage = 'Error: please check your network connection';
+  final _unknownMessage = 'Error: please check your network connection';
   String _errorMessage;
 
   // getters

@@ -21,7 +21,8 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
-        backgroundColor: Colors.white.withOpacity(0.9),
+        border: Border(top: BorderSide(color: Colors.grey, width: 0.1)),
+        backgroundColor: Theme.of(context).canvasColor.withOpacity(1),
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.chrome_reader_mode),
