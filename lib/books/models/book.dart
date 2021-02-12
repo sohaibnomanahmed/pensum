@@ -7,6 +7,8 @@ class Book {
   final String image;
   final String language;
   final String publisher;
+  final String pages;
+  final String edition;
   final String year;
   final String isbn;
 
@@ -16,6 +18,8 @@ class Book {
     @required this.image,
     @required this.language,
     @required this.publisher,
+    @required this.pages,
+    @required this.edition,
     @required this.year,
     @required this.isbn,
   });
@@ -30,6 +34,8 @@ class Book {
     final String image = data['image'];
     final String language = data['language'];
     final String publisher = data['publisher'];
+    final String pages = data['pages'];
+    final String edition = data['edition'];
     final String year = data['year'];
     return Book(
         titles: titles,
@@ -37,6 +43,8 @@ class Book {
         image: image,
         language: language,
         publisher: publisher,
+        pages: pages,
+        edition: edition,
         year: year,
         isbn: doc.id);
   }

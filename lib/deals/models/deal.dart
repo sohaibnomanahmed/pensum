@@ -1,76 +1,34 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
+/*
+ * The deal class restores the inforamtion it needs from the user and the book
+ * this is done, since if received from firebase we need mutiple calls, more
+ * document reads, but worse we need stream every where to catch changes.
+ * In this case we store all the infromation needed and updates the info by cloud functions
+ * Also by storing object like Profile and Book, needs to map them from map and document
+ * this solution seemed more effetient
+ */
 class Deal {
-  final String documentId;
-  final String bookIsbn;
+  final String id;
   final String userId;
   final String userImage;
   final String userName;
+  final String bookIsbn;
   final String bookImage;
   final String bookTitle;
-  final int price;
+  final String price;
   final String quality;
   final String place;
   final String description;
   final Timestamp time;
 
-  static List<String> qualities = [
-    'Ny',
-    'Litt brukt',
-    'Brukt',
-    'Veldig mye brukt',
-  ];
-
-  static List<String> places = [
-    'Ålesund',
-    'Arendal',
-    'Bærum',
-    'Bergen',
-    'Fana',
-    'Bodø',
-    'Drammen',
-    'Fredrikstad',
-    'Halden',
-    'Hamar',
-    'Hammerfest',
-    'Haugesund',
-    'Kabelvåg',
-    'Kristiansand',
-    'Kristiansund',
-    'Lillehammer',
-    'Molde',
-    'Moss',
-    'Narvik',
-    'Oslo',
-    'Porsgrunn',
-    'Ringsaker',
-    'Sandefjord',
-    'Sandnes',
-    'Skien',
-    'Stavanger',
-    'Steinkjer',
-    'Svolvær',
-    'Tønsberg',
-    'Tromsø',
-    'Trondheim',
-    'Vadsø',
-  ];
-
-  static List<dynamic> get prices {
-    final priceValues = [];
-    for (var i = 0; i < 3050; i += 50) {
-      priceValues.add(i.toString());
-    }
-    return priceValues;
-  }
-
   Deal({
-    this.documentId,
-    @required this.bookIsbn,
+    @required this.id,
     @required this.userId,
     @required this.userImage,
     @required this.userName,
+    @required this.bookIsbn,
     @required this.bookImage,
     @required this.bookTitle,
     @required this.price,
@@ -80,25 +38,25 @@ class Deal {
     @required this.time,
   });
 
-  factory Deal.fromMap(Map data, String isbn) {
-    final String bookIsbn = data['bookIsbn'];
+  factory Deal.fromMap(Map data, String id) {
     final String userId = data['userId'];
     final String userImage = data['userImage'];
     final String userName = data['userName'];
+    final String bookIsbn = data['bookIsbn'];
     final String bookImage = data['bookImage'];
     final String bookTitle = data['bookTitle'];
-    final int price = data['price'];
+    final String price = data['price'];
     final String quality = data['quality'];
     final String place = data['place'];
-    final String description = data['place'];
+    final String description = data['description'];
     final Timestamp time = data['time'];
 
     return Deal(
-      documentId: isbn,
-      bookIsbn: bookIsbn,
+      id: id,
       userId: userId,
       userImage: userImage,
       userName: userName,
+      bookIsbn: bookIsbn,
       bookImage: bookImage,
       bookTitle: bookTitle,
       price: price,
@@ -119,16 +77,16 @@ class Deal {
 
   Map<String, dynamic> toMap() {
     return {
-      'bookIsbn': bookIsbn,
       'userId': userId,
       'userImage': userImage,
       'userName': userName,
+      'bookIsbn': bookIsbn,
       'bookImage': bookImage,
       'bookTitle': bookTitle,
       'price': price,
       'quality': quality,
       'place': place,
-      'description' : description,
+      'description': description,
       'time': time,
     };
   }

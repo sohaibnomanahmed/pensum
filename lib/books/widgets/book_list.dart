@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:leaf/deals/deals_page.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -34,7 +35,12 @@ class BookList extends StatelessWidget {
                       baseColor: Theme.of(context).splashColor,
                       child: BookItem(null),
                     )
-                  : BookItem(books[index]),
+                  : InkWell(
+                      child: BookItem(books[index]),
+                      onTap: () => Navigator.pushNamed(
+                          context, DealsPage.routeName,
+                          arguments: books[index]),
+                    ),
               childCount: isLoading ? 6 : books.length,
             ),
           );

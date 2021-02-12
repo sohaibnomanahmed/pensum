@@ -40,6 +40,9 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.teal,
           textTheme: GoogleFonts.ralewayTextTheme(Theme.of(context).textTheme),
+          cardTheme: Theme.of(context).cardTheme.copyWith(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
+          )
         ),
         home: Consumer<User>(
           builder: (context, user, child) {

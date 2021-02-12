@@ -23,16 +23,10 @@ class BookSearchBar extends StatelessWidget {
         ),
         onPressed: isLoading
             ? null
-            : () async {
-                final title = await showSearch(
+            : () => showSearch(
                   context: context,
-                  delegate: BookSearchDelegate(bookTitles),
-                );
-                if (title == null) {
-                  return;
-                }
-                await context.read<BooksProvider>().fetchSearchedBook(title);
-              },
+                  delegate: BookSearchDelegate(context, bookTitles),
+                ),
         icon: Icon(Icons.search),
         label: Text('Search books'),
       ),

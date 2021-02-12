@@ -15,12 +15,18 @@ class ProfileService {
         .set(profile.toMap(), SetOptions(merge: true));
   }
 
-  // get user data stream
-  Stream<Profile> getUserStream(String uid){
+  // get profile data 
+  Future<Profile> getProfile(String uid) async {
+    final userProfile = await firestore.collection('profiles').doc(uid).get();
+    return Profile.fromFirestore(userProfile);
+  }
+
+  // get profile stream
+  Stream<Profile> getProfileStream(String uid){
     return firestore
         .collection('profiles')
         .doc(uid)
         .snapshots()
-        .map((profile) => Profile.fromMap(profile));
+        .map((profile) => Profile.fromFirestore(profile));
   }
 }

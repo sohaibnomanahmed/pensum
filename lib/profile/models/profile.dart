@@ -1,13 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
+import '../../global/extensions.dart';
+
 class Profile{
   final String uid;
-  final String firstname;
-  final String lastname;
-  final String imageUrl;
-  final Map<String, dynamic> userItems;
+  String firstname;
+  String lastname;
+  String imageUrl;
+  Map<String, dynamic> userItems;
   bool isMe;
+
+  String get fullName => firstname.capitalize() + ' ' + lastname.capitalize();
 
   Profile({
     @required this.uid,
@@ -17,12 +21,11 @@ class Profile{
     @required this.userItems,
   });
 
-  factory Profile.fromMap(DocumentSnapshot doc) {
+  factory Profile.fromFirestore(DocumentSnapshot doc){
     Map data = doc.data();
     if (data == null) {
       return null;
     }
-
     final String firstnameData = data['firstname'];
     final String lastnameData = data['lastname'];
     final String imageUrlData = data['imageUrl'];

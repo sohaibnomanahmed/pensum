@@ -43,11 +43,13 @@ class _BooksPageState extends State<BooksPage> {
           ),
         ),
       ),
-      floatingActionButton: isSearch ? FloatingActionButton.extended(
-        onPressed: () => context.read<BooksProvider>().clearSearch(),
-        label: Text('Clear Search'),
-        icon: Icon(Icons.search_off_rounded),
-      ) : null,
+      floatingActionButton: isSearch
+          ? FloatingActionButton.extended(
+              onPressed: () => context.read<BooksProvider>().clearSearch(),
+              label: Text('Clear Search'),
+              icon: Icon(Icons.search_off_rounded),
+            )
+          : null,
     );
   }
 }

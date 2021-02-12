@@ -79,7 +79,6 @@ class BooksProvider with ChangeNotifier{
       _silentLoading = false;
       return;
     }
-    moreBooks = moreBooks.toList();
  
     // add them the end of the messages list
     _books.addAll(moreBooks);

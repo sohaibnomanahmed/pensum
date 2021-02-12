@@ -7,6 +7,7 @@ import '../deals/models/deal.dart';
 class BooksService {
   FirebaseFirestore firestore;
   DocumentSnapshot lastBook;
+  DocumentSnapshot lastDeal;
 
   BooksService(this.firestore);
 
@@ -70,24 +71,40 @@ class BooksService {
       .toList();
   }
 
-  // add deal to a spesific book
-  Future<void> addDeal({@required Deal deal, @required String id}){
+  // fetch deals
+  Stream<List<Deal>> fetchDeals({@required String isbn, @required int pageSize}) {
     return firestore
-        .collection('books')
-        .doc(deal.bookIsbn)
-        .collection('deals')
-        .doc(id)
-        .set(deal.toMap(), SetOptions(merge: true));
+        .collection('books/' + isbn + '/deals')
+        .orderBy('price')
+        .limit(pageSize)
+        .snapshots()
+        .map(
+      (list) {
+        if (list.docs.isNotEmpty){
+          lastDeal = list.docs.last;
+        }
+        return list.docs
+            .map((document) => Deal.fromFirestore(document))
+            .toList();
+      },
+    );
   }
 
-  // delete a deal
-  Future<void> deleteDeal(String bookIsbn, String id){
-    return firestore
-        .collection('books')
-        .doc(bookIsbn)
-        .collection('deals')
-        .doc(id)
-        .delete();
+  // fetch and return more deals, from current last. If no more deals return null
+  Future<List<Deal>> fetchMoreDeals({@required String isbn, @required int pageSize}) async {
+    final deals = await firestore
+        .collection('books/' + isbn + '/deals')
+        .orderBy('price')
+        .startAfterDocument(lastDeal)
+        .limit(pageSize)
+        .get();
+    if (deals.docs.isEmpty) {
+      return null;
+    }
+    lastDeal = deals.docs.last;
+    return deals.docs
+        .map((document) => Deal.fromFirestore(document))
+        .toList();
   }
 
   // get a new deal id
@@ -99,20 +116,23 @@ class BooksService {
         .doc()
         .id;
   }
-
-  // get deals
-  Stream<List<Deal>> fetchDeals(String isbn) {
+  // add deal to a spesific book
+  Future<void> addDeal({@required Deal deal, @required String id}){
     return firestore
-        .collection('books/' + isbn + '/deals')
-        .orderBy('price')
-        //.limit(pageSize)
-        .snapshots()
-        .map(
-      (list) {
-        return list.docs
-            .map((document) => Deal.fromFirestore(document))
-            .toList();
-      },
-    );
+        .collection('books')
+        .doc(deal.bookIsbn)
+        .collection('deals')
+        .doc(id)
+        .set(deal.toMap(), SetOptions(merge: true));
+  }
+
+  // delete a deal
+  Future<void> deleteDeal({@required String isbn, @required String id}){
+    return firestore
+        .collection('books')
+        .doc(isbn)
+        .collection('deals')
+        .doc(id)
+        .delete();
   }
 }

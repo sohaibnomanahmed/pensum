@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../books_provider.dart';
 
 class BookSearchDelegate extends SearchDelegate<String> {
   List<String> bookMatches;
+  final BuildContext parentContext;
   final Map<String, dynamic> bookTitles;
 
-  BookSearchDelegate(this.bookTitles);
+  BookSearchDelegate(this.parentContext, this.bookTitles);
 
   @override
   ThemeData appBarTheme(BuildContext context) {
@@ -48,7 +52,11 @@ class BookSearchDelegate extends SearchDelegate<String> {
     return ListView.builder(
       itemCount: bookMatches.length,
       itemBuilder: (ctx, index) => ListTile(
-        onTap: () => close(context, bookTitles[bookMatches[index]]['title']),
+        onTap: () {
+          final title = bookTitles[bookMatches[index]]['title'];
+          parentContext.read<BooksProvider>().fetchSearchedBook(title);
+          close(context, null);
+        },
         title: Text(
           bookTitles[bookMatches[index]]['title'],
           style: Theme.of(context).textTheme.bodyText2,
@@ -88,7 +96,11 @@ class BookSearchDelegate extends SearchDelegate<String> {
     return ListView.builder(
       itemCount: bookMatches.length,
       itemBuilder: (ctx, index) => ListTile(
-        onTap: () => close(context, bookTitles[bookMatches[index]]['title']),
+        onTap: () {
+          final title = bookTitles[bookMatches[index]]['title'];
+          parentContext.read<BooksProvider>().fetchSearchedBook(title);
+          close(context, null);
+        },
         title: Text(
           bookTitles[bookMatches[index]]['title'],
           style: Theme.of(context).textTheme.bodyText2,

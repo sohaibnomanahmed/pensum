@@ -17,20 +17,27 @@ class BookItem extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
               child: (book == null)
-                  ? Container(color: Colors.grey, height:100, width: 70,)
-                  : Image.network(
-                      book.image,
-                      fit: BoxFit.cover,
+                  ? Container(
+                      color: Colors.grey,
                       height: 100,
                       width: 70,
-                      errorBuilder: (_, __, ___) => Container(
-                        child: Icon(
-                          Icons.wifi_off_rounded,
-                          //color: Colors.grey[600],
-                          color: Theme.of(context).disabledColor,
-                        ),
+                    )
+                  : Hero(
+                      tag: book.isbn,
+                      child: Image.network(
+                        book.image,
+                        fit: BoxFit.cover,
                         height: 100,
                         width: 70,
+                        errorBuilder: (_, __, ___) => Container(
+                          child: Icon(
+                            Icons.wifi_off_rounded,
+                            //color: Colors.grey[600],
+                            color: Theme.of(context).disabledColor,
+                          ),
+                          height: 100,
+                          width: 70,
+                        ),
                       ),
                     ),
             ),
@@ -54,11 +61,12 @@ class BookItem extends StatelessWidget {
                 (book == null)
                     ? Container(
                         height: 14, color: Colors.grey, width: double.infinity)
-                    :Text(book.getAuthors),
+                    : Text(book.getAuthors),
                 (book == null)
                     ? Container(
                         height: 14, color: Colors.grey, width: double.infinity)
-                    :Text(book.year, style: Theme.of(context).textTheme.caption),
+                    : Text(book.year,
+                        style: Theme.of(context).textTheme.caption),
               ],
             ),
           ),

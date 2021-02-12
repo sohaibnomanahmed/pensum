@@ -38,8 +38,8 @@ class AuthenticationProvider with ChangeNotifier {
       // create profile data in firestore
       final profile = Profile(
         uid: user.uid,
-        firstname: firstname,
-        lastname: lastname,
+        firstname: firstname.toLowerCase().trim(),
+        lastname: lastname.toLowerCase().trim(),
         imageUrl: 'https://firebasestorage.googleapis.com/v0/b/leaf-e52aa.appspot.com/o/profile.png?alt=media&token=ef36af4e-c528-4851-b429-53f867672b33',
         userItems: {}
       );

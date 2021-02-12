@@ -1,0 +1,56 @@
+import 'package:flutter/material.dart';
+import '../../books/models/book.dart';
+
+class BookInfo extends StatelessWidget {
+  final Book book;
+
+  BookInfo(this.book);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      child: Row(
+        children: [
+          Container(
+            height: 200,
+            width: 150,
+            child: Hero(
+                tag: book.isbn,
+                child: Image.network(book.image, fit: BoxFit.cover)),
+          ),
+          Flexible(
+            child: Column(
+              children: [
+                if (book.language.isNotEmpty)
+                  ListTile(
+                    dense: true,
+                    leading: Icon(Icons.language),
+                    title: Text(book.language),
+                  ),
+                if (book.pages.isNotEmpty)
+                  ListTile(
+                    dense: true,
+                    leading: Icon(Icons.description),
+                    title: Text(book.pages + ' p.'),
+                  ),
+                if (book.edition.isNotEmpty)
+                  ListTile(
+                    dense: true,
+                    leading: Icon(Icons.edit_rounded),
+                    title: Text(book.edition),
+                  ),
+                if (book.publisher.isNotEmpty)
+                  ListTile(
+                    dense: true,
+                    leading: Icon(Icons.menu_book_rounded),
+                    title: Text(book.publisher),
+                  ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
