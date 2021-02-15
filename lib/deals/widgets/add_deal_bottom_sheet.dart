@@ -9,9 +9,8 @@ import '../../deals/deals_provider.dart';
 
 class AddDealBottomSheet extends StatefulWidget {
   final Book book;
-  final BuildContext parentContext;
 
-  AddDealBottomSheet(this.parentContext, this.book);
+  AddDealBottomSheet(this.book);
 
   @override
   _AddDealBottomSheetState createState() => _AddDealBottomSheetState();
@@ -25,9 +24,6 @@ class _AddDealBottomSheetState extends State<AddDealBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final isLoading = widget.parentContext.watch<DealsProvider>().isLoading;
-    print('Re build!!!');
-    print(isLoading);
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Container(
@@ -79,59 +75,52 @@ class _AddDealBottomSheetState extends State<AddDealBottomSheet> {
                 onChanged: (value) => _description = value,
               ),
               ElevatedButton(
-                  onPressed:
-                      (_price.isEmpty || _quality.isEmpty || _place.isEmpty)
-                          ? null
-                          : isLoading
-                              ? null
-                              : () async {
-                                  final result = await widget.parentContext
-                                      .read<DealsProvider>()
-                                      .addDeal(
-                                        book: widget.book,
-                                        price: _price,
-                                        quality: _quality,
-                                        place: _place,
-                                        description: _description,
-                                      );
-                                  // pop bottom sheet
-                                  Navigator.of(context).pop();
-                                  // check if an error occured
-                                  final scaffoldMessenger =
-                                      ScaffoldMessenger.of(context);
-                                  if (!result) {
-                                    // remove snackbar if existing and show a new with error message
-                                    final errorMessage = widget.parentContext
-                                        .read<DealsProvider>()
-                                        .errorMessage;
-                                    scaffoldMessenger.hideCurrentSnackBar();
-                                    scaffoldMessenger.showSnackBar(
-                                      SnackBar(
-                                        backgroundColor:
-                                            Theme.of(context).errorColor,
-                                        content: Text(errorMessage),
-                                      ),
-                                    );
-                                  }
-                                  if (result) {
-                                    // remove snackbar if existing and show a new with error message
-                                    scaffoldMessenger.hideCurrentSnackBar();
-                                    scaffoldMessenger.showSnackBar(
-                                      SnackBar(
-                                        backgroundColor:
-                                            Theme.of(context).primaryColor,
-                                        content: Text('Succesfully added deal'),
-                                      ),
-                                    );
-                                  }
-                                },
-                  child: isLoading
-                      ? SizedBox(
-                          child: CircularProgressIndicator(),
-                          height: 20,
-                          width: 20,
-                        )
-                      : Text('Add deal'))
+                  onPressed: (_price.isEmpty ||
+                          _quality.isEmpty ||
+                          _place.isEmpty)
+                      ? null
+                      : () async {
+                          // get data before popping screen
+                          final scaffoldMessenger =
+                              ScaffoldMessenger.of(context);
+                          final errorColor = Theme.of(context).errorColor;
+                          final primaryColor = Theme.of(context).primaryColor;
+                          // pop screen
+                          Navigator.of(context).pop();
+                          // try adding the deal
+                          final result =
+                              await context.read<DealsProvider>().addDeal(
+                                    book: widget.book,
+                                    price: _price,
+                                    quality: _quality,
+                                    place: _place,
+                                    description: _description,
+                                  );
+                          // check if an error occured
+                          if (!result) {
+                            // remove snackbar if existing and show a new with error message
+                            final errorMessage =
+                                context.read<DealsProvider>().errorMessage;
+                            scaffoldMessenger.hideCurrentSnackBar();
+                            scaffoldMessenger.showSnackBar(
+                              SnackBar(
+                                backgroundColor: errorColor,
+                                content: Text(errorMessage),
+                              ),
+                            );
+                          }
+                          if (result) {
+                            // remove snackbar if existing and show a new with error message
+                            scaffoldMessenger.hideCurrentSnackBar();
+                            scaffoldMessenger.showSnackBar(
+                              SnackBar(
+                                backgroundColor: primaryColor,
+                                content: Text('Succesfully added deal'),
+                              ),
+                            );
+                          }
+                        },
+                  child: Text('Add deal'))
             ],
           ),
         ),

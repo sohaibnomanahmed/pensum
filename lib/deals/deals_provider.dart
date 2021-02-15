@@ -11,7 +11,9 @@ class DealsProvider with ChangeNotifier {
   final _booksService = FirebaseService.books;
 
   List<Deal> _deals = [];
+  List<Deal> _prevDeals = [];
   final _pageSize = 10;
+  var _isFilter = false;
   var _isError = false;
   var _isLoading = true;
   var _silentLoading = false;
@@ -21,6 +23,7 @@ class DealsProvider with ChangeNotifier {
   // getters
   bool get isLoading => _isLoading;
   bool get isError => _isError;
+  bool get isFilter => _isFilter;
   String get errorMessage => _errorMessage;
   List<Deal> get deals => [..._deals];
 
@@ -103,14 +106,11 @@ class DealsProvider with ChangeNotifier {
   }) async {
     _isLoading = true;
     notifyListeners();
-    await Future.delayed(Duration(seconds: 5));
     try {
       final user = _authenticationService.currentUser;
       final userProfile = await _profileService.getProfile(user.uid);
-
       // get a deal id from the database
       id ??= _booksService.getDealId(book.isbn);
-
       final deal = Deal(
         id: id,
         userId: user.uid,
@@ -125,7 +125,6 @@ class DealsProvider with ChangeNotifier {
         description: description,
         time: Timestamp.now(),
       );
-
       // add deal to the corresponding book collection database
       await _booksService.addDeal(deal: deal, id: id);
       // add deal to the user objects item list
@@ -143,6 +142,57 @@ class DealsProvider with ChangeNotifier {
     _isLoading = false;
     notifyListeners();
     return true;
+  }
+
+  /*
+   * Filter deals, based on price, quality and place, price ranges are min and max
+   * if none spesified, helse spesified are used, quality is only counted in if
+   * spesified, so if places, places can be a match uptil 10 places. If an error 
+   *  occurs _isError is set to true
+   */
+  Future<void> filterDeals({
+    @required String isbn,
+    @required int priceAbove,
+    @required int priceBelow,
+    @required List<String> places,
+    @required String quality,
+  }) async {
+    // only store the loaded deals, when not having a filter
+    if (!_isFilter){
+      _prevDeals = _deals;
+    }
+    _isLoading = true;
+    _isFilter = true;
+    notifyListeners();
+    // filter deals
+    try {
+      _deals = await _booksService.filterDeals(
+        isbn: isbn,
+        priceAbove: priceAbove,
+        priceBelow: priceBelow,
+        places: places,
+        quality: quality,
+      );
+    } catch (error) {
+      print('Filter deals error: $error');
+      _isError = true;
+      _isLoading = false;
+      notifyListeners();
+    }
+    _isLoading = false;
+    notifyListeners();
+  }
+
+  /*
+   * Restores the stored deals, from filtering
+   */
+  void clearFilter(){
+    _isLoading = true;
+    notifyListeners();
+    _deals = _prevDeals;
+    _isFilter = false;
+    _isLoading = false;
+    notifyListeners();
   }
 
   /*

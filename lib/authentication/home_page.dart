@@ -20,9 +20,10 @@ class HomePage extends StatelessWidget {
         final args = settings.arguments;
         switch (settings.name) {
           case DealsPage.routeName:
+            final dealProvider = DealsProvider();
             return MaterialPageRoute(
               builder: (_) => ChangeNotifierProvider(
-                  create: (_) => DealsProvider(), child: DealsPage(args)),
+                  create: (_) => dealProvider, child: DealsPage(args, dealProvider)),
             );
           default:
             return MaterialPageRoute(builder: (_) => PageNotFound());

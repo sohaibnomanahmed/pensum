@@ -17,7 +17,15 @@ class BookInfo extends StatelessWidget {
             width: 150,
             child: Hero(
                 tag: book.isbn,
-                child: Image.network(book.image, fit: BoxFit.cover)),
+                child: Image.network(
+                  book.image,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) => Icon(
+                    Icons.wifi_off_rounded,
+                    size: 60,
+                    color: Theme.of(context).primaryColorDark,
+                  ),
+                )),
           ),
           Flexible(
             child: Column(

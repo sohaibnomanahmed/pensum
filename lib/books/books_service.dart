@@ -40,18 +40,12 @@ class BooksService {
       return null;
     }
     lastBook = books.docs.last;
-    return books.docs
-        .map((document) => Book.fromFirestore(document))
-        .toList();
+    return books.docs.map((document) => Book.fromFirestore(document)).toList();
   }
 
   // fetch book titles
   Stream<Map> fetchBookTitles() {
-    return firestore
-        .collection('books')
-        .doc('metadata')
-        .snapshots()
-        .map(
+    return firestore.collection('books').doc('metadata').snapshots().map(
       (snapshot) {
         return snapshot.data()['titles'];
       },
@@ -65,14 +59,13 @@ class BooksService {
         .orderBy('year', descending: true)
         .where('title', arrayContains: title)
         .get();
-    
-    return books.docs
-      .map((document) => Book.fromFirestore(document))
-      .toList();
+
+    return books.docs.map((document) => Book.fromFirestore(document)).toList();
   }
 
   // fetch deals
-  Stream<List<Deal>> fetchDeals({@required String isbn, @required int pageSize}) {
+  Stream<List<Deal>> fetchDeals(
+      {@required String isbn, @required int pageSize}) {
     return firestore
         .collection('books/' + isbn + '/deals')
         .orderBy('price')
@@ -80,7 +73,7 @@ class BooksService {
         .snapshots()
         .map(
       (list) {
-        if (list.docs.isNotEmpty){
+        if (list.docs.isNotEmpty) {
           lastDeal = list.docs.last;
         }
         return list.docs
@@ -91,7 +84,8 @@ class BooksService {
   }
 
   // fetch and return more deals, from current last. If no more deals return null
-  Future<List<Deal>> fetchMoreDeals({@required String isbn, @required int pageSize}) async {
+  Future<List<Deal>> fetchMoreDeals(
+      {@required String isbn, @required int pageSize}) async {
     final deals = await firestore
         .collection('books/' + isbn + '/deals')
         .orderBy('price')
@@ -102,22 +96,41 @@ class BooksService {
       return null;
     }
     lastDeal = deals.docs.last;
-    return deals.docs
-        .map((document) => Deal.fromFirestore(document))
-        .toList();
+    return deals.docs.map((document) => Deal.fromFirestore(document)).toList();
+  }
+
+  // filter deals for a spesific book
+  Future<List<Deal>> filterDeals({
+    @required String isbn,
+    @required int priceAbove,
+    @required int priceBelow,
+    @required List<String> places,
+    @required String quality,
+  }) async {
+    var query = firestore
+        .collection('books/' + isbn + '/deals')
+        .orderBy('price')
+        .where('price', isGreaterThanOrEqualTo: priceAbove)
+        .where('price', isLessThanOrEqualTo: priceBelow);
+    if (quality.isNotEmpty){
+      query = query.where('quality', isEqualTo: quality);
+    }
+    if (places.isNotEmpty){
+      query = query.where('place', whereIn: places);
+    }  
+    // get the deals matching the query
+    final deals = await query.get();
+    // map the deals to the Deal model
+    return deals.docs.map((doc) => Deal.fromFirestore(doc)).toList();
   }
 
   // get a new deal id
   String getDealId(String isbn) {
-    return firestore
-        .collection('books')
-        .doc(isbn)
-        .collection('deals')
-        .doc()
-        .id;
+    return firestore.collection('books').doc(isbn).collection('deals').doc().id;
   }
+
   // add deal to a spesific book
-  Future<void> addDeal({@required Deal deal, @required String id}){
+  Future<void> addDeal({@required Deal deal, @required String id}) {
     return firestore
         .collection('books')
         .doc(deal.bookIsbn)
@@ -127,7 +140,7 @@ class BooksService {
   }
 
   // delete a deal
-  Future<void> deleteDeal({@required String isbn, @required String id}){
+  Future<void> deleteDeal({@required String isbn, @required String id}) {
     return firestore
         .collection('books')
         .doc(isbn)

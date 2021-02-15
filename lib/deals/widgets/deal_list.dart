@@ -11,7 +11,10 @@ class DealList extends StatelessWidget {
     final isLoading = context.watch<DealsProvider>().isLoading;
     final isError = context.watch<DealsProvider>().isError;
     return isLoading
-        ? Center(child: CircularProgressIndicator())
+        ? Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: CircularProgressIndicator(),
+        )
         : isError
             ? Center(child:Text('Error'))
             : ListView.separated(

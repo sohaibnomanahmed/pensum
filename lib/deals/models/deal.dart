@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
+import '../data/price_data.dart';
+
 /*
  * The deal class restores the inforamtion it needs from the user and the book
  * this is done, since if received from firebase we need mutiple calls, more
@@ -45,7 +47,12 @@ class Deal {
     final String bookIsbn = data['bookIsbn'];
     final String bookImage = data['bookImage'];
     final String bookTitle = data['bookTitle'];
-    final String price = data['price'];
+    // data on firestore is int, need to be converted
+    var price = prices.first;
+    if (data['price'] != 0){
+      price = data['price'].toString();
+    }
+    
     final String quality = data['quality'];
     final String place = data['place'];
     final String description = data['description'];
@@ -76,6 +83,12 @@ class Deal {
   }
 
   Map<String, dynamic> toMap() {
+    // store the price as int, so it can be ordered on firebase
+    var convertedPrice = 0;
+    if (price != prices.first){
+      // remove the ' kr' part from the string
+      convertedPrice = int.parse(price.replaceAll(RegExp('[^0-9]'), ''));
+    }
     return {
       'userId': userId,
       'userImage': userImage,
@@ -83,7 +96,7 @@ class Deal {
       'bookIsbn': bookIsbn,
       'bookImage': bookImage,
       'bookTitle': bookTitle,
-      'price': price,
+      'price': convertedPrice,
       'quality': quality,
       'place': place,
       'description': description,
