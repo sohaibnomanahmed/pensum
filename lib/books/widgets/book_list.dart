@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:leaf/deals/deals_page.dart';
+import 'package:leaf/global/widgets/leaf_error.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -14,18 +15,7 @@ class BookList extends StatelessWidget {
     final isError = context.watch<BooksProvider>().isError;
     return isError
         ? SliverFillRemaining(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset('assets/images/empty_rack.png', height: 200),
-                SizedBox(height: 30),
-                OutlinedButton.icon(
-                  onPressed: () => context.read<BooksProvider>().fetchBooks,
-                  icon: Icon(Icons.refresh_rounded),
-                  label: Text('Try again'),
-                )
-              ],
-            ),
+            child: LeafError(context.read<BooksProvider>().reFetchBooks)
           )
         : SliverList(
             delegate: SliverChildBuilderDelegate(

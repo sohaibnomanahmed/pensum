@@ -55,6 +55,10 @@ class HomePage extends StatelessWidget {
             label: 'Profile',
           ),
           BottomNavigationBarItem(
+            icon: Icon(Icons.notifications_rounded),
+            label: 'Following',
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.settings),
             label: 'Settings',
           ),

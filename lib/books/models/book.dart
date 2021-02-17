@@ -61,4 +61,18 @@ class Book {
     });
     return res;
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'titles': titles,
+      'authors': authors,
+      'image': image,
+      'language': language,
+      'publisher': publisher,
+      'pages': pages,
+      'edition': edition,
+      'year': year,
+      'isbn': isbn,
+    };
+  }
 }

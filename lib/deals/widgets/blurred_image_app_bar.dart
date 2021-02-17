@@ -41,10 +41,6 @@ class BlurredImageAppBar extends StatelessWidget with PreferredSizeWidget {
       ),
       elevation: 0,
       actions: [
-        // IconButton(
-        //   icon: Icon(Icons.remove_red_eye),
-        //   onPressed: (){}
-        // ),
         IconButton(
           icon: Icon(Icons.filter_list_rounded),
           onPressed: () => showModalBottomSheet(

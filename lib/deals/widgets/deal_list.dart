@@ -11,16 +11,17 @@ class DealList extends StatelessWidget {
     final isLoading = context.watch<DealsProvider>().isLoading;
     final isError = context.watch<DealsProvider>().isError;
     return isLoading
-        ? Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: CircularProgressIndicator(),
-        )
+        ? Container(
+            alignment: Alignment.center,
+            padding: const EdgeInsets.all(8.0),
+            child: CircularProgressIndicator(),
+          )
         : isError
-            ? Center(child:Text('Error'))
+            ? Center(child: Text('Error'))
             : ListView.separated(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                separatorBuilder: (_,__) => Divider(),
+                separatorBuilder: (_, __) => Divider(),
                 itemBuilder: (context, index) => DealItem(deals[index]),
                 itemCount: deals.length,
               );

@@ -17,12 +17,23 @@ class FilterDealsBottomSheet extends StatefulWidget {
 }
 
 class _FilterDealsBottomSheetState extends State<FilterDealsBottomSheet> {
-  //var _priceAbove = 0.0;
-  //var _priceBelow = double.parse(prices.last.replaceAll(RegExp('[^0-9]'), ''));
   RangeValues _currentRangeValues = RangeValues(
       0, double.parse(prices.last.replaceAll(RegExp('[^0-9]'), '')));
   var _quality = '';
-  final List<String> _places = [];
+  List<String> _places = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // if filter already applied, load those values
+    final dealFilter = context.read<DealsProvider>().dealFilter;
+    if (!dealFilter.isEmpty) {
+      _currentRangeValues = RangeValues(
+          dealFilter.priceAbove.toDouble(), dealFilter.priceBelow.toDouble());
+      _quality = dealFilter.quality;
+      _places = dealFilter.places;    
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,19 +46,6 @@ class _FilterDealsBottomSheetState extends State<FilterDealsBottomSheet> {
           children: [
             Icon(Icons.filter_list_rounded,
                 size: 65, color: Theme.of(context).primaryColor),
-            // Text('Price above: ' + _priceAbove.round().toString()),
-            // Slider(
-            //   value: _priceAbove,
-            //   min: 0,
-            //   max: double.parse(prices.last.replaceAll(RegExp('[^0-9]'), '')),
-            //   divisions: priceDivisions,
-            //   label: _priceAbove.round().toString(),
-            //   onChanged: (double value) {
-            //     setState(() {
-            //       _priceAbove = value;
-            //     });
-            //   },
-            // ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -61,7 +59,11 @@ class _FilterDealsBottomSheetState extends State<FilterDealsBottomSheet> {
               values: _currentRangeValues,
               min: 0,
               max: double.parse(prices.last.replaceAll(RegExp('[^0-9]'), '')),
-              divisions: priceDivisions,
+              divisions:
+                  (double.parse(prices.last.replaceAll(RegExp('[^0-9]'), '')) *
+                              0.01)
+                          .round() *
+                      2,
               labels: RangeLabels(
                 _currentRangeValues.start.round().toString(),
                 _currentRangeValues.end.round().toString(),
@@ -72,31 +74,17 @@ class _FilterDealsBottomSheetState extends State<FilterDealsBottomSheet> {
                 });
               },
             ),
-            // Text('Price below: ' + _priceBelow.round().toString()),
-            // Slider(
-            //   value: _priceBelow,
-            //   min: 0,
-            //   max: double.parse(prices.last.replaceAll(RegExp('[^0-9]'), '')),
-            //   divisions: priceDivisions,
-            //   label: _priceBelow.round().toString(),
-            //   onChanged: (double value) {
-            //     setState(() {
-            //       _priceBelow = value;
-            //     });
-            //   },
-            // ),
             DropdownButtonFormField(
+              value: _quality.isNotEmpty ? _quality: null,
               hint: Text('Select quality'),
-              onChanged: (value) => setState(() {
-                _quality = value;
-              }),
+              onChanged: (value) => _quality = value,
               items: qualities
                   .map((quality) =>
                       DropdownMenuItem(child: Text(quality), value: quality))
                   .toList(),
             ),
             DropdownButtonFormField(
-              hint: Text('Select place'),
+              hint: Text('Add up to 10 places'),
               onChanged: (value) => setState(() {
                 // firebase limit on array checks
                 if (_places.length < 10 && !_places.contains(value)) {

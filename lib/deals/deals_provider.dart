@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:leaf/deals/models/deal_filter.dart';
 
 import '../books/models/book.dart';
 import '../global/services.dart';
@@ -8,7 +11,8 @@ import 'models/deal.dart';
 class DealsProvider with ChangeNotifier {
   final _authenticationService = FirebaseService.authentication;
   final _profileService = FirebaseService.profile;
-  final _booksService = FirebaseService.books;
+  final _dealsService = FirebaseService.deals;
+  final _followService = FirebaseService.follow;
 
   List<Deal> _deals = [];
   List<Deal> _prevDeals = [];
@@ -17,30 +21,59 @@ class DealsProvider with ChangeNotifier {
   var _isError = false;
   var _isLoading = true;
   var _silentLoading = false;
-  var _subscription;
+  var _dealFilter = DealFilter.empty();
+  bool _isFollowing;
+  StreamSubscription _dealsSubscription;
+  StreamSubscription _followSubscribtion;
   String _errorMessage;
 
   // getters
   bool get isLoading => _isLoading;
   bool get isError => _isError;
   bool get isFilter => _isFilter;
+  bool get isFollowing => _isFollowing;
   String get errorMessage => _errorMessage;
+  DealFilter get dealFilter => _dealFilter;
   List<Deal> get deals => [..._deals];
 
   /*
    * Subsbribe to the deals stream, if an error accours the stream will be canceled 
    * Should be called in the init state method, and recalled if an error occurs
+   * after deals are received we called getFollowStatus, after that stream has started we
+   * remove the loading
    */
   void fetchDeals(String isbn) {
     // get original first batch of deals
-    final stream = _booksService.fetchDeals(isbn: isbn, pageSize: _pageSize);
-    _subscription = stream.listen(
+    final stream = _dealsService.fetchDeals(isbn: isbn, pageSize: _pageSize);
+    _dealsSubscription = stream.listen(
       (deals) {
         // in case there are no deals
         if (deals == null) {
           return;
         }
         _deals = deals;
+        getFollowStatus(isbn);
+      },
+      onError: (error) {
+        print('Fetch deal error: $error');
+        _isError = true;
+        _isLoading = false;
+        notifyListeners();
+      },
+      cancelOnError: true,
+    );
+  }
+
+  /*
+   *  Get the following status for the book
+   *  This need to be a stream as changes should be shown to the user
+   */
+  void getFollowStatus(String isbn) async {
+    final user = _authenticationService.currentUser;
+    final stream = _followService.followStatus(uid: user.uid, isbn: isbn);
+    _followSubscribtion = stream.listen(
+      (isFollowing) {
+        _isFollowing = isFollowing;
         _isLoading = false;
         notifyListeners();
       },
@@ -65,14 +98,20 @@ class DealsProvider with ChangeNotifier {
     if (_isLoading || _silentLoading || _isError) {
       return;
     }
+    print('Fetching more deals');
     // set silent loader
     _silentLoading = true;
 
     // get more books
     List<Deal> moreDeals;
     try {
-      moreDeals =
-          await _booksService.fetchMoreDeals(isbn: isbn, pageSize: _pageSize);
+      if (dealFilter.isEmpty) {
+        moreDeals =
+            await _dealsService.fetchMoreDeals(isbn: isbn, pageSize: _pageSize);
+      } else {
+        moreDeals = await _dealsService.fetchMoreFilteredDeals(
+            isbn: isbn, pageSize: _pageSize, dealFilter: dealFilter);
+      }
     } catch (error) {
       print('Failed to fetch more books: $error');
       _silentLoading = false;
@@ -85,6 +124,7 @@ class DealsProvider with ChangeNotifier {
     }
     // add them the end of the messages list
     _deals.addAll(moreDeals);
+    print(_deals.length);
     // update UI then reset the silent loader
     notifyListeners();
     _silentLoading = false;
@@ -95,6 +135,7 @@ class DealsProvider with ChangeNotifier {
    * setDeal, is a new deal a is will be created, else a previous deal will be 
    * updated with merging. After updating book deals, add the deal to users 
    * profile, return true if successfull and false if an error occurs
+   * probably dont need to show a loader
    */
   Future<bool> addDeal({
     String id,
@@ -104,13 +145,11 @@ class DealsProvider with ChangeNotifier {
     @required String place,
     @required String description,
   }) async {
-    _isLoading = true;
-    notifyListeners();
     try {
       final user = _authenticationService.currentUser;
       final userProfile = await _profileService.getProfile(user.uid);
       // get a deal id from the database
-      id ??= _booksService.getDealId(book.isbn);
+      id ??= _dealsService.getDealId(book.isbn);
       final deal = Deal(
         id: id,
         userId: user.uid,
@@ -126,12 +165,29 @@ class DealsProvider with ChangeNotifier {
         time: Timestamp.now(),
       );
       // add deal to the corresponding book collection database
-      await _booksService.addDeal(deal: deal, id: id);
+      await _dealsService.addDeal(deal: deal, id: id);
       // add deal to the user objects item list
       userProfile.userItems[id] = deal.toMap();
       // update the user object in the database
       await _profileService.setProfile(
           uid: userProfile.uid, profile: userProfile);
+    } catch (error) {
+      print('Add deal error: $error');
+      _errorMessage = 'Something went wrong, please try again!';
+      return false;
+    }
+    return true;
+  }
+
+  /*
+   * follow a Book
+   */
+  Future<bool> followBook(Book book) async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      final user = _authenticationService.currentUser;
+      await _followService.followBook(uid: user.uid, book: book);
     } catch (error) {
       print('Add deal error: $error');
       _errorMessage = 'Something went wrong, please try again!';
@@ -148,7 +204,7 @@ class DealsProvider with ChangeNotifier {
    * Filter deals, based on price, quality and place, price ranges are min and max
    * if none spesified, helse spesified are used, quality is only counted in if
    * spesified, so if places, places can be a match uptil 10 places. If an error 
-   *  occurs _isError is set to true
+   * occurs _isError is set to true, probably dont need to show a loader
    */
   Future<void> filterDeals({
     @required String isbn,
@@ -158,41 +214,49 @@ class DealsProvider with ChangeNotifier {
     @required String quality,
   }) async {
     // only store the loaded deals, when not having a filter
-    if (!_isFilter){
+    if (!_isFilter) {
       _prevDeals = _deals;
     }
     _isLoading = true;
     _isFilter = true;
     notifyListeners();
     // filter deals
-    try {
-      _deals = await _booksService.filterDeals(
-        isbn: isbn,
-        priceAbove: priceAbove,
-        priceBelow: priceBelow,
-        places: places,
-        quality: quality,
-      );
-    } catch (error) {
+    final _stream = await _dealsService.filterDeals(
+      isbn: isbn,
+      priceAbove: priceAbove,
+      priceBelow: priceBelow,
+      places: places,
+      quality: quality,
+      pageSize: _pageSize,
+    );
+    await _dealsSubscription.cancel();
+    _dealsSubscription = _stream.listen((deals) {
+      _deals = deals;
+      _dealFilter = DealFilter(
+          priceAbove: priceAbove,
+          priceBelow: priceBelow,
+          places: places,
+          quality: quality);
+      _isLoading = false;
+      notifyListeners();
+    }, onError: (error) {
       print('Filter deals error: $error');
       _isError = true;
       _isLoading = false;
       notifyListeners();
-    }
-    _isLoading = false;
-    notifyListeners();
+    }, cancelOnError: true);
   }
 
   /*
    * Restores the stored deals, from filtering
    */
-  void clearFilter(){
+  void clearFilter(String isbn) async {
     _isLoading = true;
     notifyListeners();
-    _deals = _prevDeals;
+    await _dealsSubscription.cancel();
+    _dealFilter = DealFilter.empty();
     _isFilter = false;
-    _isLoading = false;
-    notifyListeners();
+    fetchDeals(isbn);
   }
 
   /*
@@ -201,8 +265,11 @@ class DealsProvider with ChangeNotifier {
   @override
   void dispose() {
     super.dispose();
-    if (_subscription != null) {
-      _subscription.cancel();
+    if (_dealsSubscription != null) {
+      _dealsSubscription.cancel();
+    }
+    if (_followSubscribtion != null) {
+      _followSubscribtion.cancel();
     }
   }
 }

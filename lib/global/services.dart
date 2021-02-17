@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:leaf/books/books_service.dart';
-import 'package:leaf/profile/profile_service.dart';
 
+import '../deals/deals_service.dart';
+import '../books/books_service.dart';
+import '../follow/follow_service.dart';
+import '../profile/profile_service.dart';
 import '../authentication/authentication_service.dart';
 
 class FirebaseService {
@@ -10,6 +12,8 @@ class FirebaseService {
   static final authentication = AuthenticationService();
   static final profile = ProfileService(firestore);
   static final books = BooksService(firestore);
+  static final deals = DealsService(firestore);
+  static final follow = FollowService(firestore);
 }
 
 class NativeService{

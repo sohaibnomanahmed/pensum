@@ -52,6 +52,17 @@ class BooksProvider with ChangeNotifier{
   }
 
   /*
+   *  reload books when an error occurs, set loading and fetch the books
+   *  again by remaking the stream 
+   */
+  void reFetchBooks() async{
+    _isLoading = true;
+    _isError = false;
+    notifyListeners();
+    fetchBooks;
+  }
+
+  /*
    * fetch more books from firebase, starts with setting a silent loader so that
    * the methos does not get called again, also so that the UI does not get updated.
    * if no more books can be fetched return, if error occurs return 
