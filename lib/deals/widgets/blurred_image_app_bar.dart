@@ -59,7 +59,11 @@ class BlurredImageAppBar extends StatelessWidget with PreferredSizeWidget {
             context: context,
             builder: (_) => ChangeNotifierProvider.value(
               value: dealsProvider,
-              child: AddDealBottomSheet(book),
+              child: AddDealBottomSheet(
+                productId: book.isbn,
+                productImage: book.image,
+                productTitle: book.titles.first,
+              ),
             ),
           ),
         )

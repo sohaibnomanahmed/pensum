@@ -30,6 +30,7 @@ class _DealsPageState extends State<DealsPage> {
   Widget build(BuildContext context) {
     final isFilter = context.watch<DealsProvider>().isFilter;
     final isLoading = context.watch<DealsProvider>().isLoading;
+    final isFollowBtnLoading = context.watch<DealsProvider>().isFollowBtnLoading;
     final isFollowing = context.watch<DealsProvider>().isFollowing;
     return Scaffold(
       appBar: BlurredImageAppBar(widget.book, widget.dealsProvider),
@@ -86,7 +87,7 @@ class _DealsPageState extends State<DealsPage> {
                               );
                             }
                           },
-                    child: isLoading
+                    child: isFollowBtnLoading
                         ? SizedBox(
                             child: CircularProgressIndicator(),
                             height: 20,

@@ -108,25 +108,25 @@ class DealsService {
   }
 
   // get a new deal id
-  String getDealId(String isbn) {
-    return firestore.collection('books').doc(isbn).collection('deals').doc().id;
+  String getDealId(String productId) {
+    return firestore.collection('books').doc(productId).collection('deals').doc().id;
   }
 
   // add deal to a spesific book
-  Future<void> addDeal({@required Deal deal, @required String id}) {
+  Future<void> setDeal({@required Deal deal, @required String id}) {
     return firestore
         .collection('books')
-        .doc(deal.bookIsbn)
+        .doc(deal.productId)
         .collection('deals')
         .doc(id)
         .set(deal.toMap(), SetOptions(merge: true));
   }
 
   // delete a deal
-  Future<void> deleteDeal({@required String isbn, @required String id}) {
+  Future<void> deleteDeal({@required String productId, @required String id}) {
     return firestore
         .collection('books')
-        .doc(isbn)
+        .doc(productId)
         .collection('deals')
         .doc(id)
         .delete();

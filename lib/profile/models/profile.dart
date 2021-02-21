@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 
 import '../../global/extensions.dart';
 
-class Profile{
+class Profile {
   final String uid;
   String firstname;
   String lastname;
@@ -11,7 +11,18 @@ class Profile{
   Map<String, dynamic> userItems;
   bool isMe;
 
-  String get fullName => firstname.capitalize() + ' ' + lastname.capitalize();
+  /*
+   *  need to capitalize first value (value) all other values (element) and
+   *  a single value (value returned from reduce) 
+   */
+  String get fullName =>
+      firstname
+          .split(RegExp('\\s+'))
+          .reduce((value, element) => value.capitalize() + ' ' + element.capitalize()).capitalize() +
+      ' ' +
+      lastname
+          .split(RegExp('\\s+'))
+          .reduce((value, element) => value.capitalize() + ' ' + element.capitalize()).capitalize();
 
   Profile({
     @required this.uid,
@@ -21,7 +32,7 @@ class Profile{
     @required this.userItems,
   });
 
-  factory Profile.fromFirestore(DocumentSnapshot doc){
+  factory Profile.fromFirestore(DocumentSnapshot doc) {
     Map data = doc.data();
     if (data == null) {
       return null;

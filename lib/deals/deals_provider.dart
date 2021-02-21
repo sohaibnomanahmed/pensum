@@ -15,11 +15,11 @@ class DealsProvider with ChangeNotifier {
   final _followService = FirebaseService.follow;
 
   List<Deal> _deals = [];
-  List<Deal> _prevDeals = [];
   final _pageSize = 10;
   var _isFilter = false;
   var _isError = false;
   var _isLoading = true;
+  var _isFollowBtnLoading = false;
   var _silentLoading = false;
   var _dealFilter = DealFilter.empty();
   bool _isFollowing;
@@ -32,6 +32,7 @@ class DealsProvider with ChangeNotifier {
   bool get isError => _isError;
   bool get isFilter => _isFilter;
   bool get isFollowing => _isFollowing;
+  bool get isFollowBtnLoading => _isFollowBtnLoading;
   String get errorMessage => _errorMessage;
   DealFilter get dealFilter => _dealFilter;
   List<Deal> get deals => [..._deals];
@@ -53,29 +54,6 @@ class DealsProvider with ChangeNotifier {
         }
         _deals = deals;
         getFollowStatus(isbn);
-      },
-      onError: (error) {
-        print('Fetch deal error: $error');
-        _isError = true;
-        _isLoading = false;
-        notifyListeners();
-      },
-      cancelOnError: true,
-    );
-  }
-
-  /*
-   *  Get the following status for the book
-   *  This need to be a stream as changes should be shown to the user
-   */
-  void getFollowStatus(String isbn) async {
-    final user = _authenticationService.currentUser;
-    final stream = _followService.followStatus(uid: user.uid, isbn: isbn);
-    _followSubscribtion = stream.listen(
-      (isFollowing) {
-        _isFollowing = isFollowing;
-        _isLoading = false;
-        notifyListeners();
       },
       onError: (error) {
         print('Fetch deal error: $error');
@@ -137,9 +115,11 @@ class DealsProvider with ChangeNotifier {
    * profile, return true if successfull and false if an error occurs
    * probably dont need to show a loader
    */
-  Future<bool> addDeal({
+  Future<bool> setDeal({
     String id,
-    @required Book book,
+    @required String productId,
+    @required String productImage,
+    @required String productTitle,
     @required String price,
     @required String quality,
     @required String place,
@@ -149,15 +129,15 @@ class DealsProvider with ChangeNotifier {
       final user = _authenticationService.currentUser;
       final userProfile = await _profileService.getProfile(user.uid);
       // get a deal id from the database
-      id ??= _dealsService.getDealId(book.isbn);
+      id ??= _dealsService.getDealId(productId);
       final deal = Deal(
         id: id,
         userId: user.uid,
         userImage: userProfile.imageUrl,
         userName: userProfile.fullName,
-        bookIsbn: book.isbn,
-        bookImage: book.image,
-        bookTitle: book.titles.first,
+        productId: productId,
+        productImage: productImage,
+        productTitle: productTitle,
         price: price,
         quality: quality,
         place: place,
@@ -165,7 +145,7 @@ class DealsProvider with ChangeNotifier {
         time: Timestamp.now(),
       );
       // add deal to the corresponding book collection database
-      await _dealsService.addDeal(deal: deal, id: id);
+      await _dealsService.setDeal(deal: deal, id: id);
       // add deal to the user objects item list
       userProfile.userItems[id] = deal.toMap();
       // update the user object in the database
@@ -176,27 +156,6 @@ class DealsProvider with ChangeNotifier {
       _errorMessage = 'Something went wrong, please try again!';
       return false;
     }
-    return true;
-  }
-
-  /*
-   * follow a Book
-   */
-  Future<bool> followBook(Book book) async {
-    _isLoading = true;
-    notifyListeners();
-    try {
-      final user = _authenticationService.currentUser;
-      await _followService.followBook(uid: user.uid, book: book);
-    } catch (error) {
-      print('Add deal error: $error');
-      _errorMessage = 'Something went wrong, please try again!';
-      _isLoading = false;
-      notifyListeners();
-      return false;
-    }
-    _isLoading = false;
-    notifyListeners();
     return true;
   }
 
@@ -213,10 +172,6 @@ class DealsProvider with ChangeNotifier {
     @required List<String> places,
     @required String quality,
   }) async {
-    // only store the loaded deals, when not having a filter
-    if (!_isFilter) {
-      _prevDeals = _deals;
-    }
     _isLoading = true;
     _isFilter = true;
     notifyListeners();
@@ -257,6 +212,50 @@ class DealsProvider with ChangeNotifier {
     _dealFilter = DealFilter.empty();
     _isFilter = false;
     fetchDeals(isbn);
+  }
+
+  /*
+   * follow a Book
+   */
+  Future<bool> followBook(Book book) async {
+    _isFollowBtnLoading = true;
+    notifyListeners();
+    try {
+      final user = _authenticationService.currentUser;
+      await _followService.followBook(uid: user.uid, book: book);
+    } catch (error) {
+      print('Add deal error: $error');
+      _errorMessage = 'Something went wrong, please try again!';
+      _isFollowBtnLoading = false;
+      notifyListeners();
+      return false;
+    }
+    _isFollowBtnLoading = false;
+    notifyListeners();
+    return true;
+  }
+
+  /*
+   *  Get the following status for the book
+   *  This need to be a stream as changes should be shown to the user
+   */
+  void getFollowStatus(String isbn) async {
+    final user = _authenticationService.currentUser;
+    final stream = _followService.followStatus(uid: user.uid, isbn: isbn);
+    _followSubscribtion = stream.listen(
+      (isFollowing) {
+        _isFollowing = isFollowing;
+        _isLoading = false;
+        notifyListeners();
+      },
+      onError: (error) {
+        print('Fetch deal error: $error');
+        _isError = true;
+        _isLoading = false;
+        notifyListeners();
+      },
+      cancelOnError: true,
+    );
   }
 
   /*

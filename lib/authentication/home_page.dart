@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:leaf/global/404_page.dart';
+import 'package:leaf/profile/profile_page.dart';
+import 'package:leaf/profile/profile_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../books/books_page.dart';
@@ -23,7 +25,8 @@ class HomePage extends StatelessWidget {
             final dealProvider = DealsProvider();
             return MaterialPageRoute(
               builder: (_) => ChangeNotifierProvider(
-                  create: (_) => dealProvider, child: DealsPage(args, dealProvider)),
+                  create: (_) => dealProvider,
+                  child: DealsPage(args, dealProvider)),
             );
           default:
             return MaterialPageRoute(builder: (_) => PageNotFound());
@@ -31,7 +34,13 @@ class HomePage extends StatelessWidget {
       },
     ),
     CupertinoTabView(builder: (ctx) => Scaffold(body: Text('Chat'))),
-    CupertinoTabView(builder: (ctx) => Scaffold(body: Text('Profile'))),
+    CupertinoTabView(builder: (_) {
+      final profileProvider = ProfileProvider();
+      return ChangeNotifierProvider(
+          create: (_) => profileProvider,
+          child: ProfilePage(profileProvider: profileProvider));
+    }),
+    CupertinoTabView(builder: (ctx) => Scaffold(body: Text('Follow'))),
     CupertinoTabView(builder: (ctx) => SettingsPage())
   ];
 

@@ -17,16 +17,24 @@ class ProfileService {
 
   // get profile data 
   Future<Profile> getProfile(String uid) async {
-    final userProfile = await firestore.collection('profiles').doc(uid).get();
-    return Profile.fromFirestore(userProfile);
+    final profile = await firestore.collection('profiles').doc(uid).get();
+    return Profile.fromFirestore(profile);
   }
 
   // get profile stream
-  Stream<Profile> getProfileStream(String uid){
+  Stream<Profile> fetchProfile(String uid){
     return firestore
         .collection('profiles')
         .doc(uid)
         .snapshots()
         .map((profile) => Profile.fromFirestore(profile));
+  }
+
+  // deletes a deal from the profile
+  Future<void> deleteDeal({@required String uid, @required String id}) async {
+    final profileData = await firestore.collection('profiles').doc(uid).get();
+    final profile = Profile.fromFirestore(profileData);
+    profile.userItems.remove(id);
+    return firestore.collection('profiles').doc(uid).update(profile.toMap());
   }
 }

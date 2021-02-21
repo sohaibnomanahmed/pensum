@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:leaf/authentication/widgets/background/bezierContainer.dart';
+import 'package:leaf/global/widgets/bezierContainer.dart';
 
 import 'widgets/authentication_form.dart';
 
@@ -17,7 +17,11 @@ class AuthenticationPage extends StatelessWidget {
             Positioned(
               top: -height * .10,
               right: -width * .3,
-              child: BezierContainer(),
+              child: BezierContainer(Icon(
+                Icons.eco,
+                size: 100,
+                color: Theme.of(context).primaryColorLight,
+              )),
             ),
             Container(
               height: height,

@@ -43,23 +43,18 @@ class _CreateAccountBottomSheetState extends State<CreateAccountBottomSheet> {
                 size: 80,
                 color: Theme.of(context).primaryColor,
               ),
-              // firstname text field
               TextFormField(
-                keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(labelText: 'Firstname'),
                 validator: (value) =>
                     (value.isEmpty) ? 'Please enter a firstname.' : null,
                 onSaved: (value) => _firstname = value,
               ),
-              // lastname textfield
               TextFormField(
-                keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(labelText: 'Lastname'),
                 validator: (value) =>
                     (value.isEmpty) ? 'Please enter a lastname' : null,
                 onSaved: (value) => _lastname = value,
               ),
-              // email text field
               TextFormField(
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(labelText: 'Email'),
@@ -68,7 +63,6 @@ class _CreateAccountBottomSheetState extends State<CreateAccountBottomSheet> {
                     : null,
                 onSaved: (value) => _email = value,
               ),
-              // password text field
               TextFormField(
                 decoration: InputDecoration(labelText: 'Password'),
                 obscureText: true,
@@ -77,9 +71,7 @@ class _CreateAccountBottomSheetState extends State<CreateAccountBottomSheet> {
                     : null,
                 onSaved: (value) => _password = value,
               ),
-              SizedBox(
-                height: 10,
-              ),
+              SizedBox(height: 10),
               ElevatedButton(
                 onPressed: isLoading
                     ? null
@@ -93,8 +85,8 @@ class _CreateAccountBottomSheetState extends State<CreateAccountBottomSheet> {
                           final result = await context
                               .read<AuthenticationProvider>()
                               .createUser(
-                                firstname: _firstname,
-                                lastname: _lastname,
+                                firstname: _firstname.trim().toLowerCase(),
+                                lastname: _lastname.trim().toLowerCase(),
                                 email: _email,
                                 password: _password,
                               );

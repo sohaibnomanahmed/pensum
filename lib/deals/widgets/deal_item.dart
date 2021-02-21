@@ -11,7 +11,6 @@ class DealItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         ListTile(
           leading: CircleAvatar(backgroundImage: NetworkImage(deal.userImage)),

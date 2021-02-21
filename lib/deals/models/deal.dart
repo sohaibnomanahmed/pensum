@@ -16,9 +16,9 @@ class Deal {
   final String userId;
   final String userImage;
   final String userName;
-  final String bookIsbn;
-  final String bookImage;
-  final String bookTitle;
+  final String productId;
+  final String productImage;
+  final String productTitle;
   final String price;
   final String quality;
   final String place;
@@ -30,9 +30,9 @@ class Deal {
     @required this.userId,
     @required this.userImage,
     @required this.userName,
-    @required this.bookIsbn,
-    @required this.bookImage,
-    @required this.bookTitle,
+    @required this.productId,
+    @required this.productImage,
+    @required this.productTitle,
     @required this.price,
     @required this.quality,
     @required this.place,
@@ -44,15 +44,14 @@ class Deal {
     final String userId = data['userId'];
     final String userImage = data['userImage'];
     final String userName = data['userName'];
-    final String bookIsbn = data['bookIsbn'];
-    final String bookImage = data['bookImage'];
-    final String bookTitle = data['bookTitle'];
+    final String productId = data['productId'];
+    final String productImage = data['productImage'];
+    final String productTitle = data['productTitle'];
     // data on firestore is int, need to be converted
     var price = prices.first;
     if (data['price'] != 0){
-      price = data['price'].toString();
+      price = data['price'].toString() + ' kr';
     }
-    
     final String quality = data['quality'];
     final String place = data['place'];
     final String description = data['description'];
@@ -63,9 +62,9 @@ class Deal {
       userId: userId,
       userImage: userImage,
       userName: userName,
-      bookIsbn: bookIsbn,
-      bookImage: bookImage,
-      bookTitle: bookTitle,
+      productId: productId,
+      productImage: productImage,
+      productTitle: productTitle,
       price: price,
       quality: quality,
       place: place,
@@ -93,9 +92,9 @@ class Deal {
       'userId': userId,
       'userImage': userImage,
       'userName': userName,
-      'bookIsbn': bookIsbn,
-      'bookImage': bookImage,
-      'bookTitle': bookTitle,
+      'productId': productId,
+      'productImage': productImage,
+      'productTitle': productTitle,
       'price': convertedPrice,
       'quality': quality,
       'place': place,
