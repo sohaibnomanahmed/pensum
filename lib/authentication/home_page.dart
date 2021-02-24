@@ -26,7 +26,7 @@ class HomePage extends StatelessWidget {
             return MaterialPageRoute(
               builder: (_) => ChangeNotifierProvider(
                   create: (_) => dealProvider,
-                  child: DealsPage(args, dealProvider)),
+                  child: DealsPage(book: args, dealsProvider: dealProvider)),
             );
           default:
             return MaterialPageRoute(builder: (_) => PageNotFound());

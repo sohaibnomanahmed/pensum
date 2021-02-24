@@ -15,8 +15,7 @@ class BookList extends StatelessWidget {
     final isError = context.watch<BooksProvider>().isError;
     return isError
         ? SliverFillRemaining(
-            child: LeafError(context.read<BooksProvider>().reFetchBooks)
-          )
+            child: LeafError(context.read<BooksProvider>().reFetchBooks))
         : SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, index) => isLoading
@@ -27,8 +26,8 @@ class BookList extends StatelessWidget {
                     )
                   : InkWell(
                       child: BookItem(books[index]),
-                      onTap: () => Navigator.pushNamed(
-                          context, DealsPage.routeName,
+                      onTap: () => Navigator.of(context).pushNamed(
+                          DealsPage.routeName,
                           arguments: books[index]),
                     ),
               childCount: isLoading ? 6 : books.length,

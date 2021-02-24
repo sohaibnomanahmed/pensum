@@ -116,7 +116,7 @@ class DealsService {
   Future<void> setDeal({@required Deal deal, @required String id}) {
     return firestore
         .collection('books')
-        .doc(deal.productId)
+        .doc(deal.pid)
         .collection('deals')
         .doc(id)
         .set(deal.toMap(), SetOptions(merge: true));

@@ -8,13 +8,13 @@ import '../deals_provider.dart';
 import '../models/deal.dart';
 
 class AddDealBottomSheet extends StatefulWidget {
-  final String productId;
+  final String pid;
   final String productImage;
   final String productTitle;
   final Deal deal;
 
   AddDealBottomSheet({
-    @required this.productId,
+    @required this.pid,
     @required this.productImage,
     @required this.productTitle,
     this.deal,
@@ -113,7 +113,7 @@ class _AddDealBottomSheetState extends State<AddDealBottomSheet> {
                         final result =
                             await context.read<DealsProvider>().setDeal(
                                   id: widget.deal?.id,
-                                  productId: widget.productId,
+                                  pid: widget.pid,
                                   productImage: widget.productImage,
                                   productTitle: widget.productTitle,
                                   price: _price,

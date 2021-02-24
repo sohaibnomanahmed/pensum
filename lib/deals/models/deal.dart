@@ -13,10 +13,10 @@ import '../data/price_data.dart';
  */
 class Deal {
   final String id;
-  final String userId;
+  final String uid; // user id
   final String userImage;
   final String userName;
-  final String productId;
+  final String pid; // product id
   final String productImage;
   final String productTitle;
   final String price;
@@ -27,10 +27,10 @@ class Deal {
 
   Deal({
     @required this.id,
-    @required this.userId,
+    @required this.uid,
     @required this.userImage,
     @required this.userName,
-    @required this.productId,
+    @required this.pid,
     @required this.productImage,
     @required this.productTitle,
     @required this.price,
@@ -41,10 +41,10 @@ class Deal {
   });
 
   factory Deal.fromMap(Map data, String id) {
-    final String userId = data['userId'];
+    final String uid = data['uid'];
     final String userImage = data['userImage'];
     final String userName = data['userName'];
-    final String productId = data['productId'];
+    final String pid = data['pid'];
     final String productImage = data['productImage'];
     final String productTitle = data['productTitle'];
     // data on firestore is int, need to be converted
@@ -59,10 +59,10 @@ class Deal {
 
     return Deal(
       id: id,
-      userId: userId,
+      uid: uid,
       userImage: userImage,
       userName: userName,
-      productId: productId,
+      pid: pid,
       productImage: productImage,
       productTitle: productTitle,
       price: price,
@@ -89,10 +89,10 @@ class Deal {
       convertedPrice = int.parse(price.replaceAll(RegExp('[^0-9]'), ''));
     }
     return {
-      'userId': userId,
+      'uid': uid,
       'userImage': userImage,
       'userName': userName,
-      'productId': productId,
+      'pid': pid,
       'productImage': productImage,
       'productTitle': productTitle,
       'price': convertedPrice,

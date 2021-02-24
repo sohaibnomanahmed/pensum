@@ -117,7 +117,7 @@ class DealsProvider with ChangeNotifier {
    */
   Future<bool> setDeal({
     String id,
-    @required String productId,
+    @required String pid,
     @required String productImage,
     @required String productTitle,
     @required String price,
@@ -129,13 +129,13 @@ class DealsProvider with ChangeNotifier {
       final user = _authenticationService.currentUser;
       final userProfile = await _profileService.getProfile(user.uid);
       // get a deal id from the database
-      id ??= _dealsService.getDealId(productId);
+      id ??= _dealsService.getDealId(pid);
       final deal = Deal(
         id: id,
-        userId: user.uid,
+        uid: user.uid,
         userImage: userProfile.imageUrl,
         userName: userProfile.fullName,
-        productId: productId,
+        pid: pid,
         productImage: productImage,
         productTitle: productTitle,
         price: price,

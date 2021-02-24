@@ -13,7 +13,7 @@ class DealsPage extends StatefulWidget {
   final Book book;
   final DealsProvider dealsProvider;
 
-  DealsPage(this.book, this.dealsProvider);
+  DealsPage({this.book, this.dealsProvider});
 
   @override
   _DealsPageState createState() => _DealsPageState();

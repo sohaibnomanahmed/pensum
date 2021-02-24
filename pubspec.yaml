@@ -92,6 +92,8 @@ flutter:
   assets:
     - assets/images/empty_rack.png
     - assets/images/robot.png
+    - assets/images/error.png
+    - assets/images/motor_cycle.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

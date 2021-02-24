@@ -54,7 +54,7 @@ class ProfileDealItem extends StatelessWidget {
                   builder: (_) => ChangeNotifierProvider(
                     create: (_) => DealsProvider(),
                     child: AddDealBottomSheet(
-                      productId: deal.productId,
+                      pid: deal.pid,
                       productImage: deal.productImage,
                       productTitle: deal.productTitle,
                       deal: deal,
@@ -70,7 +70,7 @@ class ProfileDealItem extends StatelessWidget {
                   final errorColor = Theme.of(context).errorColor;
                   final primaryColor = Theme.of(context).primaryColor;
                   final result = await context.read<ProfileProvider>().deleteDeal(
-                        productId: deal.productId,
+                        productId: deal.pid,
                         id: deal.id,
                       );
                   if (!result) {
