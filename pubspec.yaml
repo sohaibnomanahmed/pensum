@@ -33,7 +33,7 @@ dependencies:
   firebase_core:
   firebase_database:
   cloud_firestore:
-  firebase_auth:
+  firebase_auth: ^0.20.1
   firebase_storage:
   firebase_messaging:
 

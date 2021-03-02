@@ -5,7 +5,7 @@ import 'models/deal.dart';
 import 'models/deal_filter.dart';
 
 class DealsService {
-  FirebaseFirestore firestore;
+  final FirebaseFirestore firestore;
   DocumentSnapshot lastDeal;
   DocumentSnapshot lastFilteredDeal;
 

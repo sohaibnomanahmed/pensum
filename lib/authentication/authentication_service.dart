@@ -2,7 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthenticationService{
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth;
+
+  const AuthenticationService(this._auth);
 
   // getters
   User get currentUser => _auth.currentUser;

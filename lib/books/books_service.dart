@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'models/book.dart';
 
 class BooksService {
-  FirebaseFirestore firestore;
+  final FirebaseFirestore firestore;
   DocumentSnapshot lastBook;
   
   BooksService(this.firestore);

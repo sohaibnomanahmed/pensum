@@ -3,9 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'package:leaf/profile/models/profile.dart';
 
 class ProfileService {
-  FirebaseFirestore firestore;
+  final FirebaseFirestore firestore;
 
-  ProfileService(this.firestore);
+  const ProfileService(this.firestore);
 
   // set profile data
   Future<void> setProfile({@required String uid, @required Profile profile}) {

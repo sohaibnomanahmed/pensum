@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:leaf/messages/recipients_service.dart';
 
@@ -14,10 +15,11 @@ import 'image_upload_service.dart';
 
 class FirebaseService {
   // init firebase instances
+  static final firebaseAuth = FirebaseAuth.instance;
   static final firestore = FirebaseFirestore.instance;
   static final firebaseStorage = FirebaseStorage.instance;
   // init firebase services
-  static final authentication = AuthenticationService();
+  static final authentication = AuthenticationService(firebaseAuth);
   static final profile = ProfileService(firestore);
   static final books = BooksService(firestore);
   static final deals = DealsService(firestore);

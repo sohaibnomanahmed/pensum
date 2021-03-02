@@ -4,9 +4,9 @@ import 'package:flutter/foundation.dart';
 import '../books/models/book.dart';
 
 class FollowService{
-  FirebaseFirestore firestore;
+  final FirebaseFirestore firestore;
 
-  FollowService(this.firestore);
+  const FollowService(this.firestore);
 
   // follow to a spesific book
   Future<void> followBook({@required String uid, @required Book book}) {
