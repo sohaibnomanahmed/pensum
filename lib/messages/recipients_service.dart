@@ -1,0 +1,73 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
+
+import 'models/recipient.dart';
+
+class RecipientsService {
+  final FirebaseFirestore firestore;
+  DocumentSnapshot lastRecipient;
+
+  RecipientsService(this.firestore);
+
+  // fetch recipients
+  Stream<List<Recipient>> fetchRecipients({
+    @required String sid,
+    @required int pageSize,
+  }) {
+    return firestore
+        .collection('chats')
+        .doc(sid)
+        .collection('recipients')
+        .orderBy('time', descending: true)
+        .limit(pageSize)
+        .snapshots()
+        .map(
+      (list) {
+        if (list.docs.isEmpty) {
+          return null;
+        }
+        lastRecipient = list.docs.last;
+        return list.docs
+            .map((document) => Recipient.fromFirestore(document))
+            .toList();
+      },
+    );
+  }
+
+  // fetch more recipients
+  Future<List<Recipient>> fetchMoreRecipients({
+    @required String sid,
+    @required int pageSize,
+  }) async {
+    final recipients = await firestore
+        .collection('chats')
+        .doc(sid)
+        .collection('recipients')
+        .orderBy('time', descending: true)
+        .startAfterDocument(lastRecipient)
+        .limit(pageSize)
+        .get();
+    if (recipients.docs.isEmpty) {
+      return null;
+    }
+    lastRecipient = recipients.docs.last;
+
+    return recipients.docs
+        .map((document) => Recipient.fromFirestore(document))
+        .toList();
+  }
+
+  // set seen value for a recipient, since they need to know if you have seen their message
+  Future<void> setSeen({
+    @required String sid,
+    @required String rid,
+    @required Map recipient,
+  }) {
+    return firestore
+        .collection('chats')
+        .doc(rid)
+        .collection('recipients')
+        .doc(sid)
+        .set(recipient, SetOptions(merge: true));
+  }
+}

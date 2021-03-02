@@ -1,15 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
-import 'models/recipient.dart';
 import 'models/message.dart';
+import 'models/recipient.dart';
 
-class ChatService {
+class MessagesService {
   final FirebaseFirestore firestore;
   DocumentSnapshot lastMessage;
-  DocumentSnapshot lastRecipient;
 
-  ChatService(this.firestore);
+  MessagesService(this.firestore);
 
   // fetch messages
   Stream<List<Message>> fetchMessages({
@@ -65,54 +64,6 @@ class ChatService {
         .toList();
   }
 
-  // fetch recipients
-  Stream<List<Recipient>> fetchRecipients({
-    @required String sid,
-    @required int pageSize,
-  }) {
-    return firestore
-        .collection('chats')
-        .doc(sid)
-        .collection('recipients')
-        .orderBy('time', descending: true)
-        .limit(pageSize)
-        .snapshots()
-        .map(
-      (list) {
-        if (list.docs.isEmpty) {
-          return null;
-        }
-        lastRecipient = list.docs.last;
-        return list.docs
-            .map((document) => Recipient.fromFirestore(document))
-            .toList();
-      },
-    );
-  }
-
-  // fetch more recipients
-  Future<List<Recipient>> fetchMoreRecipients({
-    @required String sid,
-    @required int pageSize,
-  }) async {
-    final recipients = await firestore
-        .collection('chats')
-        .doc(sid)
-        .collection('recipients')
-        .orderBy('time', descending: true)
-        .startAfterDocument(lastMessage)
-        .limit(pageSize)
-        .get();
-    if (recipients.docs.isEmpty) {
-      return null;
-    }
-    lastRecipient = recipients.docs.last;
-
-    return recipients.docs
-        .map((document) => Recipient.fromFirestore(document))
-        .toList();
-  }
-
   // send message
   Future<void> sendMessage({
     @required String sid,
@@ -137,17 +88,20 @@ class ChatService {
         .add(message.toMap());
   }
 
-  // set seen value for a recipient
+  // set seen value for a message, located at the recipient
   Future<void> setSeen({
+    @required String id, // message id
     @required String sid,
     @required String rid,
-    @required Map recipient,
+    @required Map message,
   }) {
     return firestore
         .collection('chats')
-        .doc(sid)
-        .collection('recipients')
         .doc(rid)
-        .set(recipient, SetOptions(merge: true));
+        .collection('recipients')
+        .doc(sid)
+        .collection('messages')
+        .doc(id)
+        .set(message, SetOptions(merge: true));
   }
 }

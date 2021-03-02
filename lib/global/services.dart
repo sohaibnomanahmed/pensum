@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:leaf/messages/recipients_service.dart';
 
-import '../chat/chat_service.dart';
+import '../messages/messages_service.dart';
 import '../deals/deals_service.dart';
 import '../books/books_service.dart';
 import '../follow/follow_service.dart';
@@ -21,7 +22,8 @@ class FirebaseService {
   static final books = BooksService(firestore);
   static final deals = DealsService(firestore);
   static final follow = FollowService(firestore);
-  static final chat = ChatService(firestore);
+  static final messages = MessagesService(firestore);
+  static final recipients = RecipientsService(firestore);
   static final imageUpload = ImageUploadService(firebaseStorage);
 }
 

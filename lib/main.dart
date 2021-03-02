@@ -8,8 +8,8 @@ import 'package:provider/provider.dart';
 import 'authentication/authentication_provider.dart';
 import 'authentication/authentication_page.dart';
 import 'authentication/home_page.dart';
-import 'chat/chat_page.dart';
-import 'chat/chat_provider.dart';
+import 'messages/messages_page.dart';
+import 'messages/messages_provider.dart';
 import 'global/404_page.dart';
 
 Future<void> main() async {
@@ -63,12 +63,12 @@ class MyApp extends StatelessWidget {
           */
         onGenerateRoute: (settings) {
           switch (settings.name) {
-            case ChatPage.routeName:
+            case MessagesPage.routeName:
               Map args = settings.arguments;
               return MaterialPageRoute(
-                builder: (_) => ChangeNotifierProvider<ChatProvider>(
-                  create: (_) => ChatProvider(),
-                  child: ChatPage(
+                builder: (_) => ChangeNotifierProvider<MessagesProvider>(
+                  create: (_) => MessagesProvider(),
+                  child: MessagesPage(
                     rid: args['id'],
                     receiverName: args['name'],
                     receiverImage: args['image'],

@@ -1,14 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:leaf/chat/models/recipient.dart';
 
+import 'models/recipient.dart';
 import '../global/services.dart';
 import 'models/message.dart';
 
-class ChatProvider with ChangeNotifier {
+class MessagesProvider with ChangeNotifier {
   final _authenticationService = FirebaseService.authentication;
-  final _chatService = FirebaseService.chat;
+  final _messagesService = FirebaseService.messages;
+  final _recipientService = FirebaseService.recipients;
   final _imageUploadService = FirebaseService.imageUpload;
   final _imagePickerService = NativeService.imagePicker;
 
@@ -33,21 +35,31 @@ class ChatProvider with ChangeNotifier {
   void fetchMessages(String rid) async {
     // get original first batch of messages, should be called on build
     final user = await _authenticationService.currentUser;
-    final stream = _chatService.fetchMessages(
+    final stream = _messagesService.fetchMessages(
         sid: user.uid, rid: rid, pageSize: _pageSize);
     _subscription = stream.listen((messages) {
+      // if no messages are sent we return
+      if (messages == null) {
+        _isLoading = false;
+        notifyListeners();
+        return;
+      }
+      const seenMap = {'seen': true};
       messages.reversed.toList().forEach((message) {
         message.isMe = message.sid == user.uid;
         // if not already loaded, add to _message list
         if (!_messages.contains(message)) {
           _messages.insert(0, message);
         }
-        var seenMap = {'seen': true};
+        
         // set message as seen
-        _chatService.setSeen(sid: user.uid, rid: rid, recipient: seenMap);
-        // remove notification
-        //firestoreService.notification.setChatNotification(user.uid, false);
+        _messagesService.setSeen(id: message.id, sid: user.uid, rid: rid, message: seenMap);
       });
+      // set message as seen for recipient, happens here since user can be in the chat
+      // and there should not be unseen record on recipient page
+      _recipientService.setSeen(sid: user.uid, rid: rid, recipient: seenMap);
+      // remove notification TODO
+      //firestoreService.notification.setChatNotification(user.uid, false);
       _isLoading = false;
       notifyListeners();
     }, onError: (error) {
@@ -56,6 +68,17 @@ class ChatProvider with ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     }, cancelOnError: true);
+  }
+
+  /*
+   *  reload messages when an error occurs, set loading and fetch the messages
+   *  again by remaking the stream 
+   */
+  void refetchMessages(String rid) async {
+    _isLoading = true;
+    _isError = false;
+    notifyListeners();
+    fetchMessages(rid);
   }
 
   /*
@@ -78,7 +101,7 @@ class ChatProvider with ChangeNotifier {
       _silentLoading = false;
       return;
     }
-    var moreMessages = await _chatService.fetchMoreMessages(
+    var moreMessages = await _messagesService.fetchMoreMessages(
         sid: user.uid, rid: rid, pageSize: _pageSize);
     if (moreMessages == null) {
       // no more documents need to return
@@ -131,7 +154,7 @@ class ChatProvider with ChangeNotifier {
       type: type,
     );
     try {
-      await _chatService.sendMessage(
+      await _messagesService.sendMessage(
           sid: user.uid, rid: rid, message: message, recipient: recipient);
     } catch (error) {
       print('Error sending message: $error');

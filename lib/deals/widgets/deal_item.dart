@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:leaf/chat/chat_page.dart';
 
+import '../../messages/messages_page.dart';
 import '../models/deal.dart';
 
 class DealItem extends StatelessWidget {
@@ -37,7 +37,7 @@ class DealItem extends StatelessWidget {
                 Icon(Icons.send_rounded, color: Theme.of(context).primaryColor),
             onPressed: () =>
                 Navigator.of(context, rootNavigator: true).pushNamed(
-              ChatPage.routeName,
+              MessagesPage.routeName,
               arguments: {
                 'id': deal.uid,
                 'image': deal.userImage,

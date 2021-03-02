@@ -69,7 +69,8 @@ class BooksProvider with ChangeNotifier{
    * if there are more books add the books to _books and return
    */
   Future<void> fetchMoreBooks() async {
-    // only get called one time and not on error screen
+    // TODO could be a getter?
+    // only get called one time and not on error screen or in a search
     if (_isLoading || _silentLoading || _isError || _isSearch) {
       return;
     }

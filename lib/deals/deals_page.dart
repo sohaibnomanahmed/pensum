@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:leaf/deals/widgets/blurred_image_app_bar.dart';
 import 'package:leaf/deals/widgets/deal_list.dart';
+import 'package:leaf/global/widgets/leaf_error.dart';
 import 'package:provider/provider.dart';
 
 import '../deals/deals_provider.dart';
@@ -30,7 +31,9 @@ class _DealsPageState extends State<DealsPage> {
   Widget build(BuildContext context) {
     final isFilter = context.watch<DealsProvider>().isFilter;
     final isLoading = context.watch<DealsProvider>().isLoading;
-    final isFollowBtnLoading = context.watch<DealsProvider>().isFollowBtnLoading;
+    final isError = context.watch<DealsProvider>().isError;
+    final isFollowBtnLoading =
+        context.watch<DealsProvider>().isFollowBtnLoading;
     final isFollowing = context.watch<DealsProvider>().isFollowing;
     return Scaffold(
       appBar: BlurredImageAppBar(widget.book, widget.dealsProvider),
@@ -82,7 +85,8 @@ class _DealsPageState extends State<DealsPage> {
                               scaffoldMessenger.showSnackBar(
                                 SnackBar(
                                   backgroundColor: primaryColor,
-                                  content: Text('Succesfully started following this book'),
+                                  content: Text(
+                                      'Succesfully started following this book'),
                                 ),
                               );
                             }
@@ -97,7 +101,15 @@ class _DealsPageState extends State<DealsPage> {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 8.0, bottom: 60),
-                child: DealList(),
+                child: isLoading
+                    ? Container(
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.all(8.0),
+                        child: CircularProgressIndicator(),
+                      )
+                    : isError
+                        ? LeafError(context.read<DealsProvider>().refetchDeals, widget.book.isbn)
+                        : DealList(),
               ),
             ],
           ),
@@ -105,7 +117,8 @@ class _DealsPageState extends State<DealsPage> {
       ),
       floatingActionButton: isFilter
           ? FloatingActionButton.extended(
-              onPressed: () => context.read<DealsProvider>().clearFilter(widget.book.isbn),
+              onPressed: () =>
+                  context.read<DealsProvider>().clearFilter(widget.book.isbn),
               label: Text('Clear Filter'),
               icon: Icon(Icons.clear_all_rounded),
             )

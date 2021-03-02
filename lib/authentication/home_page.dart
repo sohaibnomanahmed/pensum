@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:leaf/global/404_page.dart';
+import 'package:leaf/messages/recipients_page.dart';
+import 'package:leaf/messages/recipients_provider.dart';
 import 'package:leaf/profile/profile_page.dart';
 import 'package:leaf/profile/profile_provider.dart';
 import 'package:provider/provider.dart';
@@ -33,7 +35,10 @@ class HomePage extends StatelessWidget {
         }
       },
     ),
-    CupertinoTabView(builder: (ctx) => Scaffold(body: Text('Chat'))),
+    CupertinoTabView(builder: (ctx) => ChangeNotifierProvider(
+      create: (_) => RecipientsProvider(),
+      child: RecipientsPage(),
+    )),
     CupertinoTabView(builder: (_) {
       final profileProvider = ProfileProvider();
       return ChangeNotifierProvider(

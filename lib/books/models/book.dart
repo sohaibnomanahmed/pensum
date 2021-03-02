@@ -9,7 +9,6 @@ class Book {
   final String publisher;
   final String pages;
   final String edition;
-  // TODO needs to ba a int
   final String year;
   final String isbn;
 

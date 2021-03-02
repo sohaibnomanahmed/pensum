@@ -66,6 +66,17 @@ class DealsProvider with ChangeNotifier {
   }
 
   /*
+   *  reload deals when an error occurs, set loading and fetch the deals
+   *  again by remaking the stream 
+   */
+  void refetchDeals(String isbn) async {
+    _isLoading = true;
+    _isError = false;
+    notifyListeners();
+    fetchDeals(isbn);
+  }
+
+  /*
    * fetch more deals from firebase, starts with setting a silent loader so that
    * the methos does not get called again, also so that the UI does not get updated.
    * if no more deals can be fetched return, if error occurs return 
