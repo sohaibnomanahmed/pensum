@@ -5,7 +5,7 @@ import 'models/book.dart';
 class BooksService {
   final FirebaseFirestore firestore;
   DocumentSnapshot lastBook;
-  
+
   BooksService(this.firestore);
 
   // fetch books
@@ -17,6 +17,9 @@ class BooksService {
         .snapshots()
         .map(
       (list) {
+        if (list.docs.isEmpty) {
+          return null;
+        }
         lastBook = list.docs.last;
         return list.docs
             .map((document) => Book.fromFirestore(document))

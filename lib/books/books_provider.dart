@@ -37,12 +37,15 @@ class BooksProvider with ChangeNotifier{
       (books) {
         // in case there are no books
         if (books == null){
+          _isLoading = false;
+          notifyListeners();
           return;
         }
         _books = books;
         fetchBookTitles;
       },
       onError: (error) {
+        print(error);
         _isError = true;
         _isLoading = false;
         notifyListeners();

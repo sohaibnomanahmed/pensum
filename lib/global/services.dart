@@ -15,20 +15,10 @@ import 'image_picker_service.dart';
 import 'image_upload_service.dart';
 
 class FirebaseService {
-  // Switch host based on platform.
-  static final String host = defaultTargetPlatform == TargetPlatform.android
-      ? '10.0.2.2:8080'
-      : 'localhost:8080';
-
   // init firebase instances
   static final firebaseAuth = FirebaseAuth.instance;
   static final firestore = FirebaseFirestore.instance;
-  static final firebaseStorage = FirebaseStorage.instance;
-  
-  // setup local developement environment
-  static final firestoreEmulator = firestore.settings  =
-    Settings(host: host, sslEnabled: false);
-  static final authEmulator = firebaseAuth.useEmulator('http://localhost:9099');  
+  static final firebaseStorage = FirebaseStorage.instance; 
 
   // init firebase services
   static final authentication = AuthenticationService(firebaseAuth);

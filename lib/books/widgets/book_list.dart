@@ -13,6 +13,7 @@ class BookList extends StatelessWidget {
     final books = context.watch<BooksProvider>().books;
     final isLoading = context.watch<BooksProvider>().isLoading;
     final isError = context.watch<BooksProvider>().isError;
+    print(books);
     return isError
         ? SliverFillRemaining(
             child: LeafError(context.read<BooksProvider>().reFetchBooks))

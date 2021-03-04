@@ -86,14 +86,16 @@ class AuthenticationProvider with ChangeNotifier {
         return false;
       }
     } on FirebaseAuthException catch (error) {
-      print(error.code);
       _errorMessage = error.message;
       if (error.code == 'unknown') {
+        print(error);
         _errorMessage = _unknownMessage;
       }
       _isLoading = false;
       notifyListeners();
       return false;
+    } catch (error){
+      print('Error during auth: $error');
     }
     _isLoading = false;
     notifyListeners();
@@ -117,6 +119,8 @@ class AuthenticationProvider with ChangeNotifier {
       _isLoading = false;
       notifyListeners();
       return false;
+    } catch (error){
+      print('Error during auth: $error');
     }
     _isLoading = false;
     notifyListeners();
