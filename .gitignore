@@ -44,3 +44,11 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Firebase related
+firebase.json
+database.rules.json
+firestore.indexes.json
+firestore.rules
+storage.rules
+.firebaserc
