@@ -18,8 +18,7 @@ import 'global/404_page.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await FirebaseAuth.instance.authStateChanges().isEmpty;
-  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  
   // Switch host based on platform.
   final host = defaultTargetPlatform == TargetPlatform.android
       ? '10.0.2.2:8080'
@@ -27,7 +26,10 @@ Future<void> main() async {
   // setup local developement environment
   FirebaseService.firestore.settings  =
     Settings(host: host, sslEnabled: false, persistenceEnabled: false);
-  await FirebaseService.firebaseAuth.useEmulator('http://localhost:9099'); 
+  await FirebaseService.firebaseAuth.useEmulator('http://localhost:9099');
+
+  await FirebaseAuth.instance.authStateChanges().isEmpty;
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]); 
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent, // for Android
       statusBarIconBrightness: Brightness.dark, // for Android

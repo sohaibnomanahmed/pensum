@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:leaf/global/widgets/leaf_error.dart';
 import 'package:provider/provider.dart';
 
 import '../global/extensions.dart';
@@ -34,88 +35,97 @@ class _ProfilePageState extends State<ProfilePage> {
 
     final profile = context.watch<ProfileProvider>().profile;
     final isLoading = context.watch<ProfileProvider>().isLoading;
+    final isError = context.watch<ProfileProvider>().isError;
     return Scaffold(
       body: isLoading
           ? Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              child: Stack(
-                children: [
-                  Positioned(
-                    top: -height * .20,
-                    right: -width * .2,
-                    child: BezierContainer(),
-                  ),
-                  Column(
+          : isError
+              ? Center(
+                  child: LeafError(
+                      context.read<ProfileProvider>().reFetchProfile,
+                      widget.uid),
+                )
+              : SingleChildScrollView(
+                  child: Stack(
                     children: [
-                      AppBar(
-                        backgroundColor: Colors.transparent,
-                        elevation: 0,
+                      Positioned(
+                        top: -height * .20,
+                        right: -width * .2,
+                        child: BezierContainer(),
                       ),
-                      Row(
+                      Column(
                         children: [
-                          Container(
-                            padding: const EdgeInsets.only(
-                                left: 20, right: 20, bottom: 20),
-                            child: ProfileImage(profile),
+                          AppBar(
+                            backgroundColor: Colors.transparent,
+                            elevation: 0,
                           ),
-                          Flexible(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  profile.fullName,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline5
-                                      .copyWith(color: Colors.teal[900]),
-                                ),
-                                // TODO store date created if not aldready stored by firebase
-                                Text('Member since: 2021'),
-                                ElevatedButton(
-                                    onPressed: () => showModalBottomSheet(
-                                          isScrollControlled: true,
-                                          context: context,
-                                          builder: (_) =>
-                                              ChangeNotifierProvider.value(
-                                            value: widget.profileProvider,
-                                            child: EditProfileBottomSheet(
-                                              profile.firstname
-                                                  .split(RegExp('\\s+'))
-                                                  .reduce((value, element) =>
-                                                      value.capitalize() +
-                                                      ' ' +
-                                                      element.capitalize())
-                                                  .capitalize(),
-                                              profile.lastname
-                                                  .split(RegExp('\\s+'))
-                                                  .reduce((value, element) =>
-                                                      value.capitalize() +
-                                                      ' ' +
-                                                      element.capitalize())
-                                                  .capitalize(),
+                          Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.only(
+                                    left: 20, right: 20, bottom: 20),
+                                child: ProfileImage(profile),
+                              ),
+                              Flexible(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      profile.fullName,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline5
+                                          .copyWith(color: Colors.teal[900]),
+                                    ),
+                                    // TODO store date created if not aldready stored by firebase
+                                    Text('Member since: 2021'),
+                                    ElevatedButton(
+                                        onPressed: () => showModalBottomSheet(
+                                              isScrollControlled: true,
+                                              context: context,
+                                              builder: (_) =>
+                                                  ChangeNotifierProvider.value(
+                                                value: widget.profileProvider,
+                                                child: EditProfileBottomSheet(
+                                                  profile.firstname
+                                                      .split(RegExp('\\s+'))
+                                                      .reduce((value,
+                                                              element) =>
+                                                          value.capitalize() +
+                                                          ' ' +
+                                                          element.capitalize())
+                                                      .capitalize(),
+                                                  profile.lastname
+                                                      .split(RegExp('\\s+'))
+                                                      .reduce((value,
+                                                              element) =>
+                                                          value.capitalize() +
+                                                          ' ' +
+                                                          element.capitalize())
+                                                      .capitalize(),
+                                                ),
+                                              ),
                                             ),
-                                          ),
-                                        ),
-                                    child: Text('Edit Profile'))
-                              ],
-                            ),
-                          )
+                                        child: Text('Edit Profile'))
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                          ListTile(
+                            leading: Icon(Icons.spa_rounded,
+                                color: Theme.of(context).primaryColor),
+                            title: Text('Deals'),
+                          ),
+                          Divider(
+                            height: 1,
+                          ),
+                          ProfileDealsList(),
                         ],
                       ),
-                      ListTile(
-                        leading: Icon(Icons.spa_rounded,
-                            color: Theme.of(context).primaryColor),
-                        title: Text('Deals'),
-                      ),
-                      Divider(
-                        height: 1,
-                      ),
-                      ProfileDealsList(),
                     ],
                   ),
-                ],
-              ),
-            ),
+                ),
     );
   }
 }

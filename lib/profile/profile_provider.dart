@@ -44,6 +44,14 @@ class ProfileProvider with ChangeNotifier {
     final stream = _profileService.fetchProfile(uid);
     _subscription = stream.listen(
       (profile) {
+        // if user is deleted, the profile value would be null
+        if (_profile == null){
+          print('Fetch profile error: Profile is null');
+          _isError = true;
+          _isLoading = false;
+          notifyListeners();
+          return;
+        }
         _profile = profile;
         _profile.isMe = isMe;
         _isLoading = false;
@@ -57,6 +65,17 @@ class ProfileProvider with ChangeNotifier {
       },
       cancelOnError: true,
     );
+  }
+
+  /*
+   *  reload profile when an error occurs, set loading and fetch the profile
+   *  again by remaking the stream 
+   */
+  void reFetchProfile([String uid]) async{
+    _isLoading = true;
+    _isError = false;
+    notifyListeners();
+    fetchProfile(uid);
   }
 
   /*
