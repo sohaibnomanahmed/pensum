@@ -39,16 +39,18 @@ class _MessagesPageState extends State<MessagesPage> {
               child: LeafError(context.read<MessagesProvider>().refetchMessages, widget.rid))
           : isLoading
               ? Center(child: CircularProgressIndicator())
-              : Column(
-                  children: [
-                    Expanded(child: MessagesList()),
-                    MessageBar(
-                      rid: widget.rid,
-                      receiverName: widget.receiverName,
-                      receiverImage: widget.receiverImage,
-                    )
-                  ],
-                ),
+              : SafeArea(
+                  child: Column(
+                    children: [
+                      Expanded(child: MessagesList()),
+                      MessageBar(
+                        rid: widget.rid,
+                        receiverName: widget.receiverName,
+                        receiverImage: widget.receiverImage,
+                      )
+                    ],
+                  ),
+              ),
     );
   }
 }

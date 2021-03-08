@@ -52,13 +52,13 @@ class MessagesProvider with ChangeNotifier {
           _messages.insert(0, message);
         }
         
-        // set message as seen
+        // set message as seen for the recipient
         _messagesService.setSeen(id: message.id, sid: user.uid, rid: rid, message: seenMap);
       });
-      // set message as seen for recipient, happens here since user can be in the chat
+      // set recipeint as seen for recipient, happens here since user can be in the chat
       // and there should not be unseen record on recipient page
       _recipientService.setSeen(sid: user.uid, rid: rid, recipient: seenMap);
-      // remove notification TODO
+      // remove notification 
       //firestoreService.notification.setChatNotification(user.uid, false);
       _isLoading = false;
       notifyListeners();
@@ -140,18 +140,20 @@ class MessagesProvider with ChangeNotifier {
     final recipient = Recipient(
       rid: rid,
       time: time,
-      seen: true,
+      notification: false,
       receiverImage: receiverImage,
       receiverName: receiverName,
       lastMessage: (messageText == null) ? text : messageText,
     );
 
+    // my message should not be seen by the recipeint before he load them in
     final message = Message(
       sid: user.uid,
       rid: rid,
       text: text,
       time: time,
       type: type,
+      seen: false,
     );
     try {
       await _messagesService.sendMessage(

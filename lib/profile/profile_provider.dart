@@ -45,7 +45,7 @@ class ProfileProvider with ChangeNotifier {
     _subscription = stream.listen(
       (profile) {
         // if user is deleted, the profile value would be null
-        if (_profile == null){
+        if (profile == null){
           print('Fetch profile error: Profile is null');
           _isError = true;
           _isLoading = false;

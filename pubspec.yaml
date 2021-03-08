@@ -30,12 +30,12 @@ dependencies:
   cupertino_icons: ^1.0.2
 
   # firebase
-  firebase_core:
-  firebase_database:
-  cloud_firestore:
-  firebase_auth: ^0.20.1
-  firebase_storage:
-  firebase_messaging:
+  firebase_core: "^0.7.0"
+  firebase_database: "^6.0.0"
+  cloud_firestore: "^0.16.0+1"
+  firebase_auth: "^0.20.1"
+  firebase_storage: "^7.0.0"
+  firebase_messaging: "^8.0.0-dev.15"
 
   # provider
   provider:

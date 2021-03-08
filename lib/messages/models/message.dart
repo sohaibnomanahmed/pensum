@@ -17,6 +17,7 @@ class Message {
     @required this.text,
     @required this.time,
     @required this.type,
+    @required this.seen,
     this.id,
   });
 
@@ -30,12 +31,14 @@ class Message {
     final String rid = data['rid'];
     final Timestamp time = data['time'];
     final String type = data['type'];
+    final bool seen = data['seen'];
     return Message(
         text: text,
         sid: sid,
         rid: rid,
         time: time,
         type: type,
+        seen: seen,
         id: doc.id);
   }
 
@@ -46,6 +49,7 @@ class Message {
       'sid': sid,
       'rid': rid,
       'type': type,
+      'seen': seen,
     };
   }
 

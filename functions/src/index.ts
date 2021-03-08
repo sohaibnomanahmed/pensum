@@ -53,7 +53,7 @@ export const onProfileImageUpdate = functions.firestore
 
 // Send notification when a messege is sent
 export const onSendMessage = functions.firestore
-    .document('chat/{senderId}/chatInfo/{receiverId}/messages/{messageId}')
+    .document('chat/{senderId}/recipients/{receiverId}/messages/{messageId}')
     .onCreate(async (snapshot, context) => {
         // cant return before all futures are done, this wait for all to be done
         // before returning and have them be done async
@@ -80,6 +80,7 @@ export const onSendMessage = functions.firestore
         }
 
         // dont store and send notf if the user send to himself
+        //MAYBE NOT NECECARRY
         if (receiverID === senderID){
             console.log('dont send message to himself')
             return;
@@ -113,14 +114,16 @@ export const onSendMessage = functions.firestore
         promises.push(recieverRef.set({
             'userId': senderID,
             'time': time,
-            'seen': false,
+            'notification': true,
             'userImage': senderImage,
             'lastMessage': message,
             'userName': senderName
         }, { merge: true }))
 
         // add the message for the receiver
-        promises.push(recieverMessagesRef.set(snapshot.data()!))
+        var data = snapshot.data()!
+        data['seen'] = true
+        promises.push(recieverMessagesRef.set(data))
 
         // send the notification to the recievers topic
         promises.push(admin.messaging().sendToTopic(receiverID, payload))

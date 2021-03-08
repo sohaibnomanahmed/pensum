@@ -20,7 +20,9 @@ class MessageBubble extends StatelessWidget {
       children: [
         Container(
           decoration: BoxDecoration(
-            color: message.isMe ? Colors.grey[200] : Theme.of(context).backgroundColor,
+            color: message.isMe
+                ? Colors.grey[200]
+                : Theme.of(context).backgroundColor,
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(12),
               topRight: Radius.circular(12),
@@ -40,9 +42,20 @@ class MessageBubble extends StatelessWidget {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(formattedDate, style: Theme.of(context).textTheme.caption,),
-                  SizedBox(width: 5,),
-                  Icon(Icons.check_rounded, size: 10, color: Theme.of(context).primaryColorDark,)
+                  Text(
+                    formattedDate,
+                    style: Theme.of(context).textTheme.caption,
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Icon(
+                    Icons.check_circle_rounded,
+                    size: 10,
+                    color: message.seen
+                        ? Theme.of(context).primaryColor
+                        : Theme.of(context).splashColor,
+                  )
                 ],
               ),
               Text(message.text),

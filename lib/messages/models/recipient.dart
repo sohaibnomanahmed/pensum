@@ -8,7 +8,7 @@ class Recipient {
   final String receiverName;
   final String lastMessage;
   final Timestamp time;
-  bool seen;
+  bool notification;
 
   Recipient({
     @required this.rid,
@@ -16,7 +16,7 @@ class Recipient {
     @required this.receiverName,
     @required this.lastMessage,
     @required this.time,
-    @required this.seen,
+    @required this.notification,
     this.id,
   });
 
@@ -30,14 +30,14 @@ class Recipient {
     final String receiverImage = data['receiverImage'];
     final String lastMessage = data['lastMessage'];
     final Timestamp time = data['time'];
-    final bool seen = data['seen'];
+    final bool notification = data['notification'];
     return Recipient(
         rid: rid,
         receiverImage: receiverImage,
         receiverName: receiverName,
         lastMessage: lastMessage,
         time: time,
-        seen: seen,
+        notification: notification,
         id: doc.id);
   }
 
@@ -48,7 +48,7 @@ class Recipient {
       'receiverImage': receiverImage,
       'lastMessage': lastMessage,
       'time': time,
-      'seen': seen,
+      'notification': notification,
     };
   }
 
