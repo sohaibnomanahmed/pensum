@@ -31,9 +31,7 @@ class _MessagesPageState extends State<MessagesPage> {
     final isError = context.watch<MessagesProvider>().isError;
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.receiverName),
-        elevation: 0,
-      ),
+        title: Text(widget.receiverName), elevation: 0),
       body: isError
           ? Center(
               child: LeafError(context.read<MessagesProvider>().refetchMessages, widget.rid))

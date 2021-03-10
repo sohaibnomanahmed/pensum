@@ -1,5 +1,5 @@
-import * as functions from "firebase-functions";
-import * as admin from 'firebase-admin';
+import * as functions from 'firebase-functions'
+import * as admin from 'firebase-admin'
 
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
@@ -9,7 +9,7 @@ import * as admin from 'firebase-admin';
 //   response.send("Hello from Firebase!");
 // });
 
-admin.initializeApp();
+admin.initializeApp()
 
 // When a user updates his image, the data needs to be updates on other
 // collections as, the copy of the image Url are placed there to be received faster
@@ -25,8 +25,8 @@ export const onProfileImageUpdate = functions.firestore
         }
 
         // Make collection group queries
-        const deals = await admin.firestore().collectionGroup('deals').where("userId", "==", userID).get()
-        const messages = await admin.firestore().collectionGroup('chatInfo').where("userId", "==", userID).get()
+        const deals = await admin.firestore().collectionGroup('deals').where("uid", "==", userID).get()
+        const messages = await admin.firestore().collectionGroup('recipients').where("receiverId", "==", userID).get()
         const promises: Promise<any>[] = []
 
         // Loop through deals and update image
@@ -53,7 +53,7 @@ export const onProfileImageUpdate = functions.firestore
 
 // Send notification when a messege is sent
 export const onSendMessage = functions.firestore
-    .document('chat/{senderId}/recipients/{receiverId}/messages/{messageId}')
+    .document('chats/{senderId}/recipients/{receiverId}/messages/{messageId}')
     .onCreate(async (snapshot, context) => {
         // cant return before all futures are done, this wait for all to be done
         // before returning and have them be done async
@@ -66,8 +66,8 @@ export const onSendMessage = functions.firestore
         const time = snapshot.data()!.time
 
         // get references
-        const recieverRef = admin.firestore().collection('chat').doc(receiverID)
-            .collection('chatInfo').doc(senderID)
+        const recieverRef = admin.firestore().collection('chats').doc(receiverID)
+            .collection('recipients').doc(senderID)
         const recieverMessagesRef = recieverRef.collection('messages').doc(messageID)
         var messageDoc = await recieverMessagesRef.get()  
         
@@ -87,7 +87,7 @@ export const onSendMessage = functions.firestore
         }
 
         // get sender info for notf
-        const senderDoc = await admin.firestore().collection('users').doc(senderID).get()
+        const senderDoc = await admin.firestore().collection('profiles').doc(senderID).get()
         const senderName = senderDoc.data()!.firstname + ' ' + senderDoc.data()!.lastname
         const senderImage = senderDoc.data()!.imageUrl
 
@@ -107,17 +107,17 @@ export const onSendMessage = functions.firestore
         }
 
         // set notification for receiver
-        const notfRef = admin.firestore().collection('notification').doc(receiverID)
+        const notfRef = admin.firestore().collection('notifications').doc(receiverID)
         await notfRef.set({ 'chat': true }, { merge: true })
 
         // set messageInfo for receiver
         promises.push(recieverRef.set({
-            'userId': senderID,
+            'rid': senderID,
             'time': time,
             'notification': true,
-            'userImage': senderImage,
+            'receiverImage': senderImage,
             'lastMessage': message,
-            'userName': senderName
+            'receiverName': senderName
         }, { merge: true }))
 
         // add the message for the receiver
@@ -136,13 +136,13 @@ export const onSendMessage = functions.firestore
 export const onUserDelete = functions.auth.user().onDelete(async user => {
     const promises = []
     // delete user data
-    const userDoc = admin.firestore().collection('users').doc(user.uid)
+    const userDoc = admin.firestore().collection('profiles').doc(user.uid)
     promises.push(userDoc.delete())
     // delete users message data
     const messagesDoc = admin.firestore().collection('messages').doc(user.uid)
     promises.push(messagesDoc.delete())
     // delete users deals
-    const deals = await admin.firestore().collectionGroup('deals').where("userId", "==", user.uid).get()
+    const deals = await admin.firestore().collectionGroup('deals').where("uid", "==", user.uid).get()
     const dealDocs = deals.docs
     dealDocs.forEach(doc => {
         const p = doc.ref.delete()
