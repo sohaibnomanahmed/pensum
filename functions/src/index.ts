@@ -79,13 +79,6 @@ export const onSendMessage = functions.firestore
             return;
         }
 
-        // dont store and send notf if the user send to himself
-        //MAYBE NOT NECECARRY
-        if (receiverID === senderID){
-            console.log('dont send message to himself')
-            return;
-        }
-
         // get sender info for notf
         const senderDoc = await admin.firestore().collection('profiles').doc(senderID).get()
         const senderName = senderDoc.data()!.firstname + ' ' + senderDoc.data()!.lastname

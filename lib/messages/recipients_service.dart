@@ -58,16 +58,16 @@ class RecipientsService {
   }
 
   // set seen value for a recipient, since they need to know if you have seen their message
-  Future<void> setSeen({
+  Future<void> setNotification({
     @required String sid,
     @required String rid,
     @required Map recipient,
   }) {
     return firestore
         .collection('chats')
-        .doc(rid)
-        .collection('recipients')
         .doc(sid)
+        .collection('recipients')
+        .doc(rid)
         .set(recipient, SetOptions(merge: true));
   }
 }

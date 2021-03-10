@@ -52,12 +52,14 @@ class MessagesProvider with ChangeNotifier {
           _messages.insert(0, message);
         }
         
-        // set message as seen for the recipient
-        _messagesService.setSeen(id: message.id, sid: user.uid, rid: rid, message: seenMap);
+        // set message as seen for the sender i.e the other user
+        if (!message.isMe){
+          _messagesService.setSeen(id: message.id, sid: user.uid, rid: rid, message: seenMap);
+        }
       });
-      // set recipeint as seen for recipient, happens here since user can be in the chat
-      // and there should not be unseen record on recipient page
-      _recipientService.setSeen(sid: user.uid, rid: rid, recipient: seenMap);
+      // set recipeint notification as false for receiver i.e one self
+      const notificationMap = {'notification': false};
+      _recipientService.setNotification(sid: user.uid, rid: rid, recipient: notificationMap);
       // remove notification 
       //firestoreService.notification.setChatNotification(user.uid, false);
       _isLoading = false;

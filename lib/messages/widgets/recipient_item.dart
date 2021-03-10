@@ -12,7 +12,8 @@ class RecipientItem extends StatelessWidget {
       leading:
           CircleAvatar(backgroundImage: NetworkImage(_recipient.receiverImage)),
       title: Text(_recipient.receiverName),
-      subtitle: Text(_recipient.lastMessage),    
+      subtitle: Text(_recipient.lastMessage),   
+      tileColor: _recipient.notification ? Theme.of(context).backgroundColor : null, 
     );
   }
 }
