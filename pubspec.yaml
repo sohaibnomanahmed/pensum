@@ -41,7 +41,7 @@ dependencies:
   provider:
 
   # image picker
-  image_picker:
+  image_picker: 
 
   # image cropper
   image_cropper:
