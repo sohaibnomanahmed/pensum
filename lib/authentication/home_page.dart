@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:leaf/follow/follow_page.dart';
+import 'package:leaf/follow/follow_provider.dart';
 import 'package:leaf/global/404_page.dart';
 import 'package:leaf/messages/recipients_page.dart';
 import 'package:leaf/messages/recipients_provider.dart';
@@ -45,7 +47,9 @@ class HomePage extends StatelessWidget {
           create: (_) => profileProvider,
           child: ProfilePage(profileProvider: profileProvider));
     }),
-    CupertinoTabView(builder: (ctx) => Scaffold(body: Text('Follow'))),
+    CupertinoTabView(builder: (ctx) => ChangeNotifierProvider(
+          create: (_) => FollowProvider(),
+          child: FollowPage())),
     CupertinoTabView(builder: (ctx) => SettingsPage())
   ];
 

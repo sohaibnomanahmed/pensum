@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:leaf/deals/models/deal_filter.dart';
+import 'package:leaf/follow/models/Follow.dart';
 
 import '../books/models/book.dart';
 import '../global/services.dart';
@@ -233,7 +234,16 @@ class DealsProvider with ChangeNotifier {
     notifyListeners();
     try {
       final user = _authenticationService.currentUser;
-      await _followService.followBook(uid: user.uid, book: book);
+      final time = Timestamp.now();
+      final follow = Follow(
+        id: book.isbn,
+        title: book.titles.first,
+        image: book.image,
+        year: book.year,
+        time: time,
+        notification: false,
+      );
+      await _followService.followBook(uid: user.uid, follow: follow);
     } catch (error) {
       print('Add deal error: $error');
       _errorMessage = 'Something went wrong, please try again!';
@@ -252,7 +262,8 @@ class DealsProvider with ChangeNotifier {
    */
   void getFollowStatus(String isbn) async {
     final user = _authenticationService.currentUser;
-    final stream = _followService.followStatus(uid: user.uid, isbn: isbn);
+    final stream =
+        _followService.getBookFollowStatus(uid: user.uid, isbn: isbn);
     _followSubscribtion = stream.listen(
       (isFollowing) {
         _isFollowing = isFollowing;
