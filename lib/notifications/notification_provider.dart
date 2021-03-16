@@ -95,7 +95,7 @@ class NotificationProvider with ChangeNotifier {
     // Also handle any interaction when the app is in the background via a
     // Stream listener
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      if (initialMessage != null && message.data['type'] == 'message') {
+      if (message.data['type'] == 'message') {
         Navigator.pushNamed(
           context,
           MessagesPage.routeName,

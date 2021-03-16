@@ -92,11 +92,6 @@ export const onSendMessage = functions.firestore
                 body: message,
                 clickAction: 'FLUTTER_NOTIFICATION_CLICK'
             },
-            android: {
-                notification: {
-                  click_action: 'news_intent'
-                }
-              },
             data: {
                 id: senderID,
                 name: senderName,
