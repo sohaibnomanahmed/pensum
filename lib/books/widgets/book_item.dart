@@ -14,6 +14,9 @@ class BookItem extends StatelessWidget {
       child: Row(
         children: [
           PhysicalModel(
+            borderRadius: BorderRadius.circular(10.0),
+            color: Colors.transparent,
+            elevation: 5,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
               child: (book == null)
@@ -30,20 +33,16 @@ class BookItem extends StatelessWidget {
                         height: 100,
                         width: 70,
                         errorBuilder: (_, __, ___) => Container(
-                          child: Icon(
-                            Icons.wifi_off_rounded,
-                            //color: Colors.grey[600],
-                            color: Theme.of(context).disabledColor,
-                          ),
                           height: 100,
                           width: 70,
+                          child: Icon(
+                            Icons.wifi_off_rounded,
+                            color: Theme.of(context).disabledColor,
+                          ),
                         ),
                       ),
                     ),
             ),
-            borderRadius: BorderRadius.circular(10.0),
-            color: Colors.transparent,
-            elevation: 5,
           ),
           SizedBox(
             width: 10,

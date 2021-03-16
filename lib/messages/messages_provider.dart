@@ -34,7 +34,7 @@ class MessagesProvider with ChangeNotifier {
    */
   void fetchMessages(String rid) async {
     // get original first batch of messages, should be called on build
-    final user = await _authenticationService.currentUser;
+    final user = _authenticationService.currentUser;
     final stream = _messagesService.fetchMessages(
         sid: user.uid, rid: rid, pageSize: _pageSize);
     _subscription = stream.listen((messages) {
@@ -50,6 +50,12 @@ class MessagesProvider with ChangeNotifier {
         // if not already loaded, add to _message list
         if (!_messages.contains(message)) {
           _messages.insert(0, message);
+        }
+        
+        // change seen status if changed in the databse
+        final index = _messages.indexOf(message);
+        if (_messages[index].seen != message.seen){
+          _messages[index].seen = message.seen;
         }
         
         // set message as seen for the sender i.e the other user
@@ -97,7 +103,7 @@ class MessagesProvider with ChangeNotifier {
     _silentLoading = true;
 
     // get current user and messages
-    final user = await _authenticationService.currentUser;
+    final user = _authenticationService.currentUser;
     if (_messages.isEmpty) {
       // no messages loaded, no last document so need to return
       _silentLoading = false;

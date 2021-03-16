@@ -25,7 +25,6 @@ class ProfileImage extends StatelessWidget {
             FloatingActionButton(
               elevation: 0,
               mini: true,
-              child: Icon(Icons.edit),
               onPressed: isLoading
                   ? null
                   : () async {
@@ -58,6 +57,7 @@ class ProfileImage extends StatelessWidget {
                         );
                       }
                     },
+              child: Icon(Icons.edit),
             ),
         ],
       ),

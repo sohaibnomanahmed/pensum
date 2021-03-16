@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 import 'package:flutter/material.dart';
 import 'package:leaf/global/widgets/leaf_error.dart';
 import 'package:provider/provider.dart';
@@ -70,15 +72,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      profile.fullName,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline5
-                                          .copyWith(color: Colors.teal[900]),
-                                    ),
-                                    // TODO store date created if not aldready stored by firebase
-                                    Text('Member since: 2021'),
+                                    Text(profile.fullName,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline5),
+                                    Text('Member since: ' +
+                                        DateFormat('y')
+                                            .format(profile.creationTime)),
                                     ElevatedButton(
                                         onPressed: () => showModalBottomSheet(
                                               isScrollControlled: true,

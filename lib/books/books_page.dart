@@ -25,7 +25,7 @@ class _BooksPageState extends State<BooksPage> {
         onNotification: (ScrollNotification scrollInfo) {
           if (scrollInfo.metrics.pixels >
               (scrollInfo.metrics.maxScrollExtent * 0.8)) {
-            context.read<BooksProvider>().fetchMoreBooks();
+            context.read<BooksProvider>().fetchMoreBooks;
           }
           return true;
         },

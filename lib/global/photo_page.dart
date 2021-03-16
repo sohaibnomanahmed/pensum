@@ -20,9 +20,9 @@ class PhotoPage extends StatelessWidget {
           MaterialButton(
             color: Colors.black45,
             elevation: 0,
-            child: Icon(Icons.clear, color: Colors.white),
             onPressed: () => Navigator.pop(context),
             shape: CircleBorder(),
+            child: Icon(Icons.clear, color: Colors.white),
           ),
         ],
       ),

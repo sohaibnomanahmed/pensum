@@ -80,7 +80,7 @@ class _FilterDealsBottomSheetState extends State<FilterDealsBottomSheet> {
               onChanged: (value) => _quality = value,
               items: qualities
                   .map((quality) =>
-                      DropdownMenuItem(child: Text(quality), value: quality))
+                      DropdownMenuItem(value: quality, child: Text(quality)))
                   .toList(),
             ),
             DropdownButtonFormField(
@@ -93,7 +93,7 @@ class _FilterDealsBottomSheetState extends State<FilterDealsBottomSheet> {
               }),
               items: places
                   .map((place) =>
-                      DropdownMenuItem(child: Text(place), value: place))
+                      DropdownMenuItem(value: place, child: Text(place)))
                   .toList(),
             ),
             if (_places.isEmpty)
@@ -106,8 +106,8 @@ class _FilterDealsBottomSheetState extends State<FilterDealsBottomSheet> {
                 ..._places
                     .map((e) => Chip(
                           avatar: CircleAvatar(
-                            child: Icon(Icons.place_rounded),
                             backgroundColor: Theme.of(context).backgroundColor,
+                            child: Icon(Icons.place_rounded),
                           ),
                           label: Text(e),
                           backgroundColor: Theme.of(context).backgroundColor,

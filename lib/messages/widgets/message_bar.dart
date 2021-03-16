@@ -47,7 +47,7 @@ class _MessageBarState extends State<MessageBar> {
                   }),
         hintText: 'Send a message...',
         border: InputBorder.none,
-        //focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).primaryColor))
+        focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).primaryColor))
       ),
       onChanged: (value) => setState(() => _message = value),
     );

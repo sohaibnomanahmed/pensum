@@ -188,7 +188,7 @@ class DealsProvider with ChangeNotifier {
     _isFilter = true;
     notifyListeners();
     // filter deals
-    final _stream = await _dealsService.filterDeals(
+    final _stream = _dealsService.filterDeals(
       isbn: isbn,
       priceAbove: priceAbove,
       priceBelow: priceBelow,

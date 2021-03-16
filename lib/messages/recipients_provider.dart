@@ -27,7 +27,7 @@ class RecipientsProvider with ChangeNotifier {
    */
   void get fetchRecipients async {
     // get original first batch of messages, should be called on build
-    final user = await _authenticationService.currentUser;
+    final user = _authenticationService.currentUser;
     final stream =
         _recipientsService.fetchRecipients(sid: user.uid, pageSize: _pageSize);
     _subscription = stream.listen((recipients) {
@@ -73,7 +73,7 @@ class RecipientsProvider with ChangeNotifier {
     _silentLoading = true;
 
     // get current user and messages
-    final user = await _authenticationService.currentUser;
+    final user = _authenticationService.currentUser;
     if (_recipients.isEmpty) {
       // no recipients loaded, no last document so need to return
       _silentLoading = false;

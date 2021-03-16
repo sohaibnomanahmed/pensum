@@ -14,11 +14,12 @@ import 'authentication/home_page.dart';
 import 'messages/messages_page.dart';
 import 'messages/messages_provider.dart';
 import 'global/404_page.dart';
+import 'notifications/notification_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  
+
   // // Switch host based on platform.
   // final host = defaultTargetPlatform == TargetPlatform.android
   //     ? '10.0.2.2:8080'
@@ -29,7 +30,7 @@ Future<void> main() async {
   // await FirebaseService.firebaseAuth.useEmulator('http://localhost:9099');
 
   await FirebaseAuth.instance.authStateChanges().isEmpty;
-  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]); 
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent, // for Android
       statusBarIconBrightness: Brightness.dark, // for Android
@@ -57,9 +58,10 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.teal,
             textTheme:
                 GoogleFonts.ralewayTextTheme(Theme.of(context).textTheme),
-            elevatedButtonTheme: ElevatedButtonThemeData(style: ElevatedButton.styleFrom(
+            elevatedButtonTheme: ElevatedButtonThemeData(
+                style: ElevatedButton.styleFrom(
               elevation: 0,
-            )),    
+            )),
             cardTheme: Theme.of(context).cardTheme.copyWith(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)))),
@@ -67,7 +69,14 @@ class MyApp extends StatelessWidget {
           builder: (context, user, child) {
             return (user == null || !user.emailVerified)
                 ? AuthenticationPage()
-                : HomePage();
+                : MultiProvider(
+                    providers: [
+                      ChangeNotifierProvider<NotificationProvider>(
+                        create: (ctx) => NotificationProvider(),
+                      ),
+                    ],
+                    child: HomePage(),
+                  );
           },
         ),
         /**

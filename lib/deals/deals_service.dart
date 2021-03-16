@@ -84,7 +84,7 @@ class DealsService {
     @required int pageSize,
     @required DealFilter dealFilter,
   }) async {
-    var query = await firestore
+    var query = firestore
         .collection('books/' + isbn + '/deals')
         .orderBy('price')
         .startAfterDocument(lastFilteredDeal)

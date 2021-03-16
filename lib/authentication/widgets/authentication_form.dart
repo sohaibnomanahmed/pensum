@@ -3,7 +3,7 @@ import 'package:leaf/authentication/authentication_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'create_account_bottom_sheet.dart';
-import 'forgot_password_bottom_sheet.dart';
+import 'reset_password_bottom_sheet.dart';
 
 class AuthenticationForm extends StatefulWidget {
   @override
@@ -62,7 +62,7 @@ class _AuthenticationFormState extends State<AuthenticationForm> {
                   ),
                   context: context,
                   isScrollControlled: true,
-                  builder: (_) => ForgotPasswordBottomSheet(),
+                  builder: (_) => ResetPasswordBottomSheet(),
                 );
               },
               child: Text('Forgot password'),
@@ -104,9 +104,9 @@ class _AuthenticationFormState extends State<AuthenticationForm> {
                   },
             child: isLoading
                 ? SizedBox(
-                    child: CircularProgressIndicator(),
                     height: 20,
                     width: 20,
+                    child: CircularProgressIndicator(),
                   )
                 : Text('Log in'),
           ),

@@ -18,15 +18,17 @@ class BezierContainer extends StatelessWidget {
         child: Container(
           height: MediaQuery.of(context).size.height * .5,
           width: MediaQuery.of(context).size.width,
-          child: child,
           decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
                 Theme.of(context).primaryColor,
                 Theme.of(context).primaryColorDark
-              ])),
+              ],
+            ),
+          ),
+          child: child,
         ),
       ),
     ));

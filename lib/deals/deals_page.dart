@@ -93,9 +93,9 @@ class _DealsPageState extends State<DealsPage> {
                           },
                     child: isFollowBtnLoading
                         ? SizedBox(
-                            child: CircularProgressIndicator(),
                             height: 20,
                             width: 20,
+                            child: CircularProgressIndicator(),
                           )
                         : Text('Follow')),
               ),
@@ -108,7 +108,8 @@ class _DealsPageState extends State<DealsPage> {
                         child: CircularProgressIndicator(),
                       )
                     : isError
-                        ? LeafError(context.read<DealsProvider>().refetchDeals, widget.book.isbn)
+                        ? LeafError(context.read<DealsProvider>().refetchDeals,
+                            widget.book.isbn)
                         : DealList(),
               ),
             ],

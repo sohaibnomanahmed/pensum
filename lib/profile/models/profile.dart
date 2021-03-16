@@ -5,6 +5,7 @@ import '../../global/extensions.dart';
 
 class Profile {
   final String uid;
+  DateTime creationTime;
   String firstname;
   String lastname;
   String imageUrl;
@@ -26,6 +27,7 @@ class Profile {
 
   Profile({
     @required this.uid,
+    @required this.creationTime,
     @required this.firstname,
     @required this.lastname,
     @required this.imageUrl,
@@ -40,9 +42,11 @@ class Profile {
     final String firstnameData = data['firstname'];
     final String lastnameData = data['lastname'];
     final String imageUrlData = data['imageUrl'];
+    final Timestamp creationTime = data['creationTime'];
     final Map<String, dynamic> userItemsData = data['userItems'];
     return Profile(
       uid: doc.id,
+      creationTime: creationTime.toDate(),
       firstname: firstnameData,
       lastname: lastnameData,
       imageUrl: imageUrlData,
@@ -52,6 +56,7 @@ class Profile {
 
   Map<String, dynamic> toMap() {
     return {
+      'creationTime':creationTime,
       'firstname': firstname,
       'lastname': lastname,
       'imageUrl': imageUrl,

@@ -1,22 +1,28 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:leaf/follow/follow_page.dart';
-import 'package:leaf/follow/follow_provider.dart';
-import 'package:leaf/global/404_page.dart';
-import 'package:leaf/messages/recipients_page.dart';
-import 'package:leaf/messages/recipients_provider.dart';
-import 'package:leaf/profile/profile_page.dart';
-import 'package:leaf/profile/profile_provider.dart';
+import 'package:leaf/notifications/notification_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../follow/follow_page.dart';
+import '../follow/follow_provider.dart';
+import '../global/404_page.dart';
+import '../messages/recipients_page.dart';
+import '../messages/recipients_provider.dart';
+import '../profile/profile_page.dart';
+import '../profile/profile_provider.dart';
 import '../books/books_page.dart';
 import '../books/books_provider.dart';
 import '../settings/settings_page.dart';
 import '../deals/deals_page.dart';
 import '../deals/deals_provider.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   // list of pages
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = [
     // books page
     CupertinoTabView(
@@ -37,21 +43,28 @@ class HomePage extends StatelessWidget {
         }
       },
     ),
-    CupertinoTabView(builder: (ctx) => ChangeNotifierProvider(
-      create: (_) => RecipientsProvider(),
-      child: RecipientsPage(),
-    )),
+    CupertinoTabView(
+        builder: (ctx) => ChangeNotifierProvider(
+              create: (_) => RecipientsProvider(),
+              child: RecipientsPage(),
+            )),
     CupertinoTabView(builder: (_) {
       final profileProvider = ProfileProvider();
       return ChangeNotifierProvider(
           create: (_) => profileProvider,
           child: ProfilePage(profileProvider: profileProvider));
     }),
-    CupertinoTabView(builder: (ctx) => ChangeNotifierProvider(
-          create: (_) => FollowProvider(),
-          child: FollowPage())),
+    CupertinoTabView(
+        builder: (ctx) => ChangeNotifierProvider(
+            create: (_) => FollowProvider(), child: FollowPage())),
     CupertinoTabView(builder: (ctx) => SettingsPage())
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<NotificationProvider>().configureNotifications(context);
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -63,7 +63,7 @@ class _AddDealBottomSheetState extends State<AddDealBottomSheet> {
                   _price = value;
                 }),
                 items: prices
-                    .map((price) => DropdownMenuItem(child: Text(price), value: price))
+                    .map((price) => DropdownMenuItem(value: price, child: Text(price)))
                     .toList(),
               ),
               DropdownButtonFormField(
@@ -74,7 +74,7 @@ class _AddDealBottomSheetState extends State<AddDealBottomSheet> {
                 }),
                 items: qualities
                     .map((quality) =>
-                        DropdownMenuItem(child: Text(quality), value: quality))
+                        DropdownMenuItem(value: quality, child: Text(quality)))
                     .toList(),
               ),
               DropdownButtonFormField(
@@ -85,7 +85,7 @@ class _AddDealBottomSheetState extends State<AddDealBottomSheet> {
                 }),
                 items: places
                     .map((place) =>
-                        DropdownMenuItem(child: Text(place), value: place))
+                        DropdownMenuItem(value: place, child: Text(place)))
                     .toList(),
               ),
               TextFormField(

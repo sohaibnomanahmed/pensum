@@ -85,17 +85,24 @@ export const onSendMessage = functions.firestore
         const senderImage = senderDoc.data()!.imageUrl
 
         // build the notification
+        const type = 'message'
         const payload = {
             notification: {
                 title: senderName,
                 body: message,
                 clickAction: 'FLUTTER_NOTIFICATION_CLICK'
             },
+            android: {
+                notification: {
+                  click_action: 'news_intent'
+                }
+              },
             data: {
                 id: senderID,
                 name: senderName,
                 image: senderImage,
-                message: message
+                message: message,
+                type: type
             }
         }
 

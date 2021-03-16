@@ -25,10 +25,10 @@ class BookList extends StatelessWidget {
                       child: BookItem(null),
                     )
                   : InkWell(
-                      child: BookItem(books[index]),
                       onTap: () => Navigator.of(context).pushNamed(
                           DealsPage.routeName,
                           arguments: books[index]),
+                      child: BookItem(books[index]),
                     ),
               childCount: isLoading ? 6 : books.length,
             ),

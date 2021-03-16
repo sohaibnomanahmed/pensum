@@ -12,7 +12,6 @@ class RecipientsList extends StatelessWidget {
     final recipients = context.read<RecipientsProvider>().recipients;
     return ListView.builder(
       itemBuilder: (_, index) => InkWell(
-        child: RecipientItem(recipients[index]),
         onTap: () => Navigator.of(context, rootNavigator: true).pushNamed(
           MessagesPage.routeName,
           arguments: {
@@ -21,6 +20,7 @@ class RecipientsList extends StatelessWidget {
             'name': recipients[index].receiverName,
           },
         ),
+        child: RecipientItem(recipients[index]),
       ),
       itemCount: recipients.length,
     );
