@@ -55,6 +55,7 @@ class NotificationProvider with ChangeNotifier {
           SnackBar(
               behavior: SnackBarBehavior.floating,
               backgroundColor: Theme.of(context).canvasColor,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
               content: ListTile(
                 contentPadding: EdgeInsets.all(0),
                 dense: true,

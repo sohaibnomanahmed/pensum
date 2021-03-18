@@ -58,9 +58,6 @@ dependencies:
   # time ago
   timeago_flutter:
 
-  # flush bar 
-  another_flushbar: ^1.10.17
-
   # splash screen
   flutter_launcher_icons:
 

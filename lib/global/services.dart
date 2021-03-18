@@ -8,7 +8,7 @@ import 'package:leaf/notifications/notification_service.dart';
 import '../messages/messages_service.dart';
 import '../deals/deals_service.dart';
 import '../books/books_service.dart';
-import '../follow/follow_service.dart';
+import '../following/follow_service.dart';
 import '../profile/profile_service.dart';
 import '../authentication/authentication_service.dart';
 import 'image_cropper_service.dart';

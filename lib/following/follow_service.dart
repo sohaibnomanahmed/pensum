@@ -11,12 +11,12 @@ class FollowService{
   FollowService(this.firestore);
 
   // fetch follows
-  Stream<List<Follow>> fetchFollows(
+  Stream<List<Follow>> fetchFollowings(
       {@required String uid, @required int pageSize}) {
     return firestore
-        .collection('following')
+        .collection('profiles')
         .doc(uid)
-        .collection('books')
+        .collection('following')
         .orderBy('time')
         .limit(pageSize)
         .snapshots()
@@ -33,12 +33,12 @@ class FollowService{
   }
 
   // fetch and return more follows, from current last. If no more follows return null
-  Future<List<Follow>> fetchMoreFollows(
+  Future<List<Follow>> fetchMoreFollowings(
       {@required String uid, @required int pageSize}) async {
     final follows = await firestore
-        .collection('following')
+        .collection('profiles')
         .doc(uid)
-        .collection('books')
+        .collection('following')
         .orderBy('time')
         .startAfterDocument(lastFollow)
         .limit(pageSize)
@@ -50,34 +50,31 @@ class FollowService{
   }
 
   // follow to a spesific book
-  Future<void> followBook({@required String uid, @required Follow follow}) {
+  Future<void> follow({@required String uid, @required Follow follow}) {
     return firestore
-        .collection('following')
+        .collection('profile')
         .doc(uid)
-        .collection('books')
+        .collection('followings')
         .doc(follow.id)
         .set(follow.toMap(), SetOptions(merge: true));
   }
 
   // get following status stream
-  Stream<bool> getBookFollowStatus({@required String uid, @required String isbn}){
+  Stream<bool> getFollowingStatus({@required String uid, @required String id}){
     return firestore
-        .collection('following')
+        .collection('profiles')
         .doc(uid)
-        .collection('books')
-        .doc(isbn).snapshots().map((doc) => doc.exists);   
+        .collection('following')
+        .doc(id).snapshots().map((doc) => doc.exists);   
   }
 
-  // remove a follow
-  Future<void> removeBookFollow({@required String uid, @required String isbn}) {
+  // remove a profile follow
+  Future<void> removeFollowing({@required String id, @required String uid}) {
     return firestore
-        .collection('following')
+        .collection('profiles')
         .doc(uid)
-        .collection('books')
-        .doc(isbn)
+        .collection('following')
+        .doc(id)
         .delete();
-  }
-
-
-  
+  }  
 }

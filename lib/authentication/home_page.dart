@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:leaf/notifications/notification_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../follow/follow_page.dart';
-import '../follow/follow_provider.dart';
+import '../following/follow_page.dart';
+import '../following/follow_provider.dart';
 import '../global/404_page.dart';
 import '../messages/recipients_page.dart';
 import '../messages/recipients_provider.dart';

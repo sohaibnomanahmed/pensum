@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
-import 'package:leaf/notifications/models/notifications.dart';
 
 class NotificationService {
   final FirebaseFirestore _firestore;
@@ -35,21 +33,25 @@ class NotificationService {
     await _messaging.unsubscribeFromTopic(topic);
   }
 
-  // set notifications data
-  Future<void> setNotifications(
-      {@required String uid, @required Notifications notifications}) {
+  // get chat notification stream
+  Stream<bool> fetchChatNotification(String uid) {
     return _firestore
-        .collection('notifications')
+        .collection('chats')
         .doc(uid)
-        .set(notifications.toMap(), SetOptions(merge: true));
+        .collection('recipients')
+        .where('notifications', isEqualTo: true)
+        .snapshots()
+        .map((list) => list.docs.isEmpty ? false : true);
   }
 
-  // get notifications stream
-  Stream<Notifications> fetchNotifications(String uid) {
+  // get book notification stream
+  Stream<bool> fetchFollowingNotification(String uid) {
     return _firestore
-        .collection('notifications')
+        .collection('profiles')
         .doc(uid)
+        .collection('following')
+        .where('notifications', isEqualTo: true)
         .snapshots()
-        .map((notifications) => Notifications.fromFirestore(notifications));
+        .map((list) => list.docs.isEmpty ? false : true);
   }
 }

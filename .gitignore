@@ -52,3 +52,6 @@ firestore.indexes.json
 firestore.rules
 storage.rules
 .firebaserc
+
+# not sure from where maybe firebase cli
+node_modules

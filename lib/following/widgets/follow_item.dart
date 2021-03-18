@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:leaf/follow/follow_provider.dart';
-import 'package:leaf/follow/models/Follow.dart';
+import 'package:leaf/following/follow_provider.dart';
+import 'package:leaf/following/models/Follow.dart';
 
 class FollowItem extends StatelessWidget {
   final Follow follow;

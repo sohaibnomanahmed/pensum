@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:leaf/follow/follow_provider.dart';
-import 'package:leaf/follow/widgets/follow_list.dart';
+import 'package:leaf/following/follow_provider.dart';
+import 'package:leaf/following/widgets/follow_list.dart';
 import 'package:provider/provider.dart';
 
 class FollowPage extends StatefulWidget {

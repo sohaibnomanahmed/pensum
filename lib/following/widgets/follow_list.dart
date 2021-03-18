@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:leaf/follow/follow_provider.dart';
-import 'package:leaf/follow/widgets/follow_item.dart';
+import 'package:leaf/following/follow_provider.dart';
+import 'package:leaf/following/widgets/follow_item.dart';
 import 'package:leaf/global/widgets/leaf_error.dart';
 import 'package:provider/provider.dart';
 
