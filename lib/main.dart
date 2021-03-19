@@ -1,7 +1,5 @@
-//import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-//import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,17 +8,21 @@ import 'package:provider/provider.dart';
 import 'authentication/authentication_provider.dart';
 import 'authentication/authentication_page.dart';
 import 'authentication/home_page.dart';
-//import 'global/services.dart';
 import 'messages/messages_page.dart';
 import 'messages/messages_provider.dart';
 import 'global/404_page.dart';
 import 'notifications/notification_provider.dart';
 
+// emulator related
+// import 'global/services.dart';
+// import 'package:flutter/foundation.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  // // Switch host based on platform.
+  // Switch host based on platform.
   // final host = defaultTargetPlatform == TargetPlatform.android
   //     ? '10.0.2.2:8080'
   //     : 'localhost:8080';

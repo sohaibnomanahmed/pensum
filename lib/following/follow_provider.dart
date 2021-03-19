@@ -8,6 +8,7 @@ import 'models/Follow.dart';
 class FollowProvider with ChangeNotifier{
   final _authenticationService = FirebaseService.authentication;
   final _followService = FirebaseService.follow;
+  final _notificationsService = FirebaseService.notifications;
 
   List<Follow> _follows = [];
   final _pageSize = 10;
@@ -30,7 +31,7 @@ class FollowProvider with ChangeNotifier{
   void get fetchFollows {
     // get original first batch of follow
     final user = _authenticationService.currentUser;
-    final stream = _followService.fetchFollowings(uid: user.uid, pageSize: _pageSize);
+    final stream = _followService.fetchFollowing(uid: user.uid, pageSize: _pageSize);
     _subscription = stream.listen(
       (follows) {
         // in case there are no follows
@@ -82,7 +83,7 @@ class FollowProvider with ChangeNotifier{
     List<Follow> moreFollows;
     try{
       final user = _authenticationService.currentUser;
-      moreFollows = await _followService.fetchMoreFollowings(uid: user.uid, pageSize: _pageSize);
+      moreFollows = await _followService.fetchMoreFollowing(uid: user.uid, pageSize: _pageSize);
     } catch (error){
       print('Failed to fetch more follows: $error');
       _silentLoading = false;
@@ -106,11 +107,12 @@ class FollowProvider with ChangeNotifier{
    * Unfollow a spesific book, should unsubscribe from notifications
    * if successfull return true, if an error occurs set error message and retun false 
    */
-  Future<bool> unfollow(String id) async {
+  Future<bool> unfollow(String isbn) async {
     try {
       // remove deal from users profile
       final user = _authenticationService.currentUser;
-      await _followService.removeFollowing(uid: user.uid, id: id);
+      await _followService.removeFollowing(uid: user.uid, id: isbn);
+      await _notificationsService.unsubscribeFromTopic(isbn);
     } catch (error) {
       print('Removing deal error: $error');
       _errorMessage = 'An error occured trying to delete the deal';

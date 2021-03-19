@@ -12,6 +12,7 @@ class FollowItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      tileColor: follow.notification ? Colors.red : Colors.white,
       leading: Container(
         height: 90,
         width: 50,

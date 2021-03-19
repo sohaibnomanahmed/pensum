@@ -11,7 +11,7 @@ class FollowService{
   FollowService(this.firestore);
 
   // fetch follows
-  Stream<List<Follow>> fetchFollowings(
+  Stream<List<Follow>> fetchFollowing(
       {@required String uid, @required int pageSize}) {
     return firestore
         .collection('profiles')
@@ -33,7 +33,7 @@ class FollowService{
   }
 
   // fetch and return more follows, from current last. If no more follows return null
-  Future<List<Follow>> fetchMoreFollowings(
+  Future<List<Follow>> fetchMoreFollowing(
       {@required String uid, @required int pageSize}) async {
     final follows = await firestore
         .collection('profiles')
@@ -52,9 +52,9 @@ class FollowService{
   // follow to a spesific book
   Future<void> follow({@required String uid, @required Follow follow}) {
     return firestore
-        .collection('profile')
+        .collection('profiles')
         .doc(uid)
-        .collection('followings')
+        .collection('following')
         .doc(follow.id)
         .set(follow.toMap(), SetOptions(merge: true));
   }

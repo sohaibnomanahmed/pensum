@@ -9,7 +9,11 @@ import * as admin from 'firebase-admin'
 //   response.send("Hello from Firebase!");
 // });
 
-admin.initializeApp()
+var serviceAccount = require("../serviceAccountKey.json");
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+})
 
 // When a user updates his image, the data needs to be updates on other
 // collections as, the copy of the image Url are placed there to be received faster
@@ -69,7 +73,7 @@ export const onSendMessage = functions.firestore
         const recieverRef = admin.firestore().collection('chats').doc(receiverID)
             .collection('recipients').doc(senderID)
         const recieverMessagesRef = recieverRef.collection('messages').doc(messageID)
-        var messageDoc = await recieverMessagesRef.get()  
+        var messageDoc = await recieverMessagesRef.get()
         
         // dont send the notifaction to the sender, since we create the message
         // for the receivere this function runs again for sender, solution source:
@@ -132,15 +136,15 @@ export const onAddDeal = functions.firestore
     // before returning and have them be done async
     const promises: Promise<any>[] = [] // need this since the promises are of different type
     const bookISBN = context.params.bookIsbn
-    const dealID = context.params.dealId
+    //const dealID = context.params.dealId
     const deal = snapshot.data()!
     console.log(deal)
-    const time = snapshot.data()!.time
+    //const time = snapshot.data()!.time
 
     // get book doc
     const bookDoc = await admin.firestore().collection('books').doc(bookISBN).get() 
     const bookImage = bookDoc.data()!.image
-    const bookTitle = bookDoc.data()!.titles[0]
+    const bookTitle = bookDoc.data()!.title[0]
     const bookMessage = 'New deal added for ' + bookTitle
 
     // get deal adder info for notf
@@ -152,7 +156,7 @@ export const onAddDeal = functions.firestore
     const type = 'book'
     const payload = {
         notification: {
-            title: 'New deal',
+            title: bookTitle,
             body: bookMessage,
         },
         data: {
@@ -165,14 +169,14 @@ export const onAddDeal = functions.firestore
     }
 
     // set notification for all followers
-    const followers = await admin.firestore().collectionGroup('book_follows').where("isbn", "==", bookISBN).get()
+    const followers = await admin.firestore().collectionGroup('following').where("isbn", "==", bookISBN).get()
     const followersDocs = followers.docs
     followersDocs.forEach(doc => {
-        const notfRef = admin.firestore().collection('notifications').doc(receiverID)
-        const p = notfRef.set({ 'follow': true }, { merge: true })
+        const p = doc.ref.update({
+            notification: true
+        })
         promises.push(p)
     })
-
 
     // send the notification to the recievers topic
     promises.push(admin.messaging().sendToTopic(bookISBN, payload))

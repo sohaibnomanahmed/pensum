@@ -14,6 +14,7 @@ class DealsProvider with ChangeNotifier {
   final _profileService = FirebaseService.profile;
   final _dealsService = FirebaseService.deals;
   final _followService = FirebaseService.follow;
+  final _notificationsService = FirebaseService.notifications;
 
   List<Deal> _deals = [];
   final _pageSize = 10;
@@ -244,6 +245,7 @@ class DealsProvider with ChangeNotifier {
         notification: false,
       );
       await _followService.follow(uid: user.uid, follow: follow);
+      await _notificationsService.subscribeToTopic(book.isbn);
     } catch (error) {
       print('Add deal error: $error');
       _errorMessage = 'Something went wrong, please try again!';

@@ -55,7 +55,8 @@ class NotificationProvider with ChangeNotifier {
           SnackBar(
               behavior: SnackBarBehavior.floating,
               backgroundColor: Theme.of(context).canvasColor,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
               content: ListTile(
                 contentPadding: EdgeInsets.all(0),
                 dense: true,
@@ -69,6 +70,40 @@ class NotificationProvider with ChangeNotifier {
                     MessagesPage.routeName,
                     arguments: {'id': id, 'image': image, 'name': name},
                   );
+                },
+              )),
+        );
+      }
+      if (message?.data['type'] == 'book') {
+        //final id = message.data['id'];
+        final title = message.data['title'];
+        final image = message.data['image'];
+        final text = message.data['message'];
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              behavior: SnackBarBehavior.floating,
+              backgroundColor: Theme.of(context).canvasColor,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              content: ListTile(
+                contentPadding: EdgeInsets.all(0),
+                dense: true,
+                leading: Container(
+                  height: 90,
+                  width: 50,
+                  child: Image.network(
+                    image,
+                    errorBuilder: (_, __, ___) => Icon(
+                      Icons.wifi_off_rounded,
+                      color: Theme.of(context).primaryColorDark,
+                    ),
+                  ),
+                ),
+                title: Text(title),
+                subtitle: Text(text),
+                onTap: () {
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
                 },
               )),
         );
@@ -123,6 +158,7 @@ class NotificationProvider with ChangeNotifier {
   @override
   void dispose() {
     super.dispose();
+    // TODO null here
     final user = _authenticationService.currentUser;
     _notificationsService.unsubscribeFromTopic(user.uid);
     if (_subscription != null) {
