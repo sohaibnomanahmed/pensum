@@ -8,7 +8,6 @@ class MessagesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final messages = context.watch<MessagesProvider>().messages;
-    // TODO scroll down on new message
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: ListView.builder(

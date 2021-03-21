@@ -39,7 +39,7 @@ class NotificationService {
         .collection('chats')
         .doc(uid)
         .collection('recipients')
-        .where('notifications', isEqualTo: true)
+        .where('notification', isEqualTo: true)
         .snapshots()
         .map((list) => list.docs.isEmpty ? false : true);
   }
@@ -50,7 +50,7 @@ class NotificationService {
         .collection('profiles')
         .doc(uid)
         .collection('following')
-        .where('notifications', isEqualTo: true)
+        .where('notification', isEqualTo: true)
         .snapshots()
         .map((list) => list.docs.isEmpty ? false : true);
   }

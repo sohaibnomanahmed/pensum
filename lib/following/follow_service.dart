@@ -55,7 +55,7 @@ class FollowService{
         .collection('profiles')
         .doc(uid)
         .collection('following')
-        .doc(follow.id)
+        .doc(follow.pid)
         .set(follow.toMap(), SetOptions(merge: true));
   }
 

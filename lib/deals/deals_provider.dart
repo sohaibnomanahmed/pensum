@@ -237,7 +237,7 @@ class DealsProvider with ChangeNotifier {
       final user = _authenticationService.currentUser;
       final time = Timestamp.now();
       final follow = Follow(
-        id: book.isbn,
+        pid: book.isbn,
         title: book.titles.first,
         image: book.image,
         year: book.year,

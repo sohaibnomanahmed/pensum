@@ -169,7 +169,7 @@ export const onAddDeal = functions.firestore
     }
 
     // set notification for all followers
-    const followers = await admin.firestore().collectionGroup('following').where("isbn", "==", bookISBN).get()
+    const followers = await admin.firestore().collectionGroup('following').where("pid", "==", bookISBN).get()
     const followersDocs = followers.docs
     followersDocs.forEach(doc => {
         const p = doc.ref.update({

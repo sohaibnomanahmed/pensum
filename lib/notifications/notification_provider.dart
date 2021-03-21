@@ -22,9 +22,15 @@ class NotificationProvider with ChangeNotifier {
 
   Notifications _notifications;
   StreamSubscription _subscription;
+  StreamSubscription _followingNotificationSubscription;
+  StreamSubscription _chatNotificationSubscription;
+  var _followingNotification = false;
+  var _chatNotification = false;
 
   // getters
   Notifications get notifications => _notifications;
+  bool get followingNotification => _followingNotification;
+  bool get chatNotification => _chatNotification;
 
   /*
    * configure notifications to handle both foreground and background
@@ -32,7 +38,7 @@ class NotificationProvider with ChangeNotifier {
    * notifications. On the data propery a type field is given to check if 
    * notification is a message or book aler. 
    */
-  void configureNotifications(BuildContext context) async {
+  void configureNotifications(BuildContext context, Function(int index) setCurrentIndex) async {
     var settings = await _notificationsService.requestPermission();
     print('User granted permission: ${settings.authorizationStatus}');
 
@@ -144,12 +150,44 @@ class NotificationProvider with ChangeNotifier {
       }
     });
 
+    // setup background handler
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
     // subscribe to own topic for chat messages
     final user = _authenticationService.currentUser;
-    print('SUBSCRIBING!!!');
     await _notificationsService.subscribeToTopic(user.uid);
+  }
+
+  /*
+   * get following notification stream, should only get value
+   * no error check or cancelation
+   */
+  void get fetchFollowingNotification{
+    // get original following notification indicator
+    final user = _authenticationService.currentUser;
+    final stream = _notificationsService.fetchFollowingNotification(user.uid);
+    _followingNotificationSubscription = stream.listen(
+      (followingNotification) {
+        _followingNotification = followingNotification;
+        notifyListeners();
+      },
+    );
+  }
+
+   /*
+   * get following notification stream, should only get value
+   * no error check or cancelation
+   */
+  void get fetchChatNotification{
+    // get original following notification indicator
+    final user = _authenticationService.currentUser;
+    final stream = _notificationsService.fetchChatNotification(user.uid);
+    _chatNotificationSubscription = stream.listen(
+      (chatNotification) {
+        _chatNotification = chatNotification;
+        notifyListeners();
+      },
+    );
   }
 
   /*
@@ -158,11 +196,14 @@ class NotificationProvider with ChangeNotifier {
   @override
   void dispose() {
     super.dispose();
-    // TODO null here
-    final user = _authenticationService.currentUser;
-    _notificationsService.unsubscribeFromTopic(user.uid);
     if (_subscription != null) {
       _subscription.cancel();
+    }
+    if (_chatNotificationSubscription != null){
+      _chatNotificationSubscription.cancel();
+    }
+    if (_followingNotificationSubscription != null){
+      _followingNotificationSubscription.cancel();
     }
   }
 }
