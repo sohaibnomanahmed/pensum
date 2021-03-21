@@ -49,6 +49,16 @@ class FollowService{
     return follows.docs.map((document) => Follow.fromFirestore(document)).toList();
   }
 
+  // return id of all followings, useful if needed to subscribe or unsubscribe
+  Future<List<String>> getAllFollowingIds(String uid) async {
+    final follows = await firestore
+        .collection('profiles')
+        .doc(uid)
+        .collection('following')
+        .get();
+    return follows.docs.map((document) => document.id).toList();
+  }
+
   // follow to a spesific book
   Future<void> follow({@required String uid, @required Follow follow}) {
     return firestore

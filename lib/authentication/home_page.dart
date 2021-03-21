@@ -81,6 +81,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _setCurrentIndex(int index) {
+    print('Changing current index');
     setState(() {
       _currentIndex = index;
     });

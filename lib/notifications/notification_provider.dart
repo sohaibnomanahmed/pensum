@@ -110,6 +110,7 @@ class NotificationProvider with ChangeNotifier {
                 subtitle: Text(text),
                 onTap: () {
                   ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                  setCurrentIndex(3);
                 },
               )),
         );
@@ -152,10 +153,6 @@ class NotificationProvider with ChangeNotifier {
 
     // setup background handler
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
-    // subscribe to own topic for chat messages
-    final user = _authenticationService.currentUser;
-    await _notificationsService.subscribeToTopic(user.uid);
   }
 
   /*

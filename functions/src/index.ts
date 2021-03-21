@@ -137,8 +137,7 @@ export const onAddDeal = functions.firestore
     const promises: Promise<any>[] = [] // need this since the promises are of different type
     const bookISBN = context.params.bookIsbn
     //const dealID = context.params.dealId
-    const deal = snapshot.data()!
-    console.log(deal)
+    //const deal = snapshot.data()!
     //const time = snapshot.data()!.time
 
     // get book doc

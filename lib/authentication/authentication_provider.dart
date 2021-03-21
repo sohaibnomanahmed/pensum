@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:leaf/following/models/Follow.dart';
 
 import '../profile/models/profile.dart';
 import '../global/services.dart';
@@ -7,6 +8,8 @@ import '../global/services.dart';
 class AuthenticationProvider with ChangeNotifier {
   final _authenticationService = FirebaseService.authentication;
   final _profileService = FirebaseService.profile;
+  final _followService = FirebaseService.follow;
+  final _notificationService = FirebaseService.notifications;
 
   var _isLoading = false;
   final _unknownMessage = 'Error: please check your network connection';
@@ -86,6 +89,13 @@ class AuthenticationProvider with ChangeNotifier {
         notifyListeners();
         return false;
       }
+
+      // subscribe to all topics
+      final followings = await _followService.getAllFollowingIds(user.uid);
+      await _notificationService.subscribeToTopic(user.uid);
+      followings.forEach((following) async { 
+        await _notificationService.subscribeToTopic(following);
+      });
     } on FirebaseAuthException catch (error) {
       _errorMessage = error.message;
       if (error.code == 'unknown') {
@@ -112,6 +122,13 @@ class AuthenticationProvider with ChangeNotifier {
     notifyListeners();
     try {
       await _authenticationService.signOut();
+      final user = _authenticationService.currentUser;
+      // unsubscribe from all topics
+      final followings = await _followService.getAllFollowingIds(user.uid);
+      await _notificationService.unsubscribeFromTopic(user.uid);
+      followings.forEach((following) async { 
+        await _notificationService.unsubscribeFromTopic(following);
+      });
     } on FirebaseAuthException catch (error) {
       _errorMessage = error.message;
       if (error.code == 'unknown') {

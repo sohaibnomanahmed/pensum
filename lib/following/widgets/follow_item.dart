@@ -26,10 +26,11 @@ class FollowItem extends StatelessWidget {
       title: Text(_follow.title),
       subtitle: Text(_follow.year),
       trailing: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
           if (_follow.notification)
             CircleAvatar(
-                radius: 5, backgroundColor: Colors.red[400]),
+                radius: 5, backgroundColor: Theme.of(context).backgroundColor),
           IconButton(
             icon:
                 Icon(Icons.delete_rounded, color: Theme.of(context).errorColor),
