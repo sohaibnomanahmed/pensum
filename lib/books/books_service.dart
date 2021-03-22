@@ -3,10 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'models/book.dart';
 
 class BooksService {
-  final FirebaseFirestore firestore;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
   DocumentSnapshot lastBook;
-
-  BooksService(this.firestore);
 
   // fetch books
   Stream<List<Book>> fetchBooks(int pageSize) {

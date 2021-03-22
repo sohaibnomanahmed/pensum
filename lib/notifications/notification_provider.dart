@@ -3,10 +3,11 @@ import 'dart:async';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:leaf/authentication/authentication_service.dart';
 import 'package:leaf/messages/messages_page.dart';
+import 'package:leaf/notifications/notification_service.dart';
 
 import 'models/notifications.dart';
-import '../global/services.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
@@ -17,8 +18,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 class NotificationProvider with ChangeNotifier {
-  final _authenticationService = FirebaseService.authentication;
-  final _notificationsService = FirebaseService.notifications;
+  final _authenticationService = AuthenticationService();
+  final _notificationsService = NotificationService();
 
   Notifications _notifications;
   StreamSubscription _subscription;

@@ -4,10 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'models/recipient.dart';
 
 class RecipientsService {
-  final FirebaseFirestore firestore;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
   DocumentSnapshot lastRecipient;
-
-  RecipientsService(this.firestore);
 
   // fetch recipients
   Stream<List<Recipient>> fetchRecipients({

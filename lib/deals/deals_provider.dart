@@ -2,21 +2,23 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:leaf/authentication/authentication_service.dart';
 import 'package:leaf/deals/deals_service.dart';
 import 'package:leaf/deals/models/deal_filter.dart';
+import 'package:leaf/following/follow_service.dart';
 import 'package:leaf/following/models/Follow.dart';
+import 'package:leaf/notifications/notification_service.dart';
+import 'package:leaf/profile/profile_service.dart';
 
 import '../books/models/book.dart';
-import '../global/services.dart';
 import 'models/deal.dart';
 
 class DealsProvider with ChangeNotifier {
-  final _authenticationService = FirebaseService.authentication;
-  final _profileService = FirebaseService.profile;
-  //final _dealsService = FirebaseService.deals;
-  final _dealsService = DealsService(FirebaseFirestore.instance);
-  final _followService = FirebaseService.follow;
-  final _notificationsService = FirebaseService.notifications;
+  final _authenticationService = AuthenticationService();
+  final _profileService = ProfileService();
+  final _dealsService = DealsService();
+  final _followService = FollowService();
+  final _notificationsService = NotificationService();
 
   List<Deal> _deals = [];
   final _pageSize = 10;

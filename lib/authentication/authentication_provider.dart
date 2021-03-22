@@ -1,14 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:leaf/authentication/authentication_service.dart';
+import 'package:leaf/following/follow_service.dart';
+import 'package:leaf/notifications/notification_service.dart';
+import 'package:leaf/profile/profile_service.dart';
 
 import '../profile/models/profile.dart';
-import '../global/services.dart';
 
 class AuthenticationProvider with ChangeNotifier {
-  final _authenticationService = FirebaseService.authentication;
-  final _profileService = FirebaseService.profile;
-  final _followService = FirebaseService.follow;
-  final _notificationService = FirebaseService.notifications;
+  final _authenticationService = AuthenticationService();
+  final _profileService = ProfileService();
+  final _followService = FollowService();
+  final _notificationService = NotificationService();
 
   var _isLoading = false;
   final _unknownMessage = 'Error: please check your network connection';

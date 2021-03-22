@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:leaf/books/books_service.dart';
 
-import '../global/services.dart';
 import 'models/book.dart';
 
 class BooksProvider with ChangeNotifier{
-  final _booksService = FirebaseService.books;
+  final _booksService = BooksService();
 
   List<Book> _books = [];
   List<Book> _prevBooks = [];

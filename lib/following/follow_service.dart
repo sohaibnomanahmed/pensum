@@ -3,12 +3,10 @@ import 'package:flutter/foundation.dart';
 
 import 'models/Follow.dart';
 
-class FollowService{
-  final FirebaseFirestore firestore;
+class FollowService {
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
   DocumentSnapshot lastFollow;
   DocumentSnapshot lastNotification;
-
-  FollowService(this.firestore);
 
   // fetch follows
   Stream<List<Follow>> fetchFollowing(
@@ -46,7 +44,9 @@ class FollowService{
     if (follows.docs.isNotEmpty) {
       lastFollow = follows.docs.last;
     }
-    return follows.docs.map((document) => Follow.fromFirestore(document)).toList();
+    return follows.docs
+        .map((document) => Follow.fromFirestore(document))
+        .toList();
   }
 
   // return id of all followings, useful if needed to subscribe or unsubscribe
@@ -70,12 +70,14 @@ class FollowService{
   }
 
   // get following status stream
-  Stream<bool> getFollowingStatus({@required String uid, @required String id}){
+  Stream<bool> getFollowingStatus({@required String uid, @required String id}) {
     return firestore
         .collection('profiles')
         .doc(uid)
         .collection('following')
-        .doc(id).snapshots().map((doc) => doc.exists);   
+        .doc(id)
+        .snapshots()
+        .map((doc) => doc.exists);
   }
 
   // remove a profile follow
@@ -86,5 +88,16 @@ class FollowService{
         .collection('following')
         .doc(id)
         .delete();
-  }  
+  }
+
+  // remove a notification for a spesific followed book
+  void removeFollowingNotification(
+      {@required String uid, @required String id}){
+    firestore
+        .collection('profiles')
+        .doc(uid)
+        .collection('following')
+        .doc(id)
+        .update({'notification': false});
+  }
 }

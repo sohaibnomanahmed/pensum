@@ -1,16 +1,19 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:leaf/authentication/authentication_service.dart';
+import 'package:leaf/books/books_service.dart';
 import 'package:leaf/books/models/book.dart';
+import 'package:leaf/following/follow_service.dart';
+import 'package:leaf/notifications/notification_service.dart';
 
-import '../global/services.dart';
 import 'models/Follow.dart';
 
 class FollowProvider with ChangeNotifier{
-  final _authenticationService = FirebaseService.authentication;
-  final _booksService = FirebaseService.books;
-  final _followService = FirebaseService.follow;
-  final _notificationsService = FirebaseService.notifications;
+  final _authenticationService = AuthenticationService();
+  final _booksService = BooksService();
+  final _followService = FollowService();
+  final _notificationsService = NotificationService();
 
   List<Follow> _follows = [];
   final _pageSize = 10;
@@ -123,8 +126,24 @@ class FollowProvider with ChangeNotifier{
     return true;
   }
 
+  /*
+   * returned a followed book 
+   */
   Future<Book> getFollowedBook(String isbn){
     return _booksService.getBook(isbn);
+  }
+
+  /*
+   * remove following notification for a spesific book, if
+   * successfull return true, if error return false
+   */
+  void removeFollowingNotification(String id) {
+    try{
+      final user = _authenticationService.currentUser;
+      _followService.removeFollowingNotification(uid: user.uid, id: id);
+    }catch(error){
+      print('remove notification error: $error');
+    }
   }
 
   /*

@@ -23,6 +23,9 @@ class FollowList extends StatelessWidget {
                     final book = await context
                         .read<FollowProvider>()
                         .getFollowedBook(follows[index].pid);
+                    context
+                        .read<FollowProvider>()
+                        .removeFollowingNotification(follows[index].pid);
                     if (book != null) {
                       // navigate to books page
                       await Navigator.of(context).pushNamed(

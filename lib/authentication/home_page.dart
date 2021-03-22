@@ -114,7 +114,7 @@ class _HomePageState extends State<HomePage> {
                 icon: followingNotification
                     ? Badge(
                         color: Colors.red[400],
-                        child: Icon(Icons.chat_bubble_rounded))
+                        child: Icon(Icons.notifications_rounded))
                     : Icon(Icons.notifications_rounded),
                 label: 'Following'),
             BottomNavigationBarItem(

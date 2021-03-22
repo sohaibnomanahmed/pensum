@@ -5,10 +5,8 @@ import 'models/message.dart';
 import 'models/recipient.dart';
 
 class MessagesService {
-  final FirebaseFirestore firestore;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
   DocumentSnapshot lastMessage;
-
-  MessagesService(this.firestore);
 
   // fetch messages
   Stream<List<Message>> fetchMessages({

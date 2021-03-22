@@ -5,9 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:uuid/uuid.dart';
 
 class ImageUploadService{
-  final FirebaseStorage firebaseStorage;
-
-  const ImageUploadService(this.firebaseStorage);
+  final FirebaseStorage firebaseStorage = FirebaseStorage.instance;
 
   Future<String> uploadProfileImage({@required File image, @required String uid}) async {
     final storageReference =

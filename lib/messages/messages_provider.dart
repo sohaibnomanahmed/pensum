@@ -2,17 +2,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:leaf/authentication/authentication_service.dart';
+import 'package:leaf/global/image_picker_service.dart';
+import 'package:leaf/global/image_upload_service.dart';
+import 'package:leaf/messages/messages_service.dart';
+import 'package:leaf/messages/recipients_service.dart';
 
 import 'models/recipient.dart';
-import '../global/services.dart';
 import 'models/message.dart';
 
 class MessagesProvider with ChangeNotifier {
-  final _authenticationService = FirebaseService.authentication;
-  final _messagesService = FirebaseService.messages;
-  final _recipientService = FirebaseService.recipients;
-  final _imageUploadService = FirebaseService.imageUpload;
-  final _imagePickerService = NativeService.imagePicker;
+  final _authenticationService = AuthenticationService();
+  final _messagesService = MessagesService();
+  final _recipientService = RecipientsService();
+  final _imageUploadService = ImageUploadService();
+  final _imagePickerService = ImagePickerService();
 
   final List<Message> _messages = [];
   final _pageSize = 10;

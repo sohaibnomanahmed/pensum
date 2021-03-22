@@ -5,11 +5,9 @@ import 'models/deal.dart';
 import 'models/deal_filter.dart';
 
 class DealsService {
-  final FirebaseFirestore firestore;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
   DocumentSnapshot lastDeal;
   DocumentSnapshot lastFilteredDeal;
-
-  DealsService(this.firestore);
 
   // fetch deals
   Stream<List<Deal>> fetchDeals(

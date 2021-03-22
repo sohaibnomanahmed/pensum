@@ -2,20 +2,26 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:leaf/authentication/authentication_service.dart';
+import 'package:leaf/books/books_service.dart';
 import 'package:leaf/books/models/book.dart';
+import 'package:leaf/deals/deals_service.dart';
 import 'package:leaf/deals/models/deal.dart';
+import 'package:leaf/global/image_cropper_service.dart';
+import 'package:leaf/global/image_picker_service.dart';
+import 'package:leaf/global/image_upload_service.dart';
+import 'package:leaf/profile/profile_service.dart';
 
 import '../profile/models/profile.dart';
-import '../global/services.dart';
 
 class ProfileProvider with ChangeNotifier {
-  final _authenticationService = FirebaseService.authentication;
-  final _profileService = FirebaseService.profile;
-  final _dealsService = FirebaseService.deals;
-  final _booksService = FirebaseService.books;
-  final _imageUploadService = FirebaseService.imageUpload;
-  final _imagePickerService = NativeService.imagePicker;
-  final _imageCropperService = NativeService.imageCropper;
+  final _authenticationService = AuthenticationService();
+  final _profileService = ProfileService();
+  final _dealsService = DealsService();
+  final _booksService = BooksService();
+  final _imageUploadService = ImageUploadService();
+  final _imagePickerService = ImagePickerService();
+  final _imageCropperService = ImageCropperService();
 
   Profile _profile;
   var _isLoading = true;

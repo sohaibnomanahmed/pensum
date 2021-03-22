@@ -2,10 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 class NotificationService {
-  final FirebaseFirestore _firestore;
-  final FirebaseMessaging _messaging;
-
-  const NotificationService(this._firestore, this._messaging);
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseMessaging _messaging = FirebaseMessaging.instance;
 
   // get initial message to check if we are returning from a terminated state
   Future<RemoteMessage> get getInitialMessage => _messaging.getInitialMessage();
