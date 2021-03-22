@@ -15,11 +15,14 @@ class FollowItem extends StatelessWidget {
       leading: Container(
         height: 90,
         width: 50,
-        child: Image.network(
-          _follow.image,
-          errorBuilder: (_, __, ___) => Icon(
-            Icons.wifi_off_rounded,
-            color: Theme.of(context).primaryColorDark,
+        child: Hero(
+          tag: _follow.pid,
+          child: Image.network(
+            _follow.image,
+            errorBuilder: (_, __, ___) => Icon(
+              Icons.wifi_off_rounded,
+              color: Theme.of(context).primaryColorDark,
+            ),
           ),
         ),
       ),

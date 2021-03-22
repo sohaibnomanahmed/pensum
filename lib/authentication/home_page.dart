@@ -25,69 +25,47 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _currentIndex;
-  final List<Widget> _pages = [
-    // books page
-    CupertinoTabView(
-      builder: (_) => ChangeNotifierProvider(
-          create: (_) => BooksProvider(), child: BooksPage()),
-      onGenerateRoute: (settings) {
-        final args = settings.arguments;
-        switch (settings.name) {
-          case DealsPage.routeName:
-            final dealProvider = DealsProvider();
-            return MaterialPageRoute(
-              builder: (_) => ChangeNotifierProvider(
-                  create: (_) => dealProvider,
-                  child: DealsPage(book: args, dealsProvider: dealProvider)),
-            );
-          default:
-            return MaterialPageRoute(builder: (_) => PageNotFound());
-        }
-      },
-    ),
-    CupertinoTabView(
-        builder: (ctx) => ChangeNotifierProvider(
-              create: (_) => RecipientsProvider(),
-              child: RecipientsPage(),
-            )),
-    CupertinoTabView(builder: (_) {
-      final profileProvider = ProfileProvider();
-      return ChangeNotifierProvider(
-          create: (_) => profileProvider,
-          child: ProfilePage(profileProvider: profileProvider));
-    }, onGenerateRoute: (settings) {
-      final args = settings.arguments;
-      switch (settings.name) {
-        case DealsPage.routeName:
-          final dealProvider = DealsProvider();
-          return MaterialPageRoute(
+
+  // custom routes when possible to navigate to deals page
+  Route<dynamic> dealsGeneratedRoutes(RouteSettings settings) {
+    final args = settings.arguments;
+    switch (settings.name) {
+      case DealsPage.routeName:
+        final dealProvider = DealsProvider();
+        return MaterialPageRoute(
+          builder: (_) => ChangeNotifierProvider(
+              create: (_) => dealProvider,
+              child: DealsPage(book: args, dealsProvider: dealProvider)),
+        );
+      default:
+        return MaterialPageRoute(builder: (_) => PageNotFound());
+    }
+  }
+
+  List<Widget> get _pages => [
+        CupertinoTabView(
             builder: (_) => ChangeNotifierProvider(
-                create: (_) => dealProvider,
-                child: DealsPage(book: args, dealsProvider: dealProvider)),
-          );
-        default:
-          return MaterialPageRoute(builder: (_) => PageNotFound());
-      }
-    }),
-    CupertinoTabView(
-        builder: (ctx) => ChangeNotifierProvider(
-            create: (_) => FollowProvider(), child: FollowPage()),
-        onGenerateRoute: (settings) {
-          final args = settings.arguments;
-          switch (settings.name) {
-            case DealsPage.routeName:
-              final dealProvider = DealsProvider();
-              return MaterialPageRoute(
-                builder: (_) => ChangeNotifierProvider(
-                    create: (_) => dealProvider,
-                    child: DealsPage(book: args, dealsProvider: dealProvider)),
-              );
-            default:
-              return MaterialPageRoute(builder: (_) => PageNotFound());
-          }
-        }),
-    CupertinoTabView(builder: (ctx) => SettingsPage())
-  ];
+                create: (_) => BooksProvider(), child: BooksPage()),
+            onGenerateRoute: dealsGeneratedRoutes),
+        CupertinoTabView(
+            builder: (ctx) => ChangeNotifierProvider(
+                  create: (_) => RecipientsProvider(),
+                  child: RecipientsPage(),
+                )),
+        CupertinoTabView(
+            builder: (_) {
+              final profileProvider = ProfileProvider();
+              return ChangeNotifierProvider(
+                  create: (_) => profileProvider,
+                  child: ProfilePage(profileProvider: profileProvider));
+            },
+            onGenerateRoute: dealsGeneratedRoutes),
+        CupertinoTabView(
+            builder: (ctx) => ChangeNotifierProvider(
+                create: (_) => FollowProvider(), child: FollowPage()),
+            onGenerateRoute: dealsGeneratedRoutes),
+        CupertinoTabView(builder: (ctx) => SettingsPage())
+      ];
 
   @override
   void initState() {

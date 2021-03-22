@@ -20,11 +20,14 @@ class ProfileDealItem extends StatelessWidget {
           leading: Container(
             height: 90,
             width: 50,
-            child: Image.network(
-              deal.productImage,
-              errorBuilder: (_, __, ___) => Icon(
-                Icons.wifi_off_rounded,
-                color: Theme.of(context).primaryColorDark,
+            child: Hero(
+              tag: deal.pid,
+              child: Image.network(
+                deal.productImage,
+                errorBuilder: (_, __, ___) => Icon(
+                  Icons.wifi_off_rounded,
+                  color: Theme.of(context).primaryColorDark,
+                ),
               ),
             ),
           ),
@@ -32,14 +35,16 @@ class ProfileDealItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Flexible(
-                  child: Text(deal.productTitle, overflow: TextOverflow.ellipsis)),
+                  child:
+                      Text(deal.productTitle, overflow: TextOverflow.ellipsis)),
               Text(deal.price)
             ],
           ),
           subtitle: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Flexible(child: Text(deal.place, overflow: TextOverflow.ellipsis)),
+              Flexible(
+                  child: Text(deal.place, overflow: TextOverflow.ellipsis)),
               Text(deal.quality)
             ],
           ),
@@ -63,19 +68,21 @@ class ProfileDealItem extends StatelessWidget {
                 ),
               ),
               IconButton(
-                icon:
-                    Icon(Icons.delete_rounded, color: Theme.of(context).errorColor),
+                icon: Icon(Icons.delete_rounded,
+                    color: Theme.of(context).errorColor),
                 onPressed: () async {
                   final scaffoldMessenger = ScaffoldMessenger.of(context);
                   final errorColor = Theme.of(context).errorColor;
                   final primaryColor = Theme.of(context).primaryColor;
-                  final result = await context.read<ProfileProvider>().deleteDeal(
-                        productId: deal.pid,
-                        id: deal.id,
-                      );
+                  final result =
+                      await context.read<ProfileProvider>().deleteDeal(
+                            productId: deal.pid,
+                            id: deal.id,
+                          );
                   if (!result) {
                     // remove snackbar if existing and show a new with error message
-                    final errorMessage = context.read<DealsProvider>().errorMessage;
+                    final errorMessage =
+                        context.read<DealsProvider>().errorMessage;
                     scaffoldMessenger.hideCurrentSnackBar();
                     scaffoldMessenger.showSnackBar(
                       SnackBar(
