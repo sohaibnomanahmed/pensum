@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:leaf/books/models/book.dart';
 import 'package:leaf/deals/models/deal.dart';
 
 import '../profile/models/profile.dart';
@@ -11,6 +12,7 @@ class ProfileProvider with ChangeNotifier {
   final _authenticationService = FirebaseService.authentication;
   final _profileService = FirebaseService.profile;
   final _dealsService = FirebaseService.deals;
+  final _booksService = FirebaseService.books;
   final _imageUploadService = FirebaseService.imageUpload;
   final _imagePickerService = NativeService.imagePicker;
   final _imageCropperService = NativeService.imageCropper;
@@ -76,6 +78,10 @@ class ProfileProvider with ChangeNotifier {
     _isError = false;
     notifyListeners();
     fetchProfile(uid);
+  }
+
+  Future<Book> getDealedBook(String isbn){
+    return _booksService.getBook(isbn);
   }
 
   /*

@@ -55,10 +55,37 @@ class _HomePageState extends State<HomePage> {
       return ChangeNotifierProvider(
           create: (_) => profileProvider,
           child: ProfilePage(profileProvider: profileProvider));
+    }, onGenerateRoute: (settings) {
+      final args = settings.arguments;
+      switch (settings.name) {
+        case DealsPage.routeName:
+          final dealProvider = DealsProvider();
+          return MaterialPageRoute(
+            builder: (_) => ChangeNotifierProvider(
+                create: (_) => dealProvider,
+                child: DealsPage(book: args, dealsProvider: dealProvider)),
+          );
+        default:
+          return MaterialPageRoute(builder: (_) => PageNotFound());
+      }
     }),
     CupertinoTabView(
         builder: (ctx) => ChangeNotifierProvider(
-            create: (_) => FollowProvider(), child: FollowPage())),
+            create: (_) => FollowProvider(), child: FollowPage()),
+        onGenerateRoute: (settings) {
+          final args = settings.arguments;
+          switch (settings.name) {
+            case DealsPage.routeName:
+              final dealProvider = DealsProvider();
+              return MaterialPageRoute(
+                builder: (_) => ChangeNotifierProvider(
+                    create: (_) => dealProvider,
+                    child: DealsPage(book: args, dealsProvider: dealProvider)),
+              );
+            default:
+              return MaterialPageRoute(builder: (_) => PageNotFound());
+          }
+        }),
     CupertinoTabView(builder: (ctx) => SettingsPage())
   ];
 
@@ -72,12 +99,8 @@ class _HomePageState extends State<HomePage> {
     _currentIndex = 0;
 
     // fetch notification indicators for bottombar
-    context
-        .read<NotificationProvider>()
-        .fetchFollowingNotification;
-    context
-        .read<NotificationProvider>()
-        .fetchChatNotification;    
+    context.read<NotificationProvider>().fetchFollowingNotification;
+    context.read<NotificationProvider>().fetchChatNotification;
   }
 
   void _setCurrentIndex(int index) {
@@ -92,7 +115,7 @@ class _HomePageState extends State<HomePage> {
     final followingNotification =
         context.watch<NotificationProvider>().followingNotification;
     final chatNotification =
-        context.watch<NotificationProvider>().chatNotification;   
+        context.watch<NotificationProvider>().chatNotification;
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
           currentIndex: _currentIndex,
@@ -105,8 +128,7 @@ class _HomePageState extends State<HomePage> {
                 icon: chatNotification
                     ? Badge(
                         color: Colors.red[400],
-                        child: Icon(Icons.chat_bubble_rounded),
-                      )
+                        child: Icon(Icons.chat_bubble_rounded))
                     : Icon(Icons.chat),
                 label: 'Chat'),
             BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
@@ -114,8 +136,7 @@ class _HomePageState extends State<HomePage> {
                 icon: followingNotification
                     ? Badge(
                         color: Colors.red[400],
-                        child: Icon(Icons.chat_bubble_rounded),
-                      )
+                        child: Icon(Icons.chat_bubble_rounded))
                     : Icon(Icons.notifications_rounded),
                 label: 'Following'),
             BottomNavigationBarItem(

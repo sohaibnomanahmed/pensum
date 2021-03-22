@@ -52,6 +52,12 @@ class BooksService {
     );
   }
 
+  // get book
+  Future<Book> getBook(String isbn) async {
+    final book = await firestore.collection('books').doc(isbn).get();
+    return Book.fromFirestore(book);
+  }
+
   // Search books by title
   Future<List<Book>> searchBooksByTitle(String title) async {
     final books = await firestore

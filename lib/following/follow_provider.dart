@@ -1,12 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:leaf/books/models/book.dart';
 
 import '../global/services.dart';
 import 'models/Follow.dart';
 
 class FollowProvider with ChangeNotifier{
   final _authenticationService = FirebaseService.authentication;
+  final _booksService = FirebaseService.books;
   final _followService = FirebaseService.follow;
   final _notificationsService = FirebaseService.notifications;
 
@@ -119,6 +121,10 @@ class FollowProvider with ChangeNotifier{
       return false;
     }
     return true;
+  }
+
+  Future<Book> getFollowedBook(String isbn){
+    return _booksService.getBook(isbn);
   }
 
   /*

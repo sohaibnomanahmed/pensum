@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:leaf/deals/deals_service.dart';
 import 'package:leaf/deals/models/deal_filter.dart';
 import 'package:leaf/following/models/Follow.dart';
 
@@ -12,7 +13,8 @@ import 'models/deal.dart';
 class DealsProvider with ChangeNotifier {
   final _authenticationService = FirebaseService.authentication;
   final _profileService = FirebaseService.profile;
-  final _dealsService = FirebaseService.deals;
+  //final _dealsService = FirebaseService.deals;
+  final _dealsService = DealsService(FirebaseFirestore.instance);
   final _followService = FirebaseService.follow;
   final _notificationsService = FirebaseService.notifications;
 
@@ -228,7 +230,8 @@ class DealsProvider with ChangeNotifier {
   }
 
   /*
-   * follow a Book
+   * follow a Book, and subscribe to its id, so taht notification can
+   * be received when new deals are added
    */
   Future<bool> followBook(Book book) async {
     _isFollowBtnLoading = true;

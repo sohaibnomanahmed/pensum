@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:leaf/following/models/Follow.dart';
 
 import '../profile/models/profile.dart';
 import '../global/services.dart';
@@ -122,8 +121,8 @@ class AuthenticationProvider with ChangeNotifier {
     notifyListeners();
     try {
       await _authenticationService.signOut();
-      final user = _authenticationService.currentUser;
       // unsubscribe from all topics
+      final user = _authenticationService.currentUser;
       final followings = await _followService.getAllFollowingIds(user.uid);
       await _notificationService.unsubscribeFromTopic(user.uid);
       followings.forEach((following) async { 
@@ -181,6 +180,13 @@ class AuthenticationProvider with ChangeNotifier {
       // sicen deleting user is a sensitive opperation, wee need to reauthenticate
       await _authenticationService.reauthenticate(
           email: email, password: password);
+      // unsubscribe from all topics
+      final user = _authenticationService.currentUser;
+      final followings = await _followService.getAllFollowingIds(user.uid);
+      await _notificationService.unsubscribeFromTopic(user.uid);
+      followings.forEach((following) async { 
+        await _notificationService.unsubscribeFromTopic(following);
+      });    
       // delete the current user
       await _authenticationService.deleteUser();
     } on FirebaseAuthException catch (error) {
