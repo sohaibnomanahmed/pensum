@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:leaf/messages/widgets/message_action_sheet.dart';
 import 'package:provider/provider.dart';
 
 import '../messages_provider.dart';
@@ -23,32 +25,47 @@ class _MessageBarState extends State<MessageBar> {
     return TextField(
       controller: _controller,
       decoration: InputDecoration(
-        prefixIcon: IconButton(icon: Icon(Icons.add), onPressed: () {}),
-        suffixIcon: IconButton(
-            icon: Icon(Icons.send),
-            onPressed: _message.isEmpty
-                ? null
-                : () async {
-                    _controller.clear();
-                    final result =
-                        await context.read<MessagesProvider>().sendMessage(
-                              text: _message,
-                              rid: widget.rid,
-                              receiverName: widget.receiverName,
-                              receiverImage: widget.receiverImage,
-                            );
-                    _message = '';        
-                    if (!result) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text('Something went wrong!'),
-                        backgroundColor: Theme.of(context).errorColor,
-                      ));
-                    }
-                  }),
-        hintText: 'Send a message...',
-        border: InputBorder.none,
-        focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).primaryColor))
-      ),
+          prefixIcon: IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () {
+              showCupertinoModalPopup(
+                context: context,
+                builder: (ctx) => ChangeNotifierProvider.value(
+                  value: context.read<MessagesProvider>().provider,
+                  child: MessageActionSheet(
+                    rid: widget.rid,
+                    receiverName: widget.receiverName,
+                    receiverImage: widget.receiverImage,
+                  ),
+                ),
+              );
+            },
+          ),
+          suffixIcon: IconButton(
+              icon: Icon(Icons.send),
+              onPressed: _message.isEmpty
+                  ? null
+                  : () async {
+                      _controller.clear();
+                      final result =
+                          await context.read<MessagesProvider>().sendMessage(
+                                text: _message,
+                                rid: widget.rid,
+                                receiverName: widget.receiverName,
+                                receiverImage: widget.receiverImage,
+                              );
+                      _message = '';
+                      if (!result) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text('Something went wrong!'),
+                          backgroundColor: Theme.of(context).errorColor,
+                        ));
+                      }
+                    }),
+          hintText: 'Send a message...',
+          border: InputBorder.none,
+          focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Theme.of(context).primaryColor))),
       onChanged: (value) => setState(() => _message = value),
     );
   }

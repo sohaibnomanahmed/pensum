@@ -36,7 +36,7 @@ class _DealsPageState extends State<DealsPage> {
         context.watch<DealsProvider>().isFollowBtnLoading;
     final isFollowing = context.watch<DealsProvider>().isFollowing;
     return Scaffold(
-      appBar: BlurredImageAppBar(widget.book, widget.dealsProvider),
+      appBar: BlurredImageAppBar(widget.book),
       body: NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification scrollInfo) {
           if (scrollInfo.metrics.pixels >

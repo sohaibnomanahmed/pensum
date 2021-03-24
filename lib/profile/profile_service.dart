@@ -35,4 +35,9 @@ class ProfileService {
     profile.userItems.remove(id);
     return firestore.collection('profiles').doc(uid).update(profile.toMap());
   }
+
+  Future<String> getAdminId() async{
+    final admins = await firestore.collection('admin').get();
+    return admins.docs.first.id;
+  }
 }

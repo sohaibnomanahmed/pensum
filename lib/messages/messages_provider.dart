@@ -26,6 +26,7 @@ class MessagesProvider with ChangeNotifier {
   var _subscription;
 
   // getters
+  MessagesProvider get provider => this;
   bool get isLoading => _isLoading;
   bool get isError => _isError;
   List<Message> get messages => [..._messages];

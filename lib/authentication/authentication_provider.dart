@@ -205,4 +205,14 @@ class AuthenticationProvider with ChangeNotifier {
     notifyListeners();
     return true;
   }
+
+  Future<Profile> getAdminAccount() async {
+    try{
+      final adminId = await _profileService.getAdminId();
+      return await _profileService.getProfile(adminId);
+    } catch (error){
+      print('Getting admin account error: $error');
+      return null;
+    }
+  }
 }

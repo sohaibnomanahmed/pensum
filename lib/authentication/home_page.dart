@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage> {
               final profileProvider = ProfileProvider();
               return ChangeNotifierProvider(
                   create: (_) => profileProvider,
-                  child: ProfilePage(profileProvider: profileProvider));
+                  child: ProfilePage());
             },
             onGenerateRoute: dealsGeneratedRoutes),
         CupertinoTabView(

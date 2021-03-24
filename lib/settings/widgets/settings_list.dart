@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:leaf/authentication/widgets/reset_password_bottom_sheet.dart';
+import 'package:leaf/messages/messages_page.dart';
 import 'package:provider/provider.dart';
 
 import 'package:leaf/authentication/authentication_provider.dart';
@@ -10,6 +11,7 @@ class SettingsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isLoading = context.watch<AuthenticationProvider>().isLoading;
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -30,25 +32,33 @@ class SettingsList extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.feedback_rounded),
             title: Text('Send Feedback'),
-            onTap: () {
-              // ScaffoldMessenger.of(context).showSnackBar(
-              //   SnackBar(
-              //       behavior: SnackBarBehavior.floating,
-              //       backgroundColor: Theme.of(context).canvasColor,
-              //       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-              //       content: ListTile(
-              //         contentPadding: EdgeInsets.all(0),
-              //         dense: true,
-              //         leading: CircleAvatar(
-              //             backgroundImage: NetworkImage(
-              //                 'https://firebasestorage.googleapis.com/v0/b/leaf-e52aa.appspot.com/o/profile.png?alt=media&token=ef36af4e-c528-4851-b429-53f867672b33')),
-              //         title: Text('tony'),
-              //         subtitle: Text('a long message if you want'),
-              //         onTap: () {
-              //           ScaffoldMessenger.of(context).hideCurrentSnackBar();
-              //         },
-              //       )),
-              // );
+            onTap: isLoading
+                ? null
+                : () async {
+              final serviceAccount = await context
+                  .read<AuthenticationProvider>()
+                  .getAdminAccount();
+              if (serviceAccount != null) {
+                await Navigator.of(context, rootNavigator: true).pushNamed(
+                  MessagesPage.routeName,
+                  arguments: {
+                    'id': serviceAccount.uid,
+                    'image': serviceAccount.imageUrl,
+                    'name': serviceAccount.fullName
+                  },
+                );
+              } else {
+                // remove snackbar if existing and show a new with error message
+                scaffoldMessenger.hideCurrentSnackBar();
+                scaffoldMessenger.showSnackBar(
+                  SnackBar(
+                    backgroundColor: Theme.of(context).errorColor,
+                    content: Text(
+                      'Something went wrong trying to get the service Account!',
+                    ),
+                  ),
+                );
+              }
             },
           ),
           ListTile(
@@ -61,7 +71,6 @@ class SettingsList extends StatelessWidget {
                         await context.read<AuthenticationProvider>().signOut();
                     if (!result) {
                       // remove snackbar if existing and show a new with error message
-                      final scaffoldMessenger = ScaffoldMessenger.of(context);
                       scaffoldMessenger.hideCurrentSnackBar();
                       scaffoldMessenger.showSnackBar(
                         SnackBar(

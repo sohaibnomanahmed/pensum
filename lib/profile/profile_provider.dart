@@ -30,6 +30,7 @@ class ProfileProvider with ChangeNotifier {
   StreamSubscription _subscription;
 
   // getters
+  ProfileProvider get provider => this;
   bool get isLoading => _isLoading;
   bool get isError => _isError;
   Profile get profile => _profile;

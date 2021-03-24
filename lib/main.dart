@@ -3,6 +3,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:leaf/profile/profile_page.dart';
+import 'package:leaf/profile/profile_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'authentication/authentication_provider.dart';
@@ -47,7 +49,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<AuthenticationProvider>(
+        ChangeNotifierProvider(
           create: (ctx) => AuthenticationProvider(),
         ),
         StreamProvider(
@@ -93,13 +95,22 @@ class MyApp extends StatelessWidget {
             case MessagesPage.routeName:
               Map args = settings.arguments;
               return MaterialPageRoute(
-                builder: (_) => ChangeNotifierProvider<MessagesProvider>(
+                builder: (_) => ChangeNotifierProvider(
                   create: (_) => MessagesProvider(),
                   child: MessagesPage(
                     rid: args['id'],
                     receiverName: args['name'],
                     receiverImage: args['image'],
                   ),
+                ),
+              );
+            case ProfilePage.routeName:
+              String uid = settings.arguments;
+              return MaterialPageRoute(
+                builder: (_) => ChangeNotifierProvider(
+                  create: (_) => ProfileProvider(),
+                  child:
+                      ProfilePage(uid),
                 ),
               );
             default:

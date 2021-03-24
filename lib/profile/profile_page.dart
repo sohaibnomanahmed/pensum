@@ -2,6 +2,7 @@ import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
 import 'package:leaf/global/widgets/leaf_error.dart';
+import 'package:leaf/messages/messages_page.dart';
 import 'package:provider/provider.dart';
 
 import '../global/extensions.dart';
@@ -14,9 +15,8 @@ import '../global/widgets/bezierContainer.dart';
 class ProfilePage extends StatefulWidget {
   static const routeName = '/profile';
   final String uid;
-  final ProfileProvider profileProvider;
 
-  ProfilePage({this.uid, @required this.profileProvider});
+  ProfilePage([this.uid]);
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -60,6 +60,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           AppBar(
                             backgroundColor: Colors.transparent,
                             elevation: 0,
+                            iconTheme: IconThemeData(
+                                color: Theme.of(context).primaryColorDark),
                           ),
                           Row(
                             children: [
@@ -79,34 +81,58 @@ class _ProfilePageState extends State<ProfilePage> {
                                     Text('Member since: ' +
                                         DateFormat('y')
                                             .format(profile.creationTime)),
-                                    ElevatedButton(
-                                        onPressed: () => showModalBottomSheet(
-                                              isScrollControlled: true,
-                                              context: context,
-                                              builder: (_) =>
-                                                  ChangeNotifierProvider.value(
-                                                value: widget.profileProvider,
-                                                child: EditProfileBottomSheet(
-                                                  profile.firstname
-                                                      .split(RegExp('\\s+'))
-                                                      .reduce((value,
-                                                              element) =>
-                                                          value.capitalize() +
-                                                          ' ' +
-                                                          element.capitalize())
-                                                      .capitalize(),
-                                                  profile.lastname
-                                                      .split(RegExp('\\s+'))
-                                                      .reduce((value,
-                                                              element) =>
-                                                          value.capitalize() +
-                                                          ' ' +
-                                                          element.capitalize())
-                                                      .capitalize(),
+                                    profile.isMe
+                                        ? ElevatedButton(
+                                            onPressed: () =>
+                                                showModalBottomSheet(
+                                                  isScrollControlled: true,
+                                                  context: context,
+                                                  builder: (_) =>
+                                                      ChangeNotifierProvider
+                                                          .value(
+                                                    value:
+                                                        context.read<ProfileProvider>().provider,
+                                                    child:
+                                                        EditProfileBottomSheet(
+                                                      profile.firstname
+                                                          .split(RegExp('\\s+'))
+                                                          .reduce((value,
+                                                                  element) =>
+                                                              value
+                                                                  .capitalize() +
+                                                              ' ' +
+                                                              element
+                                                                  .capitalize())
+                                                          .capitalize(),
+                                                      profile.lastname
+                                                          .split(RegExp('\\s+'))
+                                                          .reduce((value,
+                                                                  element) =>
+                                                              value
+                                                                  .capitalize() +
+                                                              ' ' +
+                                                              element
+                                                                  .capitalize())
+                                                          .capitalize(),
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
-                                            ),
-                                        child: Text('Edit Profile'))
+                                            child: Text('Edit Profile'))
+                                        : ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            primary: Colors.pink
+                                          ),
+                                            onPressed: () => Navigator.of(
+                                                        context,
+                                                        rootNavigator: true)
+                                                    .pushNamed(
+                                                        MessagesPage.routeName,
+                                                        arguments: {
+                                                      'id': profile.uid,
+                                                      'image': profile.imageUrl,
+                                                      'name': profile.fullName
+                                                    }),
+                                            child: Text('Send message'))
                                   ],
                                 ),
                               )

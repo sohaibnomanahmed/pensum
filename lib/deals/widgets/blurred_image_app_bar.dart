@@ -14,9 +14,9 @@ class BlurredImageAppBar extends StatelessWidget with PreferredSizeWidget {
   final Size preferredSize;
 
   final Book book;
-  final DealsProvider dealsProvider;
+  //final DealsProvider dealsProvider;
 
-  BlurredImageAppBar(this.book, this.dealsProvider)
+  BlurredImageAppBar(this.book)
       : preferredSize = Size.fromHeight(50.0);
 
   @override
@@ -47,7 +47,7 @@ class BlurredImageAppBar extends StatelessWidget with PreferredSizeWidget {
             isScrollControlled: true,
             context: context,
             builder: (_) => ChangeNotifierProvider.value(
-              value: dealsProvider,
+              value: context.read<DealsProvider>().provider,
               child: FilterDealsBottomSheet(book),
             ),
           ),
@@ -58,7 +58,7 @@ class BlurredImageAppBar extends StatelessWidget with PreferredSizeWidget {
             isScrollControlled: true,
             context: context,
             builder: (_) => ChangeNotifierProvider.value(
-              value: dealsProvider,
+              value: context.read<DealsProvider>().provider,
               child: AddDealBottomSheet(
                 pid: book.isbn,
                 productImage: book.image,

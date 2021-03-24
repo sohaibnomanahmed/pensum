@@ -42,6 +42,7 @@ class DealsProvider with ChangeNotifier {
   String get errorMessage => _errorMessage;
   DealFilter get dealFilter => _dealFilter;
   List<Deal> get deals => [..._deals];
+  DealsProvider get provider => this;
 
   /*
    * Subsbribe to the deals stream, if an error accours the stream will be canceled 

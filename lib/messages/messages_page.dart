@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:leaf/profile/profile_page.dart';
 import 'package:provider/provider.dart';
 
 import 'messages_provider.dart';
@@ -31,10 +32,33 @@ class _MessagesPageState extends State<MessagesPage> {
     final isError = context.watch<MessagesProvider>().isError;
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.receiverName), elevation: 0),
+          title: ListTile(
+            contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
+            onTap: () {
+              Navigator.of(context, rootNavigator: true).pushNamed(
+                ProfilePage.routeName,
+                arguments: widget.rid,
+              );
+            },
+            leading: Stack(
+              alignment: Alignment.bottomRight,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: CircleAvatar(
+                    backgroundImage: NetworkImage(widget.receiverImage),
+                  ),
+                ),
+                //PresenceBubble(widget.routeArgs['userId'], 18)
+              ],
+            ),
+            title: Text(widget.receiverName),
+          ),
+          elevation: 0),
       body: isError
           ? Center(
-              child: LeafError(context.read<MessagesProvider>().refetchMessages, widget.rid))
+              child: LeafError(
+                  context.read<MessagesProvider>().refetchMessages, widget.rid))
           : isLoading
               ? Center(child: CircularProgressIndicator())
               : SafeArea(
@@ -48,7 +72,7 @@ class _MessagesPageState extends State<MessagesPage> {
                       )
                     ],
                   ),
-              ),
+                ),
     );
   }
 }

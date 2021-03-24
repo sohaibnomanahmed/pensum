@@ -15,6 +15,17 @@ admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
 })
 
+// makes a certain account into admin, this admin account is used as feedback related account
+export const onServiceAccountCreation = functions.auth.user().onCreate(async user => {
+        const userID = user.uid
+        const userEmail = user.email
+
+        if (userEmail == 'flutter.leaf@gmail.com'){
+            await admin.firestore().collection('admin').doc(userID).set({})
+        }
+    }
+);
+
 // When a user updates his image, the data needs to be updates on other
 // collections as, the copy of the image Url are placed there to be received faster
 export const onProfileImageUpdate = functions.firestore
@@ -85,7 +96,9 @@ export const onSendMessage = functions.firestore
 
         // get sender info for notf
         const senderDoc = await admin.firestore().collection('profiles').doc(senderID).get()
-        const senderName = senderDoc.data()!.firstname + ' ' + senderDoc.data()!.lastname
+        const firstname = senderDoc.data()!.firstname
+        const lastname = senderDoc.data()!.lastname
+        const senderName = firstname[0].toUpperCase() + firstname.substr(1).toLowerCase() + ' ' + lastname[0].toUpperCase() + lastname.substr(1).toLowerCase()
         const senderImage = senderDoc.data()!.imageUrl
 
         // build the notification
@@ -103,10 +116,6 @@ export const onSendMessage = functions.firestore
                 type: type
             }
         }
-
-        // set notification for receiver
-        // const notfRef = admin.firestore().collection('notifications').doc(receiverID)
-        // await notfRef.set({ 'chat': true }, { merge: true })
 
         // set messageInfo for receiver
         promises.push(recieverRef.set({
@@ -136,20 +145,12 @@ export const onAddDeal = functions.firestore
     // before returning and have them be done async
     const promises: Promise<any>[] = [] // need this since the promises are of different type
     const bookISBN = context.params.bookIsbn
-    //const dealID = context.params.dealId
-    //const deal = snapshot.data()!
-    //const time = snapshot.data()!.time
 
     // get book doc
     const bookDoc = await admin.firestore().collection('books').doc(bookISBN).get() 
     const bookImage = bookDoc.data()!.image
     const bookTitle = bookDoc.data()!.title[0]
     const bookMessage = 'New deal added for ' + bookTitle
-
-    // get deal adder info for notf
-    // const senderDoc = await admin.firestore().collection('profiles').doc(deal.uid).get()
-    // const senderName = senderDoc.data()!.firstname + ' ' + senderDoc.data()!.lastname
-    // const senderImage = senderDoc.data()!.imageUrl
 
     // build the notification
     const type = 'book'
