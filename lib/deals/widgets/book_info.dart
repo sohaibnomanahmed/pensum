@@ -1,4 +1,6 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:leaf/images/photo_page.dart';
 import '../../books/models/book.dart';
 
 class BookInfo extends StatelessWidget {
@@ -12,20 +14,24 @@ class BookInfo extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       child: Row(
         children: [
-          Container(
-            height: 200,
-            width: 150,
-            child: Hero(
-                tag: book.isbn,
-                child: Image.network(
-                  book.image,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) => Icon(
-                    Icons.wifi_off_rounded,
-                    size: 60,
-                    color: Theme.of(context).primaryColorDark,
-                  ),
-                )),
+          OpenContainer(
+            useRootNavigator: true,
+            openBuilder: (_, __) => PhotoPage(book.image),
+            closedBuilder: (_, __) => Container(
+              height: 200,
+              width: 150,
+              child: Hero(
+                  tag: book.isbn,
+                  child: Image.network(
+                    book.image,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => Icon(
+                      Icons.wifi_off_rounded,
+                      size: 60,
+                      color: Theme.of(context).primaryColorDark,
+                    ),
+                  )),
+            ),
           ),
           Flexible(
             child: Column(

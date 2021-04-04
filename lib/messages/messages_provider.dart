@@ -3,8 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:leaf/authentication/authentication_service.dart';
-import 'package:leaf/global/image_picker_service.dart';
-import 'package:leaf/global/image_upload_service.dart';
+import 'package:leaf/images/image_picker_service.dart';
+import 'package:leaf/images/image_upload_service.dart';
 import 'package:leaf/messages/messages_service.dart';
 import 'package:leaf/messages/recipients_service.dart';
 

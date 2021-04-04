@@ -28,6 +28,10 @@
 	<string>Need access to record a video</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Need access to choose a picture</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Need access to select a location</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Need access to select a location</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

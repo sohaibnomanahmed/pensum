@@ -15,8 +15,7 @@ import 'messages/messages_provider.dart';
 import 'global/404_page.dart';
 import 'notifications/notification_provider.dart';
 
-// emulator related
-// import 'global/services.dart';
+// // emulator related
 // import 'package:flutter/foundation.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -24,14 +23,14 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  // Switch host based on platform.
+  // // Switch host based on platform.
   // final host = defaultTargetPlatform == TargetPlatform.android
   //     ? '10.0.2.2:8080'
   //     : 'localhost:8080';
   // // setup local developement environment
-  // FirebaseService.firestore.settings  =
+  // FirebaseFirestore.instance.settings  =
   //   Settings(host: host, sslEnabled: false, persistenceEnabled: false);
-  // await FirebaseService.firebaseAuth.useEmulator('http://localhost:9099');
+  // await FirebaseAuth.instance.useEmulator('http://localhost:9099');
 
   await FirebaseAuth.instance.authStateChanges().isEmpty;
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
@@ -109,8 +108,7 @@ class MyApp extends StatelessWidget {
               return MaterialPageRoute(
                 builder: (_) => ChangeNotifierProvider(
                   create: (_) => ProfileProvider(),
-                  child:
-                      ProfilePage(uid),
+                  child: ProfilePage(uid),
                 ),
               );
             default:

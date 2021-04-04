@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:leaf/location/map_page.dart';
 import 'package:provider/provider.dart';
 
 import 'package:image_picker/image_picker.dart';
@@ -43,7 +44,14 @@ class MessageActionSheet extends StatelessWidget {
           child: Text('Photo Library'),
         ),
         CupertinoActionSheetAction(
-            onPressed: () {}, child: Text('Location')),
+            onPressed: () {}, child: Text('Current Location')),
+        CupertinoActionSheetAction(
+            onPressed: () async {
+              final selectedLocation = await Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(builder: (ctx) => MapPage(isSelecting: true,)));
+              if (selectedLocation == null){
+                return;
+              }
+            }, child: Text('Pick Location')),    
       ],
       cancelButton: CupertinoActionSheetAction(
           onPressed: () {

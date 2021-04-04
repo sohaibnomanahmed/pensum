@@ -73,6 +73,12 @@ dependencies:
   # animations
   animations: ^2.0.0
 
+  # location
+  location:
+
+  # google maps
+  google_maps_flutter: ^2.0.2  
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

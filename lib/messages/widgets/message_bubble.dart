@@ -1,6 +1,8 @@
+import 'package:animations/animations.dart';
 import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
+import 'package:leaf/images/photo_page.dart';
 
 import '../models/message.dart';
 
@@ -19,6 +21,7 @@ class MessageBubble extends StatelessWidget {
           message.isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
         Container(
+          clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(
             color: message.isMe
                 ? Colors.grey[200]
@@ -34,31 +37,47 @@ class MessageBubble extends StatelessWidget {
           ),
           //width: 200,
           constraints: BoxConstraints(maxWidth: 200),
-          padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+          padding: message.type == 'image'
+              ? EdgeInsets.all(0)
+              : EdgeInsets.symmetric(vertical: 12, horizontal: 16),
           margin: EdgeInsets.only(top: 12),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    formattedDate,
-                    style: Theme.of(context).textTheme.caption,
-                  ),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  Icon(
-                    Icons.check_circle_rounded,
-                    size: 10,
-                    color: message.seen
-                        ? Theme.of(context).primaryColor
-                        : Theme.of(context).splashColor,
-                  )
-                ],
+              Padding(
+                padding: message.type == 'image'
+                    ? EdgeInsets.all(8.0)
+                    : EdgeInsets.all(0),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(formattedDate,
+                        style: Theme.of(context).textTheme.caption),
+                    SizedBox(width: 5),
+                    Icon(
+                      Icons.check_circle_rounded,
+                      size: 10,
+                      color: message.seen
+                          ? Theme.of(context).primaryColor
+                          : Theme.of(context).splashColor,
+                    )
+                  ],
+                ),
               ),
-              Text(message.text),
+              if (message.type == 'text') Text(message.text),
+              if (message.type == 'image')
+                OpenContainer(
+                  openBuilder: (_, __) => PhotoPage(message.text),
+                  closedBuilder: (_, __) => Image.network(
+                    message.text,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => Icon(
+                      Icons.wifi_off_rounded,
+                      size: 60,
+                      color: Theme.of(context).primaryColorDark,
+                    ),
+                  ),
+                )
             ],
           ),
         ),

@@ -76,7 +76,7 @@ export const onSendMessage = functions.firestore
         const receiverID = context.params.receiverId
         const senderID = context.params.senderId
         const messageID = context.params.messageId
-        const message = snapshot.data()!.text
+        var message = snapshot.data()!.text
         console.log(message)
         const time = snapshot.data()!.time
 
@@ -100,6 +100,10 @@ export const onSendMessage = functions.firestore
         const lastname = senderDoc.data()!.lastname
         const senderName = firstname[0].toUpperCase() + firstname.substr(1).toLowerCase() + ' ' + lastname[0].toUpperCase() + lastname.substr(1).toLowerCase()
         const senderImage = senderDoc.data()!.imageUrl
+
+        if (snapshot.data()!.type == 'image'){
+            message = senderName + ' sent a image'
+        }
 
         // build the notification
         const type = 'message'

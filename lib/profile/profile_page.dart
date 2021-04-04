@@ -120,7 +120,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                             child: Text('Edit Profile'))
                                         : ElevatedButton(
                                           style: ElevatedButton.styleFrom(
-                                            primary: Colors.pink
+                                            primary: Theme.of(context).errorColor
                                           ),
                                             onPressed: () => Navigator.of(
                                                         context,

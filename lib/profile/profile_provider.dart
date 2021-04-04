@@ -7,9 +7,9 @@ import 'package:leaf/books/books_service.dart';
 import 'package:leaf/books/models/book.dart';
 import 'package:leaf/deals/deals_service.dart';
 import 'package:leaf/deals/models/deal.dart';
-import 'package:leaf/global/image_cropper_service.dart';
-import 'package:leaf/global/image_picker_service.dart';
-import 'package:leaf/global/image_upload_service.dart';
+import 'package:leaf/images/image_cropper_service.dart';
+import 'package:leaf/images/image_picker_service.dart';
+import 'package:leaf/images/image_upload_service.dart';
 import 'package:leaf/profile/profile_service.dart';
 
 import '../profile/models/profile.dart';
