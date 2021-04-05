@@ -1,6 +1,6 @@
 import 'package:location/location.dart';
 
-class LocationPicker {
+class LocationService {
   // get the current location of a user
   Future<LocationData> getCurrentUserLocation() async {
     final location = Location();

@@ -1,8 +1,10 @@
 import 'package:animations/animations.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
 import 'package:leaf/images/photo_page.dart';
+import 'package:leaf/location/map_page.dart';
 
 import '../models/message.dart';
 
@@ -37,7 +39,7 @@ class MessageBubble extends StatelessWidget {
           ),
           //width: 200,
           constraints: BoxConstraints(maxWidth: 200),
-          padding: message.type == 'image'
+          padding: message.type != 'text'
               ? EdgeInsets.all(0)
               : EdgeInsets.symmetric(vertical: 12, horizontal: 16),
           margin: EdgeInsets.only(top: 12),
@@ -45,7 +47,7 @@ class MessageBubble extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: message.type == 'image'
+                padding: message.type != 'text'
                     ? EdgeInsets.all(8.0)
                     : EdgeInsets.all(0),
                 child: Row(
@@ -67,9 +69,9 @@ class MessageBubble extends StatelessWidget {
               if (message.type == 'text') Text(message.text),
               if (message.type == 'image')
                 OpenContainer(
-                  openBuilder: (_, __) => PhotoPage(message.text),
+                  openBuilder: (_, __) => PhotoPage(message.image),
                   closedBuilder: (_, __) => Image.network(
-                    message.text,
+                    message.image,
                     fit: BoxFit.cover,
                     errorBuilder: (_, __, ___) => Icon(
                       Icons.wifi_off_rounded,
@@ -77,7 +79,22 @@ class MessageBubble extends StatelessWidget {
                       color: Theme.of(context).primaryColorDark,
                     ),
                   ),
-                )
+                ),
+              if (message.type == 'location')
+                OpenContainer(
+                  openBuilder: (_, __) => MapPage(
+                    initialLocation: LatLng(message.latitude, message.longitude),
+                  ),
+                  closedBuilder: (_, __) => Image.network(
+                    message.image,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => Icon(
+                      Icons.wifi_off_rounded,
+                      size: 60,
+                      color: Theme.of(context).primaryColorDark,
+                    ),
+                  ),
+                )  
             ],
           ),
         ),

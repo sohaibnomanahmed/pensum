@@ -6,6 +6,9 @@ class Message {
   final String sid; // sender id
   final String rid; // receiver id
   final String text;
+  final String image;
+  final double latitude;
+  final double longitude;
   final Timestamp time;
   final String type;
   bool seen;
@@ -15,6 +18,9 @@ class Message {
     @required this.sid,
     @required this.rid,
     @required this.text,
+    @required this.image,
+    @required this.latitude,
+    @required this.longitude,
     @required this.time,
     @required this.type,
     @required this.seen,
@@ -29,6 +35,9 @@ class Message {
     final String text = data['text'];
     final String sid = data['sid'];
     final String rid = data['rid'];
+    final String image = data['image'];
+    final double latitude = data['latitude'];
+    final double longitude = data['longitude'];
     final Timestamp time = data['time'];
     final String type = data['type'];
     final bool seen = data['seen'];
@@ -36,6 +45,9 @@ class Message {
         text: text,
         sid: sid,
         rid: rid,
+        image: image,
+        latitude: latitude,
+        longitude: longitude,
         time: time,
         type: type,
         seen: seen,
@@ -48,6 +60,9 @@ class Message {
       'time': time,
       'sid': sid,
       'rid': rid,
+      'image':image,
+      'latitude':latitude,
+      'longitude':longitude,
       'type': type,
       'seen': seen,
     };

@@ -29,7 +29,7 @@ export const onServiceAccountCreation = functions.auth.user().onCreate(async use
 // When a user updates his image, the data needs to be updates on other
 // collections as, the copy of the image Url are placed there to be received faster
 export const onProfileImageUpdate = functions.firestore
-    .document('users/{userID}').onUpdate(async change => {
+    .document('profiles/{userID}').onUpdate(async change => {
         const userID = change.before.id
         const beforeImage = change.before.data().imageUrl
         const afterImage = change.after.data().imageUrl
@@ -41,7 +41,7 @@ export const onProfileImageUpdate = functions.firestore
 
         // find all deals and recipeints, finds all collection with name deals and joins them togheter
         const deals = await admin.firestore().collectionGroup('deals').where("uid", "==", userID).get()
-        const messages = await admin.firestore().collectionGroup('recipients').where("receiverId", "==", userID).get()
+        const messages = await admin.firestore().collectionGroup('recipients').where("rid", "==", userID).get()
         const promises: Promise<any>[] = []
 
         // Loop through deals and update image
@@ -101,8 +101,8 @@ export const onSendMessage = functions.firestore
         const senderName = firstname[0].toUpperCase() + firstname.substr(1).toLowerCase() + ' ' + lastname[0].toUpperCase() + lastname.substr(1).toLowerCase()
         const senderImage = senderDoc.data()!.imageUrl
 
-        if (snapshot.data()!.type == 'image'){
-            message = senderName + ' sent a image'
+        if (snapshot.data()!.type != 'text'){
+            message = senderName + ' sent a ' + snapshot.data()!.type
         }
 
         // build the notification

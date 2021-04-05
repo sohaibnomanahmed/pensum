@@ -5,6 +5,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:leaf/authentication/authentication_service.dart';
 import 'package:leaf/images/image_picker_service.dart';
 import 'package:leaf/images/image_upload_service.dart';
+import 'package:leaf/location/google_map_service.dart';
+import 'package:leaf/location/location_service.dart';
 import 'package:leaf/messages/messages_service.dart';
 import 'package:leaf/messages/recipients_service.dart';
 
@@ -17,6 +19,8 @@ class MessagesProvider with ChangeNotifier {
   final _recipientService = RecipientsService();
   final _imageUploadService = ImageUploadService();
   final _imagePickerService = ImagePickerService();
+  final _googleMapService = GoogleMapService();
+  final _locationService = LocationService();
 
   final List<Message> _messages = [];
   final _pageSize = 10;
@@ -138,10 +142,13 @@ class MessagesProvider with ChangeNotifier {
    * If successfull return true, if an error occurs return false 
    */
   Future<bool> sendMessage({
-    @required String text,
     @required String rid,
     @required String receiverName,
     @required String receiverImage,
+    String text,
+    String image,
+    double latitude,
+    double longitude,
     String type = 'text',
     String messageText,
   }) async {
@@ -164,6 +171,9 @@ class MessagesProvider with ChangeNotifier {
       sid: user.uid,
       rid: rid,
       text: text,
+      image: image,
+      latitude: latitude,
+      longitude: longitude,
       time: time,
       type: type,
       seen: false,
@@ -199,12 +209,53 @@ class MessagesProvider with ChangeNotifier {
       final imageUrl = await _imageUploadService.uploadChatMessageImage(image);
       // Upload image to firestore chat
       await sendMessage(
-          text: imageUrl,
+          image: imageUrl,
           rid: rid,
           receiverName: receiverName,
           receiverImage: receiverImage,
           messageText: 'You sent a image',
           type: 'image');
+    } catch (error) {
+      print('Error sending message: $error');
+      return false;
+    }
+    return true;
+  }
+
+  /*
+   * Send location message to a user, pick a location and get a address and image
+   * Then call sendMessage. There should not be a loader, should feel like contant flow.
+   * If successfull return true, if an error occurs return false 
+   */
+  Future<bool> sendLocation({
+    @required bool currentLocation,
+    @required String rid,
+    @required String receiverName,
+    @required String receiverImage,
+    double latitude,
+    double longitude
+  }) async {
+    try {
+      // check if current location
+      if (currentLocation){
+        final location = await _locationService.getCurrentUserLocation();
+        latitude = location.latitude;
+        longitude = location.longitude;
+      }
+      // Get location address
+      final address = _googleMapService.getPlaceAddress(latitude: latitude, longitude: longitude);
+      // Get location image
+      final imageUrl = _googleMapService.generateLocationPreviewImage(latitude: latitude, longitude: longitude);
+      // Upload image to firestore chat
+      await sendMessage(
+          image: imageUrl,
+          rid: rid,
+          receiverName: receiverName,
+          receiverImage: receiverImage,
+          latitude: latitude,
+          longitude: longitude,
+          messageText: 'You sent a location',
+          type: 'location');
     } catch (error) {
       print('Error sending message: $error');
       return false;

@@ -19,6 +19,7 @@ class PhotoPage extends StatelessWidget {
         backgroundColor: Colors.black45,
         child: Icon(Icons.clear),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }
