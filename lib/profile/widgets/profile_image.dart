@@ -2,6 +2,7 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:leaf/images/photo_page.dart';
+import 'package:leaf/presence/widgets/presence_bubble.dart';
 import 'package:provider/provider.dart';
 
 import '../models/profile.dart';
@@ -29,7 +30,7 @@ class ProfileImage extends StatelessWidget {
             backgroundImage: NetworkImage(profile.imageUrl),
           ),
         ),
-        if (profile.isMe)
+        profile.isMe ?
           FloatingActionButton(
             elevation: 0,
             mini: true,
@@ -66,7 +67,9 @@ class ProfileImage extends StatelessWidget {
                     }
                   },
             child: Icon(Icons.edit),
-          ),
+          ):
+          PresenceBubble(profile.uid, 30)
+          
       ],
     );
   }

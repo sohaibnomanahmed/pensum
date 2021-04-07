@@ -69,32 +69,41 @@ class MessageBubble extends StatelessWidget {
               if (message.type == 'text') Text(message.text),
               if (message.type == 'image')
                 OpenContainer(
+                  closedColor: Colors.transparent,
+                  closedElevation: 0,
                   openBuilder: (_, __) => PhotoPage(message.image),
                   closedBuilder: (_, __) => Image.network(
                     message.image,
                     fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => Icon(
-                      Icons.wifi_off_rounded,
-                      size: 60,
-                      color: Theme.of(context).primaryColorDark,
+                    errorBuilder: (_, __, ___) => Center(
+                      child: Icon(
+                        Icons.wifi_off_rounded,
+                        size: 60,
+                        color: Theme.of(context).primaryColorDark,
+                      ),
                     ),
                   ),
                 ),
               if (message.type == 'location')
                 OpenContainer(
+                  closedColor: Colors.transparent,
+                  closedElevation: 0,
                   openBuilder: (_, __) => MapPage(
-                    initialLocation: LatLng(message.latitude, message.longitude),
+                    initialLocation:
+                        LatLng(message.latitude, message.longitude),
                   ),
                   closedBuilder: (_, __) => Image.network(
                     message.image,
                     fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => Icon(
-                      Icons.wifi_off_rounded,
-                      size: 60,
-                      color: Theme.of(context).primaryColorDark,
+                    errorBuilder: (_, __, ___) => Center(
+                      child: Icon(
+                        Icons.wifi_off_rounded,
+                        size: 60,
+                        color: Theme.of(context).primaryColorDark,
+                      ),
                     ),
                   ),
-                )  
+                )
             ],
           ),
         ),

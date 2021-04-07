@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:leaf/authentication/authentication_service.dart';
 import 'package:leaf/following/follow_service.dart';
 import 'package:leaf/notifications/notification_service.dart';
+import 'package:leaf/presence/presence_service.dart';
 import 'package:leaf/profile/profile_service.dart';
 
 import '../profile/models/profile.dart';
@@ -12,6 +13,7 @@ class AuthenticationProvider with ChangeNotifier {
   final _profileService = ProfileService();
   final _followService = FollowService();
   final _notificationService = NotificationService();
+  final _presenceService = PresenceService();
 
   var _isLoading = false;
   final _unknownMessage = 'Error: please check your network connection';
@@ -56,6 +58,9 @@ class AuthenticationProvider with ChangeNotifier {
         // log user out so he/she can log inn
         await _authenticationService.signOut();
       }
+
+      // set the user to be offline
+      // await _presenceService.setUserPresence(userCredential.user.uid, false);
     } on FirebaseAuthException catch (error) {
       _errorMessage = error.message;
       if (error.code == 'unknown') {
@@ -98,6 +103,7 @@ class AuthenticationProvider with ChangeNotifier {
       followings.forEach((following) async { 
         await _notificationService.subscribeToTopic(following);
       });
+
     } on FirebaseAuthException catch (error) {
       _errorMessage = error.message;
       if (error.code == 'unknown') {
@@ -123,7 +129,6 @@ class AuthenticationProvider with ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     try {
-      await _authenticationService.signOut();
       // unsubscribe from all topics
       final user = _authenticationService.currentUser;
       final followings = await _followService.getAllFollowingIds(user.uid);
@@ -131,6 +136,11 @@ class AuthenticationProvider with ChangeNotifier {
       followings.forEach((following) async { 
         await _notificationService.unsubscribeFromTopic(following);
       });
+
+      // remove presence
+      _presenceService.disconnect(signout: true);
+
+      await _authenticationService.signOut();
     } on FirebaseAuthException catch (error) {
       _errorMessage = error.message;
       if (error.code == 'unknown') {
@@ -206,6 +216,8 @@ class AuthenticationProvider with ChangeNotifier {
     return true;
   }
 
+  // gets the service account used for feedbacks
+  // TODO needs to be tested
   Future<Profile> getAdminAccount() async {
     try{
       final adminId = await _profileService.getAdminId();
@@ -213,6 +225,34 @@ class AuthenticationProvider with ChangeNotifier {
     } catch (error){
       print('Getting admin account error: $error');
       return null;
+    }
+  }
+
+  Future<void> goOnline() async {
+    // set the user to be online
+    try{
+      _presenceService.connect();
+    } catch (error) {
+      print('Error setting presence: $error');
+    }
+  }
+
+  Future<void> configurePresence() async {
+    // set the user to be online
+    try{
+      final user = _authenticationService.currentUser;
+      await _presenceService.configureUserPresence(user.uid);
+    } catch (error) {
+      print('Error setting presence: $error');
+    }
+  }
+
+  Future<void> goOffline() async {
+    // set the user to be online
+    try{
+      _presenceService.disconnect();
+    } catch (error) {
+      print('Error setting presence: $error');
     }
   }
 }
