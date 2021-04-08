@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:leaf/messages/messages_provider.dart';
+import 'package:leaf/messages/widgets/fast_message_bottom_sheet.dart';
+import 'package:provider/provider.dart';
 
 import '../../messages/messages_page.dart';
 import '../models/deal.dart';
@@ -31,12 +34,8 @@ class DealItem extends StatelessWidget {
               Text(deal.quality)
             ],
           ),
-          trailing: IconButton(
-            splashColor: Theme.of(context).backgroundColor,
-            icon:
-                Icon(Icons.send_rounded, color: Theme.of(context).primaryColor),
-            onPressed: () =>
-                Navigator.of(context, rootNavigator: true).pushNamed(
+          trailing: GestureDetector(
+            onTap: () => Navigator.of(context, rootNavigator: true).pushNamed(
               MessagesPage.routeName,
               arguments: {
                 'id': deal.uid,
@@ -44,6 +43,24 @@ class DealItem extends StatelessWidget {
                 'name': deal.userName
               },
             ),
+            onLongPress: () => showModalBottomSheet(
+              shape: RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.vertical(top: Radius.circular(15.0))),
+              context: context,
+              useRootNavigator: true,
+              isScrollControlled: true,
+              builder: (_) => ChangeNotifierProvider(
+                create: (context) => MessagesProvider(),
+                child: FastMessageBottomSheet(
+                  rid: deal.uid,
+                  receiverName: deal.userName,
+                  receiverImage: deal.userImage,
+                ),
+              ),
+            ),
+            child:
+                Icon(Icons.send_rounded, color: Theme.of(context).primaryColor),
           ),
         ),
         if (deal.description.isNotEmpty)

@@ -47,7 +47,7 @@ class _MapPageState extends State<MapPage> {
           FloatingActionButton(
             onPressed: () => Navigator.of(context).pop(),
             mini: true,
-            backgroundColor: Colors.black54,
+            //backgroundColor: Colors.black54,
             child: Icon(Icons.clear),
           ),
           SizedBox(width: 20),
@@ -61,7 +61,6 @@ class _MapPageState extends State<MapPage> {
           if (!widget.isSelecting)
             FloatingActionButton.extended(
               onPressed: () async {
-                // TODO some error cant launch canLaunch is failing
                 // Here we are supplying the variables that we've created above
                 final lat = widget.initialLocation.latitude;
                 final lng = widget.initialLocation.longitude;
@@ -82,9 +81,8 @@ class _MapPageState extends State<MapPage> {
                   throw "Couldn't launch URL";
                 }
               },
-              label: Text('Open in Maps'),
+              label: Text('Open in Google Maps'),
               icon: Icon(Icons.location_on_rounded),
-              backgroundColor: Colors.black54,
             )
         ],
       ),

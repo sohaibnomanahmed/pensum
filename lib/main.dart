@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:leaf/presence/presence_provider.dart';
 import 'package:leaf/profile/profile_page.dart';
 import 'package:leaf/profile/profile_provider.dart';
 import 'package:provider/provider.dart';
@@ -76,6 +77,9 @@ class MyApp extends StatelessWidget {
                     providers: [
                       ChangeNotifierProvider<NotificationProvider>(
                         create: (ctx) => NotificationProvider(),
+                      ),
+                      ChangeNotifierProvider<PresenceProvider>(
+                        create: (ctx) => PresenceProvider(),
                       ),
                     ],
                     child: HomePage(),

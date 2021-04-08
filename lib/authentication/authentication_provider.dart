@@ -227,32 +227,4 @@ class AuthenticationProvider with ChangeNotifier {
       return null;
     }
   }
-
-  Future<void> goOnline() async {
-    // set the user to be online
-    try{
-      _presenceService.connect();
-    } catch (error) {
-      print('Error setting presence: $error');
-    }
-  }
-
-  Future<void> configurePresence() async {
-    // set the user to be online
-    try{
-      final user = _authenticationService.currentUser;
-      await _presenceService.configureUserPresence(user.uid);
-    } catch (error) {
-      print('Error setting presence: $error');
-    }
-  }
-
-  Future<void> goOffline() async {
-    // set the user to be online
-    try{
-      _presenceService.disconnect();
-    } catch (error) {
-      print('Error setting presence: $error');
-    }
-  }
 }

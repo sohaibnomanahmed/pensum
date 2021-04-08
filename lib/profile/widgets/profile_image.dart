@@ -68,7 +68,7 @@ class ProfileImage extends StatelessWidget {
                   },
             child: Icon(Icons.edit),
           ):
-          PresenceBubble(profile.uid, 30)
+          PresenceBubble(profile.uid, 25)
           
       ],
     );

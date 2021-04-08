@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:leaf/authentication/authentication_provider.dart';
 import 'package:leaf/notifications/notification_provider.dart';
 import 'package:leaf/notifications/widgets/badge.dart';
+import 'package:leaf/presence/presence_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../following/follow_page.dart';
@@ -82,7 +83,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
     // track if paused or resumed etc..
     WidgetsBinding.instance.addObserver(this);
-    Provider.of<AuthenticationProvider>(context, listen: false)
+    Provider.of<PresenceProvider>(context, listen: false)
           .configurePresence();
   }
 
@@ -92,13 +93,13 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
     if (state == AppLifecycleState.paused) {
       print('Paused');
-      Provider.of<AuthenticationProvider>(context, listen: false)
+      Provider.of<PresenceProvider>(context, listen: false)
           .goOffline();
     }
 
     if (state == AppLifecycleState.resumed) {
       print('Ressumed');
-      Provider.of<AuthenticationProvider>(context, listen: false)
+      Provider.of<PresenceProvider>(context, listen: false)
           .goOnline();
     }
   }

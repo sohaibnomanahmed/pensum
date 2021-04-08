@@ -17,6 +17,7 @@ class ProfileDealItem extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         ListTile(
+          dense: true,
           leading: Container(
             height: 90,
             width: 50,

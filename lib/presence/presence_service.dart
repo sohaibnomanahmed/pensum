@@ -7,7 +7,7 @@ class PresenceService {
   StreamSubscription subscription;
   DatabaseReference con;
 
-  // update user presence
+  // configure user presence
   Future<void> configureUserPresence(String uid) async {
     final myConnectionsRef =
         database.reference().child('presence').child(uid).child('connections');
@@ -41,8 +41,8 @@ class PresenceService {
         // When I disconnect remove this device
         con.onDisconnect().remove();
         
-        // // Add this device to my connections list
-        // // this value could contain info about the device or a timestamp too
+        // Add this device to my connections list
+        // this value could contain info about the device or a timestamp too
         con.set(true);
         
         // When I disconnect, update the last time I was seen online
@@ -55,7 +55,6 @@ class PresenceService {
   Stream<dynamic> getUserPresenceStream(String uid){
     return database.reference().child('presence').child(uid).onValue.map((event) {
       final presenceData = event.snapshot.value;
-      print(presenceData);
       if (presenceData['connections'] == null){
         final lastSeen = DateTime.fromMillisecondsSinceEpoch(presenceData['lastOnline']);
         return lastSeen;
@@ -72,8 +71,6 @@ class PresenceService {
   // remove connection for this device when signing out
   void disconnect({bool signout = false}){
     if (signout && subscription != null){
-      print('remoove subscrption');
-      // TODO work after cold disconnect?
       subscription.cancel();
     }
     database.goOffline();
