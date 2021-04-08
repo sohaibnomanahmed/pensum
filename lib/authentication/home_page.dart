@@ -92,13 +92,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     super.didChangeAppLifecycleState(state);
 
     if (state == AppLifecycleState.paused) {
-      print('Paused');
       Provider.of<PresenceProvider>(context, listen: false)
           .goOffline();
     }
 
     if (state == AppLifecycleState.resumed) {
-      print('Ressumed');
       Provider.of<PresenceProvider>(context, listen: false)
           .goOnline();
     }

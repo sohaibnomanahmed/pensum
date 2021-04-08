@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:leaf/presence/widgets/presence_bubble.dart';
 import 'package:leaf/profile/profile_page.dart';
 import 'package:provider/provider.dart';
 
@@ -49,7 +50,7 @@ class _MessagesPageState extends State<MessagesPage> {
                     backgroundImage: NetworkImage(widget.receiverImage),
                   ),
                 ),
-                //PresenceBubble(widget.routeArgs['userId'], 18)
+                PresenceBubble(widget.rid, 18)
               ],
             ),
             title: Text(widget.receiverName),

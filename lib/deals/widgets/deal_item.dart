@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:leaf/messages/messages_provider.dart';
 import 'package:leaf/messages/widgets/fast_message_bottom_sheet.dart';
+import 'package:leaf/presence/widgets/presence_bubble.dart';
 import 'package:provider/provider.dart';
 
 import '../../messages/messages_page.dart';
@@ -17,7 +18,17 @@ class DealItem extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         ListTile(
-          leading: CircleAvatar(backgroundImage: NetworkImage(deal.userImage)),
+          dense: true,
+          leading: Stack(
+            alignment: Alignment.bottomRight,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: CircleAvatar(backgroundImage: NetworkImage(deal.userImage)),
+              ),
+              PresenceBubble(deal.uid, 18)
+            ],
+          ),
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

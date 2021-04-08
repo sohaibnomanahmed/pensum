@@ -41,7 +41,6 @@ class _PresenceBubbleState extends State<PresenceBubble> {
             ),
           );
         }
-        print(snap.data);
         var presence = snap.data;
 
         if (presence == true) {
