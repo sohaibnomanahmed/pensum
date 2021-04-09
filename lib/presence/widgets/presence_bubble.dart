@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:leaf/presence/presence_service.dart';
-import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:timeago_flutter/timeago_flutter.dart';
+
+import 'package:leaf/presence/presence_service.dart';
 
 /*
  * This widgets as a contrast to others talk directly to a service and not through

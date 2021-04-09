@@ -147,6 +147,7 @@ class MessagesProvider with ChangeNotifier {
     @required String receiverImage,
     String text,
     String image,
+    String address,
     double latitude,
     double longitude,
     String type = 'text',
@@ -172,6 +173,7 @@ class MessagesProvider with ChangeNotifier {
       rid: rid,
       text: text,
       image: image,
+      address: address,
       latitude: latitude,
       longitude: longitude,
       time: time,
@@ -243,15 +245,21 @@ class MessagesProvider with ChangeNotifier {
         longitude = location.longitude;
       }
       // Get location address
-      final address = _googleMapService.getPlaceAddress(latitude: latitude, longitude: longitude);
+      final address = await _googleMapService.getPlaceAddress(latitude: latitude, longitude: longitude);
       // Get location image
-      final imageUrl = _googleMapService.generateLocationPreviewImage(latitude: latitude, longitude: longitude);
+      final url = _googleMapService.generateLocationPreviewImage(latitude: latitude, longitude: longitude);
+      // Upload image to firebase storage
+      final image = await _imageUploadService.urlToFile(url);
+      final imageUrl = await _imageUploadService.uploadChatMessageImage(image);
+      // delete cached file
+      await _imageUploadService.deleteLastCachedFile();
       // Upload image to firestore chat
       await sendMessage(
           image: imageUrl,
           rid: rid,
           receiverName: receiverName,
           receiverImage: receiverImage,
+          address: address,
           latitude: latitude,
           longitude: longitude,
           messageText: 'You sent a location',

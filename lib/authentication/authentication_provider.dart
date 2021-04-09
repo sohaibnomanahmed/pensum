@@ -217,7 +217,6 @@ class AuthenticationProvider with ChangeNotifier {
   }
 
   // gets the service account used for feedbacks
-  // TODO needs to be tested
   Future<Profile> getAdminAccount() async {
     try{
       final adminId = await _profileService.getAdminId();

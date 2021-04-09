@@ -26,7 +26,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
-  int _currentIndex;
+  final _cupertinoTabController = CupertinoTabController();
 
   // custom routes when possible to navigate to deals page
   Route<dynamic> dealsGeneratedRoutes(RouteSettings settings) {
@@ -75,7 +75,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     context
         .read<NotificationProvider>()
         .configureNotifications(context, _setCurrentIndex);
-    _currentIndex = 0;
 
     // fetch notification indicators for bottombar
     context.read<NotificationProvider>().fetchFollowingNotification;
@@ -83,8 +82,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
     // track if paused or resumed etc..
     WidgetsBinding.instance.addObserver(this);
-    Provider.of<PresenceProvider>(context, listen: false)
-          .configurePresence();
+    Provider.of<PresenceProvider>(context, listen: false).configurePresence();
   }
 
   @override
@@ -92,13 +90,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     super.didChangeAppLifecycleState(state);
 
     if (state == AppLifecycleState.paused) {
-      Provider.of<PresenceProvider>(context, listen: false)
-          .goOffline();
+      Provider.of<PresenceProvider>(context, listen: false).goOffline();
     }
 
     if (state == AppLifecycleState.resumed) {
-      Provider.of<PresenceProvider>(context, listen: false)
-          .goOnline();
+      Provider.of<PresenceProvider>(context, listen: false).goOnline();
     }
   }
 
@@ -109,11 +105,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   }
 
   void _setCurrentIndex(int index) {
-    // TODO not working
-    print('Changing current index');
-    setState(() {
-      _currentIndex = index;
-    });
+    _cupertinoTabController.index = index;
   }
 
   @override
@@ -128,8 +120,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             body: Center(child: CircularProgressIndicator()),
           )
         : CupertinoTabScaffold(
+            controller: _cupertinoTabController,
             tabBar: CupertinoTabBar(
-                currentIndex: _currentIndex,
                 border: Border(top: BorderSide(color: Colors.grey, width: 0.1)),
                 backgroundColor: Theme.of(context).canvasColor.withOpacity(1),
                 items: [

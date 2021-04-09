@@ -7,6 +7,7 @@ class Message {
   final String rid; // receiver id
   final String text;
   final String image;
+  final String address;
   final double latitude;
   final double longitude;
   final Timestamp time;
@@ -19,6 +20,7 @@ class Message {
     @required this.rid,
     @required this.text,
     @required this.image,
+    @required this.address,
     @required this.latitude,
     @required this.longitude,
     @required this.time,
@@ -36,22 +38,25 @@ class Message {
     final String sid = data['sid'];
     final String rid = data['rid'];
     final String image = data['image'];
+    final String address = data['address'];
     final double latitude = data['latitude'];
     final double longitude = data['longitude'];
     final Timestamp time = data['time'];
     final String type = data['type'];
     final bool seen = data['seen'];
     return Message(
-        text: text,
-        sid: sid,
-        rid: rid,
-        image: image,
-        latitude: latitude,
-        longitude: longitude,
-        time: time,
-        type: type,
-        seen: seen,
-        id: doc.id);
+      text: text,
+      sid: sid,
+      rid: rid,
+      image: image,
+      address: address,
+      latitude: latitude,
+      longitude: longitude,
+      time: time,
+      type: type,
+      seen: seen,
+      id: doc.id,
+    );
   }
 
   Map<String, dynamic> toMap() {
@@ -60,9 +65,10 @@ class Message {
       'time': time,
       'sid': sid,
       'rid': rid,
-      'image':image,
-      'latitude':latitude,
-      'longitude':longitude,
+      'image': image,
+      'address': address,
+      'latitude': latitude,
+      'longitude': longitude,
       'type': type,
       'seen': seen,
     };

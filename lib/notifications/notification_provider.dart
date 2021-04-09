@@ -57,7 +57,6 @@ class NotificationProvider with ChangeNotifier {
         final name = message.data['name'];
         final image = message.data['image'];
         final text = message.data['message'];
-        // TODO error gets here after unsubscribing when logged out and chat is sent
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

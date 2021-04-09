@@ -79,6 +79,9 @@ dependencies:
   http: # use google map api
   url_launcher: ^6.0.3 # launch map on google maps or web browser
 
+  # cache image from url
+  flutter_cache_manager:
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
