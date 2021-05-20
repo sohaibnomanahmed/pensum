@@ -22,9 +22,10 @@ class _MessageBarState extends State<MessageBar> {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoTextField(
+    return TextField(
       controller: _controller,
-      prefix: IconButton(
+      decoration: InputDecoration(
+          prefixIcon: IconButton(
             icon: Icon(Icons.add),
             onPressed: () {
               showCupertinoModalPopup(
@@ -40,7 +41,7 @@ class _MessageBarState extends State<MessageBar> {
               );
             },
           ),
-          suffix: IconButton(
+          suffixIcon: IconButton(
               icon: Icon(Icons.send),
               onPressed: _message.isEmpty
                   ? null
@@ -61,7 +62,11 @@ class _MessageBarState extends State<MessageBar> {
                         ));
                       }
                     }),
-      placeholder: 'Send a message...',
+          hintText: 'Send a message...',
+          border: InputBorder.none,
+          focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Theme.of(context).primaryColor))
+          ),
       onChanged: (value) => setState(() => _message = value),
     );
   }

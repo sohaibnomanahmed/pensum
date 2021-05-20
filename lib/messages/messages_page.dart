@@ -21,10 +21,20 @@ class MessagesPage extends StatefulWidget {
 }
 
 class _MessagesPageState extends State<MessagesPage> {
+  MessagesProvider messagesProvider;
+
   @override
   void initState() {
     super.initState();
+    context.read<MessagesProvider>().unsubscribeFromChatNotifications();
     context.read<MessagesProvider>().fetchMessages(widget.rid);
+    messagesProvider = Provider.of<MessagesProvider>(context, listen: false);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    messagesProvider.subscribeToChatNotifications();
   }
 
   @override

@@ -45,7 +45,6 @@ class BooksProvider with ChangeNotifier{
         fetchBookTitles;
       },
       onError: (error) {
-        print(error);
         _isError = true;
         _isLoading = false;
         notifyListeners();

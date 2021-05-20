@@ -92,6 +92,7 @@ class AuthenticationProvider with ChangeNotifier {
       // send email varification
       if (!user.emailVerified) {
         _errorMessage = 'Email is not verified';
+        await _authenticationService.signOut();
         _isLoading = false;
         notifyListeners();
         return false;
@@ -133,9 +134,9 @@ class AuthenticationProvider with ChangeNotifier {
       final user = _authenticationService.currentUser;
       final followings = await _followService.getAllFollowingIds(user.uid);
       await _notificationService.unsubscribeFromTopic(user.uid);
-      followings.forEach((following) async { 
+      for(var following in followings){
         await _notificationService.unsubscribeFromTopic(following);
-      });
+      };
 
       // remove presence
       _presenceService.disconnect(signout: true);

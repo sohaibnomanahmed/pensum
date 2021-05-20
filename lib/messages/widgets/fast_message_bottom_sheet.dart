@@ -15,24 +15,26 @@ class FastMessageBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          ListTile(
-            leading: CircleAvatar(
-              backgroundImage: NetworkImage(receiverImage),
+    return SafeArea(
+          child: Container(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            ListTile(
+              leading: CircleAvatar(
+                backgroundImage: NetworkImage(receiverImage),
+              ),
+              title: Text('Send fast message to:'),
+              subtitle: Text(receiverName),
             ),
-            title: Text('Send fast message to:'),
-            subtitle: Text(receiverName),
-          ),
-          MessageBar(
-            rid: rid,
-            receiverName: receiverName,
-            receiverImage: receiverImage,
-          )
-        ],
+            MessageBar(
+              rid: rid,
+              receiverName: receiverName,
+              receiverImage: receiverImage,
+            )
+          ],
+        ),
       ),
     );
   }

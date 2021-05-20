@@ -9,12 +9,14 @@ import 'package:leaf/location/google_map_service.dart';
 import 'package:leaf/location/location_service.dart';
 import 'package:leaf/messages/messages_service.dart';
 import 'package:leaf/messages/recipients_service.dart';
+import 'package:leaf/notifications/notification_service.dart';
 
 import 'models/recipient.dart';
 import 'models/message.dart';
 
 class MessagesProvider with ChangeNotifier {
   final _authenticationService = AuthenticationService();
+  final _notificationService = NotificationService();
   final _messagesService = MessagesService();
   final _recipientService = RecipientsService();
   final _imageUploadService = ImageUploadService();
@@ -269,6 +271,24 @@ class MessagesProvider with ChangeNotifier {
       return false;
     }
     return true;
+  }
+
+  /*
+   * This method is mainly used in the chat page to unsubscribe from topics
+   * unsubscribes from the chat topic of the user so that the notifications wont apear 
+   */
+  void unsubscribeFromChatNotifications() async{
+    final user = _authenticationService.currentUser;
+    await _notificationService.unsubscribeFromTopic(user.uid);
+  }
+
+  /*
+   * This method is mainly used in the chat page to subscribe to a topics
+   * subscribes to the chat topic of the user so that the notifications will apear
+   */
+  void subscribeToChatNotifications() async{
+    final user = _authenticationService.currentUser;
+    await _notificationService.subscribeToTopic(user.uid);
   }
 
   // dispose

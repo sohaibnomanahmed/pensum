@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:leaf/authentication/authentication_provider.dart';
 import 'package:leaf/notifications/notification_provider.dart';
 import 'package:leaf/notifications/widgets/badge.dart';
 import 'package:leaf/presence/presence_provider.dart';
@@ -20,7 +19,6 @@ import '../deals/deals_page.dart';
 import '../deals/deals_provider.dart';
 
 class HomePage extends StatefulWidget {
-  // list of pages
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -110,43 +108,37 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    final isLoading = context.watch<AuthenticationProvider>().isLoading;
     final followingNotification =
         context.watch<NotificationProvider>().followingNotification;
     final chatNotification =
         context.watch<NotificationProvider>().chatNotification;
-    return isLoading
-        ? Scaffold(
-            body: Center(child: CircularProgressIndicator()),
-          )
-        : CupertinoTabScaffold(
-            controller: _cupertinoTabController,
-            tabBar: CupertinoTabBar(
-                border: Border(top: BorderSide(color: Colors.grey, width: 0.1)),
-                backgroundColor: Theme.of(context).canvasColor.withOpacity(1),
-                items: [
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.chrome_reader_mode), label: 'Books'),
-                  BottomNavigationBarItem(
-                      icon: chatNotification
-                          ? Badge(
-                              color: Colors.red[400],
-                              child: Icon(Icons.chat_bubble_rounded))
-                          : Icon(Icons.chat),
-                      label: 'Chat'),
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.person), label: 'Profile'),
-                  BottomNavigationBarItem(
-                      icon: followingNotification
-                          ? Badge(
-                              color: Colors.red[400],
-                              child: Icon(Icons.notifications_rounded))
-                          : Icon(Icons.notifications_rounded),
-                      label: 'Following'),
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.settings), label: 'Settings'),
-                ]),
-            tabBuilder: (context, index) => _pages[index],
-          );
+    return CupertinoTabScaffold(
+      controller: _cupertinoTabController,
+      tabBar: CupertinoTabBar(
+          border: Border(top: BorderSide(color: Colors.grey, width: 0.1)),
+          backgroundColor: Theme.of(context).canvasColor.withOpacity(1),
+          items: [
+            BottomNavigationBarItem(
+                icon: Icon(Icons.chrome_reader_mode), label: 'Books'),
+            BottomNavigationBarItem(
+                icon: chatNotification
+                    ? Badge(
+                        color: Colors.red[400],
+                        child: Icon(Icons.chat_bubble_rounded))
+                    : Icon(Icons.chat),
+                label: 'Chat'),
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+            BottomNavigationBarItem(
+                icon: followingNotification
+                    ? Badge(
+                        color: Colors.red[400],
+                        child: Icon(Icons.notifications_rounded))
+                    : Icon(Icons.notifications_rounded),
+                label: 'Following'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.settings), label: 'Settings'),
+          ]),
+      tabBuilder: (context, index) => _pages[index],
+    );
   }
 }

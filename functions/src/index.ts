@@ -20,7 +20,7 @@ export const onServiceAccountCreation = functions.auth.user().onCreate(async use
         const userID = user.uid
         const userEmail = user.email
 
-        if (userEmail == 'flutter.leaf@gmail.com'){
+        if (userEmail == 'leaf.flutter@gmail.com'){
             await admin.firestore().collection('admin').doc(userID).set({})
         }
     }

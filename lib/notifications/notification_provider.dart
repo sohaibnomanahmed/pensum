@@ -124,16 +124,21 @@ class NotificationProvider with ChangeNotifier {
 
     // If the message also contains a data property with a "type" of "chat",
     // navigate to a chat screen
-    if (initialMessage != null && initialMessage?.data['type'] == 'message') {
-      await Navigator.pushNamed(
-        context,
-        MessagesPage.routeName,
-        arguments: {
-          'id': initialMessage?.data['id'],
-          'image': initialMessage?.data['image'],
-          'name': initialMessage?.data['name']
-        },
-      );
+    if (initialMessage != null) {
+      if (initialMessage?.data['type'] == 'message'){
+        await Navigator.pushNamed(
+          context,
+          MessagesPage.routeName,
+          arguments: {
+            'id': initialMessage?.data['id'],
+            'image': initialMessage?.data['image'],
+            'name': initialMessage?.data['name']
+          },
+        );
+      }
+      if (initialMessage?.data['type'] == 'book'){
+        setCurrentIndex(3);
+      }
     }
 
     // Also handle any interaction when the app is in the background via a
@@ -149,6 +154,9 @@ class NotificationProvider with ChangeNotifier {
             'name': initialMessage?.data['name']
           },
         );
+      }
+      if (message.data['type'] == 'book'){
+        setCurrentIndex(3);
       }
     });
 

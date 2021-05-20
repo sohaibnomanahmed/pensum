@@ -13,6 +13,7 @@ class ProfileDealItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final profile = context.watch<ProfileProvider>().profile;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -21,8 +22,8 @@ class ProfileDealItem extends StatelessWidget {
           leading: Container(
             height: 90,
             width: 50,
-            child: Hero(
-              tag: deal.pid,
+            // child: Hero(
+            //   tag: deal.pid,
               child: Image.network(
                 deal.productImage,
                 errorBuilder: (_, __, ___) => Icon(
@@ -31,7 +32,7 @@ class ProfileDealItem extends StatelessWidget {
                 ),
               ),
             ),
-          ),
+          // ),
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -49,7 +50,7 @@ class ProfileDealItem extends StatelessWidget {
               Text(deal.quality)
             ],
           ),
-          trailing: Row(
+          trailing: !profile.isMe ? null : Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               IconButton(

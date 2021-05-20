@@ -9,7 +9,7 @@ class RecipientsPage extends StatefulWidget {
   _RecipientsPageState createState() => _RecipientsPageState();
 }
 
-class _RecipientsPageState extends State<RecipientsPage> {
+class _RecipientsPageState extends State<RecipientsPage>{
   @override
   void initState() {
     super.initState();
