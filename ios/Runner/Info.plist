@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>Leaf</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -24,14 +26,14 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>Need access to take a picture</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Need access to select a location</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Need access to select a location</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Need access to record a video</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Need access to choose a picture</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Need access to select a location</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Need access to select a location</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
@@ -41,6 +43,8 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+	<key>UIStatusBarHidden</key>
+	<true/>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

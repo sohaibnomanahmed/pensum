@@ -9,7 +9,6 @@
     <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="Leaf"
-        android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.geo.API_KEY"
                android:value="AIzaSyASyQrD1FCJEmrPvrcLUWeGcn2pubkqFy8"/>
