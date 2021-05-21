@@ -58,15 +58,6 @@ dependencies:
   # time ago
   timeago_flutter:
 
-  # splash screen
-  flutter_launcher_icons:
-
-  # launcher icon
-  flutter_native_splash:
-
-  # linter
-  pedantic:
-
   # google fonts
   google_fonts:
 
@@ -85,6 +76,22 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  # splash screen
+  flutter_native_splash:
+
+  # launcher icon
+  flutter_launcher_icons:
+  
+  # linter
+  pedantic:
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/eco.png"
+  image_path_android: "assets/icon/eco-3.png"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/icon/eco-3.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

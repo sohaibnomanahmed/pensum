@@ -6,8 +6,9 @@
             <data android:scheme="geo" />
         </intent>
     </queries> 
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="leaf"
+        android:label="Leaf"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.geo.API_KEY"
