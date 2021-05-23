@@ -89,7 +89,6 @@ class RecipientsProvider with ChangeNotifier {
     }
     // add them the end of the messages list
     _recipients.addAll(moreRecipients);
-    print(_recipients.length);
     // update UI wait for a sec to let it complate before setting silent loading to false
     notifyListeners();
     _silentLoading = false;

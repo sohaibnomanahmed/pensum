@@ -131,7 +131,6 @@ class MessagesProvider with ChangeNotifier {
     moreMessages.forEach((message) => message.isMe = message.sid == user.uid);
     // add them the end of the messages list
     _messages.addAll(moreMessages);
-    print(_messages.length);
     // update UI wait for a sec to let it complate before setting silent loading to false
     notifyListeners();
     _silentLoading = false;
