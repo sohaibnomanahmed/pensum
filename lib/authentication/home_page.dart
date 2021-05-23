@@ -31,11 +31,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     final args = settings.arguments;
     switch (settings.name) {
       case DealsPage.routeName:
-        final dealProvider = DealsProvider();
         return MaterialPageRoute(
           builder: (_) => ChangeNotifierProvider(
-              create: (_) => dealProvider,
-              child: DealsPage(book: args, dealsProvider: dealProvider)),
+              create: (_) => DealsProvider(),
+              child: DealsPage(args),),
         );
       default:
         return MaterialPageRoute(builder: (_) => PageNotFound());
@@ -54,9 +53,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 )),
         CupertinoTabView(
             builder: (_) {
-              final profileProvider = ProfileProvider();
               return ChangeNotifierProvider(
-                  create: (_) => profileProvider, child: ProfilePage());
+                  create: (_) => ProfileProvider(), child: ProfilePage());
             },
             onGenerateRoute: dealsGeneratedRoutes),
         CupertinoTabView(

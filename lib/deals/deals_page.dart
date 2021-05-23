@@ -12,9 +12,8 @@ import '../books/models/book.dart';
 class DealsPage extends StatefulWidget {
   static const routeName = '/deals';
   final Book book;
-  final DealsProvider dealsProvider;
 
-  DealsPage({this.book, this.dealsProvider});
+  DealsPage(this.book);
 
   @override
   _DealsPageState createState() => _DealsPageState();

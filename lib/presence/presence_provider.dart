@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:leaf/authentication/authentication_service.dart';
-import 'package:leaf/presence/presence_service.dart';
+import 'package:leaf/global/services.dart';
 
 class PresenceProvider with ChangeNotifier {
   final _authenticationService = AuthenticationService();
-  final _presenceService = PresenceService();
+  final _presenceService = GlobalServices.presenceService;
 
   /*
    * return a user presence stream, the value will be true if the user is online
@@ -50,7 +50,7 @@ class PresenceProvider with ChangeNotifier {
   Future<void> goOffline() async {
     // set the user to be online
     try {
-      _presenceService.disconnect();
+      await _presenceService.disconnect();
     } catch (error) {
       print('Error setting presence: $error');
     }

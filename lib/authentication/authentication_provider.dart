@@ -2,8 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:leaf/authentication/authentication_service.dart';
 import 'package:leaf/following/follow_service.dart';
+import 'package:leaf/global/services.dart';
 import 'package:leaf/notifications/notification_service.dart';
-import 'package:leaf/presence/presence_service.dart';
 import 'package:leaf/profile/profile_service.dart';
 
 import '../profile/models/profile.dart';
@@ -13,7 +13,7 @@ class AuthenticationProvider with ChangeNotifier {
   final _profileService = ProfileService();
   final _followService = FollowService();
   final _notificationService = NotificationService();
-  final _presenceService = PresenceService();
+  final _presenceService = GlobalServices.presenceService;
 
   var _isLoading = false;
   final _unknownMessage = 'Error: please check your network connection';
@@ -139,7 +139,7 @@ class AuthenticationProvider with ChangeNotifier {
       };
 
       // remove presence
-      _presenceService.disconnect(signout: true);
+      await _presenceService.disconnect(signout: true);
 
       await _authenticationService.signOut();
     } on FirebaseAuthException catch (error) {

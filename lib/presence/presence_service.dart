@@ -5,6 +5,7 @@ import 'package:firebase_database/firebase_database.dart';
 class PresenceService {
   FirebaseDatabase database = FirebaseDatabase.instance;
   StreamSubscription subscription;
+  StreamSubscription subsub;
   DatabaseReference con;
 
   // Configure user presence
@@ -26,7 +27,7 @@ class PresenceService {
       https://stackoverflow.com/questions/53069484/firebase-realtime-database-info-connected-false-when-it-should-be-true
       https://firebase.googleblog.com/2013/06/how-to-build-presence-system.html
      */
-    database
+    subsub = database
         .reference()
         .child('presence')
         .child(uid)
@@ -69,11 +70,11 @@ class PresenceService {
   }
 
   // Remove connection for this device when signing out
-  // TODO should it not be async await?
-  void disconnect({bool signout = false}){
+  Future<void> disconnect({bool signout = false}) async {
     if (signout && subscription != null){
-      subscription.cancel();
+      await subscription.cancel();
+      await subsub.cancel();
     }
-    database.goOffline();
+    await database.goOffline();
   }
 }

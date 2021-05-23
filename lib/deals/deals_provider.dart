@@ -94,7 +94,6 @@ class DealsProvider with ChangeNotifier {
     if (_isLoading || _silentLoading || _isError) {
       return;
     }
-    print('Fetching more deals');
     // set silent loader
     _silentLoading = true;
 
@@ -120,7 +119,6 @@ class DealsProvider with ChangeNotifier {
     }
     // add them the end of the messages list
     _deals.addAll(moreDeals);
-    print(_deals.length);
     // update UI then reset the silent loader
     notifyListeners();
     _silentLoading = false;
