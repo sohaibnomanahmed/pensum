@@ -106,6 +106,7 @@ class AuthenticationProvider with ChangeNotifier {
       });
 
     } on FirebaseAuthException catch (error) {
+      print(error);
       _errorMessage = error.message;
       if (error.code == 'unknown') {
         print(error);

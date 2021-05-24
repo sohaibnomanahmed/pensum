@@ -42,10 +42,22 @@ class _ProfilePageState extends State<ProfilePage> {
       body: isLoading
           ? Center(child: CircularProgressIndicator())
           : isError
-              ? Center(
-                  child: LeafError(
-                      context.read<ProfileProvider>().reFetchProfile,
-                      widget.uid),
+              ? Column(
+                  children: [
+                    AppBar(
+                      backgroundColor: Colors.transparent,
+                      elevation: 0,
+                      iconTheme: IconThemeData(
+                          color: Theme.of(context).primaryColorDark),
+                    ),
+                    Expanded(
+                      child: Center(
+                        child: LeafError(
+                            context.read<ProfileProvider>().reFetchProfile,
+                            widget.uid),
+                      ),
+                    ),
+                  ],
                 )
               : SingleChildScrollView(
                   child: Stack(
@@ -90,8 +102,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                                   builder: (_) =>
                                                       ChangeNotifierProvider
                                                           .value(
-                                                    value:
-                                                        context.read<ProfileProvider>().provider,
+                                                    value: context
+                                                        .read<ProfileProvider>()
+                                                        .provider,
                                                     child:
                                                         EditProfileBottomSheet(
                                                       profile.firstname
@@ -119,9 +132,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 ),
                                             child: Text('Edit Profile'))
                                         : ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            primary: Theme.of(context).errorColor
-                                          ),
+                                            style: ElevatedButton.styleFrom(
+                                                primary: Theme.of(context)
+                                                    .errorColor),
                                             onPressed: () => Navigator.of(
                                                         context,
                                                         rootNavigator: true)

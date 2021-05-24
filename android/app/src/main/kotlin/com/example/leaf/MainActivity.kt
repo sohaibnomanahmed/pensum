@@ -1,4 +1,4 @@
-package com.example.leaf
+package art.rootly.leaf
 
 import io.flutter.embedding.android.FlutterActivity
 

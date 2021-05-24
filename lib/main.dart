@@ -57,8 +57,7 @@ class MyApp extends StatelessWidget {
         )
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
-        debugShowCheckedModeBanner: false,
+        title: 'Leaf',
         theme: ThemeData(
             primarySwatch: Colors.teal,
             textTheme:
