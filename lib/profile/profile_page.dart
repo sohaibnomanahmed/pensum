@@ -107,26 +107,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                                         .provider,
                                                     child:
                                                         EditProfileBottomSheet(
-                                                      profile.firstname
-                                                          .split(RegExp('\\s+'))
-                                                          .reduce((value,
-                                                                  element) =>
-                                                              value
-                                                                  .capitalize() +
-                                                              ' ' +
-                                                              element
-                                                                  .capitalize())
-                                                          .capitalize(),
-                                                      profile.lastname
-                                                          .split(RegExp('\\s+'))
-                                                          .reduce((value,
-                                                                  element) =>
-                                                              value
-                                                                  .capitalize() +
-                                                              ' ' +
-                                                              element
-                                                                  .capitalize())
-                                                          .capitalize(),
+                                                      profile.firstname,       
+                                                      profile.lastname,
                                                     ),
                                                   ),
                                                 ),

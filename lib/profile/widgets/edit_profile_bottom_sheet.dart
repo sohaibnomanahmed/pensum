@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:leaf/profile/models/profile.dart';
 import 'package:provider/provider.dart';
 
 import '../profile_provider.dart';
@@ -65,8 +66,8 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
                         final result = await context
                             .read<ProfileProvider>()
                             .setProfile(
-                                firstname: _firstname.trim().toLowerCase(),
-                                lastname: _lastname.trim().toLowerCase());
+                                firstname: Profile.capitalizaName(_firstname),
+                                lastname: Profile.capitalizaName(_lastname));
                         // check if an error occured
                         if (!result) {
                           // remove snackbar if existing and show a new with error message

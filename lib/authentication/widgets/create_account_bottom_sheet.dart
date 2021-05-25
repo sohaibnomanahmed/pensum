@@ -86,8 +86,8 @@ class _CreateAccountBottomSheetState extends State<CreateAccountBottomSheet> {
                             final result = await context
                                 .read<AuthenticationProvider>()
                                 .createUser(
-                                  firstname: _firstname.trim().toLowerCase(),
-                                  lastname: _lastname.trim().toLowerCase(),
+                                  firstname: _firstname,
+                                  lastname: _lastname,
                                   email: _email,
                                   password: _password,
                                 );

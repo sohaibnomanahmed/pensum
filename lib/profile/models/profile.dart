@@ -12,27 +12,33 @@ class Profile {
   Map<String, dynamic> userItems;
   bool isMe;
 
+  // getters
+  String get fullName => firstname + ' ' + lastname;
+
   /*
    *  need to capitalize first value (value) all other values (element) and
    *  a single value (value returned from reduce) 
    */
-  String get fullName =>
-      firstname
-          .split(RegExp('\\s+'))
-          .reduce((value, element) => value.capitalize() + ' ' + element.capitalize()).capitalize() +
-      ' ' +
-      lastname
-          .split(RegExp('\\s+'))
-          .reduce((value, element) => value.capitalize() + ' ' + element.capitalize()).capitalize();
+  static String capitalizaName(String name) {
+    return name.trim()
+        .toLowerCase()
+        .split(RegExp('\\s+'))
+        .reduce(
+            (value, element) => value.capitalize() + ' ' + element.capitalize())
+        .capitalize();
+  }
 
   Profile({
     @required this.uid,
     @required this.creationTime,
-    @required this.firstname,
-    @required this.lastname,
+    @required String firstname,
+    @required String lastname,
     @required this.imageUrl,
     @required this.userItems,
-  });
+  }) {
+    this.firstname = capitalizaName(firstname);
+    this.lastname = capitalizaName(lastname);
+  }
 
   factory Profile.fromFirestore(DocumentSnapshot doc) {
     Map data = doc.data();
@@ -56,7 +62,7 @@ class Profile {
 
   Map<String, dynamic> toMap() {
     return {
-      'creationTime':creationTime,
+      'creationTime': creationTime,
       'firstname': firstname,
       'lastname': lastname,
       'imageUrl': imageUrl,
