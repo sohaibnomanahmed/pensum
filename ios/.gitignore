@@ -35,4 +35,4 @@ Runner/GeneratedPluginRegistrant.*
 build/
 
 # googleService-info.plist
-Runner/GoogleService-info.plist
+#Runner/GoogleService-info.plist
