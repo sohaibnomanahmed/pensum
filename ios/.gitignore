@@ -31,8 +31,5 @@ Runner/GeneratedPluginRegistrant.*
 !default.pbxuser
 !default.perspectivev3
 
-# Ignore builds
+# Ignore builds?
 build/
-
-# googleService-info.plist
-#Runner/GoogleService-info.plist

@@ -5,6 +5,7 @@ import 'package:leaf/global/widgets/leaf_error.dart';
 import 'package:leaf/messages/messages_page.dart';
 import 'package:provider/provider.dart';
 
+import '../global/extensions.dart';
 import 'profile_provider.dart';
 import 'widgets/edit_profile_bottom_sheet.dart';
 import 'widgets/profile_deals_list.dart';
