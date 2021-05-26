@@ -25,7 +25,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Need access to take a picture</string>
+	<string>Enable camera to take a picture</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Need access to select a location</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
@@ -33,7 +33,7 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Need access to record a video</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Need access to choose a picture</string>
+	<string>Enable photos access to upload a profile picture and/or send image messages</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
