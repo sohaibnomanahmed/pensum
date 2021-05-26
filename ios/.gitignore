@@ -33,3 +33,6 @@ Runner/GeneratedPluginRegistrant.*
 
 # Ignore builds?
 build/
+
+# google services
+Runner/GoogleService-info.plist
