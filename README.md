@@ -1,16 +1,27 @@
-# leaf
+# Leaf
 
-A new Flutter project.
+[Privacy Policy](privacy.md)	
+[Support](support.md)
 
-## Getting Started
+A flutter project for buying and selling books, mainly campus curriculum socially. It uses a **MVVM** architecture achieved with the *provider* packages and *firebase* as the backend. Currently the project includes the following features:
+* Authentication
+* Chat (incl. images and location)
+* Profile
+* Deals filtering
+* Book search
+* Notifications
+* Presence system
 
-This project is a starting point for a Flutter application.
+### Example Screenshots
 
-A few resources to get you started if this is your first Flutter project:
+![1](... "book list") ![2]() ![3]() ![4]() ![5]() ![6]()
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+### Usage
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+To install the application locally you first need to clone this repository, then run
+
+	flutter pub get
+
+to install the dependencies, the project still need to be connected with the backend i.e. *firebase*. This can be done by installing the necessary files services files for android and ios from firebase.google.com. Ideally run the project from VSCode or connect to a device and run:
+
+	flutter run
