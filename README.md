@@ -1,6 +1,6 @@
 # Leaf
 
-[Privacy Policy](privacy.md)
+[Privacy Policy](privacy.md)\
 [Support](support.md)
 
 A flutter project for buying and selling books, mainly campus curriculum socially. It uses a **MVVM** architecture achieved with the *provider* packages and *firebase* as the backend. Currently the project includes the following features:
@@ -14,7 +14,8 @@ A flutter project for buying and selling books, mainly campus curriculum sociall
 
 ### Example Screenshots
 
-<img src="screenshots/IMG_0316.PNG" alt="drawing" width="200"/><img src="screenshots/IMG_0322.PNG" alt="drawing" width="200"/><img src="screenshots/IMG_0319.PNG" alt="drawing" width="200"/><img src="screenshots/IMG_0325.PNG" alt="drawing" width="200"/><img src="screenshots/IMG_0323.PNG" alt="drawing" width="200"/><img src="screenshots/IMG_0321.PNG" alt="drawing" width="200"/>
+<img src="screenshots/IMG_0316.PNG" alt="drawing" width="200"/><img src="screenshots/IMG_0322.PNG" alt="drawing" width="200"/><img src="screenshots/IMG_0319.PNG" alt="drawing" width="200"/>
+<img src="screenshots/IMG_0325.PNG" alt="drawing" width="200"/><img src="screenshots/IMG_0323.PNG" alt="drawing" width="200"/><img src="screenshots/IMG_0321.PNG" alt="drawing" width="200"/>
 
 ### Usage
 
