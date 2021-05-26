@@ -1,4 +1,4 @@
-# Leaf
+# leaf
 
 [Privacy Policy](privacy.md)\
 [Support](support.md)
