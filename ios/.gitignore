@@ -36,3 +36,4 @@ build/
 
 # google services
 Runner/GoogleService-Info.plist
+Runner/GoogleService-Info-prod.plist

@@ -19,15 +19,16 @@ import 'messages/messages_provider.dart';
 import 'global/404_page.dart';
 import 'notifications/notification_provider.dart';
 
-// // emulator related
+// emulator related
 // import 'package:flutter/foundation.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:firebase_storage/firebase_storage.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  // // Switch host based on platform.
+  // Switch host based on platform.
   // final host = defaultTargetPlatform == TargetPlatform.android
   //     ? '10.0.2.2:8080'
   //     : 'localhost:8080';
@@ -35,6 +36,7 @@ Future<void> main() async {
   // FirebaseFirestore.instance.settings  =
   //   Settings(host: host, sslEnabled: false, persistenceEnabled: false);
   // await FirebaseAuth.instance.useEmulator('http://localhost:9099');
+  // await FirebaseStorage.instance.useEmulator(host: 'localhost', port: 9080);
 
   if (kDebugMode) {
     // Force disable Crashlytics collection while doing every day development.
@@ -68,6 +70,8 @@ class MyApp extends StatelessWidget {
           create: (ctx) => AuthenticationProvider(),
         ),
         StreamProvider(
+          // TODO chech if this does not mess up things
+          initialData: null,
           create: (context) => context.read<AuthenticationProvider>().authState,
         )
       ],

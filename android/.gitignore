@@ -12,3 +12,4 @@ key.properties
 
 # google services
 app/google-services.json
+app/google-services-prod.json

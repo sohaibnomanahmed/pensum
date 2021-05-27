@@ -9,7 +9,7 @@ import * as admin from 'firebase-admin'
 //   response.send("Hello from Firebase!");
 // });
 
-var serviceAccount = require("../serviceAccountKey.json");
+var serviceAccount = require("../serviceKeyDev.json");
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)

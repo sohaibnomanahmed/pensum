@@ -30,61 +30,60 @@ dependencies:
   cupertino_icons: ^1.0.2
 
   # firebase
-  firebase_core: "^0.7.0"
-  firebase_database: "^6.0.0"
-  cloud_firestore: "^0.16.0+1"
-  firebase_auth: "^0.20.1"
-  firebase_storage: "^7.0.0"
-  firebase_messaging: "^8.0.0-dev.15"
-  firebase_crashlytics: "^0.4.0+1"
+  firebase_core: "^1.2.0"
+  firebase_auth: "^1.2.0"
+  cloud_firestore: "^2.2.0"
+  firebase_database: "^7.0.0"
+  firebase_storage: "^8.1.0"
+  firebase_messaging: "^10.0.0"
+  firebase_crashlytics: "^2.0.4"
 
   # provider
-  provider:
+  provider: ^5.0.0
 
   # image picker
-  image_picker: 
+  image_picker: ^0.7.5
 
   # image cropper
-  image_cropper:
+  image_cropper: ^1.4.0
 
   # photo view
-  photo_view:
+  photo_view: ^0.11.1
 
   # uuid
-  uuid:
+  uuid: ^3.0.4
 
   # shimmer
-  shimmer:
+  shimmer: ^2.0.0
 
   # time ago
-  timeago_flutter:
-
-  # google fonts
-  google_fonts:
+  #timeago_flutter: # not updated to null safety
+  timeago: ^3.0.2  
 
   # animations
   animations: ^2.0.0
 
   # google maps
-  google_maps_flutter: ^2.0.2
-  location: # get current location
-  http: # use google map api
-  url_launcher: ^6.0.3 # launch map on google maps or web browser
-
-  # cache image from url
-  flutter_cache_manager:
+  google_maps_flutter: ^2.0.6
+  location: ^4.1.1 # get current location
+  http: ^0.13.3 # use google map api
+  url_launcher: ^6.0.4 # launch map on google maps or web browser
+  flutter_cache_manager: ^3.0.2 # cache image from url used for google maps previews
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   # splash screen
-  flutter_native_splash:
+  flutter_native_splash: ^1.1.8
 
   # launcher icon
-  flutter_launcher_icons:
+  flutter_launcher_icons: ^0.9.0
+
+  # google fonts
+  google_fonts: ^2.1.0
   
   # linter
-  pedantic:
+  pedantic: ^1.11.0
 
 flutter_icons:
   android: true

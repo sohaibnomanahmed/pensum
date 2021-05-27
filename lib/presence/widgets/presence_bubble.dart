@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:leaf/presence/widgets/timeago_flutter.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:timeago_flutter/timeago_flutter.dart';
+//import 'package:timeago_flutter/timeago_flutter.dart';
 
 import 'package:leaf/presence/presence_service.dart';
 
