@@ -48,13 +48,13 @@ class _CreateAccountBottomSheetState extends State<CreateAccountBottomSheet> {
                   decoration: InputDecoration(labelText: 'Firstname'),
                   validator: (value) =>
                       (value.isEmpty) ? 'Please enter a firstname.' : null,
-                  onSaved: (value) => _firstname = value,
+                  onSaved: (value) => _firstname = value/*!*/,
                 ),
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Lastname'),
                   validator: (value) =>
                       (value.isEmpty) ? 'Please enter a lastname' : null,
-                  onSaved: (value) => _lastname = value,
+                  onSaved: (value) => _lastname = value/*!*/,
                 ),
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
@@ -62,7 +62,7 @@ class _CreateAccountBottomSheetState extends State<CreateAccountBottomSheet> {
                   validator: (value) => (value.isEmpty || !value.contains('@'))
                       ? 'Please enter a valid email address.'
                       : null,
-                  onSaved: (value) => _email = value,
+                  onSaved: (value) => _email = value/*!*/,
                 ),
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Password'),
@@ -70,7 +70,7 @@ class _CreateAccountBottomSheetState extends State<CreateAccountBottomSheet> {
                   validator: (value) => (value.isEmpty || value.length < 7)
                       ? 'Password must be at least 7 characters long.'
                       : null,
-                  onSaved: (value) => _password = value,
+                  onSaved: (value) => _password = value/*!*/,
                 ),
                 SizedBox(height: 10),
                 ElevatedButton(

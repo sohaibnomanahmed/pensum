@@ -47,15 +47,30 @@ class Deal {
     final String pid = data['pid'];
     final String productImage = data['productImage'];
     final String productTitle = data['productTitle'];
-    // data on firestore is int, need to be converted
-    var price = prices.first;
-    if (data['price'] != 0){
-      price = data['price'].toString() + ' kr';
-    }
     final String quality = data['quality'];
     final String place = data['place'];
     final String description = data['description'];
     final Timestamp time = data['time'];
+
+    if (uid == null ||
+        userImage == null ||
+        userName == null ||
+        pid == null ||
+        productImage == null ||
+        productTitle == null ||
+        data['price'] == null ||
+        quality == null ||
+        place == null ||
+        description == null ||
+        time == null) {
+      return null;
+    }
+
+    // data on firestore is int, need to be converted
+    var price = prices.first;
+    if (data['price'] != 0) {
+      price = data['price'].toString() + ' kr';
+    }
 
     return Deal(
       id: id,
@@ -84,7 +99,7 @@ class Deal {
   Map<String, dynamic> toMap() {
     // store the price as int, so it can be ordered on firebase
     var convertedPrice = 0;
-    if (price != prices.first){
+    if (price != prices.first) {
       // remove the ' kr' part from the string
       convertedPrice = int.parse(price.replaceAll(RegExp('[^0-9]'), ''));
     }

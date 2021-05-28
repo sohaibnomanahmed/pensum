@@ -64,6 +64,47 @@ export const onProfileImageUpdate = functions.firestore
 
         return Promise.all(promises)
     })
+
+// When a user updates his name, the data needs to be updates on other
+// collections as, the copy of the namel are placed there to be received faster
+export const onProfileNameUpdate = functions.firestore
+    .document('profiles/{userID}').onUpdate(async change => {
+        const userID = change.before.id
+        const beforeFirstname = change.before.data().firstname
+        const afterFirstname = change.after.data().firstname
+        const beforeLastname = change.before.data().lastname
+        const afterLastname = change.after.data().lastname
+
+        if (beforeFirstname === afterFirstname && beforeLastname === afterLastname) {
+            console.log('Stopping since name did not change')
+            return
+        }
+
+        // find all deals and recipeints, finds all collection with name deals and joins them togheter
+        const deals = await admin.firestore().collectionGroup('deals').where("uid", "==", userID).get()
+        const messages = await admin.firestore().collectionGroup('recipients').where("rid", "==", userID).get()
+        const promises: Promise<any>[] = []
+
+        // Loop through deals and update image
+        const dealDocs = deals.docs
+        dealDocs.forEach(doc => {
+            const p = doc.ref.update({
+                userName: afterFirstname + ' ' + afterLastname
+            })
+            promises.push(p)
+        })
+
+        // Loop through chat infos and update image
+        const messagesDocs = messages.docs
+        messagesDocs.forEach(doc => {
+            const p = doc.ref.update({
+                receiverName: afterFirstname + ' ' + afterLastname
+            })
+            promises.push(p)
+        })
+
+        return Promise.all(promises)
+    })    
   
 
 // Send notification when a messege is sent
@@ -77,7 +118,6 @@ export const onSendMessage = functions.firestore
         const senderID = context.params.senderId
         const messageID = context.params.messageId
         var message = snapshot.data()!.text
-        console.log(message)
         const time = snapshot.data()!.time
 
         // get references

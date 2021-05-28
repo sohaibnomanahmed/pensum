@@ -29,6 +29,18 @@ class Follow {
     final String year = data['year'];
     final Timestamp time = data['time'];
     final bool notification = data['notification'];
+
+    if (
+        pid == null ||
+        title == null ||
+        image == null ||
+        year == null ||
+        time == null ||
+        notification == null
+     ){
+      return null;
+    }
+
     return Follow(
       pid: pid,
       title: title,

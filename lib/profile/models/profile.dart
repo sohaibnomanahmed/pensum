@@ -31,13 +31,13 @@ class Profile {
   Profile({
     @required this.uid,
     @required this.creationTime,
-    @required String firstname,
-    @required String lastname,
+    @required this.firstname,
+    @required this.lastname,
     @required this.imageUrl,
     @required this.userItems,
   }) {
-    this.firstname = capitalizaName(firstname);
-    this.lastname = capitalizaName(lastname);
+    firstname = capitalizaName(firstname);
+    lastname = capitalizaName(lastname);
   }
 
   factory Profile.fromFirestore(DocumentSnapshot doc) {
@@ -45,18 +45,27 @@ class Profile {
     if (data == null) {
       return null;
     }
-    final String firstnameData = data['firstname'];
-    final String lastnameData = data['lastname'];
-    final String imageUrlData = data['imageUrl'];
+    final String firstname = data['firstname'];
+    final String lastname = data['lastname'];
+    final String imageUrl = data['imageUrl'];
     final Timestamp creationTime = data['creationTime'];
-    final Map<String, dynamic> userItemsData = data['userItems'];
+    final Map<String, dynamic> userItems = data['userItems'];
+    
+    if (firstname == null ||
+        lastname == null ||
+        imageUrl == null ||
+        creationTime == null ||
+        userItems == null) {
+      return null;
+    }
+
     return Profile(
       uid: doc.id,
       creationTime: creationTime.toDate(),
-      firstname: firstnameData,
-      lastname: lastnameData,
-      imageUrl: imageUrlData,
-      userItems: userItemsData,
+      firstname: firstname,
+      lastname: lastname,
+      imageUrl: imageUrl,
+      userItems: userItems,
     );
   }
 

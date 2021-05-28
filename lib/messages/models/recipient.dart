@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 class Recipient {
   final String id;
   final String rid;
+  // TODO used userImage in cloud functions
   final String receiverImage;
   final String receiverName;
   final String lastMessage;
@@ -26,11 +27,20 @@ class Recipient {
       return null;
     }
     final String rid = data['rid'];
-    final String receiverName = data['receiverName'];
+    final String receiverName = data['receiverName'] ?? 'Leaf User';
     final String receiverImage = data['receiverImage'];
     final String lastMessage = data['lastMessage'];
     final Timestamp time = data['time'];
     final bool notification = data['notification'];
+
+    if (
+        rid == null ||
+        time == null ||
+        lastMessage == null ||
+        notification == null 
+     ){
+      return null;
+    }
     return Recipient(
         rid: rid,
         receiverImage: receiverImage,

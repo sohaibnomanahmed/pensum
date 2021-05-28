@@ -60,7 +60,7 @@ class _AddDealBottomSheetState extends State<AddDealBottomSheet> {
                 value: _price.isEmpty ? null : _price,
                 hint: Text('Select price'),
                 onChanged: (value) => setState(() {
-                  _price = value;
+                  _price = value/*!*/;
                 }),
                 items: prices
                     .map((price) => DropdownMenuItem(value: price, child: Text(price)))
@@ -70,7 +70,7 @@ class _AddDealBottomSheetState extends State<AddDealBottomSheet> {
                 value: _quality.isEmpty ? null : _quality,
                 hint: Text('Select quality'),
                 onChanged: (value) => setState(() {
-                  _quality = value;
+                  _quality = value/*!*/;
                 }),
                 items: qualities
                     .map((quality) =>
@@ -81,7 +81,7 @@ class _AddDealBottomSheetState extends State<AddDealBottomSheet> {
                 value: _place.isEmpty ? null : _place,
                 hint: Text('Select place'),
                 onChanged: (value) => setState(() {
-                  _place = value;
+                  _place = value/*!*/;
                 }),
                 items: places
                     .map((place) =>
@@ -95,7 +95,7 @@ class _AddDealBottomSheetState extends State<AddDealBottomSheet> {
                 maxLines: 3,
                 decoration:
                     InputDecoration(labelText: 'Description (Optional)'),
-                onChanged: (value) => _description = value,
+                onChanged: (value) => _description = value/*!*/,
               ),
               ElevatedButton(
                 onPressed: (_price.isEmpty ||

@@ -17,6 +17,14 @@ class Notifications{
     }
     final int chat = data['chat'];
     final int follow = data['follow'];
+
+    if (
+        chat == null ||
+        follow == null 
+     ){
+      return null;
+    }
+
     return Notifications(
       chat: chat,
       follow: follow

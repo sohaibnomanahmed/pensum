@@ -37,6 +37,18 @@ class Book {
     final String pages = data['pages'];
     final String edition = data['edition'];
     final String year = data['year'];
+
+    if (titles == null ||
+        authors == null ||
+        image == null ||
+        language == null ||
+        publisher == null ||
+        pages == null ||
+        edition == null ||
+        year == null) {
+      return null;
+    }
+
     return Book(
         titles: titles,
         authors: authors,

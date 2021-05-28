@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 class Message {
   final String id;
   final String sid; // sender id
-  final String rid; // receiver id
   final String text;
   final String image;
   final String address;
@@ -17,7 +16,6 @@ class Message {
 
   Message({
     @required this.sid,
-    @required this.rid,
     @required this.text,
     @required this.image,
     @required this.address,
@@ -36,7 +34,6 @@ class Message {
     }
     final String text = data['text'];
     final String sid = data['sid'];
-    final String rid = data['rid'];
     final String image = data['image'];
     final String address = data['address'];
     final double latitude = data['latitude'];
@@ -44,10 +41,19 @@ class Message {
     final Timestamp time = data['time'];
     final String type = data['type'];
     final bool seen = data['seen'];
+
+    if (
+        sid == null ||
+        time == null ||
+        type == null ||
+        seen == null 
+     ){
+      return null;
+    }
+
     return Message(
       text: text,
       sid: sid,
-      rid: rid,
       image: image,
       address: address,
       latitude: latitude,
@@ -64,7 +70,6 @@ class Message {
       'text': text,
       'time': time,
       'sid': sid,
-      'rid': rid,
       'image': image,
       'address': address,
       'latitude': latitude,

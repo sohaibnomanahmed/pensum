@@ -171,7 +171,6 @@ class MessagesProvider with ChangeNotifier {
     // my message should not be seen by the recipeint before he load them in
     final message = Message(
       sid: user.uid,
-      rid: rid,
       text: text,
       image: image,
       address: address,

@@ -42,10 +42,15 @@ class AuthenticationProvider with ChangeNotifier {
       final userCredentials = await _authenticationService.createUser(
           email: email, password: password);
       final user = userCredentials.user;
+      final time = user.metadata.creationTime;
+      if (time == null){
+        _errorMessage = 'Failed trying to create the user, time not accesable';
+        return false;
+      }
       // create profile data in firestore
       final profile = Profile(
         uid: user.uid,
-        creationTime: user.metadata.creationTime,
+        creationTime: time,
         firstname: firstname,
         lastname: lastname,
         imageUrl: 'https://firebasestorage.googleapis.com/v0/b/leaf-e52aa.appspot.com/o/profile.png?alt=media&token=ef36af4e-c528-4851-b429-53f867672b33',
