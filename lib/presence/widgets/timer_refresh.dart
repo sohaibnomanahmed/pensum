@@ -6,7 +6,7 @@ class TimerRefresh extends TimerRefreshWidget {
   const TimerRefresh({
     Key key,
     this.child,
-    this.builder,
+    @required this.builder,
     Duration refreshRate,
   })  : assert(builder != null),
         super(key: key, refreshRate: refreshRate);

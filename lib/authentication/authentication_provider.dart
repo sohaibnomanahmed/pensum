@@ -17,7 +17,7 @@ class AuthenticationProvider with ChangeNotifier {
 
   var _isLoading = false;
   final _unknownMessage = 'Error: please check your network connection';
-  String _errorMessage;
+  /*late*/String _errorMessage;
 
   // getters
   bool get isLoading => _isLoading;
