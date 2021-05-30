@@ -57,7 +57,7 @@ export const onProfileImageUpdate = functions.firestore
         const messagesDocs = messages.docs
         messagesDocs.forEach(doc => {
             const p = doc.ref.update({
-                userImage: afterImage
+                receiverImage: afterImage
             })
             promises.push(p)
         })

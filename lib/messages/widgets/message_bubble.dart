@@ -37,7 +37,6 @@ class MessageBubble extends StatelessWidget {
                   !message.isMe ? Radius.circular(12) : Radius.circular(0),
             ),
           ),
-          //TODO maxheigth??
           constraints: BoxConstraints(maxWidth: 200),
           padding: message.type != 'text'
               ? EdgeInsets.all(0)

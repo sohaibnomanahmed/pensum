@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 class Recipient {
   final String id;
   final String rid;
-  // TODO used userImage in cloud functions
   final String receiverImage;
   final String receiverName;
   final String lastMessage;

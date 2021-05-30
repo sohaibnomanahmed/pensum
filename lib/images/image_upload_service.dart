@@ -1,24 +1,32 @@
-import 'dart:io';
+import 'dart:io' as io;
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:uuid/uuid.dart';
 
+/*
+ * after some debugging the cache manager also uses File class now and this can be mistaken
+ * wiht the dart io File class therefere explicit decleration is needed 
+ */
 class ImageUploadService{
   final _firebaseStorage = FirebaseStorage.instance;
   final _key = 'Network image';
 
-  Future<String> uploadProfileImage({@required File image, @required String uid}) async {
+  Future<String> uploadProfileImage({@required io.File image, @required String uid}) async {
+    print('get ref');
     final storageReference =
         _firebaseStorage.ref().child('profile/' + uid);
+    print('upload');    
     await storageReference.putFile(image);
-
+    print('get link');
     final url = await storageReference.getDownloadURL();
+    print('got link');
+    print(url);
     return url;
   }
 
-  Future<String> uploadChatMessageImage(File image) async {
+  Future<String> uploadChatMessageImage(io.File image) async {
     var uuid = Uuid();
     final storageReference =
         _firebaseStorage.ref().child('chat/' + uuid.v4());

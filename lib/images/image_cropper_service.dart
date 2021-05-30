@@ -6,6 +6,7 @@ class ImageCropperService {
   Future<File> pickImage(File image) async {
     var croppedFile = await ImageCropper.cropImage(
         sourcePath: image.path,
+        maxWidth: 2000,
         aspectRatioPresets: [
           CropAspectRatioPreset.square,
           CropAspectRatioPreset.ratio3x2,
@@ -20,7 +21,7 @@ class ImageCropperService {
           cropFrameColor: Color.fromRGBO(0, 0, 0, 0),
           statusBarColor: Color.fromRGBO(0, 0, 0, 0.3),
         ),
-        iosUiSettings: IOSUiSettings());
+        iosUiSettings: IOSUiSettings());   
     return croppedFile;
   }
 }
