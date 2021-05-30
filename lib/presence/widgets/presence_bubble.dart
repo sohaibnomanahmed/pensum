@@ -27,7 +27,7 @@ class _PresenceBubbleState extends State<PresenceBubble> {
          * Stream builder with RTDB works a little bit different then Firestore
          * some documentation is in this medium article
          * https://medium.com/codechai/realtime-database-in-flutter-bef0f29e3378 
-         */
+         */   
     return StreamBuilder(
       stream: PresenceService().getUserPresenceStream(widget.uid),
       builder: (context, snap) {
@@ -43,6 +43,7 @@ class _PresenceBubbleState extends State<PresenceBubble> {
           );
         }
         var presence = snap.data;
+        print(presence);
 
         if (presence == true) {
           return CircleAvatar(
@@ -51,22 +52,24 @@ class _PresenceBubbleState extends State<PresenceBubble> {
           );
         } else {
           return Container(
-            height: widget.size/1.2,
+            height: widget.size / 1.2,
             decoration: BoxDecoration(
                 color: Colors.amber[900],
                 borderRadius: BorderRadius.circular(8)),
             child: Padding(
               padding: EdgeInsets.all(4),
               child: FittedBox(
-                  child: Timeago(
-                builder: (_, value) => Text(
-                  value,
-                  style: TextStyle(color: Colors.white),
+                child: Timeago(
+                  builder: (_, value) => Text(
+                    value,
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  date: presence,
+                  refreshRate: Duration(minutes: 1),
+                  allowFromNow: false,
+                  locale: 'en_short',
                 ),
-                date: presence,
-                refreshRate: Duration(minutes: 1),
-                locale: 'en_short',
-              )),
+              ),
             ),
           );
         }

@@ -14,7 +14,7 @@ class MessagesPage extends StatefulWidget {
   final String receiverName;
   final String receiverImage;
 
-  const MessagesPage({this.rid, this.receiverName, this.receiverImage});
+  const MessagesPage({@required this.rid, this.receiverName, this.receiverImage});
 
   @override
   _MessagesPageState createState() => _MessagesPageState();

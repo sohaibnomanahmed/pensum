@@ -157,6 +157,13 @@ class MessagesProvider with ChangeNotifier {
     final user = _authenticationService.currentUser;
     final time = Timestamp.now();
 
+    final lastMessage = (messageText == null) ? text : messageText;
+    if (lastMessage == null){
+      // TODO later solution make text non nullable
+      print('Error no text provided');
+      return false;
+    }
+
     // information about the receiver displayed for the sender
     // chat -- sender --> receiver
     final recipient = Recipient(
@@ -165,7 +172,7 @@ class MessagesProvider with ChangeNotifier {
       notification: false,
       receiverImage: receiverImage,
       receiverName: receiverName,
-      lastMessage: (messageText == null) ? text : messageText,
+      lastMessage: lastMessage,
     );
 
     // my message should not be seen by the recipeint before he load them in

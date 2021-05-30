@@ -24,16 +24,16 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSCameraUsageDescription</key>
-	<string>Enable camera to take a picture</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Need access to select a location</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Need access to select a location</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Enable camera to take a picture</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Need access to record a video</string>
+	<string>Enable microphone to record a video</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Enable photos access to upload a profile picture and/or send image messages</string>
+	<string>Enable photos access to upload a profile picture or send image messages</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

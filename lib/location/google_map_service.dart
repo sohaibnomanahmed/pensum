@@ -15,7 +15,7 @@ class GoogleMapService {
     const GOOGLE_API_KEY = 'AIzaSyASyQrD1FCJEmrPvrcLUWeGcn2pubkqFy8';
     final image = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=$GOOGLE_API_KEY';
     // TODO check if not messed up
-    final url = Uri(path: image);
+    final url = Uri.parse(image);
     final response = await http.get(url);
     return jsonDecode(response.body)['results'][0]['formatted_address'];
   }

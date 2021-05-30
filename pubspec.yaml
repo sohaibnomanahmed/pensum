@@ -42,7 +42,7 @@ dependencies:
   provider: ^5.0.0
 
   # image picker
-  image_picker: ^0.7.5
+  image_picker: ^0.7.5+3
 
   # image cropper
   image_cropper: ^1.4.0
@@ -68,7 +68,7 @@ dependencies:
   location: ^4.1.1 # get current location
   http: ^0.13.3 # use google map api
   url_launcher: ^6.0.4 # launch map on google maps or web browser
-  flutter_cache_manager: ^3.0.2 # cache image from url used for google maps previews
+  flutter_cache_manager: ^3.1.0 # cache image from url used for google maps previews
 
 dev_dependencies:
   flutter_test:

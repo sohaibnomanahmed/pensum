@@ -70,7 +70,6 @@ class MyApp extends StatelessWidget {
           create: (ctx) => AuthenticationProvider(),
         ),
         StreamProvider(
-          // TODO chech if this does not mess up things
           initialData: null,
           create: (context) => context.read<AuthenticationProvider>().authState,
         )
@@ -116,11 +115,16 @@ class MyApp extends StatelessWidget {
           switch (settings.name) {
             case MessagesPage.routeName:
               Map args = settings.arguments;
+              final rid = args['id'];
+              if(rid == null){
+                // TODO show error leaf error snackbar
+                return MaterialPageRoute(builder: (_) => PageNotFound());
+              }
               return MaterialPageRoute(
                 builder: (_) => ChangeNotifierProvider(
                   create: (_) => MessagesProvider(),
                   child: MessagesPage(
-                    rid: args['id'],
+                    rid: rid,
                     receiverName: args['name'],
                     receiverImage: args['image'],
                   ),

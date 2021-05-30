@@ -10,7 +10,7 @@ class MessageBar extends StatefulWidget {
   final String receiverName;
   final String receiverImage;
 
-  const MessageBar({this.rid, this.receiverName, this.receiverImage});
+  const MessageBar({@required this.rid, this.receiverName, this.receiverImage});
 
   @override
   _MessageBarState createState() => _MessageBarState();
