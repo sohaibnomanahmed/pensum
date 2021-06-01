@@ -43,7 +43,7 @@ class Profile {
   factory Profile.fromFirestore(DocumentSnapshot doc) {
     Map data = doc.data();
     if (data == null) {
-      return null;
+      throw 'Error creating Profile from null value';
     }
     final String firstname = data['firstname'];
     final String lastname = data['lastname'];
@@ -56,7 +56,7 @@ class Profile {
         imageUrl == null ||
         creationTime == null ||
         userItems == null) {
-      return null;
+      throw 'Error creating Profile from null value';
     }
 
     return Profile(

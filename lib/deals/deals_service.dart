@@ -4,6 +4,11 @@ import 'package:flutter/foundation.dart';
 import 'models/deal.dart';
 import 'models/deal_filter.dart';
 
+/*
+ * Deals service fetches deals for a certain book, the page fetching can be accessed
+ * from multiple tabs in the app therefore, doeas each tab page have their own 
+ * Dealservice object in their respective provider, to not overlap same data. 
+ */
 class DealsService {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   DocumentSnapshot lastDeal;
@@ -38,10 +43,9 @@ class DealsService {
         .startAfterDocument(lastDeal)
         .limit(pageSize)
         .get();
-    if (deals.docs.isEmpty) {
-      return null;
+    if (deals.docs.isNotEmpty) {
+      lastDeal = deals.docs.last;
     }
-    lastDeal = deals.docs.last;
     return deals.docs.map((document) => Deal.fromFirestore(document)).toList();
   }
 
@@ -98,10 +102,9 @@ class DealsService {
     // get the deals matching the query
     final deals = await query.get();
     // map the deals to the Deal model
-    if (deals.docs.isEmpty) {
-      return null;
+    if (deals.docs.isNotEmpty) {
+      lastFilteredDeal = deals.docs.last;
     }
-    lastFilteredDeal = deals.docs.last;
     return deals.docs.map((document) => Deal.fromFirestore(document)).toList();
   }
 

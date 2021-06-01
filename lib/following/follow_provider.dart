@@ -134,13 +134,15 @@ class FollowProvider with ChangeNotifier{
   }
 
   /*
-   * remove following notification for a spesific book, if
-   * successfull return true, if error return false
+   * remove following notification for a spesific book;
+   * Since this method is preceeds other actions, we need to
+   * decide if it is important to show if it succed or not
+   * in this case its not, so we sont return a Future to halt the activity
    */
-  void removeFollowingNotification(String id) {
+  void removeFollowingNotification(String id) async {
     try{
       final user = _authenticationService.currentUser;
-      _followService.removeFollowingNotification(uid: user.uid, id: id);
+      await _followService.removeFollowingNotification(uid: user.uid, id: id);
     }catch(error){
       print('remove notification error: $error');
     }

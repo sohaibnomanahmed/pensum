@@ -25,15 +25,18 @@ class MessagesProvider with ChangeNotifier {
   final _locationService = LocationService();
 
   final List<Message> _messages = [];
+  final seenMap = {'seen': true};
   final _pageSize = 10;
   var _isError = false;
   var _isLoading = true;
+  var _messageLoading = false;
   var _silentLoading = false;
   var _subscription;
 
   // getters
   MessagesProvider get provider => this;
   bool get isLoading => _isLoading;
+  bool get messageLoading => _messageLoading;
   bool get isError => _isError;
   List<Message> get messages => [..._messages];
 
@@ -55,29 +58,31 @@ class MessagesProvider with ChangeNotifier {
         notifyListeners();
         return;
       }
-      const seenMap = {'seen': true};
       messages.reversed.toList().forEach((message) {
         message.isMe = message.sid == user.uid;
         // if not already loaded, add to _message list
         if (!_messages.contains(message)) {
           _messages.insert(0, message);
         }
-        
+
         // change seen status if changed in the databse
         final index = _messages.indexOf(message);
-        if (_messages[index].seen != message.seen){
+        if (_messages[index].seen != message.seen) {
           _messages[index].seen = message.seen;
         }
-        
+
         // set message as seen for the sender i.e the other user
-        if (!message.isMe){
-          _messagesService.setSeen(id: message.id, sid: user.uid, rid: rid, message: seenMap);
+        if (!message.isMe) {
+          _messagesService.setSeen(
+              id: message.id, sid: user.uid, rid: rid, message: seenMap);
         }
       });
       // set recipeint notification as false for receiver i.e one self
       const notificationMap = {'notification': false};
-      _recipientService.setNotification(sid: user.uid, rid: rid, recipient: notificationMap);
-      // remove notification 
+      _recipientService.setNotification(
+          sid: user.uid, rid: rid, recipient: notificationMap);
+      // remove notification
+      // TODO remove?
       //firestoreService.notification.setChatNotification(user.uid, false);
       _isLoading = false;
       notifyListeners();
@@ -128,7 +133,15 @@ class MessagesProvider with ChangeNotifier {
       return;
     }
     // set isMe boolean on all messages
-    moreMessages.forEach((message) => message.isMe = message.sid == user.uid);
+    moreMessages.forEach((message) {
+      message.isMe = message.sid == user.uid;
+      // set message as seen for the sender i.e the other user
+      // TODO test this
+      if (!message.isMe) {
+        _messagesService.setSeen(
+            id: message.id, sid: user.uid, rid: rid, message: seenMap);
+      }
+    });
     // add them the end of the messages list
     _messages.addAll(moreMessages);
     // update UI wait for a sec to let it complate before setting silent loading to false
@@ -158,8 +171,7 @@ class MessagesProvider with ChangeNotifier {
     final time = Timestamp.now();
 
     final lastMessage = (messageText == null) ? text : messageText;
-    if (lastMessage == null){
-      // TODO later solution make text non nullable
+    if (lastMessage == null) {
       print('Error no text provided');
       return false;
     }
@@ -208,6 +220,8 @@ class MessagesProvider with ChangeNotifier {
     @required String receiverName,
     @required String receiverImage,
   }) async {
+    _messageLoading = true;
+    notifyListeners();
     try {
       // Choose image from image picker service
       final image = await _imagePickerService.pickImage(source);
@@ -226,8 +240,12 @@ class MessagesProvider with ChangeNotifier {
           type: 'image');
     } catch (error) {
       print('Error sending message: $error');
+      _messageLoading = false;
+      notifyListeners();
       return false;
     }
+    _messageLoading = false;
+    notifyListeners();
     return true;
   }
 
@@ -236,25 +254,28 @@ class MessagesProvider with ChangeNotifier {
    * Then call sendMessage. There should not be a loader, should feel like contant flow.
    * If successfull return true, if an error occurs return false 
    */
-  Future<bool> sendLocation({
-    @required bool currentLocation,
-    @required String rid,
-    @required String receiverName,
-    @required String receiverImage,
-    double latitude,
-    double longitude
-  }) async {
+  Future<bool> sendLocation(
+      {@required bool currentLocation,
+      @required String rid,
+      @required String receiverName,
+      @required String receiverImage,
+      double latitude,
+      double longitude}) async {
+    _messageLoading = true; 
+    notifyListeners();   
     try {
       // check if current location
-      if (currentLocation){
+      if (currentLocation) {
         final location = await _locationService.getCurrentUserLocation();
         latitude = location.latitude;
         longitude = location.longitude;
       }
       // Get location address
-      final address = await _googleMapService.getPlaceAddress(latitude: latitude, longitude: longitude);
+      final address = await _googleMapService.getPlaceAddress(
+          latitude: latitude, longitude: longitude);
       // Get location image
-      final url = _googleMapService.generateLocationPreviewImage(latitude: latitude, longitude: longitude);
+      final url = _googleMapService.generateLocationPreviewImage(
+          latitude: latitude, longitude: longitude);
       // Upload image to firebase storage
       final image = await _imageUploadService.urlToFile(url);
       final imageUrl = await _imageUploadService.uploadChatMessageImage(image);
@@ -270,11 +291,15 @@ class MessagesProvider with ChangeNotifier {
           latitude: latitude,
           longitude: longitude,
           messageText: 'You sent a location',
-          type: 'location');
+          type: 'location');   
     } catch (error) {
       print('Error sending message: $error');
+      _messageLoading = false;
+      notifyListeners();
       return false;
     }
+    _messageLoading = false;
+    notifyListeners();
     return true;
   }
 
@@ -282,7 +307,7 @@ class MessagesProvider with ChangeNotifier {
    * This method is mainly used in the chat page to unsubscribe from topics
    * unsubscribes from the chat topic of the user so that the notifications wont apear 
    */
-  void unsubscribeFromChatNotifications() async{
+  void unsubscribeFromChatNotifications() async {
     final user = _authenticationService.currentUser;
     await _notificationService.unsubscribeFromTopic(user.uid);
   }
@@ -291,7 +316,7 @@ class MessagesProvider with ChangeNotifier {
    * This method is mainly used in the chat page to subscribe to a topics
    * subscribes to the chat topic of the user so that the notifications will apear
    */
-  void subscribeToChatNotifications() async{
+  void subscribeToChatNotifications() async {
     final user = _authenticationService.currentUser;
     await _notificationService.subscribeToTopic(user.uid);
   }

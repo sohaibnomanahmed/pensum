@@ -30,7 +30,7 @@ class Message {
   factory Message.fromFirestore(DocumentSnapshot doc) {
     Map data = doc.data();
     if (data == null) {
-      return null;
+      throw 'Error creating Message from null value';
     }
     final String text = data['text'];
     final String sid = data['sid'];
@@ -48,7 +48,7 @@ class Message {
         type == null ||
         seen == null 
      ){
-      return null;
+      throw 'Error creating Message from null value';
     }
 
     return Message(

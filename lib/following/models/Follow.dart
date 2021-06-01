@@ -21,7 +21,7 @@ class Follow {
   factory Follow.fromFirestore(DocumentSnapshot doc) {
     Map data = doc.data();
     if (data == null) {
-      return null;
+      throw 'Error creating Follow from null value';
     }
     final String pid = data['pid'];
     final String title = data['title'];
@@ -38,7 +38,7 @@ class Follow {
         time == null ||
         notification == null
      ){
-      return null;
+      throw 'Error creating Follow from null value';
     }
 
     return Follow(

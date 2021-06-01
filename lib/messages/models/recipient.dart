@@ -23,7 +23,7 @@ class Recipient {
   factory Recipient.fromFirestore(DocumentSnapshot doc) {
     Map data = doc.data();
     if (data == null) {
-      return null;
+      throw 'Error creating Recipient from null value';
     }
     final String rid = data['rid'];
     final String receiverName = data['receiverName'] ?? 'Leaf User';
@@ -38,7 +38,7 @@ class Recipient {
         lastMessage == null ||
         notification == null 
      ){
-      return null;
+      throw 'Error creating Recipient from null value';
     }
     return Recipient(
         rid: rid,

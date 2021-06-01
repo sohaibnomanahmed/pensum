@@ -63,7 +63,7 @@ class Deal {
         place == null ||
         description == null ||
         time == null) {
-      return null;
+      throw 'Error creating Deal from null value';
     }
 
     // data on firestore is int, need to be converted
@@ -91,7 +91,7 @@ class Deal {
   factory Deal.fromFirestore(DocumentSnapshot doc) {
     Map data = doc.data();
     if (data == null) {
-      return null;
+      throw 'Error creating Deal from null value';
     }
     return Deal.fromMap(data, doc.id);
   }

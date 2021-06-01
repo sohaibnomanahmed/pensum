@@ -25,10 +25,9 @@ class MessagesService {
         .snapshots()
         .map(
       (list) {
-        if (list.docs.isEmpty) {
-          return null;
+        if (list.docs.isNotEmpty) {
+          lastMessage = list.docs.last;
         }
-        lastMessage = list.docs.last;
         return list.docs
             .map((document) => Message.fromFirestore(document))
             .toList();
@@ -52,17 +51,15 @@ class MessagesService {
         .startAfterDocument(lastMessage)
         .limit(pageSize)
         .get();
-    if (messages.docs.isEmpty) {
-      return null;
+    if (messages.docs.isNotEmpty) {
+      lastMessage = messages.docs.last;
     }
-    lastMessage = messages.docs.last;
-
     return messages.docs
         .map((document) => Message.fromFirestore(document))
         .toList();
   }
 
-  // send message
+  // send message:, info is stored for the sender the receiver get data from cloud fucntions
   Future<void> sendMessage({
     @required String sid,
     @required String rid,

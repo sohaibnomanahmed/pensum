@@ -22,7 +22,7 @@ class FollowService {
       (list) {
         if (list.docs.isNotEmpty) {
           lastFollow = list.docs.last;
-        }
+        }    
         return list.docs
             .map((document) => Follow.fromFirestore(document))
             .toList();
@@ -91,9 +91,9 @@ class FollowService {
   }
 
   // remove a notification for a spesific followed book
-  void removeFollowingNotification(
-      {@required String uid, @required String id}){
-    firestore
+  Future<void> removeFollowingNotification(
+      {@required String uid, @required String id}) async {
+    await firestore
         .collection('profiles')
         .doc(uid)
         .collection('following')

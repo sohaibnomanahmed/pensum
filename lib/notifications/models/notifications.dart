@@ -13,7 +13,7 @@ class Notifications{
   factory Notifications.fromFirestore(DocumentSnapshot doc) {
     Map data = doc.data();
     if (data == null) {
-      return null;
+      throw 'Error creating Notification from null value';
     }
     final int chat = data['chat'];
     final int follow = data['follow'];
@@ -22,7 +22,7 @@ class Notifications{
         chat == null ||
         follow == null 
      ){
-      return null;
+      throw 'Error creating Notification from null value';
     }
 
     return Notifications(

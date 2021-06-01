@@ -12,7 +12,13 @@ class PhotoPage extends StatelessWidget {
     return Scaffold(
       body: PhotoView(
         imageProvider: NetworkImage(imageUrl),
-        errorBuilder: (_, __, ___) => Icon(Icons.wifi_off_rounded),
+        errorBuilder: (_, __, ___) => Center(
+          child: Icon(
+            Icons.wifi_off_rounded,
+            size: 100,
+            color: Theme.of(context).primaryColorDark,
+          ),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.pop(context),

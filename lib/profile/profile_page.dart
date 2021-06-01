@@ -62,8 +62,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: Stack(
                     children: [
                       Positioned(
-                        top: -height * .20,
-                        right: -width * .2,
+                        top: -height * .25, // .2 old val
+                        right: -width * .5, // .2 old val
                         child: BezierContainer(),
                       ),
                       Column(

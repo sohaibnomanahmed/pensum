@@ -15,10 +15,9 @@ class BooksService {
         .snapshots()
         .map(
       (list) {
-        if (list.docs.isEmpty) {
-          return null;
+        if (list.docs.isNotEmpty) {
+          lastBook = list.docs.last;
         }
-        lastBook = list.docs.last;
         return list.docs
             .map((document) => Book.fromFirestore(document))
             .toList();
@@ -34,10 +33,9 @@ class BooksService {
         .startAfterDocument(lastBook)
         .limit(pageSize)
         .get();
-    if (books.docs.isEmpty) {
-      return null;
+    if (books.docs.isNotEmpty) {
+      lastBook = books.docs.last;
     }
-    lastBook = books.docs.last;
     return books.docs.map((document) => Book.fromFirestore(document)).toList();
   }
 
@@ -45,7 +43,10 @@ class BooksService {
   Stream<Map> fetchBookTitles() {
     return firestore.collection('books').doc('metadata').snapshots().map(
       (snapshot) {
-        return snapshot.data()['titles'];
+        if (snapshot.exists){
+          return snapshot.data()['titles'];
+        }
+        return {};
       },
     );
   }
@@ -63,7 +64,6 @@ class BooksService {
         .orderBy('year', descending: true)
         .where('title', arrayContains: title)
         .get();
-
     return books.docs.map((document) => Book.fromFirestore(document)).toList();
   }
 }

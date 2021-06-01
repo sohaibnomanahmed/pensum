@@ -14,6 +14,7 @@ import '../books/models/book.dart';
 import 'models/deal.dart';
 
 class DealsProvider with ChangeNotifier {
+  // TODO should only be one auth provider?
   final _authenticationService = AuthenticationService();
   final _profileService = ProfileService();
   final _dealsService = DealsService();
@@ -31,7 +32,7 @@ class DealsProvider with ChangeNotifier {
   bool _isFollowing;
   StreamSubscription _dealsSubscription;
   StreamSubscription _followSubscribtion;
-  String _errorMessage;
+  //String _errorMessage;
 
   // getters
   bool get isLoading => _isLoading;
@@ -39,7 +40,7 @@ class DealsProvider with ChangeNotifier {
   bool get isFilter => _isFilter;
   bool get isFollowing => _isFollowing;
   bool get isFollowBtnLoading => _isFollowBtnLoading;
-  String get errorMessage => _errorMessage;
+  //String get errorMessage => _errorMessage;
   DealFilter get dealFilter => _dealFilter;
   List<Deal> get deals => [..._deals];
   DealsProvider get provider => this;

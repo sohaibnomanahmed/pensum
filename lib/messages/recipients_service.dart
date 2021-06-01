@@ -21,10 +21,9 @@ class RecipientsService {
         .snapshots()
         .map(
       (list) {
-        if (list.docs.isEmpty) {
-          return null;
+        if (list.docs.isNotEmpty) {
+          lastRecipient = list.docs.last;
         }
-        lastRecipient = list.docs.last;
         return list.docs
             .map((document) => Recipient.fromFirestore(document))
             .toList();
@@ -45,17 +44,16 @@ class RecipientsService {
         .startAfterDocument(lastRecipient)
         .limit(pageSize)
         .get();
-    if (recipients.docs.isEmpty) {
-      return null;
+    if (recipients.docs.isNotEmpty) {
+      lastRecipient = recipients.docs.last;
     }
-    lastRecipient = recipients.docs.last;
-
     return recipients.docs
         .map((document) => Recipient.fromFirestore(document))
         .toList();
   }
 
   // set seen value for a recipient, since they need to know if you have seen their message
+  // TODO shoudl have a future?
   Future<void> setNotification({
     @required String sid,
     @required String rid,
