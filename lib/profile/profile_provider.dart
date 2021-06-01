@@ -153,7 +153,6 @@ class ProfileProvider with ChangeNotifier {
     try {
       // Choose image from image picker service
       final image = await _imagePickerService.pickImage(source);
-      print(image.runtimeType);
       if (image == null) {
         print('Error picking image');
         _isLoading = false;
@@ -162,7 +161,6 @@ class ProfileProvider with ChangeNotifier {
       }
       // Crop choosen image
       var croppedImage = await _imageCropperService.pickImage(image);
-      print(croppedImage.runtimeType);
       if (croppedImage == null) {
         print('Error cropping image');
         _isLoading = false;
@@ -171,18 +169,13 @@ class ProfileProvider with ChangeNotifier {
       }
       // Upload image to firebase storage
       final user = _authenticationService.currentUser;
-      print('uploading file');
       final imageUrl = await _imageUploadService.uploadProfileImage(
           image: croppedImage, uid: user.uid);
-      print('ulpaloded file');
-      print(imageUrl);   
       // Add new imageUrl to user
       _profile.imageUrl = imageUrl;
 
-      print('setting image');
       // Upload imageUrl to firestore user data
       await _profileService.setProfile(uid: user.uid, profile: _profile);
-      print('sat imagee');
     } catch (error) {
       print(error);
       _isLoading = false;

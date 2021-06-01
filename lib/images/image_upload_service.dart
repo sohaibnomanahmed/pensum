@@ -14,15 +14,10 @@ class ImageUploadService{
   final _key = 'Network image';
 
   Future<String> uploadProfileImage({@required io.File image, @required String uid}) async {
-    print('get ref');
     final storageReference =
-        _firebaseStorage.ref().child('profile/' + uid);
-    print('upload');    
+        _firebaseStorage.ref().child('profile/' + uid);  
     await storageReference.putFile(image);
-    print('get link');
     final url = await storageReference.getDownloadURL();
-    print('got link');
-    print(url);
     return url;
   }
 

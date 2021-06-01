@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:leaf/deals/deals_provider.dart';
 import 'package:leaf/deals/widgets/add_deal_bottom_sheet.dart';
+import 'package:leaf/global/functions.dart';
 import 'package:leaf/profile/profile_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -24,14 +25,14 @@ class ProfileDealItem extends StatelessWidget {
             width: 50,
             // child: Hero(
             //   tag: deal.pid,
-              child: Image.network(
-                deal.productImage,
-                errorBuilder: (_, __, ___) => Icon(
-                  Icons.wifi_off_rounded,
-                  color: Theme.of(context).primaryColorDark,
-                ),
+            child: Image.network(
+              deal.productImage,
+              errorBuilder: (_, __, ___) => Icon(
+                Icons.wifi_off_rounded,
+                color: Theme.of(context).primaryColorDark,
               ),
             ),
+          ),
           // ),
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -50,63 +51,42 @@ class ProfileDealItem extends StatelessWidget {
               Text(deal.quality)
             ],
           ),
-          trailing: !profile.isMe ? null : Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              IconButton(
-                icon: Icon(Icons.edit, color: Theme.of(context).primaryColor),
-                onPressed: () => showModalBottomSheet(
-                  isScrollControlled: true,
-                  context: context,
-                  builder: (_) => ChangeNotifierProvider(
-                    create: (_) => DealsProvider(),
-                    child: AddDealBottomSheet(
-                      pid: deal.pid,
-                      productImage: deal.productImage,
-                      productTitle: deal.productTitle,
-                      deal: deal,
+          trailing: !profile.isMe
+              ? null
+              : Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.edit,
+                          color: Theme.of(context).primaryColor),
+                      onPressed: () => showModalBottomSheet(
+                        isScrollControlled: true,
+                        context: context,
+                        builder: (_) => ChangeNotifierProvider(
+                          create: (_) => DealsProvider(),
+                          child: AddDealBottomSheet(
+                            pid: deal.pid,
+                            productImage: deal.productImage,
+                            productTitle: deal.productTitle,
+                            deal: deal,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
+                    IconButton(
+                      icon: Icon(Icons.delete_rounded,
+                          color: Theme.of(context).errorColor),
+                      onPressed: () => ButtonFunctions.onPressHandler(
+                        context: context,
+                        action: () async => await context
+                            .read<ProfileProvider>()
+                            .deleteDeal(productId: deal.pid, id: deal.id),
+                        errorMessage: 'Error deleting deal',
+                        successMessage: 'Succesfully deleted the deal',
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              IconButton(
-                icon: Icon(Icons.delete_rounded,
-                    color: Theme.of(context).errorColor),
-                onPressed: () async {
-                  final scaffoldMessenger = ScaffoldMessenger.of(context);
-                  final errorColor = Theme.of(context).errorColor;
-                  final primaryColor = Theme.of(context).primaryColor;
-                  final result =
-                      await context.read<ProfileProvider>().deleteDeal(
-                            productId: deal.pid,
-                            id: deal.id,
-                          );
-                  if (!result) {
-                    // remove snackbar if existing and show a new with error message
-                    final errorMessage =
-                        context.read<DealsProvider>().errorMessage;
-                    scaffoldMessenger.hideCurrentSnackBar();
-                    scaffoldMessenger.showSnackBar(
-                      SnackBar(
-                        backgroundColor: errorColor,
-                        content: Text(errorMessage),
-                      ),
-                    );
-                  }
-                  if (result) {
-                    // remove snackbar if existing and show a new with error message
-                    scaffoldMessenger.hideCurrentSnackBar();
-                    scaffoldMessenger.showSnackBar(
-                      SnackBar(
-                        backgroundColor: primaryColor,
-                        content: Text('Succesfully deleted the deal'),
-                      ),
-                    );
-                  }
-                },
-              ),
-            ],
-          ),
         ),
         if (deal.description.isNotEmpty)
           Padding(

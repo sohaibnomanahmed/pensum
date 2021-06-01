@@ -120,7 +120,6 @@ class FollowProvider with ChangeNotifier{
       await _notificationsService.unsubscribeFromTopic(isbn);
     } catch (error) {
       print('Removing deal error: $error');
-      _errorMessage = 'An error occured trying to delete the deal';
       return false;
     }
     return true;

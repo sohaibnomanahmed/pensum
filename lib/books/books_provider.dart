@@ -36,9 +36,8 @@ class BooksProvider with ChangeNotifier{
     final stream = _booksService.fetchBooks(_pageSize);
     _booksSubscription = stream.listen(
       (books) {
-        // TODO test with no books
         _books = books;
-        fetchBookTitles;
+        fetchBookTitles();
       },
       onError: (error) {
         print(error);
@@ -85,7 +84,6 @@ class BooksProvider with ChangeNotifier{
       _silentLoading = false;
       return;
     }
-    // TODO test with no more books
     // add them the end of the messages list
     _books.addAll(moreBooks);
     // update UI then reset the silent loader
@@ -117,11 +115,11 @@ class BooksProvider with ChangeNotifier{
     );
   }
 
-  /*
-   * Searches for all books matching a certain title from firebase and sets _isSearch flag
-   * if successfull lists the found books in _books and stores prevoius books
-   * to be restored when search is cleared, if failed sets flag _isError
-   */
+  /// /*
+  /// * Searches for all books matching a certain title from firebase and sets [_isSearch] flag
+  /// * if successfull lists the found books in [_books] and cashe prevoius books
+  /// * to be restored when search is cleared, if failed sets flag [_isError]
+  /// */
   Future<void> fetchSearchedBook(String title) async {
     // only store the loaded books, when not searching
     // else on double search you get the previous search
@@ -157,16 +155,15 @@ class BooksProvider with ChangeNotifier{
 
   /*
    * Dispose when the provider is destroyed, cancel the book subscrition
-   * Should not be async therefore arent the subscription awaited
    */
   @override
-  void dispose() {
+  void dispose() async {
     super.dispose();
     if (_booksSubscription != null) {
-      _booksSubscription.cancel();
+      await _booksSubscription.cancel();
     }
     if (_bookTitlesSubscription != null) {
-      _bookTitlesSubscription.cancel();
+      await _bookTitlesSubscription.cancel();
     }
   }
 }

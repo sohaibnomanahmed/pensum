@@ -1,6 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:leaf/global/functions.dart';
 import 'package:leaf/images/photo_page.dart';
 import 'package:leaf/presence/widgets/presence_bubble.dart';
 import 'package:provider/provider.dart';
@@ -30,45 +31,23 @@ class ProfileImage extends StatelessWidget {
             backgroundImage: NetworkImage(profile.imageUrl),
           ),
         ),
-        profile.isMe ?
-          FloatingActionButton(
-            elevation: 0,
-            mini: true,
-            onPressed: isLoading
-                ? null
-                : () async {
-                    final scaffoldMessenger = ScaffoldMessenger.of(context);
-                    final errorColor = Theme.of(context).errorColor;
-                    final primaryColor = Theme.of(context).primaryColor;
-                    final result = await context
-                        .read<ProfileProvider>()
-                        .setProfileImage(ImageSource.gallery);
-                    if (!result) {
-                      // remove snackbar if existing and show a new with error message
-                      scaffoldMessenger.hideCurrentSnackBar();
-                      scaffoldMessenger.showSnackBar(
-                        SnackBar(
-                          backgroundColor: errorColor,
-                          content: Text(
-                            'Error occured changing profile image',
-                          ),
+        profile.isMe
+            ? FloatingActionButton(
+                elevation: 0,
+                mini: true,
+                onPressed: isLoading
+                    ? null
+                    : () => ButtonFunctions.onPressHandler(
+                          context: context,
+                          action: () async => await context
+                              .read<ProfileProvider>()
+                              .setProfileImage(ImageSource.gallery),
+                          errorMessage: 'Error occured changing profile image',
+                          successMessage: 'Successfully changed profile image',
                         ),
-                      );
-                    }
-                    if (result) {
-                      // remove snackbar if existing and show a new with error message
-                      scaffoldMessenger.hideCurrentSnackBar();
-                      scaffoldMessenger.showSnackBar(
-                        SnackBar(
-                          backgroundColor: primaryColor,
-                          content: Text('Successfully changed profile image'),
-                        ),
-                      );
-                    }
-                  },
-            child: Icon(Icons.edit),
-          ):
-          PresenceBubble(profile.uid, 35)
+                child: Icon(Icons.edit),
+              )
+            : PresenceBubble(profile.uid, 35)
       ],
     );
   }

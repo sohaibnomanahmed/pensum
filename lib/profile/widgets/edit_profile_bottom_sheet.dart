@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:leaf/global/functions.dart';
 import 'package:leaf/profile/models/profile.dart';
 import 'package:provider/provider.dart';
 
@@ -55,43 +56,18 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
               ElevatedButton(
                 onPressed: (_firstname.isEmpty || _lastname.isEmpty)
                     ? null
-                    : () async {
-                        // get data before popping screen
-                        final scaffoldMessenger = ScaffoldMessenger.of(context);
-                        final errorColor = Theme.of(context).errorColor;
-                        final primaryColor = Theme.of(context).primaryColor;
-                        // pop screen
-                        Navigator.of(context).pop();
-                        // try updating the user profile
-                        final result = await context
-                            .read<ProfileProvider>()
-                            .setProfile(
-                                firstname: Profile.capitalizaName(_firstname),
-                                lastname: Profile.capitalizaName(_lastname));
-                        // check if an error occured
-                        if (!result) {
-                          // remove snackbar if existing and show a new with error message
-                          final errorMessage =
-                              context.read<ProfileProvider>().errorMessage;
-                          scaffoldMessenger.hideCurrentSnackBar();
-                          scaffoldMessenger.showSnackBar(
-                            SnackBar(
-                              backgroundColor: errorColor,
-                              content: Text(errorMessage),
-                            ),
-                          );
-                        }
-                        if (result) {
-                          // remove snackbar if existing and show a new with error message
-                          scaffoldMessenger.hideCurrentSnackBar();
-                          scaffoldMessenger.showSnackBar(
-                            SnackBar(
-                              backgroundColor: primaryColor,
-                              content: Text('Succesfully edited profile'),
-                            ),
-                          );
-                        }
-                      },
+                    : () async => ButtonFunctions.onPressHandler(
+                          context: context,
+                          popScreen: true,
+                          action: () async => await context
+                              .read<ProfileProvider>()
+                              .setProfile(
+                                  firstname: Profile.capitalizaName(_firstname),
+                                  lastname: Profile.capitalizaName(_lastname)),
+                          errorMessage:
+                              'Something went wrong, please try again!',
+                          successMessage: 'Succesfully edited profile',
+                        ),
                 child: Text('Edit profile'),
               )
             ],

@@ -170,7 +170,6 @@ class DealsProvider with ChangeNotifier {
           uid: userProfile.uid, profile: userProfile);
     } catch (error) {
       print('Add deal error: $error');
-      _errorMessage = 'Something went wrong, please try again!';
       return false;
     }
     return true;
@@ -253,7 +252,6 @@ class DealsProvider with ChangeNotifier {
       await _notificationsService.subscribeToTopic(book.isbn);
     } catch (error) {
       print('Add deal error: $error');
-      _errorMessage = 'Something went wrong, please try again!';
       _isFollowBtnLoading = false;
       notifyListeners();
       return false;
@@ -291,13 +289,13 @@ class DealsProvider with ChangeNotifier {
    * Dispose when the provider is destroyed, cancel the deal subscrition
    */
   @override
-  void dispose() {
+  void dispose() async {
     super.dispose();
     if (_dealsSubscription != null) {
-      _dealsSubscription.cancel();
+      await _dealsSubscription.cancel();
     }
     if (_followSubscribtion != null) {
-      _followSubscribtion.cancel();
+      await _followSubscribtion.cancel();
     }
   }
 }

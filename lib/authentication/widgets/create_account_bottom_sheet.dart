@@ -73,6 +73,7 @@ class _CreateAccountBottomSheetState extends State<CreateAccountBottomSheet> {
                   onSaved: (value) => _password = value/*!*/,
                 ),
                 SizedBox(height: 10),
+                // This diviate from the typical ButtonFunctions.onPressHandler
                 ElevatedButton(
                   onPressed: isLoading
                       ? null

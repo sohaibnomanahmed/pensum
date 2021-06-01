@@ -43,7 +43,6 @@ class _PresenceBubbleState extends State<PresenceBubble> {
           );
         }
         var presence = snap.data;
-        print(presence);
 
         if (presence == true) {
           return CircleAvatar(

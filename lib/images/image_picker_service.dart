@@ -9,7 +9,6 @@ class ImagePickerService {
       return null;
     }
     final image = File(pickedFile.path);
-    print(image.runtimeType);
     return image;
   }
 }

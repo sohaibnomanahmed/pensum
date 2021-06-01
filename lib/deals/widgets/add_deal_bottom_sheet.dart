@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:leaf/global/functions.dart';
 import 'package:provider/provider.dart';
 
 import '../data/place_data.dart';
@@ -55,22 +56,23 @@ class _AddDealBottomSheetState extends State<AddDealBottomSheet> {
             children: [
               Icon(Icons.spa_rounded,
                   size: 65, color: Theme.of(context).primaryColor),
-               // Makse sure the value matches a value in items   
+              // Makse sure the value matches a value in items
               DropdownButtonFormField(
                 value: _price.isEmpty ? null : _price,
                 hint: Text('Select price'),
                 onChanged: (value) => setState(() {
-                  _price = value/*!*/;
+                  _price = value /*!*/;
                 }),
                 items: prices
-                    .map((price) => DropdownMenuItem(value: price, child: Text(price)))
+                    .map((price) =>
+                        DropdownMenuItem(value: price, child: Text(price)))
                     .toList(),
               ),
               DropdownButtonFormField(
                 value: _quality.isEmpty ? null : _quality,
                 hint: Text('Select quality'),
                 onChanged: (value) => setState(() {
-                  _quality = value/*!*/;
+                  _quality = value /*!*/;
                 }),
                 items: qualities
                     .map((quality) =>
@@ -81,7 +83,7 @@ class _AddDealBottomSheetState extends State<AddDealBottomSheet> {
                 value: _place.isEmpty ? null : _place,
                 hint: Text('Select place'),
                 onChanged: (value) => setState(() {
-                  _place = value/*!*/;
+                  _place = value /*!*/;
                 }),
                 items: places
                     .map((place) =>
@@ -95,58 +97,32 @@ class _AddDealBottomSheetState extends State<AddDealBottomSheet> {
                 maxLines: 3,
                 decoration:
                     InputDecoration(labelText: 'Description (Optional)'),
-                onChanged: (value) => _description = value/*!*/,
+                onChanged: (value) => _description = value /*!*/,
               ),
               ElevatedButton(
-                onPressed: (_price.isEmpty ||
-                        _quality.isEmpty ||
-                        _place.isEmpty)
-                    ? null
-                    : () async {
-                        // get data before popping screen
-                        final scaffoldMessenger = ScaffoldMessenger.of(context);
-                        final errorColor = Theme.of(context).errorColor;
-                        final primaryColor = Theme.of(context).primaryColor;
-                        // pop screen
-                        Navigator.of(context).pop();
-                        // try adding the deal
-                        final result =
-                            await context.read<DealsProvider>().setDeal(
-                                  id: widget.deal?.id,
-                                  pid: widget.pid,
-                                  productImage: widget.productImage,
-                                  productTitle: widget.productTitle,
-                                  price: _price,
-                                  quality: _quality,
-                                  place: _place,
-                                  description: _description,
-                                );
-                        // check if an error occured
-                        if (!result) {
-                          // remove snackbar if existing and show a new with error message
-                          final errorMessage =
-                              context.read<DealsProvider>().errorMessage;
-                          scaffoldMessenger.hideCurrentSnackBar();
-                          scaffoldMessenger.showSnackBar(
-                            SnackBar(
-                              backgroundColor: errorColor,
-                              content: Text(errorMessage),
+                onPressed:
+                    (_price.isEmpty || _quality.isEmpty || _place.isEmpty)
+                        ? null
+                        : () => ButtonFunctions.onPressHandler(
+                              context: context,
+                              popScreen: true,
+                              action: () async =>
+                                  await context.read<DealsProvider>().setDeal(
+                                        id: widget.deal?.id,
+                                        pid: widget.pid,
+                                        productImage: widget.productImage,
+                                        productTitle: widget.productTitle,
+                                        price: _price,
+                                        quality: _quality,
+                                        place: _place,
+                                        description: _description,
+                                      ),
+                              errorMessage:
+                                  'Something went wrong, please try again!',
+                              successMessage: 'Succesfully added deal',
                             ),
-                          );
-                        }
-                        if (result) {
-                          // remove snackbar if existing and show a new with error message
-                          scaffoldMessenger.hideCurrentSnackBar();
-                          scaffoldMessenger.showSnackBar(
-                            SnackBar(
-                              backgroundColor: primaryColor,
-                              content: Text('Succesfully added deal'),
-                            ),
-                          );
-                        }
-                      },
                 child: Text('Add deal'),
-              )
+              ),
             ],
           ),
         ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:leaf/deals/widgets/blurred_image_app_bar.dart';
 import 'package:leaf/deals/widgets/deal_list.dart';
+import 'package:leaf/global/functions.dart';
 import 'package:leaf/global/widgets/leaf_error.dart';
 import 'package:provider/provider.dart';
 
@@ -55,48 +56,26 @@ class _DealsPageState extends State<DealsPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: ElevatedButton(
-                    onPressed: (isLoading || isFollowing)
-                        ? null
-                        : () async {
-                            final result = await context
+                  onPressed: (isLoading || isFollowing)
+                      ? null
+                      : () => ButtonFunctions.onPressHandler(
+                            context: context,
+                            action: () async => await context
                                 .read<DealsProvider>()
-                                .followBook(widget.book);
-                            final scaffoldMessenger =
-                                ScaffoldMessenger.of(context);
-                            final errorColor = Theme.of(context).errorColor;
-                            final primaryColor = Theme.of(context).primaryColor;
-                            // check if an error occured
-                            if (!result) {
-                              // remove snackbar if existing and show a new with error message
-                              final errorMessage =
-                                  context.read<DealsProvider>().errorMessage;
-                              scaffoldMessenger.hideCurrentSnackBar();
-                              scaffoldMessenger.showSnackBar(
-                                SnackBar(
-                                  backgroundColor: errorColor,
-                                  content: Text(errorMessage),
-                                ),
-                              );
-                            }
-                            if (result) {
-                              // remove snackbar if existing and show a new with error message
-                              scaffoldMessenger.hideCurrentSnackBar();
-                              scaffoldMessenger.showSnackBar(
-                                SnackBar(
-                                  backgroundColor: primaryColor,
-                                  content: Text(
-                                      'Succesfully started following this book'),
-                                ),
-                              );
-                            }
-                          },
-                    child: isFollowBtnLoading
-                        ? SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(),
-                          )
-                        : Text('Follow')),
+                                .followBook(widget.book),
+                            successMessage:
+                                'Succesfully started following this book',
+                            errorMessage:
+                                'Something went wrong, please try again!',
+                          ),
+                  child: isFollowBtnLoading
+                      ? SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(),
+                        )
+                      : Text('Follow'),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 8.0, bottom: 60),

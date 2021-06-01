@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:leaf/global/functions.dart';
 import 'package:provider/provider.dart';
 
 import 'package:leaf/following/follow_provider.dart';
@@ -37,35 +38,13 @@ class FollowItem extends StatelessWidget {
           IconButton(
             icon:
                 Icon(Icons.delete_rounded, color: Theme.of(context).errorColor),
-            onPressed: () async {
-              final scaffoldMessenger = ScaffoldMessenger.of(context);
-              final errorColor = Theme.of(context).errorColor;
-              final primaryColor = Theme.of(context).primaryColor;
-              final result =
-                  await context.read<FollowProvider>().unfollow(_follow.pid);
-              if (!result) {
-                // remove snackbar if existing and show a new with error message
-                final errorMessage =
-                    context.read<FollowProvider>().errorMessage;
-                scaffoldMessenger.hideCurrentSnackBar();
-                scaffoldMessenger.showSnackBar(
-                  SnackBar(
-                    backgroundColor: errorColor,
-                    content: Text(errorMessage),
-                  ),
-                );
-              }
-              if (result) {
-                // remove snackbar if existing and show a new with error message
-                scaffoldMessenger.hideCurrentSnackBar();
-                scaffoldMessenger.showSnackBar(
-                  SnackBar(
-                    backgroundColor: primaryColor,
-                    content: Text('Succesfully unfollowed'),
-                  ),
-                );
-              }
-            },
+            onPressed: () => ButtonFunctions.onPressHandler(
+              context: context,
+              action: () async =>
+                  await context.read<FollowProvider>().unfollow(_follow.pid),
+              errorMessage: 'Something went wrong, please try again!',
+              successMessage: 'Succesfully unfollowed',
+            ),
           ),
         ],
       ),
