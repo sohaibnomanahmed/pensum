@@ -13,7 +13,7 @@ class _RecipientsPageState extends State<RecipientsPage>{
   @override
   void initState() {
     super.initState();
-    context.read<RecipientsProvider>().fetchRecipients;
+    context.read<RecipientsProvider>().fetchRecipients();
   }
 
   @override

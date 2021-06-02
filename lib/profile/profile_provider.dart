@@ -6,7 +6,6 @@ import 'package:leaf/authentication/authentication_service.dart';
 import 'package:leaf/books/books_service.dart';
 import 'package:leaf/books/models/book.dart';
 import 'package:leaf/deals/deals_service.dart';
-import 'package:leaf/deals/models/deal.dart';
 import 'package:leaf/images/image_cropper_service.dart';
 import 'package:leaf/images/image_picker_service.dart';
 import 'package:leaf/images/image_upload_service.dart';
@@ -26,7 +25,6 @@ class ProfileProvider with ChangeNotifier {
   Profile _profile;
   var _isLoading = true;
   var _isError = false;
-  String _errorMessage;
   StreamSubscription _subscription;
 
   // getters
@@ -34,12 +32,11 @@ class ProfileProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   bool get isError => _isError;
   Profile get profile => _profile;
-  String get errorMessage => _errorMessage;
 
-  /*
-   * Subsbribe to a profile stream, if an error accours the stream will be canceled 
-   * Should be called in the init state method, and recalled if an error occurs
-   */
+  /// Subsbribe to a profile stream, Should be called in the [init state] method of the page
+  /// from where it is called, check if null and stores the result in [profile], store if
+  /// its is the users profile and stop [loading] if an error accours 
+  /// the stream will be canceled, and we will set [isError]
   void fetchProfile(String uid) {
     // fetch user profile
     var isMe = uid == null ? true : false;
@@ -70,10 +67,8 @@ class ProfileProvider with ChangeNotifier {
     );
   }
 
-  /*
-   *  reload profile when an error occurs, set loading and fetch the profile
-   *  again by remaking the stream 
-   */
+  /// refetch profile when an error occurs, reset [loading] and [error]
+  /// then call [fetchProfile] again to remake the stream 
   void reFetchProfile([String uid]) async{
     _isLoading = true;
     _isError = false;
@@ -81,14 +76,13 @@ class ProfileProvider with ChangeNotifier {
     fetchProfile(uid);
   }
 
+  /// returnes a dealed [Book], mainly used for [navigation] 
   Future<Book> getDealedBook(String isbn){
     return _booksService.getBook(isbn);
   }
 
-  /*
-   * Deletes a deal both from the users profile and from the books deals page
-   * if successfull return true, if an error occurs set error message and retun false 
-   */
+  /// Deletes a deal both from the users [profile] and from the books [deals page]
+  /// if successfull return true, if an error occurs set error message and retun false 
   Future<bool> deleteDeal(
       {@required String productId, @required String id}) async {
     try {
@@ -99,17 +93,14 @@ class ProfileProvider with ChangeNotifier {
       await _profileService.deleteDeal(uid: user.uid, id: id);
     } catch (error) {
       print('Removing deal error: $error');
-      _errorMessage = 'An error occured trying to delete the deal';
       return false;
     }
     return true;
   }
 
-  /*
-   * set the user profile, this is called from the profile page
-   * and will update the current profile of the user, returns true if
-   * successfull and false if an error occurs
-   */
+  /// set the user [profile], this is called from the [profile page]
+  /// and will update the current [profile] of the user, returns true if
+  /// successfull and false if an error occurs
   Future<bool> setProfile({
     @required String firstname,
     @required String lastname,
@@ -125,7 +116,6 @@ class ProfileProvider with ChangeNotifier {
       await _profileService.setProfile(uid: user.uid, profile: _profile);
     } catch (error) {
       print('Add deal error: $error');
-      _errorMessage = 'Something went wrong, please try again!';
       _isLoading = false;
       notifyListeners();
       return false;
@@ -135,12 +125,9 @@ class ProfileProvider with ChangeNotifier {
     return true;
   }
 
-  /*
-   * set the user profile image, if no image is choosen return false, no
-   * errorMessage is set since not reachable as pages change, if an error 
-   * occurs return false. if successfull return true do not need to set isLoading 
-   * to false as this shoul happen, when the profile is reloaded from firebase
-   */
+  /// set the user profile [image], if no [image] is choosen return false. If an error 
+  /// occurs return false. if successfull return true do not need to set [isLoading] 
+  /// to false as this should happen, when the profile is reloaded from [firebase]
   Future<bool> setProfileImage(ImageSource source) async {
     _isLoading = true;
     notifyListeners();
@@ -179,9 +166,7 @@ class ProfileProvider with ChangeNotifier {
     return true;
   }
 
-  /*
-   * Cancel suscription on dispose 
-   */
+  /// Dispose when the provider is destroyed, cancel the profile subscription
   @override
   void dispose() async {
     super.dispose();

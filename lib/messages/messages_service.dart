@@ -8,7 +8,7 @@ class MessagesService {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   DocumentSnapshot lastMessage;
 
-  // fetch messages
+  /// fetch messages
   Stream<List<Message>> fetchMessages({
     @required int pageSize,
     @required String sid,
@@ -35,7 +35,7 @@ class MessagesService {
     );
   }
 
-  // fetch more messages
+  /// fetch more messages
   Future<List<Message>> fetchMoreMessages({
     @required int pageSize,
     @required String sid,
@@ -59,7 +59,7 @@ class MessagesService {
         .toList();
   }
 
-  // send message:, info is stored for the sender the receiver get data from cloud fucntions
+  /// send message:, info is stored for the sender the receiver get data from cloud fucntions
   Future<void> sendMessage({
     @required String sid,
     @required String rid,
@@ -83,7 +83,7 @@ class MessagesService {
         .add(message.toMap());
   }
 
-  // set seen value for a message, located at the recipient
+  /// set seen value for a message, located at the recipient
   Future<void> setSeen({
     @required String id, // message id
     @required String sid,

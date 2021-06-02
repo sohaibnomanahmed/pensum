@@ -45,10 +45,10 @@ class DealsProvider with ChangeNotifier {
   List<Deal> get deals => [..._deals];
   DealsProvider get provider => this;
 
-  /// Subsbribe to the deals stream, if an error accours the stream will be canceled 
-  /// Should be called in the init state method, and recalled if an error occurs
-  /// after deals are received we called getFollowStatus, after that stream has started we
-  /// remove the loading
+  /// Subsbribe to the deals stream, Should be called in the [init state] method of the page
+  /// from where it is called, stores the result in [deals] then calls [getFollowStatus]
+  /// for that spesific book. If an error accours the stream will be canceled, 
+  /// and we will set [isError]
   void fetchDeals(String isbn) {
     // get original first batch of deals
     final stream = _dealsService.fetchDeals(isbn: isbn, pageSize: _pageSize);
@@ -67,8 +67,8 @@ class DealsProvider with ChangeNotifier {
     );
   }
 
-  /// reload deals when an error occurs, set [_loading] and fetch the deals
-  /// again by remaking the stream 
+  /// refetch deals when an error occurs, reset [loading] and [error]
+  /// then call [fetchDeals] again to remake the stream 
   void refetchDeals(String isbn) async {
     _isLoading = true;
     _isError = false;
@@ -76,14 +76,14 @@ class DealsProvider with ChangeNotifier {
     fetchDeals(isbn);
   }
 
-  /// fetch more deals from firebase, starts with setting a silent loader so that
-  /// the methos does not get called again, also so that the UI does not get updated.
-  /// if no more deals can be fetched return, if error occurs return 
-  /// if there are more books add the books to _books and return
-  /// this method takes care of both original deals and filtered
+  /// fetch more deals, starts with setting a [silent loader] so that the method does 
+  /// not get called again. Check if [deals] is empty or [isError] or [isSearch] is set
+  /// add fetched deals at the end of [deals], catch errors if any and return
+  /// this method takes care of both original deals and [filtered]
   Future<void> fetchMoreDeals(String isbn) async {
     // only get called one time and not on error screen
-    if (_isLoading || _silentLoading || _isError) {
+    // Aslo if no lastDeal to start from, needs to return
+    if (_deals.isEmpty || _silentLoading || _isError) {
       return;
     }
     // set silent loader
@@ -104,11 +104,6 @@ class DealsProvider with ChangeNotifier {
       _silentLoading = false;
       return;
     }
-    // no more books to add
-    if (moreDeals == null) {
-      _silentLoading = false;
-      return;
-    }
     // add them the end of the messages list
     _deals.addAll(moreDeals);
     // update UI then reset the silent loader
@@ -117,10 +112,9 @@ class DealsProvider with ChangeNotifier {
     return;
   }
 
-  /// setDeal, is a new deal a is will be created, else a previous deal will be 
-  /// updated with merging. After updating book deals, add the deal to users 
-  /// profile, return true if successfull and false if an error occurs
-  /// probably dont need to show a loader
+  /// A new [deal] will be created, or a previous [deal] will be updated with merging. 
+  /// After adding/updating book deals, add/update the [userItems] in the users [profile], 
+  /// return true if successfull and false if an error occurs
   Future<bool> setDeal({
     String id,
     @required String pid,
@@ -164,10 +158,11 @@ class DealsProvider with ChangeNotifier {
     return true;
   }
 
-  /// Filter deals, based on price, quality and place, price ranges are min and max
-  /// if none spesified, helse spesified are used, quality is only counted in if
-  /// spesified, so if places, places can be a match uptil 10 places. If an error 
-  /// occurs [_isError] is set to true, probably dont need to show a loader
+  /// Filter deals, based on [price], [quality] and [place], price ranges are min and max
+  /// if none spesified, else spesified are used, quality is only counted in if
+  /// spesified, so is places, places can be a match uptil 10 places. Creates a new
+  /// stream as changes could occur and paging needs to be matched. 
+  /// If an error occurs [isError] is set
   Future<void> filterDeals({
     @required String isbn,
     @required int priceAbove,
@@ -205,7 +200,8 @@ class DealsProvider with ChangeNotifier {
     }, cancelOnError: true);
   }
 
-  /// Restores the stored deals, from filtering
+  /// cancel the filtered deals stream and call [fetchDeals] to restore all
+  /// deals, return true if successfull and false if an error occurs
   Future<bool> clearFilter(String isbn) async {
     _isLoading = true;
     notifyListeners();
@@ -223,8 +219,9 @@ class DealsProvider with ChangeNotifier {
     return true;
   }
 
-  /// follow a Book, and subscribe to its id, so taht notification can
-  /// be received when new deals are added
+  /// follow a [Book], by subscribing to its id, so that [notifications] can
+  /// be received when new deals are added. return true if successfull 
+  /// and false if an error occurs
   Future<bool> followBook(Book book) async {
     _isFollowBtnLoading = true;
     notifyListeners();
@@ -252,8 +249,8 @@ class DealsProvider with ChangeNotifier {
     return true;
   }
 
-  /// Get the following status for the book
-  /// This need to be a stream as changes should be shown to the user
+  /// Subscribe to the follow stream, result show if user is following a
+  /// certain book, store result in [isFollowing]. if an error occurs set [isError]
   void getFollowStatus(String isbn) async {
     final user = _authenticationService.currentUser;
     final stream =
@@ -274,7 +271,7 @@ class DealsProvider with ChangeNotifier {
     );
   }
 
-  /// Dispose when the provider is destroyed, cancel the deal subscrition
+  /// Dispose when the provider is destroyed, cancel the deal subscription
   @override
   void dispose() async {
     super.dispose();

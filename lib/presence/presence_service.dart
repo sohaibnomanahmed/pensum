@@ -8,7 +8,7 @@ class PresenceService {
   StreamSubscription subsub;
   DatabaseReference con;
 
-  // Configure user presence
+  /// Configure user presence
   Future<void> configureUserPresence(String uid) async {
     final myConnectionsRef =
         database.reference().child('presence').child(uid).child('connections');
@@ -52,7 +52,7 @@ class PresenceService {
     });
   }
 
-  // Get connection status
+  /// Get connection status
   Stream<dynamic> getUserPresenceStream(String uid){
     return database.reference().child('presence').child(uid).onValue.map((event) {
       final presenceData = event.snapshot.value;
@@ -64,12 +64,12 @@ class PresenceService {
     });
   }
 
-  // Connect back to the firebase realtime database
+  /// Connect back to the firebase realtime database
   void connect(){
     database.goOnline();
   }
 
-  // Remove connection for this device when signing out
+  /// Remove connection for this device when signing out
   Future<void> disconnect({bool signout = false}) async {
     if (signout && subscription != null){
       await subscription.cancel();

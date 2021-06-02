@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:leaf/authentication/authentication_provider.dart';
+import 'package:leaf/global/functions.dart';
 import 'package:provider/provider.dart';
 
 class DeleteAccountBottomSheet extends StatefulWidget {
@@ -56,38 +57,15 @@ class _DeleteAccountBottomSheetState extends State<DeleteAccountBottomSheet> {
             ElevatedButton(
               onPressed: (_password.isEmpty || isLoading)
                   ? null
-                  : () async {
-                      final scaffoldMessenger = ScaffoldMessenger.of(context);
-                      final errorColor = Theme.of(context).errorColor;
-                      final primaryColor = Theme.of(context).primaryColor;
-                      final result = await context
+                  : () async => ButtonFunctions.onPressHandler(
+                      context: context,
+                      action: () async => await context
                           .read<AuthenticationProvider>()
-                          .deleteUser(_password);
-                      // pop bottom sheet
-                      Navigator.of(context).pop();
-                      // show result message
-                      if (!result) {
-                        // remove snackbar if existing and show a new with error message
-                        scaffoldMessenger.hideCurrentSnackBar();
-                        scaffoldMessenger.showSnackBar(
-                          SnackBar(
-                            backgroundColor: errorColor,
-                            content: Text(
-                                'Error occured while trying to delete account'),
-                          ),
-                        );
-                      }
-                      if (result) {
-                        // remove snackbar if existing and show a new with error message
-                        scaffoldMessenger.hideCurrentSnackBar();
-                        scaffoldMessenger.showSnackBar(
-                          SnackBar(
-                            backgroundColor: primaryColor,
-                            content: Text('Successfully deleted account'),
-                          ),
-                        );
-                      }
-                    },
+                          .deleteUser(_password),
+                      popScreenAfter: true,
+                      errorMessage:
+                          'Error occured while trying to delete account',
+                      successMessage: 'Successfully deleted account'),
               style: ElevatedButton.styleFrom(
                   primary: Theme.of(context).errorColor),
               child: isLoading

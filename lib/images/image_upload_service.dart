@@ -5,10 +5,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:uuid/uuid.dart';
 
-/*
- * after some debugging the cache manager also uses File class now and this can be mistaken
- * wiht the dart io File class therefere explicit decleration is needed 
- */
+
+/// after some debugging the [cache manager] also uses [File] class now and this can be mistaken
+/// wiht the dart io [File] class therefere explicit decleration is needed 
 class ImageUploadService{
   final _firebaseStorage = FirebaseStorage.instance;
   final _key = 'Network image';

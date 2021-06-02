@@ -7,7 +7,7 @@ class RecipientsService {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   DocumentSnapshot lastRecipient;
 
-  // fetch recipients
+  /// fetch recipients
   Stream<List<Recipient>> fetchRecipients({
     @required String sid,
     @required int pageSize,
@@ -31,7 +31,7 @@ class RecipientsService {
     );
   }
 
-  // fetch more recipients
+  /// fetch more recipients
   Future<List<Recipient>> fetchMoreRecipients({
     @required String sid,
     @required int pageSize,
@@ -52,7 +52,7 @@ class RecipientsService {
         .toList();
   }
 
-  // set seen value for a recipient, since they need to know if you have seen their message
+  /// set seen value for a recipient, since they need to know if you have seen their message
   Future<void> setNotification({
     @required String sid,
     @required String rid,

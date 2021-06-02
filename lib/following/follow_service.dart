@@ -8,7 +8,7 @@ class FollowService {
   DocumentSnapshot lastFollow;
   DocumentSnapshot lastNotification;
 
-  // fetch follows
+  /// fetch follows
   Stream<List<Follow>> fetchFollowing(
       {@required String uid, @required int pageSize}) {
     return firestore
@@ -30,7 +30,7 @@ class FollowService {
     );
   }
 
-  // fetch and return more follows, from current last. If no more follows return null
+  /// fetch and return more follows, from current last. If no more follows return null
   Future<List<Follow>> fetchMoreFollowing(
       {@required String uid, @required int pageSize}) async {
     final follows = await firestore
@@ -49,7 +49,7 @@ class FollowService {
         .toList();
   }
 
-  // return id of all followings, useful if needed to subscribe or unsubscribe
+  /// return id of all followings, useful if needed to subscribe or unsubscribe
   Future<List<String>> getAllFollowingIds(String uid) async {
     final follows = await firestore
         .collection('profiles')
@@ -59,7 +59,7 @@ class FollowService {
     return follows.docs.map((document) => document.id).toList();
   }
 
-  // follow to a spesific book
+  /// follow to a spesific book
   Future<void> follow({@required String uid, @required Follow follow}) {
     return firestore
         .collection('profiles')
@@ -69,7 +69,7 @@ class FollowService {
         .set(follow.toMap(), SetOptions(merge: true));
   }
 
-  // get following status stream
+  /// get following status stream
   Stream<bool> getFollowingStatus({@required String uid, @required String id}) {
     return firestore
         .collection('profiles')
@@ -80,7 +80,7 @@ class FollowService {
         .map((doc) => doc.exists);
   }
 
-  // remove a profile follow
+  /// remove a profile follow
   Future<void> removeFollowing({@required String id, @required String uid}) {
     return firestore
         .collection('profiles')
@@ -90,7 +90,7 @@ class FollowService {
         .delete();
   }
 
-  // remove a notification for a spesific followed book
+  /// remove a notification for a spesific followed book
   Future<void> removeFollowingNotification(
       {@required String uid, @required String id}) async {
     await firestore

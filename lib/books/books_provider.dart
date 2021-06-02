@@ -9,7 +9,6 @@ class BooksProvider with ChangeNotifier{
   final _booksService = BooksService();
 
   List<Book> _books = [];
-  // can cache book since only one subscription is made, search returns all mathces. Cashe include all previous.
   List<Book> _cachedBooks = [];
   Map<String, dynamic> _bookTitles = {};
   final _pageSize = 10;
@@ -28,8 +27,9 @@ class BooksProvider with ChangeNotifier{
   bool get isSearch => _isSearch;
 
   
-  /// Subsbribe to the book stream, if an error accours the stream will be canceled 
-  /// Should be called in the init state method, and recalled if an error occurs
+  /// Subsbribe to the book stream, Should be called in the [init state] method of the page
+  /// from where it is called, stores the result in [books] then calls [fetchBookTitles]
+  /// if an error accours the stream will be canceled, and we will set [isError]
   void fetchBooks() {
     // get original first batch of books
     final stream = _booksService.fetchBooks(_pageSize);
@@ -48,8 +48,8 @@ class BooksProvider with ChangeNotifier{
     );
   }
 
-  /// reload books when an error occurs, set [_loading] and call [fetchBooks()]
-  /// again by remaking the stream 
+  /// refetch books when an error occurs, reset [loading] and [error]
+  /// then call [fetchBooks] again to remake the stream 
   void reFetchBooks() async{
     _isLoading = true;
     _isError = false;
@@ -57,14 +57,13 @@ class BooksProvider with ChangeNotifier{
     fetchBooks();
   }
 
-  /// fetch more books from firebase, starts with setting a silent loader so that
-  /// the method does not get called again, also so that the UI does not get updated.
-  /// if no more books can be fetched return, if error occurs return 
-  /// if there are more books add the books to _books and return
+  /// fetch more books, starts with setting a [silent loader] so that the method does 
+  /// not get called again. Check if [books] is empty or [isError] or [isSearch] is set
+  /// add fetched books at the end of [books], catch errors if any and return
   Future<void> fetchMoreBooks() async {
-    // only get called one time and not on error screen or in a search
-    // Also do not get called when original sets of book are being loaded
-    if (_isLoading || _silentLoading || _isError || _isSearch) {
+    // only get called one time and not on error or in a search
+    // Aslo if no lastBook to start from, needs to return
+    if (_books.isEmpty || _silentLoading || _isError || _isSearch) {
       return;
     }
     // set silent loader
@@ -87,8 +86,9 @@ class BooksProvider with ChangeNotifier{
     return;
   }
 
-  /// Subsbribe to the book titles stream, if an error accours the stream will be canceled 
-  /// Should be called in the fetch books method
+  /// Subscbribe to the book titles stream, should only be called from [fetchBooks]
+  /// store the result in [bookTitles] and stop [loading] if an error accours 
+  /// the stream will be canceled, and we will set [isError]
   void fetchBookTitles() {
     // get book titles
     final stream = _booksService.fetchBookTitles();
@@ -109,9 +109,10 @@ class BooksProvider with ChangeNotifier{
   }
 
   
-  /// Searches for all books matching a certain title from firebase and sets [_isSearch] flag
-  /// if successfull lists the found books in [_books] and cashe prevoius books
-  /// to be restored when search is cleared, if failed sets flag [_isError]
+  /// Searches for all books matching a certain title from [firebase] and sets [isSearch] flag
+  /// if successfull lists the found books in [books] and cashe prevoius books in [cashedBooks]
+  /// to be restored when search is cleared, do not store prevoius searches
+  /// if an error occurs sets [isError]
   Future<void> fetchSearchedBook(String title) async {
     // only store the loaded books, when not searching
     // else on double search you get the previous search
@@ -132,8 +133,8 @@ class BooksProvider with ChangeNotifier{
     notifyListeners();
   }
 
-  /// Restores the stored books, when a search is called
-  /// and turns off [_isSearch] flag
+  /// Restores the [chashed books], when a search is called
+  /// and turns off [isSearch] flag
   void clearSearch(){
     _isLoading = true;
     _isSearch = false;
@@ -143,7 +144,7 @@ class BooksProvider with ChangeNotifier{
     notifyListeners();
   }
 
-  /// Dispose when the provider is destroyed, cancel the book subscrition
+  /// Dispose when the provider is destroyed, cancel the book subscription
   @override
   void dispose() async {
     super.dispose();

@@ -9,7 +9,7 @@ import 'package:leaf/profile/profile_service.dart';
 import '../profile/models/profile.dart';
 
 /// AuthenticatioProvider is accessable from the entire app, its the only
-/// provider to have an [_errorMessage] variable, this is so since authentication
+/// provider to have an [errorMessage] variable, this is so since authentication
 /// from firebase gives usefull feedback to the user on error whihc then are dispalyed
 class AuthenticationProvider with ChangeNotifier {
   final _authenticationService = AuthenticationService();
@@ -28,10 +28,8 @@ class AuthenticationProvider with ChangeNotifier {
   Stream<User> get authState => _authenticationService.authState;
   String get errorMessage => _errorMessage;
 
-  /*
-   * tries to create a user in using firebase, if the successfull returns true
-   * if an error occurs, cathes the exception, store error message and return false
-   */
+  /// tries to create a user in using [firebase], if the successfull returns true
+  /// if an error occurs, cathes the exception, store error message and return false
   Future<bool> createUser({
     @required String firstname,
     @required String lastname,
@@ -85,10 +83,8 @@ class AuthenticationProvider with ChangeNotifier {
     return true;
   }
 
-  /*
-   * tries to sign a user in using firebase, if the successfull returns true
-   * if an error occurs, cathes the exception, store error message and return false
-   */
+  /// tries to sign a user in using [firebase], if the successfull returns true
+  /// if an error occurs, cathes the exception, store error message and return false
   Future<bool> signIn(
       {@required String email, @required String password}) async {
     _isLoading = true;
@@ -131,10 +127,8 @@ class AuthenticationProvider with ChangeNotifier {
     return true;
   }
 
-  /*
-   * tries to log the current user out using firebase, if the successfull returns true
-   * if an error occurs, cathes the exception, store error message and return false
-   */
+  /// tries to log the current user out using [firebase], if the successfull returns true
+  /// if an error occurs, cathes the exception, store error message and return false
   Future<bool> signOut() async {
     _isLoading = true;
     notifyListeners();
@@ -167,10 +161,8 @@ class AuthenticationProvider with ChangeNotifier {
     return true;
   }
 
-  /*
-   * tries to reset a users password using firebase, if the successfull returns true
-   * if an error occurs, cathes the exception, store error message and return false
-   */
+  /// tries to reset a users password using [firebase], if the successfull returns true
+  /// if an error occurs, cathes the exception, store error message and return false
   Future<bool> resetPassword(String email) async {
     _isLoading = true;
     notifyListeners();
@@ -190,10 +182,8 @@ class AuthenticationProvider with ChangeNotifier {
     return true;
   }
 
-  /*
-   * tries to delete the current user using firebase, if the successfull returns true
-   * if an error occurs, cathes the exception, store error message and return false
-   */
+  /// tries to delete the current user using [firebase], if the successfull returns true
+  /// if an error occurs, cathes the exception, store error message and return false
   Future<bool> deleteUser(String password) async {
     _isLoading = true;
     notifyListeners();
@@ -226,7 +216,7 @@ class AuthenticationProvider with ChangeNotifier {
     return true;
   }
 
-  // gets the service account used for feedbacks
+  /// gets the [service account] used for feedbacks
   Future<Profile> getAdminAccount() async {
     try{
       final adminId = await _profileService.getAdminId();

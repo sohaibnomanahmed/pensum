@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:leaf/global/functions.dart';
 import 'package:provider/provider.dart';
 
 import '../authentication_provider.dart';
@@ -48,13 +49,13 @@ class _CreateAccountBottomSheetState extends State<CreateAccountBottomSheet> {
                   decoration: InputDecoration(labelText: 'Firstname'),
                   validator: (value) =>
                       (value.isEmpty) ? 'Please enter a firstname.' : null,
-                  onSaved: (value) => _firstname = value/*!*/,
+                  onSaved: (value) => _firstname = value /*!*/,
                 ),
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Lastname'),
                   validator: (value) =>
                       (value.isEmpty) ? 'Please enter a lastname' : null,
-                  onSaved: (value) => _lastname = value/*!*/,
+                  onSaved: (value) => _lastname = value /*!*/,
                 ),
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
@@ -62,7 +63,7 @@ class _CreateAccountBottomSheetState extends State<CreateAccountBottomSheet> {
                   validator: (value) => (value.isEmpty || !value.contains('@'))
                       ? 'Please enter a valid email address.'
                       : null,
-                  onSaved: (value) => _email = value/*!*/,
+                  onSaved: (value) => _email = value /*!*/,
                 ),
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Password'),
@@ -70,7 +71,7 @@ class _CreateAccountBottomSheetState extends State<CreateAccountBottomSheet> {
                   validator: (value) => (value.isEmpty || value.length < 7)
                       ? 'Password must be at least 7 characters long.'
                       : null,
-                  onSaved: (value) => _password = value/*!*/,
+                  onSaved: (value) => _password = value /*!*/,
                 ),
                 SizedBox(height: 10),
                 // This diviate from the typical ButtonFunctions.onPressHandler
@@ -84,49 +85,26 @@ class _CreateAccountBottomSheetState extends State<CreateAccountBottomSheet> {
                             FocusScope.of(context).unfocus();
                             // save values
                             _formKey.currentState.save();
-                            final result = await context
-                                .read<AuthenticationProvider>()
-                                .createUser(
-                                  firstname: _firstname,
-                                  lastname: _lastname,
-                                  email: _email,
-                                  password: _password,
-                                );
-                            // pop bottom sheet
-                            Navigator.of(context).pop();
-                            // check if an error occured
-                            final scaffoldMessenger =
-                                ScaffoldMessenger.of(context);
-                            if (!result) {
-                              // remove snackbar if existing and show a new with error message
-                              scaffoldMessenger.hideCurrentSnackBar();
-                              scaffoldMessenger.showSnackBar(
-                                SnackBar(
-                                  backgroundColor: Theme.of(context).errorColor,
-                                  content: Text(
-                                    context
-                                        .read<AuthenticationProvider>()
-                                        .errorMessage,
-                                  ),
-                                ),
-                              );
-                            }
-                            if (result) {
-                              // remove snackbar if existing and show a new with error message
-                              scaffoldMessenger.hideCurrentSnackBar();
-                              scaffoldMessenger.showSnackBar(
-                                SnackBar(
-                                  backgroundColor:
-                                      Theme.of(context).primaryColor,
-                                  content: Text(
-                                      'Sent email verification, please check your inbox'),
-                                ),
-                              );
-                            }
+                            await ButtonFunctions.onPressHandler(
+                              context: context,
+                              action: () async => await context
+                                  .read<AuthenticationProvider>()
+                                  .createUser(
+                                      firstname: _firstname,
+                                      lastname: _lastname,
+                                      email: _email,
+                                      password: _password),
+                              popScreenAfter: true,
+                              lateErrorMessage: () => context
+                                  .read<AuthenticationProvider>()
+                                  .errorMessage,
+                              successMessage:
+                                  'Sent email verification, please check your inbox',
+                            );
                           }
                         },
                   child: isLoading
-                      ? SizedBox(                       
+                      ? SizedBox(
                           height: 20,
                           width: 20,
                           child: CircularProgressIndicator(),

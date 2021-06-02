@@ -27,8 +27,9 @@ class FollowProvider with ChangeNotifier{
   bool get isError => _isError;
   List<Follow> get follows => [..._follows];
 
-  /// Subsbribe to the followstream, if an error accours the stream will be canceled 
-  /// Should be called in the init state method, and recalled if an error occurs  
+  /// Subsbribe to the follows stream, Should be called in the [init state] method of the page
+  /// from where it is called, stores the result in [follows] and stop [loading]
+  /// if an error accours the stream will be canceled, and we will set [isError]
   void fetchFollows() {
     // get original first batch of follow
     final user = _authenticationService.currentUser;
@@ -49,8 +50,8 @@ class FollowProvider with ChangeNotifier{
     );
   }
 
-  /// reload follows when an error occurs, set loading and fetch the follows
-  /// again by remaking the stream   
+  /// refetch follows when an error occurs, reset [loading] and [error]
+  /// then call [fetchFollows] again to remake the stream   
   void reFetchFollows() async{
     _isLoading = true;
     _isError = false;
@@ -58,13 +59,13 @@ class FollowProvider with ChangeNotifier{
     fetchFollows();
   }
 
-  /// fetch more books from firebase, starts with setting a silent loader so that
-  /// the methos does not get called again, also so that the UI does not get updated.
-  /// if no more books can be fetched return, if error occurs return 
-  /// if there are more books add the books to _books and return  
+  /// fetch more follows, starts with setting a [silent loader] so that the method does 
+  /// not get called again. Check if [follows] is empty or [isError] or [isSearch] is set
+  /// add fetched follows at the end of [follows], catch errors if any and return
   Future<void> fetchMoreFollows() async {
-    // only get called one time and not on error screen or in a search
-    if (_isLoading || _silentLoading || _isError) {
+    // only get called one time and not on error screen
+    // Aslo if no lastFollow to start from, needs to return
+    if (_follows.isEmpty || _silentLoading || _isError) {
       return;
     }
     // set silent loader
@@ -80,7 +81,6 @@ class FollowProvider with ChangeNotifier{
       _silentLoading = false;
       return;
     }
- 
     // add them the end of the follows list
     _follows.addAll(moreFollows);
     // update UI then reset the silent loader
@@ -89,8 +89,8 @@ class FollowProvider with ChangeNotifier{
     return;
   }
 
-  /// Unfollow a spesific book, should unsubscribe from notifications
-  /// if successfull return true, if an error occurs set error message and retun false   
+  /// Unfollow a spesific [Book], should unsubscribe from [notifications]
+  /// return true if successfull and false if an error occurs 
   Future<bool> unfollow(String isbn) async {
     try {
       // remove deal from users profile
@@ -104,15 +104,15 @@ class FollowProvider with ChangeNotifier{
     return true;
   }
 
-  /// returned a followed book   
+  /// returnes a followed [Book], mainly used for [navigation] 
   Future<Book> getFollowedBook(String isbn){
     return _booksService.getBook(isbn);
   }
 
-  /// remove following notification for a spesific book;
+  /// remove following [notification] for a spesific [Book];
   /// Since this method is preceeds other actions, we need to
-  /// decide if it is important to show if it succed or not
-  /// in this case its not, so we sont return a Future to halt the activity  
+  /// decide if it is important to show if it succeeds or not
+  /// in this case its not, so we wont return a [Future] to halt the activity  
   void removeFollowingNotification(String id) async {
     try{
       final user = _authenticationService.currentUser;
@@ -122,7 +122,7 @@ class FollowProvider with ChangeNotifier{
     }
   }
 
-  /// Dispose when the provider is destroyed, cancel the follow subscrition
+  /// Dispose when the provider is destroyed, cancel the follow subscription
   @override
   void dispose() async {
     super.dispose();

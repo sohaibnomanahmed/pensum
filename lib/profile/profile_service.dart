@@ -5,7 +5,7 @@ import 'package:leaf/profile/models/profile.dart';
 class ProfileService {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  // set profile data
+  /// set profile data
   Future<void> setProfile({@required String uid, @required Profile profile}) {
     return firestore
         .collection('profiles')
@@ -13,13 +13,13 @@ class ProfileService {
         .set(profile.toMap(), SetOptions(merge: true));
   }
 
-  // get profile data 
+  /// get profile data 
   Future<Profile> getProfile(String uid) async {
     final profile = await firestore.collection('profiles').doc(uid).get();
     return Profile.fromFirestore(profile);
   }
 
-  // get profile stream
+  /// get profile stream
   Stream<Profile> fetchProfile(String uid){
     return firestore
         .collection('profiles')
@@ -28,7 +28,7 @@ class ProfileService {
         .map((profile) => Profile.fromFirestore(profile));
   }
 
-  // deletes a deal from the profile
+  /// deletes a deal from the profile
   Future<void> deleteDeal({@required String uid, @required String id}) async {
     final profileData = await firestore.collection('profiles').doc(uid).get();
     final profile = Profile.fromFirestore(profileData);
@@ -36,6 +36,7 @@ class ProfileService {
     return firestore.collection('profiles').doc(uid).update(profile.toMap());
   }
 
+  /// get the id for the service account
   Future<String> getAdminId() async{
     final admins = await firestore.collection('admin').get();
     return admins.docs.first.id;

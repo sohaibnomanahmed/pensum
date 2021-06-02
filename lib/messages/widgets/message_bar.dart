@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:leaf/global/functions.dart';
 import 'package:leaf/messages/widgets/message_action_sheet.dart';
 import 'package:provider/provider.dart';
 
@@ -47,26 +48,24 @@ class _MessageBarState extends State<MessageBar> {
                   ? null
                   : () async {
                       _controller.clear();
-                      final result =
-                          await context.read<MessagesProvider>().sendMessage(
+                      await ButtonFunctions.onPressHandler(
+                          context: context,
+                          action: () async => await context
+                              .read<MessagesProvider>()
+                              .sendMessage(
                                 text: _message,
                                 rid: widget.rid,
                                 receiverName: widget.receiverName,
                                 receiverImage: widget.receiverImage,
-                              );
+                              ),
+                          errorMessage: 'Something went wrong!');
+                      // we send message cant be set to empty before it is sent
                       _message = '';
-                      if (!result) {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text('Something went wrong!'),
-                          backgroundColor: Theme.of(context).errorColor,
-                        ));
-                      }
                     }),
           hintText: 'Send a message...',
           border: InputBorder.none,
           focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Theme.of(context).primaryColor))
-          ),
+              borderSide: BorderSide(color: Theme.of(context).primaryColor))),
       onChanged: (value) => setState(() => _message = value),
     );
   }

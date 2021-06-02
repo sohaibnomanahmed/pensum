@@ -4,17 +4,15 @@ import 'package:flutter/foundation.dart';
 import 'models/deal.dart';
 import 'models/deal_filter.dart';
 
-/*
- * Deals service fetches deals for a certain book, the page fetching can be accessed
- * from multiple tabs in the app therefore, doeas each tab page have their own 
- * Dealservice object in their respective provider, to not overlap same data. 
- */
+/// Deals service fetches deals for a certain book, the page fetching can be accessed
+/// from multiple tabs in the app therefore, does each tab page have their own 
+/// [Dealservice] object in their respective [provider], to not overlap same data. 
 class DealsService {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   DocumentSnapshot lastDeal;
   DocumentSnapshot lastFilteredDeal;
 
-  // fetch deals
+  /// fetch deals
   Stream<List<Deal>> fetchDeals(
       {@required String isbn, @required int pageSize}) {
     return firestore
@@ -34,7 +32,7 @@ class DealsService {
     );
   }
 
-  // fetch and return more deals, from current last. If no more deals return null
+  /// fetch and return more deals, from current last. If no more deals return null
   Future<List<Deal>> fetchMoreDeals(
       {@required String isbn, @required int pageSize}) async {
     final deals = await firestore
@@ -49,7 +47,7 @@ class DealsService {
     return deals.docs.map((document) => Deal.fromFirestore(document)).toList();
   }
 
-  // filter deals for a spesific book
+  /// filter deals for a spesific book
   Stream<List<Deal>> filterDeals({
     @required String isbn,
     @required int priceAbove,
@@ -80,7 +78,7 @@ class DealsService {
     });
   }
 
-  // fetch and return more filtered deals, from current last. If no more deals return null
+  /// fetch and return more filtered deals, from current last. If no more deals return null
   Future<List<Deal>> fetchMoreFilteredDeals({
     @required String isbn,
     @required int pageSize,
@@ -108,12 +106,12 @@ class DealsService {
     return deals.docs.map((document) => Deal.fromFirestore(document)).toList();
   }
 
-  // get a new deal id
+  /// get a new deal id
   String getDealId(String productId) {
     return firestore.collection('books').doc(productId).collection('deals').doc().id;
   }
 
-  // add deal to a spesific book
+  /// add deal to a spesific book
   Future<void> setDeal({@required Deal deal, @required String id}) {
     return firestore
         .collection('books')
@@ -123,7 +121,7 @@ class DealsService {
         .set(deal.toMap(), SetOptions(merge: true));
   }
 
-  // delete a deal
+  /// delete a deal
   Future<void> deleteDeal({@required String productId, @required String id}) {
     return firestore
         .collection('books')

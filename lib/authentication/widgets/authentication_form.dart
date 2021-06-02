@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:leaf/authentication/authentication_provider.dart';
+import 'package:leaf/global/functions.dart';
 import 'package:provider/provider.dart';
 
 import 'create_account_bottom_sheet.dart';
@@ -79,27 +80,15 @@ class _AuthenticationFormState extends State<AuthenticationForm> {
                       FocusScope.of(context).unfocus();
                       // save values
                       _formKey.currentState.save();
-                      final result =
-                          await context.read<AuthenticationProvider>().signIn(
-                                email: _email,
-                                password: _password,
-                              );
-                      // check if an error occured
-                      if (!result) {
-                        // remove snackbar if existing and show a new with error message
-                        final scaffoldMessenger = ScaffoldMessenger.of(context);
-                        scaffoldMessenger.hideCurrentSnackBar();
-                        scaffoldMessenger.showSnackBar(
-                          SnackBar(
-                            backgroundColor: Theme.of(context).errorColor,
-                            content: Text(
-                              context
-                                  .read<AuthenticationProvider>()
-                                  .errorMessage,
-                            ),
-                          ),
-                        );
-                      }
+                      // TODO nees async or await
+                      await ButtonFunctions.onPressHandler(
+                          context: context,
+                          action: () async => await context
+                              .read<AuthenticationProvider>()
+                              .signIn(email: _email, password: _password),
+                          lateErrorMessage: () => context
+                              .read<AuthenticationProvider>()
+                              .errorMessage);
                     }
                   },
             child: isLoading
@@ -111,9 +100,10 @@ class _AuthenticationFormState extends State<AuthenticationForm> {
                 : Text('Log in'),
           ),
           // create account button
-          TextButton(onPressed: () {
-            FocusScope.of(context).unfocus();
-            showModalBottomSheet(
+          TextButton(
+              onPressed: () {
+                FocusScope.of(context).unfocus();
+                showModalBottomSheet(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.vertical(
                       top: Radius.circular(5.0),
@@ -123,7 +113,8 @@ class _AuthenticationFormState extends State<AuthenticationForm> {
                   isScrollControlled: true,
                   builder: (_) => CreateAccountBottomSheet(),
                 );
-          }, child: Text('Create an account'))
+              },
+              child: Text('Create an account'))
         ],
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:leaf/authentication/widgets/reset_password_bottom_sheet.dart';
+import 'package:leaf/global/functions.dart';
 import 'package:leaf/messages/messages_page.dart';
 import 'package:provider/provider.dart';
 
@@ -35,54 +36,50 @@ class SettingsList extends StatelessWidget {
             onTap: isLoading
                 ? null
                 : () async {
-              final serviceAccount = await context
-                  .read<AuthenticationProvider>()
-                  .getAdminAccount();
-              if (serviceAccount != null) {
-                await Navigator.of(context, rootNavigator: true).pushNamed(
-                  MessagesPage.routeName,
-                  arguments: {
-                    'id': serviceAccount.uid,
-                    'image': serviceAccount.imageUrl,
-                    'name': serviceAccount.fullName
-                  },
-                );
-              } else {
-                // remove snackbar if existing and show a new with error message
-                scaffoldMessenger.hideCurrentSnackBar();
-                scaffoldMessenger.showSnackBar(
-                  SnackBar(
-                    backgroundColor: Theme.of(context).errorColor,
-                    content: Text(
-                      'Something went wrong trying to get the service Account!',
-                    ),
-                  ),
-                );
-              }
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.exit_to_app_rounded),
-            title: Text('Sign out'),
-            onTap: isLoading
-                ? null
-                : () async {
-                    var result =
-                        await context.read<AuthenticationProvider>().signOut();
-                    if (!result) {
+                    final serviceAccount = await context
+                        .read<AuthenticationProvider>()
+                        .getAdminAccount();
+                    if (serviceAccount != null) {
+                      await Navigator.of(context, rootNavigator: true)
+                          .pushNamed(
+                        MessagesPage.routeName,
+                        arguments: {
+                          'id': serviceAccount.uid,
+                          'image': serviceAccount.imageUrl,
+                          'name': serviceAccount.fullName
+                        },
+                      );
+                    } else {
                       // remove snackbar if existing and show a new with error message
                       scaffoldMessenger.hideCurrentSnackBar();
                       scaffoldMessenger.showSnackBar(
                         SnackBar(
                           backgroundColor: Theme.of(context).errorColor,
                           content: Text(
-                            context.read<AuthenticationProvider>().errorMessage,
+                            'Something went wrong trying to get the service Account!',
                           ),
                         ),
                       );
                     }
                   },
           ),
+          ListTile(
+              leading: isLoading
+                  ? SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(),
+                    )
+                  : Icon(Icons.exit_to_app_rounded),
+              title: Text('Sign out'),
+              onTap: isLoading
+                  ? null
+                  : () async => ButtonFunctions.onPressHandler(
+                      context: context,
+                      action: () async => await context
+                          .read<AuthenticationProvider>()
+                          .signOut(),
+                      errorMessage: 'Something went wrong, please try again')),
           ListTile(
             leading: Icon(Icons.delete_rounded),
             title: Text('Delete Account'),

@@ -21,23 +21,15 @@ class RecipientsProvider with ChangeNotifier {
   bool get isError => _isError;
   List<Recipient> get recipients => [..._recipients];
 
-  /*
-   * Sets up a stream, reciving recipients connected to a spesific user.
-   * This stream is cancelled on error, isLoading is true from the getgo
-   * and will be set to false, when the recipients are comming through
-   */
-  void get fetchRecipients async {
+  /// Subsbribe to the recipients stream, Should be called in the [init state] method of the page
+  /// from where it is called, stores the result in [recipients] and stop [loading]
+  /// if an error accours the stream will be canceled, and we will set [isError]
+  void fetchRecipients() async {
     // get original first batch of messages, should be called on build
     final user = _authenticationService.currentUser;
     final stream =
         _recipientsService.fetchRecipients(sid: user.uid, pageSize: _pageSize);
     _subscription = stream.listen((recipients) {
-      // if no recipients are sent we return
-      if (recipients == null) {
-        _isLoading = false;
-        notifyListeners();
-        return;
-      }
       _recipients = recipients;
       _isLoading = false;
       notifyListeners();
@@ -49,44 +41,31 @@ class RecipientsProvider with ChangeNotifier {
     }, cancelOnError: true);
   }
 
-  /*
-   *  reload recipients when an error occurs, set loading and fetch the recipients
-   *  again by remaking the stream 
-   */
+  /// refetch recipients when an error occurs, reset [loading] and [error]
+  /// then call [fetchRecipients] again to remake the stream 
   void refetchRecipients() async {
     _isLoading = true;
     _isError = false;
     notifyListeners();
-    fetchRecipients;
+    fetchRecipients();
   }
 
-  /*
-   * fetch more messages, if no more recipients, return null. If more recipients
-   * add them at the end of the list, uses a silent loader to not be called
-   * while loading recipients. 
-   */
+  /// fetch more recipients, starts with setting a [silent loader] so that the method does 
+  /// not get called again. Check if [recipients] is empty or [isError] or [isSearch] is set
+  /// add fetched recipients at the end of [recipients], catch errors if any and return
   Future<void> fetchMoreRecipients() async {
-    if (_silentLoading == true) {
+    // only get called one time and not on error screen
+    // Aslo if no lastFollow to start from, needs to return
+    if (_silentLoading || _recipients.isEmpty || _isError) {
       return;
     }
-    // set silent loader so that this method does not get called again
-    // Also silent so that the UI does not get updated
+    // set silent loader
     _silentLoading = true;
 
     // get current user and messages
     final user = _authenticationService.currentUser;
-    if (_recipients.isEmpty) {
-      // no recipients loaded, no last document so need to return
-      _silentLoading = false;
-      return;
-    }
     var moreRecipients = await _recipientsService.fetchMoreRecipients(
         sid: user.uid, pageSize: _pageSize);
-    if (moreRecipients == null) {
-      // no more documents need to return
-      _silentLoading = false;
-      return;
-    }
     // add them the end of the messages list
     _recipients.addAll(moreRecipients);
     // update UI wait for a sec to let it complate before setting silent loading to false
@@ -94,7 +73,7 @@ class RecipientsProvider with ChangeNotifier {
     _silentLoading = false;
   }
 
-  // dispose
+  /// Dispose when the provider is destroyed, cancel the recipients subscription
   @override
   void dispose() async {
     super.dispose();

@@ -40,12 +40,11 @@ class MessagesProvider with ChangeNotifier {
   bool get messageLoading => _messageLoading;
   bool get isError => _isError;
 
-  /*
-   * Sets up a stream, reciving messages connected to a spesific user.
-   * This stream is cancelled on error, isLoading is true from the getgo
-   * and will be set to false, when the messages are comming through
-   * the messages will also be set to seen, when loaded and added to the start of the list. 
-   */
+  /// Subsbribe to the messages stream, Should be called in the [init state] method of the page
+  /// from where it is called, reverse the list as it will be shown from bottom opp, 
+  /// check is messages is already loaded if not store it in [messages], set seen and
+  /// remove potensial notification for the receiver and stop [loading]
+  /// if an error accours the stream will be canceled, and we will set [isError]
   void fetchMessages(String rid) async {
     // get original first batch of messages, should be called on build
     final user = _authenticationService.currentUser;
@@ -66,7 +65,8 @@ class MessagesProvider with ChangeNotifier {
         }
 
         // set message as seen for the sender i.e the other user
-        if (!message.isMe) {
+        // or set seen for yor self if you are messaging yourself
+        if (!message.isMe || rid == user.uid) {
           _messagesService.setSeen(
               id: message.id, sid: user.uid, rid: rid, message: seenMap);
         }
@@ -85,10 +85,8 @@ class MessagesProvider with ChangeNotifier {
     }, cancelOnError: true);
   }
 
-  /*
-   *  reload messages when an error occurs, set loading and fetch the messages
-   *  again by remaking the stream 
-   */
+  /// refetch messages when an error occurs, reset [loading] and [error]
+  /// then call [fetchMessages] again to remake the stream 
   void refetchMessages(String rid) async {
     _isLoading = true;
     _isError = false;
@@ -96,19 +94,16 @@ class MessagesProvider with ChangeNotifier {
     fetchMessages(rid);
   }
 
-  /*
-   * fetch more messages, if no more messages, return null. If more messages
-   * add them at the end of the list, uses a silent loader to not be called
-   * while loading messages. 
-   */
+  /// fetch more messages, starts with setting a [silent loader] so that the method does 
+  /// not get called again. Check if [messages] is empty or [isError] or [isSearch] is set
+  /// add fetched messages at the end of [messages], set seen and catch errors if any and return
   Future<void> fetchMoreMessages(String rid) async {
-    // no messages loaded, no last document so need to return
-    // TODO dont need isloading?
-    if (_silentLoading == true || _messages.isEmpty) {
+    // only get called one time and not on error screen
+    // Aslo if no lastFollow to start from, needs to return
+    if (_silentLoading || _messages.isEmpty || _isError) {
       return;
     }
-    // set silent loader so taht this method does not get called again
-    // Also silent so that the UI does not get updated
+    // set silent loader
     _silentLoading = true;
 
     // get current user and messages
@@ -120,7 +115,6 @@ class MessagesProvider with ChangeNotifier {
     moreMessages.forEach((message) {
       message.isMe = message.sid == user.uid;
       // set message as seen for the sender i.e the other user
-      // TODO test this
       if (!message.isMe) {
         _messagesService.setSeen(
             id: message.id, sid: user.uid, rid: rid, message: seenMap);
@@ -133,12 +127,10 @@ class MessagesProvider with ChangeNotifier {
     _silentLoading = false;
   }
 
-  /*
-   * Send message to a user, store the message for the sender and store the
-   * recipient information for the sender, cloud functions will store the information
-   * for the receiver. There should not be a loader, should feel like contant flow.
-   * If successfull return true, if an error occurs return false 
-   */
+  /// Send a [message] to another user, store the [message] for the sender and store the
+  /// [recipient] information for the sender, [cloud functions] will store the information
+  /// for the [receiver]. There should not be a loader, should feel like contant flow.
+  /// If successfull return true, if an error occurs return false 
   Future<bool> sendMessage({
     @required String rid,
     @required String receiverName,
@@ -193,11 +185,10 @@ class MessagesProvider with ChangeNotifier {
     return true;
   }
 
-  /*
-   * Send image message to a user, pick a image, and upload it to storage
-   * Then call sendMessage. There should not be a loader, should feel like contant flow.
-   * If successfull return true, if an error occurs return false 
-   */
+  
+  /// Send image message to a user, pick a image, cropp it and upload it to [storage]
+  /// Then call [sendMessage]. There should not be a loader, should feel like contant flow.
+  /// If successfull return true, if an error occurs return false 
   Future<bool> sendImage({
     @required ImageSource source,
     @required String rid,
@@ -233,11 +224,9 @@ class MessagesProvider with ChangeNotifier {
     return true;
   }
 
-  /*
-   * Send location message to a user, pick a location and get a address and image
-   * Then call sendMessage. There should not be a loader, should feel like contant flow.
-   * If successfull return true, if an error occurs return false 
-   */
+  /// Send location message to a user, get the address, an image, upload image to [storage]
+  /// Then call [sendMessage]. There should not be a loader, should feel like contant flow.
+  /// If successfull return true, if an error occurs return false 
   Future<bool> sendLocation(
       {@required bool currentLocation,
       @required String rid,
@@ -287,27 +276,23 @@ class MessagesProvider with ChangeNotifier {
     return true;
   }
 
-  /*
-   * This method is mainly used in the chat page to unsubscribe from topics
-   * unsubscribes from the chat topic of the user so that the notifications wont apear 
-   * dont need to return if action was succesfull
-   */
+  /// This method is mainly used in the [chat page] to unsubscribe from topics
+  /// unsubscribes from the chat topic of the user so that the [notifications] wont apear 
+  /// dont need to return if action was succesfull ot not
   void unsubscribeFromChatNotifications() async {
     final user = _authenticationService.currentUser;
     await _notificationService.unsubscribeFromTopic(user.uid);
   }
 
-  /*
-   * This method is mainly used in the chat page to subscribe to a topics
-   * subscribes to the chat topic of the user so that the notifications will apear
-   * dont need to return if action was succesfull
-   */
+  /// This method is mainly used in the [chat page] to subscrbibe to a topics
+  /// subscribes to the chat topic of the user so that the notifications will apear
+  /// dont need to return if action was succesfull or not
   void subscribeToChatNotifications() async {
     final user = _authenticationService.currentUser;
     await _notificationService.subscribeToTopic(user.uid);
   }
 
-  /// dispose
+  /// Dispose when the provider is destroyed, cancel the message subscription
   @override
   void dispose() async {
     super.dispose();

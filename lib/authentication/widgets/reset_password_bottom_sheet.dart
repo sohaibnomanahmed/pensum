@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:leaf/global/functions.dart';
 import 'package:provider/provider.dart';
 
 import '../authentication_provider.dart';
@@ -45,40 +46,18 @@ class _ResetPasswordBottomSheetState extends State<ResetPasswordBottomSheet> {
               ElevatedButton(
                 onPressed: (_email.isEmpty || isLoading)
                     ? null
-                    : () async {
-                        final result = await context
+                    : () async => ButtonFunctions.onPressHandler(
+                        context: context,
+                        // todo works without async await?
+                        action: () async => await context
                             .read<AuthenticationProvider>()
-                            .resetPassword(_email);
-                        // pop bottom sheet
-                        Navigator.of(context).pop();
-                        // show result message
-                        final scaffoldMessenger = ScaffoldMessenger.of(context);
-                        if (!result) {
-                          // remove snackbar if existing and show a new with error message
-                          scaffoldMessenger.hideCurrentSnackBar();
-                          scaffoldMessenger.showSnackBar(
-                            SnackBar(
-                              backgroundColor: Theme.of(context).errorColor,
-                              content: Text(
-                                context
-                                    .read<AuthenticationProvider>()
-                                    .errorMessage,
-                              ),
-                            ),
-                          );
-                        }
-                        if (result) {
-                          // remove snackbar if existing and show a new with error message
-                          scaffoldMessenger.hideCurrentSnackBar();
-                          scaffoldMessenger.showSnackBar(
-                            SnackBar(
-                              backgroundColor: Theme.of(context).primaryColor,
-                              content: Text(
-                                  'Sent reset password email, please check your inbox'),
-                            ),
-                          );
-                        }
-                      },
+                            .resetPassword(_email),
+                        // TODO post null safety does late work here?    
+                        lateErrorMessage: () =>
+                            context.read<AuthenticationProvider>().errorMessage,
+                        popScreenAfter: true,
+                        successMessage:
+                            'Reset password email sent, please check your inbox',),
                 child: isLoading
                     ? SizedBox(
                         height: 20,

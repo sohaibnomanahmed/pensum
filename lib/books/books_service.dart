@@ -6,7 +6,7 @@ class BooksService {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   DocumentSnapshot lastBook;
 
-  // fetch books
+  /// fetch books
   Stream<List<Book>> fetchBooks(int pageSize) {
     return firestore
         .collection('books')
@@ -25,7 +25,7 @@ class BooksService {
     );
   }
 
-  // fetch and return more books, from current last. If no more books return null
+  /// fetch and return more books, from current last. If no more books return null
   Future<List<Book>> fetchMoreBooks(int pageSize) async {
     final books = await firestore
         .collection('books')
@@ -39,7 +39,7 @@ class BooksService {
     return books.docs.map((document) => Book.fromFirestore(document)).toList();
   }
 
-  // fetch book titles
+  /// fetch book titles
   Stream<Map> fetchBookTitles() {
     return firestore.collection('books').doc('metadata').snapshots().map(
       (snapshot) {
@@ -51,13 +51,13 @@ class BooksService {
     );
   }
 
-  // get book
+  /// get book
   Future<Book> getBook(String isbn) async {
     final book = await firestore.collection('books').doc(isbn).get();
     return Book.fromFirestore(book);
   }
 
-  // Search books by title
+  /// Search books by title
   Future<List<Book>> searchBooksByTitle(String title) async {
     final books = await firestore
         .collection('books')

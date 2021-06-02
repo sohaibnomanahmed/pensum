@@ -14,7 +14,8 @@ class MessagesPage extends StatefulWidget {
   final String receiverName;
   final String receiverImage;
 
-  const MessagesPage({@required this.rid, this.receiverName, this.receiverImage});
+  const MessagesPage(
+      {@required this.rid, this.receiverName, this.receiverImage});
 
   @override
   _MessagesPageState createState() => _MessagesPageState();
@@ -75,7 +76,20 @@ class _MessagesPageState extends State<MessagesPage> {
               : SafeArea(
                   child: Column(
                     children: [
-                      Expanded(child: MessagesList()),
+                      Expanded(
+                        child: NotificationListener<ScrollNotification>(
+                          onNotification: (ScrollNotification scrollInfo) {
+                            if (scrollInfo.metrics.pixels >
+                                (scrollInfo.metrics.maxScrollExtent * 0.8)) {
+                              context
+                                  .read<MessagesProvider>()
+                                  .fetchMoreMessages(widget.rid);
+                            }
+                            return true;
+                          },
+                          child: MessagesList(),
+                        ),
+                      ),
                       MessageBar(
                         rid: widget.rid,
                         receiverName: widget.receiverName,
