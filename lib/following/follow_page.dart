@@ -13,7 +13,7 @@ class _FollowPageState extends State<FollowPage> {
   @override
   void initState() {
     super.initState();
-    context.read<FollowProvider>().fetchFollows;
+    context.read<FollowProvider>().fetchFollows();
   }
 
   @override
@@ -30,7 +30,7 @@ class _FollowPageState extends State<FollowPage> {
           onNotification: (ScrollNotification scrollInfo) {
             if (scrollInfo.metrics.pixels >
                 (scrollInfo.metrics.maxScrollExtent * 0.8)) {
-              context.read<FollowProvider>().fetchMoreFollows;
+              context.read<FollowProvider>().fetchMoreFollows();
             }
             return true;
           },

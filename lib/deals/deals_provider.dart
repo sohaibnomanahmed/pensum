@@ -13,8 +13,10 @@ import 'package:leaf/profile/profile_service.dart';
 import '../books/models/book.dart';
 import 'models/deal.dart';
 
+/// DealsProvider cant store previous deals in a [_cache] variable since
+/// there are made multiple streams, and the [lastDeal] pointer in 
+/// DealService would become wrong without changing the stream
 class DealsProvider with ChangeNotifier {
-  // TODO should only be one auth provider?
   final _authenticationService = AuthenticationService();
   final _profileService = ProfileService();
   final _dealsService = DealsService();
@@ -32,7 +34,6 @@ class DealsProvider with ChangeNotifier {
   bool _isFollowing;
   StreamSubscription _dealsSubscription;
   StreamSubscription _followSubscribtion;
-  //String _errorMessage;
 
   // getters
   bool get isLoading => _isLoading;
@@ -40,26 +41,19 @@ class DealsProvider with ChangeNotifier {
   bool get isFilter => _isFilter;
   bool get isFollowing => _isFollowing;
   bool get isFollowBtnLoading => _isFollowBtnLoading;
-  //String get errorMessage => _errorMessage;
   DealFilter get dealFilter => _dealFilter;
   List<Deal> get deals => [..._deals];
   DealsProvider get provider => this;
 
-  /*
-   * Subsbribe to the deals stream, if an error accours the stream will be canceled 
-   * Should be called in the init state method, and recalled if an error occurs
-   * after deals are received we called getFollowStatus, after that stream has started we
-   * remove the loading
-   */
+  /// Subsbribe to the deals stream, if an error accours the stream will be canceled 
+  /// Should be called in the init state method, and recalled if an error occurs
+  /// after deals are received we called getFollowStatus, after that stream has started we
+  /// remove the loading
   void fetchDeals(String isbn) {
     // get original first batch of deals
     final stream = _dealsService.fetchDeals(isbn: isbn, pageSize: _pageSize);
     _dealsSubscription = stream.listen(
       (deals) {
-        // in case there are no deals
-        if (deals == null) {
-          return;
-        }
         _deals = deals;
         getFollowStatus(isbn);
       },
@@ -73,10 +67,8 @@ class DealsProvider with ChangeNotifier {
     );
   }
 
-  /*
-   *  reload deals when an error occurs, set loading and fetch the deals
-   *  again by remaking the stream 
-   */
+  /// reload deals when an error occurs, set [_loading] and fetch the deals
+  /// again by remaking the stream 
   void refetchDeals(String isbn) async {
     _isLoading = true;
     _isError = false;
@@ -84,12 +76,11 @@ class DealsProvider with ChangeNotifier {
     fetchDeals(isbn);
   }
 
-  /*
-   * fetch more deals from firebase, starts with setting a silent loader so that
-   * the methos does not get called again, also so that the UI does not get updated.
-   * if no more deals can be fetched return, if error occurs return 
-   * if there are more books add the books to _books and return
-   */
+  /// fetch more deals from firebase, starts with setting a silent loader so that
+  /// the methos does not get called again, also so that the UI does not get updated.
+  /// if no more deals can be fetched return, if error occurs return 
+  /// if there are more books add the books to _books and return
+  /// this method takes care of both original deals and filtered
   Future<void> fetchMoreDeals(String isbn) async {
     // only get called one time and not on error screen
     if (_isLoading || _silentLoading || _isError) {
@@ -126,12 +117,10 @@ class DealsProvider with ChangeNotifier {
     return;
   }
 
-  /*
-   * setDeal, is a new deal a is will be created, else a previous deal will be 
-   * updated with merging. After updating book deals, add the deal to users 
-   * profile, return true if successfull and false if an error occurs
-   * probably dont need to show a loader
-   */
+  /// setDeal, is a new deal a is will be created, else a previous deal will be 
+  /// updated with merging. After updating book deals, add the deal to users 
+  /// profile, return true if successfull and false if an error occurs
+  /// probably dont need to show a loader
   Future<bool> setDeal({
     String id,
     @required String pid,
@@ -175,12 +164,10 @@ class DealsProvider with ChangeNotifier {
     return true;
   }
 
-  /*
-   * Filter deals, based on price, quality and place, price ranges are min and max
-   * if none spesified, helse spesified are used, quality is only counted in if
-   * spesified, so if places, places can be a match uptil 10 places. If an error 
-   * occurs _isError is set to true, probably dont need to show a loader
-   */
+  /// Filter deals, based on price, quality and place, price ranges are min and max
+  /// if none spesified, helse spesified are used, quality is only counted in if
+  /// spesified, so if places, places can be a match uptil 10 places. If an error 
+  /// occurs [_isError] is set to true, probably dont need to show a loader
   Future<void> filterDeals({
     @required String isbn,
     @required int priceAbove,
@@ -218,22 +205,26 @@ class DealsProvider with ChangeNotifier {
     }, cancelOnError: true);
   }
 
-  /*
-   * Restores the stored deals, from filtering
-   */
-  void clearFilter(String isbn) async {
+  /// Restores the stored deals, from filtering
+  Future<bool> clearFilter(String isbn) async {
     _isLoading = true;
     notifyListeners();
+    try {
     await _dealsSubscription.cancel();
     _dealFilter = DealFilter.empty();
     _isFilter = false;
     fetchDeals(isbn);
+    } catch (error){
+      print('Error clearing filter: ' + error);
+      _isLoading = false;
+      notifyListeners();
+      return false;
+    }
+    return true;
   }
 
-  /*
-   * follow a Book, and subscribe to its id, so taht notification can
-   * be received when new deals are added
-   */
+  /// follow a Book, and subscribe to its id, so taht notification can
+  /// be received when new deals are added
   Future<bool> followBook(Book book) async {
     _isFollowBtnLoading = true;
     notifyListeners();
@@ -261,10 +252,8 @@ class DealsProvider with ChangeNotifier {
     return true;
   }
 
-  /*
-   *  Get the following status for the book
-   *  This need to be a stream as changes should be shown to the user
-   */
+  /// Get the following status for the book
+  /// This need to be a stream as changes should be shown to the user
   void getFollowStatus(String isbn) async {
     final user = _authenticationService.currentUser;
     final stream =
@@ -285,9 +274,7 @@ class DealsProvider with ChangeNotifier {
     );
   }
 
-  /*
-   * Dispose when the provider is destroyed, cancel the deal subscrition
-   */
+  /// Dispose when the provider is destroyed, cancel the deal subscrition
   @override
   void dispose() async {
     super.dispose();

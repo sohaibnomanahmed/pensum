@@ -117,7 +117,6 @@ class MyApp extends StatelessWidget {
               Map args = settings.arguments;
               final rid = args['id'];
               if(rid == null){
-                // TODO show error leaf error snackbar
                 return MaterialPageRoute(builder: (_) => PageNotFound());
               }
               return MaterialPageRoute(

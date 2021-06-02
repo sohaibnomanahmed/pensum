@@ -96,10 +96,10 @@ class RecipientsProvider with ChangeNotifier {
 
   // dispose
   @override
-  void dispose() {
+  void dispose() async {
     super.dispose();
     if (_subscription != null) {
-      _subscription.cancel();
+      await _subscription.cancel();
     }
   }
 }

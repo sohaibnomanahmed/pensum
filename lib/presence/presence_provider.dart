@@ -33,7 +33,7 @@ class PresenceProvider with ChangeNotifier {
   /*
    * Connect back to the database to get the presence status back
    */
-  Future<void> goOnline() async {
+  void goOnline(){
     // set the user to be online
     try {
       _presenceService.connect();

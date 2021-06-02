@@ -200,16 +200,16 @@ class NotificationProvider with ChangeNotifier {
    * Cancel suscription on dispose 
    */
   @override
-  void dispose() {
+  void dispose() async {
     super.dispose();
     if (_subscription != null) {
-      _subscription.cancel();
+      await _subscription.cancel();
     }
     if (_chatNotificationSubscription != null){
-      _chatNotificationSubscription.cancel();
+      await _chatNotificationSubscription.cancel();
     }
     if (_followingNotificationSubscription != null){
-      _followingNotificationSubscription.cancel();
+      await _followingNotificationSubscription.cancel();
     }
   }
 }

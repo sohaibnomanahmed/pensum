@@ -35,12 +35,6 @@ class ProfileProvider with ChangeNotifier {
   bool get isError => _isError;
   Profile get profile => _profile;
   String get errorMessage => _errorMessage;
-  List<Deal> get profileDeals => _profile.userItems.isEmpty
-      ? []
-      : _profile.userItems
-          .map((isbn, deal) => MapEntry(isbn, Deal.fromMap(deal, isbn)))
-          .values
-          .toList();
 
   /*
    * Subsbribe to a profile stream, if an error accours the stream will be canceled 
@@ -189,10 +183,10 @@ class ProfileProvider with ChangeNotifier {
    * Cancel suscription on dispose 
    */
   @override
-  void dispose() {
+  void dispose() async {
     super.dispose();
     if (_subscription != null) {
-      _subscription.cancel();
+      await _subscription.cancel();
     }
   }
 }

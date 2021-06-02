@@ -21,30 +21,20 @@ class FollowProvider with ChangeNotifier{
   var _silentLoading = false;
   var _isError = false;
   StreamSubscription _subscription;
-  String _errorMessage;
 
   // getters
   bool get isLoading => _isLoading;
   bool get isError => _isError;
-  String get errorMessage => _errorMessage;
   List<Follow> get follows => [..._follows];
 
-  /*
-   * Subsbribe to the followstream, if an error accours the stream will be canceled 
-   * Should be called in the init state method, and recalled if an error occurs
-   */
-  void get fetchFollows {
+  /// Subsbribe to the followstream, if an error accours the stream will be canceled 
+  /// Should be called in the init state method, and recalled if an error occurs  
+  void fetchFollows() {
     // get original first batch of follow
     final user = _authenticationService.currentUser;
     final stream = _followService.fetchFollowing(uid: user.uid, pageSize: _pageSize);
     _subscription = stream.listen(
       (follows) {
-        // in case there are no follows
-        if (follows == null){
-          _isLoading = false;
-          notifyListeners();
-          return;
-        }
         _follows = follows;
         _isLoading = false;
         notifyListeners();
@@ -59,24 +49,20 @@ class FollowProvider with ChangeNotifier{
     );
   }
 
-  /*
-   *  reload follows when an error occurs, set loading and fetch the follows
-   *  again by remaking the stream 
-   */
+  /// reload follows when an error occurs, set loading and fetch the follows
+  /// again by remaking the stream   
   void reFetchFollows() async{
     _isLoading = true;
     _isError = false;
     notifyListeners();
-    fetchFollows;
+    fetchFollows();
   }
 
-  /*
-   * fetch more books from firebase, starts with setting a silent loader so that
-   * the methos does not get called again, also so that the UI does not get updated.
-   * if no more books can be fetched return, if error occurs return 
-   * if there are more books add the books to _books and return
-   */
-  Future<void> get fetchMoreFollows async {
+  /// fetch more books from firebase, starts with setting a silent loader so that
+  /// the methos does not get called again, also so that the UI does not get updated.
+  /// if no more books can be fetched return, if error occurs return 
+  /// if there are more books add the books to _books and return  
+  Future<void> fetchMoreFollows() async {
     // only get called one time and not on error screen or in a search
     if (_isLoading || _silentLoading || _isError) {
       return;
@@ -94,11 +80,6 @@ class FollowProvider with ChangeNotifier{
       _silentLoading = false;
       return;
     }
-    // no more follows to add
-    if (moreFollows == null) {
-      _silentLoading = false;
-      return;
-    }
  
     // add them the end of the follows list
     _follows.addAll(moreFollows);
@@ -108,10 +89,8 @@ class FollowProvider with ChangeNotifier{
     return;
   }
 
-  /*
-   * Unfollow a spesific book, should unsubscribe from notifications
-   * if successfull return true, if an error occurs set error message and retun false 
-   */
+  /// Unfollow a spesific book, should unsubscribe from notifications
+  /// if successfull return true, if an error occurs set error message and retun false   
   Future<bool> unfollow(String isbn) async {
     try {
       // remove deal from users profile
@@ -125,19 +104,15 @@ class FollowProvider with ChangeNotifier{
     return true;
   }
 
-  /*
-   * returned a followed book 
-   */
+  /// returned a followed book   
   Future<Book> getFollowedBook(String isbn){
     return _booksService.getBook(isbn);
   }
 
-  /*
-   * remove following notification for a spesific book;
-   * Since this method is preceeds other actions, we need to
-   * decide if it is important to show if it succed or not
-   * in this case its not, so we sont return a Future to halt the activity
-   */
+  /// remove following notification for a spesific book;
+  /// Since this method is preceeds other actions, we need to
+  /// decide if it is important to show if it succed or not
+  /// in this case its not, so we sont return a Future to halt the activity  
   void removeFollowingNotification(String id) async {
     try{
       final user = _authenticationService.currentUser;
@@ -147,14 +122,12 @@ class FollowProvider with ChangeNotifier{
     }
   }
 
-  /*
-   * Dispose when the provider is destroyed, cancel the follow subscrition
-   */
+  /// Dispose when the provider is destroyed, cancel the follow subscrition
   @override
-  void dispose() {
+  void dispose() async {
     super.dispose();
     if (_subscription != null) {
-      _subscription.cancel();
+      await _subscription.cancel();
     }
   }
 }

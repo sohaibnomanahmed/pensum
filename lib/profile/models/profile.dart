@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:leaf/deals/models/deal.dart';
 
 import '../../global/extensions.dart';
 
@@ -14,6 +15,12 @@ class Profile {
 
   // getters
   String get fullName => firstname + ' ' + lastname;
+  List<Deal> get deals => userItems.isEmpty
+      ? []
+      : userItems
+          .map((isbn, deal) => MapEntry(isbn, Deal.fromMap(deal, isbn)))
+          .values
+          .toList();
 
   /*
    *  need to capitalize first value (value) all other values (element) and

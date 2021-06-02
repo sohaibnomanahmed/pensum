@@ -8,6 +8,9 @@ import 'package:leaf/profile/profile_service.dart';
 
 import '../profile/models/profile.dart';
 
+/// AuthenticatioProvider is accessable from the entire app, its the only
+/// provider to have an [_errorMessage] variable, this is so since authentication
+/// from firebase gives usefull feedback to the user on error whihc then are dispalyed
 class AuthenticationProvider with ChangeNotifier {
   final _authenticationService = AuthenticationService();
   final _profileService = ProfileService();

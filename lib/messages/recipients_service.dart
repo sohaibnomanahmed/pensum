@@ -53,7 +53,6 @@ class RecipientsService {
   }
 
   // set seen value for a recipient, since they need to know if you have seen their message
-  // TODO shoudl have a future?
   Future<void> setNotification({
     @required String sid,
     @required String rid,

@@ -35,10 +35,10 @@ class MessagesProvider with ChangeNotifier {
 
   // getters
   MessagesProvider get provider => this;
+  List<Message> get messages => [..._messages];
   bool get isLoading => _isLoading;
   bool get messageLoading => _messageLoading;
   bool get isError => _isError;
-  List<Message> get messages => [..._messages];
 
   /*
    * Sets up a stream, reciving messages connected to a spesific user.
@@ -52,12 +52,6 @@ class MessagesProvider with ChangeNotifier {
     final stream = _messagesService.fetchMessages(
         sid: user.uid, rid: rid, pageSize: _pageSize);
     _subscription = stream.listen((messages) {
-      // if no messages are sent we return
-      if (messages == null) {
-        _isLoading = false;
-        notifyListeners();
-        return;
-      }
       messages.reversed.toList().forEach((message) {
         message.isMe = message.sid == user.uid;
         // if not already loaded, add to _message list
@@ -81,9 +75,6 @@ class MessagesProvider with ChangeNotifier {
       const notificationMap = {'notification': false};
       _recipientService.setNotification(
           sid: user.uid, rid: rid, recipient: notificationMap);
-      // remove notification
-      // TODO remove?
-      //firestoreService.notification.setChatNotification(user.uid, false);
       _isLoading = false;
       notifyListeners();
     }, onError: (error) {
@@ -111,7 +102,9 @@ class MessagesProvider with ChangeNotifier {
    * while loading messages. 
    */
   Future<void> fetchMoreMessages(String rid) async {
-    if (_silentLoading == true) {
+    // no messages loaded, no last document so need to return
+    // TODO dont need isloading?
+    if (_silentLoading == true || _messages.isEmpty) {
       return;
     }
     // set silent loader so taht this method does not get called again
@@ -120,18 +113,9 @@ class MessagesProvider with ChangeNotifier {
 
     // get current user and messages
     final user = _authenticationService.currentUser;
-    if (_messages.isEmpty) {
-      // no messages loaded, no last document so need to return
-      _silentLoading = false;
-      return;
-    }
     var moreMessages = await _messagesService.fetchMoreMessages(
         sid: user.uid, rid: rid, pageSize: _pageSize);
-    if (moreMessages == null) {
-      // no more documents need to return
-      _silentLoading = false;
-      return;
-    }
+
     // set isMe boolean on all messages
     moreMessages.forEach((message) {
       message.isMe = message.sid == user.uid;
@@ -306,6 +290,7 @@ class MessagesProvider with ChangeNotifier {
   /*
    * This method is mainly used in the chat page to unsubscribe from topics
    * unsubscribes from the chat topic of the user so that the notifications wont apear 
+   * dont need to return if action was succesfull
    */
   void unsubscribeFromChatNotifications() async {
     final user = _authenticationService.currentUser;
@@ -315,18 +300,19 @@ class MessagesProvider with ChangeNotifier {
   /*
    * This method is mainly used in the chat page to subscribe to a topics
    * subscribes to the chat topic of the user so that the notifications will apear
+   * dont need to return if action was succesfull
    */
   void subscribeToChatNotifications() async {
     final user = _authenticationService.currentUser;
     await _notificationService.subscribeToTopic(user.uid);
   }
 
-  // dispose
+  /// dispose
   @override
-  void dispose() {
+  void dispose() async {
     super.dispose();
     if (_subscription != null) {
-      _subscription.cancel();
+      await _subscription.cancel();
     }
   }
 }
