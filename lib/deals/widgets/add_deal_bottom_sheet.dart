@@ -34,11 +34,12 @@ class _AddDealBottomSheetState extends State<AddDealBottomSheet> {
   @override
   void initState() {
     super.initState();
-    if (widget.deal != null) {
-      _price = widget.deal.price;
-      _quality = widget.deal.quality;
-      _place = widget.deal.place;
-      _description = widget.deal.description;
+    final deal = widget.deal;
+    if (deal != null) {
+      _price = deal.price;
+      _quality = deal.quality;
+      _place = deal.place;
+      _description = deal.description;
     }
   }
 
@@ -60,8 +61,8 @@ class _AddDealBottomSheetState extends State<AddDealBottomSheet> {
               DropdownButtonFormField(
                 value: _price.isEmpty ? null : _price,
                 hint: Text('Select price'),
-                onChanged: (value) => setState(() {
-                  _price = value /*!*/;
+                onChanged: (String value) => value == null ? null : setState(() {
+                  _price = value;
                 }),
                 items: prices
                     .map((price) =>
@@ -71,8 +72,8 @@ class _AddDealBottomSheetState extends State<AddDealBottomSheet> {
               DropdownButtonFormField(
                 value: _quality.isEmpty ? null : _quality,
                 hint: Text('Select quality'),
-                onChanged: (value) => setState(() {
-                  _quality = value /*!*/;
+                onChanged: (String value) => value == null ? null : setState(() {
+                  _quality = value;
                 }),
                 items: qualities
                     .map((quality) =>
@@ -82,8 +83,8 @@ class _AddDealBottomSheetState extends State<AddDealBottomSheet> {
               DropdownButtonFormField(
                 value: _place.isEmpty ? null : _place,
                 hint: Text('Select place'),
-                onChanged: (value) => setState(() {
-                  _place = value /*!*/;
+                onChanged: (String value) => value == null ? null : setState(() {
+                  _place = value;
                 }),
                 items: places
                     .map((place) =>
@@ -97,7 +98,7 @@ class _AddDealBottomSheetState extends State<AddDealBottomSheet> {
                 maxLines: 3,
                 decoration:
                     InputDecoration(labelText: 'Description (Optional)'),
-                onChanged: (value) => _description = value /*!*/,
+                onChanged: (value) => _description = value,
               ),
               ElevatedButton(
                 onPressed:

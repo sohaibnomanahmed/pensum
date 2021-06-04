@@ -52,6 +52,7 @@ Future<void> main() async {
 
   await FirebaseAuth.instance.authStateChanges().isEmpty;
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  // TODO test out, add internalization, and commercial images
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent, // for Android
       statusBarIconBrightness: Brightness.dark, // for Android
@@ -116,7 +117,9 @@ class MyApp extends StatelessWidget {
             case MessagesPage.routeName:
               Map args = settings.arguments;
               final rid = args['id'];
-              if(rid == null){
+              final receiverImage = args['image'];
+              final receiverName = args['name'];
+              if(rid == null || receiverName == null || receiverImage == null){
                 return MaterialPageRoute(builder: (_) => PageNotFound());
               }
               return MaterialPageRoute(
@@ -124,8 +127,8 @@ class MyApp extends StatelessWidget {
                   create: (_) => MessagesProvider(),
                   child: MessagesPage(
                     rid: rid,
-                    receiverName: args['name'],
-                    receiverImage: args['image'],
+                    receiverName: receiverName,
+                    receiverImage: receiverImage,
                   ),
                 ),
               );

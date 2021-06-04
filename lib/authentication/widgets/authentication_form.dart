@@ -25,30 +25,16 @@ class _AuthenticationFormState extends State<AuthenticationForm> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // email text field
-          TextFormField(
+          TextField(
             keyboardType: TextInputType.emailAddress,
-            decoration: InputDecoration(
-              labelText: 'Email',
-            ),
-            validator: (value) => (value.isEmpty || !value.contains('@'))
-                ? 'Please enter a valid email address.'
-                : null,
-            onSaved: (value) => _email = value,
+            decoration: InputDecoration(labelText: 'Email'),
+            onChanged: (value) => _email = value,
           ),
-          SizedBox(
-            height: 5,
-          ),
-          // password text field
-          TextFormField(
-            decoration: InputDecoration(
-              labelText: 'Password',
-            ),
+          SizedBox(height: 5),
+          TextField(
+            decoration: InputDecoration(labelText: 'Password'),
             obscureText: true,
-            validator: (value) => (value.isEmpty || value.length < 7)
-                ? 'Password must be at least 7 characters long.'
-                : null,
-            onSaved: (value) => _password = value,
+            onChanged: (value) => _password = value,
           ),
           Container(
             alignment: Alignment.centerRight,
@@ -74,22 +60,16 @@ class _AuthenticationFormState extends State<AuthenticationForm> {
             onPressed: isLoading
                 ? null
                 : () async {
-                    // validate form and sign the user in
-                    final isValid = _formKey.currentState.validate();
-                    if (isValid) {
-                      FocusScope.of(context).unfocus();
-                      // save values
-                      _formKey.currentState.save();
-                      // TODO nees async or await
-                      await ButtonFunctions.onPressHandler(
-                          context: context,
-                          action: () async => await context
-                              .read<AuthenticationProvider>()
-                              .signIn(email: _email, password: _password),
-                          lateErrorMessage: () => context
-                              .read<AuthenticationProvider>()
-                              .errorMessage);
-                    }
+                    // hide soft keayboard
+                    FocusScope.of(context).unfocus();
+                    await ButtonFunctions.onPressHandler(
+                        context: context,
+                        action: () => context
+                            .read<AuthenticationProvider>()
+                            .signIn(email: _email, password: _password),
+                        lateErrorMessage: () => context
+                            .read<AuthenticationProvider>()
+                            .errorMessage);
                   },
             child: isLoading
                 ? SizedBox(
@@ -105,10 +85,8 @@ class _AuthenticationFormState extends State<AuthenticationForm> {
                 FocusScope.of(context).unfocus();
                 showModalBottomSheet(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(5.0),
-                    ),
-                  ),
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(5.0))),
                   context: context,
                   isScrollControlled: true,
                   builder: (_) => CreateAccountBottomSheet(),

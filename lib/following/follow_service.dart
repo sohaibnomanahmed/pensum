@@ -6,7 +6,6 @@ import 'models/Follow.dart';
 class FollowService {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   DocumentSnapshot lastFollow;
-  DocumentSnapshot lastNotification;
 
   /// fetch follows
   Stream<List<Follow>> fetchFollowing(

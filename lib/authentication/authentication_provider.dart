@@ -20,6 +20,7 @@ class AuthenticationProvider with ChangeNotifier {
 
   var _isLoading = false;
   final _unknownMessage = 'Error: please check your network connection';
+  final _defaultMessage = 'Error: Somehting went wrong, please try again';
   /*late*/String _errorMessage;
 
   // getters
@@ -28,8 +29,10 @@ class AuthenticationProvider with ChangeNotifier {
   Stream<User> get authState => _authenticationService.authState;
   String get errorMessage => _errorMessage;
 
-  /// tries to create a user in using [firebase], if the successfull returns true
-  /// if an error occurs, cathes the exception, store error message and return false
+  /// tries to create a user in using [firebase],  [firstname] and [lastname] 
+  /// needs to be manually checked, email and password is covered by firebase 
+  /// if the successfull returns true if an error occurs, cathes the exception, 
+  /// store error message and return false
   Future<bool> createUser({
     @required String firstname,
     @required String lastname,
@@ -38,6 +41,10 @@ class AuthenticationProvider with ChangeNotifier {
   }) async {
     _isLoading = true;
     notifyListeners();
+    if (firstname.isEmpty || lastname.isEmpty){
+      _errorMessage = 'Firstname or lastname can\'t be empty';
+      return false;
+    }
     try {
       // create user
       final userCredentials = await _authenticationService.createUser(
@@ -68,7 +75,7 @@ class AuthenticationProvider with ChangeNotifier {
       // set the user to be offline
       // await _presenceService.setUserPresence(userCredential.user.uid, false);
     } on FirebaseAuthException catch (error) {
-      _errorMessage = error.message;
+      _errorMessage = error.message ?? _defaultMessage;
       if (error.code == 'unknown') {
         _errorMessage = _unknownMessage;
       }
@@ -110,10 +117,8 @@ class AuthenticationProvider with ChangeNotifier {
       });
 
     } on FirebaseAuthException catch (error) {
-      print(error);
-      _errorMessage = error.message;
+      _errorMessage = error.message ?? _defaultMessage;
       if (error.code == 'unknown') {
-        print(error);
         _errorMessage = _unknownMessage;
       }
       _isLoading = false;
@@ -146,7 +151,7 @@ class AuthenticationProvider with ChangeNotifier {
 
       await _authenticationService.signOut();
     } on FirebaseAuthException catch (error) {
-      _errorMessage = error.message;
+      _errorMessage = error.message ?? _defaultMessage;
       if (error.code == 'unknown') {
         _errorMessage = _unknownMessage;
       }
@@ -169,7 +174,7 @@ class AuthenticationProvider with ChangeNotifier {
     try {
       await _authenticationService.resetPassword(email);
     } on FirebaseAuthException catch (error) {
-      _errorMessage = error.message;
+      _errorMessage = error.message ?? _defaultMessage;
       if (error.code == 'unknown') {
         _errorMessage = _unknownMessage;
       }
@@ -203,7 +208,7 @@ class AuthenticationProvider with ChangeNotifier {
       // delete the current user
       await _authenticationService.deleteUser();
     } on FirebaseAuthException catch (error) {
-      _errorMessage = error.message;
+      _errorMessage = error.message ?? _defaultMessage;
       if (error.code == 'unknown') {
         _errorMessage = _unknownMessage;
       }

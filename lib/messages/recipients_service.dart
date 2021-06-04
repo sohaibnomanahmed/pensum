@@ -56,7 +56,7 @@ class RecipientsService {
   Future<void> setNotification({
     @required String sid,
     @required String rid,
-    @required Map recipient,
+    @required Map<String, bool> recipient,
   }) {
     return firestore
         .collection('chats')

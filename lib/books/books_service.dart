@@ -44,7 +44,10 @@ class BooksService {
     return firestore.collection('books').doc('metadata').snapshots().map(
       (snapshot) {
         if (snapshot.exists){
-          return snapshot.data()['titles'];
+          final data = snapshot.data();
+          if (data != null){
+            return data['titles'] ?? {};
+          }    
         }
         return {};
       },

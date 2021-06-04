@@ -19,7 +19,7 @@ class FilterDealsBottomSheet extends StatefulWidget {
 class _FilterDealsBottomSheetState extends State<FilterDealsBottomSheet> {
   RangeValues _currentRangeValues = RangeValues(
       0, double.parse(prices.last.replaceAll(RegExp('[^0-9]'), '')));
-  var _quality = '';
+  String _quality = '';
   List<String> _places = [];
 
   @override
@@ -30,8 +30,8 @@ class _FilterDealsBottomSheetState extends State<FilterDealsBottomSheet> {
     if (!dealFilter.isEmpty) {
       _currentRangeValues = RangeValues(
           dealFilter.priceAbove.toDouble(), dealFilter.priceBelow.toDouble());
-      _quality = dealFilter.quality;
-      _places = dealFilter.places;    
+      _quality = dealFilter.quality/*!*/;
+      _places = dealFilter.places/*!*/;    
     }
   }
 
@@ -77,7 +77,7 @@ class _FilterDealsBottomSheetState extends State<FilterDealsBottomSheet> {
             DropdownButtonFormField(
               value: _quality.isNotEmpty ? _quality: null,
               hint: Text('Select quality'),
-              onChanged: (value) => _quality = value,
+              onChanged: (String value) => (value == null) ? null : _quality = value,
               items: qualities
                   .map((quality) =>
                       DropdownMenuItem(value: quality, child: Text(quality)))
@@ -85,9 +85,9 @@ class _FilterDealsBottomSheetState extends State<FilterDealsBottomSheet> {
             ),
             DropdownButtonFormField(
               hint: Text('Add up to 10 places'),
-              onChanged: (value) => setState(() {
+              onChanged: (String value) => setState(() {
                 // firebase limit on array checks
-                if (_places.length < 10 && !_places.contains(value)) {
+                if (value != null && _places.length < 10 && !_places.contains(value)) {
                   _places.add(value);
                 }
               }),

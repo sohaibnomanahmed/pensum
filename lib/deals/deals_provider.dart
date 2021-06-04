@@ -31,7 +31,7 @@ class DealsProvider with ChangeNotifier {
   var _isFollowBtnLoading = false;
   var _silentLoading = false;
   var _dealFilter = DealFilter.empty();
-  bool _isFollowing;
+  bool _isFollowing = false;
   StreamSubscription _dealsSubscription;
   StreamSubscription _followSubscribtion;
 
@@ -250,7 +250,8 @@ class DealsProvider with ChangeNotifier {
   }
 
   /// Subscribe to the follow stream, result show if user is following a
-  /// certain book, store result in [isFollowing]. if an error occurs set [isError]
+  /// certain book, store result in [isFollowing] default is false i.g. no wifi
+  /// if an error occurs set [isError]
   void getFollowStatus(String isbn) async {
     final user = _authenticationService.currentUser;
     final stream =

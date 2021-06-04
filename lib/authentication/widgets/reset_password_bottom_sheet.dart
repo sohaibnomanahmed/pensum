@@ -30,34 +30,26 @@ class _ResetPasswordBottomSheetState extends State<ResetPasswordBottomSheet> {
                 color: Theme.of(context).primaryColor,
               ),
               TextField(
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                ),
-                onChanged: (val) {
-                  setState(() {
-                    _email = val;
-                  });
-                },
-              ),
-              SizedBox(
-                height: 10,
-              ),
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: InputDecoration(labelText: 'Email'),
+                  onChanged: (val) => _email = val),
+              SizedBox(height: 10),
               ElevatedButton(
                 onPressed: (_email.isEmpty || isLoading)
                     ? null
                     : () async => ButtonFunctions.onPressHandler(
-                        context: context,
-                        // todo works without async await?
-                        action: () async => await context
-                            .read<AuthenticationProvider>()
-                            .resetPassword(_email),
-                        // TODO post null safety does late work here?    
-                        lateErrorMessage: () =>
-                            context.read<AuthenticationProvider>().errorMessage,
-                        popScreenAfter: true,
-                        successMessage:
-                            'Reset password email sent, please check your inbox',),
+                          context: context,
+                          action: () => context
+                              .read<AuthenticationProvider>()
+                              .resetPassword(_email),
+                          // TODO post null safety does late work here for lazy work?
+                          lateErrorMessage: () => context
+                              .read<AuthenticationProvider>()
+                              .errorMessage,
+                          popScreenAfter: true,
+                          successMessage:
+                              'Reset password email sent, please check your inbox',
+                        ),
                 child: isLoading
                     ? SizedBox(
                         height: 20,

@@ -31,6 +31,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     final args = settings.arguments;
     switch (settings.name) {
       case DealsPage.routeName:
+        if (args == null){
+          return MaterialPageRoute(builder: (_) => PageNotFound());
+        }
         return MaterialPageRoute(
           builder: (_) => ChangeNotifierProvider(
               create: (_) => DealsProvider(),

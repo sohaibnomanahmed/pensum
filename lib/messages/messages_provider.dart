@@ -225,8 +225,9 @@ class MessagesProvider with ChangeNotifier {
   }
 
   /// Send location message to a user, get the address, an image, upload image to [storage]
-  /// Then call [sendMessage]. There should not be a loader, should feel like contant flow.
-  /// If successfull return true, if an error occurs return false 
+  /// Then call [sendMessage]. [messageLoading] will shoe a spinner while uploading message.
+  /// For [currentLocation] if latitude or longitude is null, we return false as location
+  /// would not be reachable. Else if successfull return true, if an error occurs return false 
   Future<bool> sendLocation(
       {@required bool currentLocation,
       @required String rid,
@@ -240,8 +241,19 @@ class MessagesProvider with ChangeNotifier {
       // check if current location
       if (currentLocation) {
         final location = await _locationService.getCurrentUserLocation();
+        if (location == null){
+          _messageLoading = false;
+          notifyListeners();
+          return false;
+        }
         latitude = location.latitude;
         longitude = location.longitude;
+      }
+      if (latitude == null || longitude == null){
+          print('Error sending location: Lat or Long = null');
+          _messageLoading = false;
+          notifyListeners();
+          return false;
       }
       // Get location address
       final address = await _googleMapService.getPlaceAddress(

@@ -32,11 +32,16 @@ export const onProfileImageUpdate = functions.firestore
     .document('profiles/{userID}').onUpdate(async change => {
         const userID = change.before.id
         const beforeImage = change.before.data().imageUrl
-        const afterImage = change.after.data().imageUrl
+        var afterImage = change.after.data().imageUrl
 
         if (beforeImage === afterImage) {
             console.log('Stopping since image did not change')
             return
+        }
+
+        // if user is deleted reset image to nothing so background is shown, should not pass null to ImageProvider
+        if (afterImage === null){
+            afterImage = ''
         }
 
         // find all deals and recipeints, finds all collection with name deals and joins them togheter
@@ -71,13 +76,18 @@ export const onProfileNameUpdate = functions.firestore
     .document('profiles/{userID}').onUpdate(async change => {
         const userID = change.before.id
         const beforeFirstname = change.before.data().firstname
-        const afterFirstname = change.after.data().firstname
+        var afterFirstname = change.after.data().firstname
         const beforeLastname = change.before.data().lastname
-        const afterLastname = change.after.data().lastname
+        var afterLastname = change.after.data().lastname
 
         if (beforeFirstname === afterFirstname && beforeLastname === afterLastname) {
             console.log('Stopping since name did not change')
             return
+        }
+        // is user is deleted give default name
+        if (afterFirstname === null && afterLastname === null){
+            afterFirstname = 'Leaf'
+            afterLastname = 'User'
         }
 
         // find all deals and recipeints, finds all collection with name deals and joins them togheter

@@ -88,7 +88,7 @@ class MessagesService {
     @required String id, // message id
     @required String sid,
     @required String rid,
-    @required Map message,
+    @required Map<String, bool> message,
   }) {
     return firestore
         .collection('chats')

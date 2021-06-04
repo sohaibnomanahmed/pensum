@@ -3,14 +3,12 @@ import 'package:flutter/foundation.dart';
 
 import '../data/price_data.dart';
 
-/*
- * The deal class restores the inforamtion it needs from the user and the book
- * this is done, since if received from firebase we need mutiple calls, more
- * document reads, but worse we need stream every where to catch changes.
- * In this case we store all the infromation needed and updates the info by cloud functions
- * Also by storing object like Profile and Book, needs to map them from map and document
- * this solution seemed more effetient
- */
+/// The deal class stores the inforamtion it needs from the user and the book class
+/// this is done, since if received from [firebase] we need mutiple calls, more
+/// document reads, but worse we need stream every where to catch changes.
+/// In this case we store all the infromation needed and updates the info by [cloud functions]
+/// Also by storing object like [Profile] and [Book], needs to map them from map and document
+/// and change the design if not we get reccurrent storing: deals -> profile -> deals etc..
 class Deal {
   final String id;
   final String uid; // user id

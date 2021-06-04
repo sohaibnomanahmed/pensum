@@ -26,25 +26,12 @@ class FollowList extends StatelessWidget {
                     context
                         .read<FollowProvider>()
                         .removeFollowingNotification(follows[index].pid);
-                    if (book != null) {
-                      // navigate to books page
-                      await Navigator.of(context).pushNamed(
-                        DealsPage.routeName,
-                        arguments: book,
-                      );
-                    } else {
-                      // show error message
-                      final scaffoldMessenger = ScaffoldMessenger.of(context);
-                      // remove snackbar if existing and show a new with error message
-                      scaffoldMessenger.hideCurrentSnackBar();
-                      scaffoldMessenger.showSnackBar(
-                        SnackBar(
-                          backgroundColor: Theme.of(context).errorColor,
-                          content:
-                              Text('Something went wrong, please try again!'),
-                        ),
-                      );
-                    }
+                    // TODO what if firebase dont find book null occurs?? test
+                    // navigate to books page
+                    await Navigator.of(context).pushNamed(
+                      DealsPage.routeName,
+                      arguments: book,
+                    );
                   },
                   child: FollowItem(follows[index]),
                 ),

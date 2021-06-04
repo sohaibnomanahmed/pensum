@@ -17,6 +17,7 @@ class MessageBubble extends StatelessWidget {
   Widget build(BuildContext context) {
     final date = message.time.toDate();
     final formattedDate = DateFormat('EEE d MMM kk:mm').format(date);
+    final imageMessage = message.image;
     // need row, since the list takes the full width the container with gets over-ruled
     return Row(
       mainAxisAlignment:
@@ -66,13 +67,13 @@ class MessageBubble extends StatelessWidget {
                 ),
               ),
               if (message.type == 'text') Text(message.text),
-              if (message.type == 'image')
+              if (message.type == 'image' && imageMessage != null)
                 OpenContainer(
                   closedColor: Colors.transparent,
                   closedElevation: 0,
-                  openBuilder: (_, __) => PhotoPage(message.image),
+                  openBuilder: (_, __) => PhotoPage(imageMessage),
                   closedBuilder: (_, __) => Image.network(
-                    message.image,
+                    imageMessage,
                     fit: BoxFit.cover,
                     errorBuilder: (_, __, ___) => Center(
                       child: Icon(

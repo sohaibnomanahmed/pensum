@@ -53,7 +53,7 @@ class BookSearchDelegate extends SearchDelegate<String> {
       itemCount: bookMatches.length,
       itemBuilder: (ctx, index) => ListTile(
         onTap: () {
-          final title = bookTitles[bookMatches[index]]['title'];
+          final title = bookTitles[bookMatches[index]]['title'] ?? '';
           parentContext.read<BooksProvider>().fetchSearchedBook(title);
           close(context, null);
         },
@@ -97,7 +97,7 @@ class BookSearchDelegate extends SearchDelegate<String> {
       itemCount: bookMatches.length,
       itemBuilder: (ctx, index) => ListTile(
         onTap: () {
-          final title = bookTitles[bookMatches[index]]['title'];
+          final title = bookTitles[bookMatches[index]]['title'] ?? '';
           parentContext.read<BooksProvider>().fetchSearchedBook(title);
           close(context, null);
         },
