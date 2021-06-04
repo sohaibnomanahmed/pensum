@@ -3,7 +3,7 @@
 [Privacy Policy](privacy.md)\
 [Support](support.md)
 
-A flutter project for buying and selling books, mainly campus curriculum socially. It uses a **MVVM** architecture achieved with the *provider* packages and *firebase* as the backend. Currently the project includes the following features:
+A flutter project for buying and selling books, mainly campus curriculum socially. It uses a **MVVM** architecture achieved with the *provider* packages and *firebase* as the backend. All list icludes **paging** with *ScrollNotification* and lazy loading with use of *ListView.builder* method. The code is now migrated to *Sound Null Safety*. Currently the project includes the following features:
 * Authentication
 * Chat (incl. images and location)
 * Profile
