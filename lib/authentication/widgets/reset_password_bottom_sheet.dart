@@ -35,7 +35,7 @@ class _ResetPasswordBottomSheetState extends State<ResetPasswordBottomSheet> {
                   onChanged: (val) => _email = val),
               SizedBox(height: 10),
               ElevatedButton(
-                onPressed: (_email.isEmpty || isLoading)
+                onPressed: (isLoading)
                     ? null
                     : () async => ButtonFunctions.onPressHandler(
                           context: context,

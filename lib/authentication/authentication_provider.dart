@@ -26,6 +26,7 @@ class AuthenticationProvider with ChangeNotifier {
   // getters
   bool get isLoading => _isLoading;
   bool get isEmailVerified => _authenticationService.currentUser.emailVerified;
+  String get uid => _authenticationService.currentUser.uid;
   Stream<User> get authState => _authenticationService.authState;
   String get errorMessage => _errorMessage;
 

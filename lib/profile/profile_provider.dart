@@ -22,7 +22,7 @@ class ProfileProvider with ChangeNotifier {
   final _imagePickerService = ImagePickerService();
   final _imageCropperService = ImageCropperService();
 
-  Profile _profile;
+  /*late*/Profile _profile;
   var _isLoading = true;
   var _isError = false;
   StreamSubscription _subscription;
@@ -39,19 +39,10 @@ class ProfileProvider with ChangeNotifier {
   /// the stream will be canceled, and we will set [isError]
   void fetchProfile(String uid) {
     // fetch user profile
-    var isMe = uid == null ? true : false;
-    uid ??= _authenticationService.currentUser.uid;
+    var isMe = _authenticationService.currentUser.uid == uid;
     final stream = _profileService.fetchProfile(uid);
     _subscription = stream.listen(
       (profile) {
-        // if user is deleted, the profile value would be null
-        if (profile == null){
-          print('Fetch profile error: Profile is null');
-          _isError = true;
-          _isLoading = false;
-          notifyListeners();
-          return;
-        }
         _profile = profile;
         _profile.isMe = isMe;
         _isLoading = false;
@@ -69,7 +60,7 @@ class ProfileProvider with ChangeNotifier {
 
   /// refetch profile when an error occurs, reset [loading] and [error]
   /// then call [fetchProfile] again to remake the stream 
-  void reFetchProfile([String uid]) async{
+  void reFetchProfile(String uid) async{
     _isLoading = true;
     _isError = false;
     notifyListeners();
@@ -170,8 +161,6 @@ class ProfileProvider with ChangeNotifier {
   @override
   void dispose() async {
     super.dispose();
-    if (_subscription != null) {
       await _subscription.cancel();
-    }
   }
 }

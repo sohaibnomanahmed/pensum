@@ -71,7 +71,7 @@ class PresenceService {
 
   /// Remove connection for this device when signing out
   Future<void> disconnect({bool signout = false}) async {
-    if (signout && subscription != null){
+    if (signout){
       await subscription.cancel();
       await subsub.cancel();
     }

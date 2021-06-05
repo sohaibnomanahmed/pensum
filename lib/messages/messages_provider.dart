@@ -41,7 +41,7 @@ class MessagesProvider with ChangeNotifier {
   bool get isError => _isError;
 
   /// Subsbribe to the messages stream, Should be called in the [init state] method of the page
-  /// from where it is called, reverse the list as it will be shown from bottom opp, 
+  /// from where it is called, reverse the list as it will be shown from bottom opp,
   /// check is messages is already loaded if not store it in [messages], set seen and
   /// remove potensial notification for the receiver and stop [loading]
   /// if an error accours the stream will be canceled, and we will set [isError]
@@ -68,7 +68,7 @@ class MessagesProvider with ChangeNotifier {
         // or set seen for yor self if you are messaging yourself
         if (!message.isMe || rid == user.uid) {
           _messagesService.setSeen(
-              id: message.id, sid: user.uid, rid: rid, message: seenMap);
+              id: message.id/*!*/, sid: user.uid, rid: rid, message: seenMap);
         }
       });
       // set recipeint notification as false for receiver i.e one self
@@ -86,7 +86,7 @@ class MessagesProvider with ChangeNotifier {
   }
 
   /// refetch messages when an error occurs, reset [loading] and [error]
-  /// then call [fetchMessages] again to remake the stream 
+  /// then call [fetchMessages] again to remake the stream
   void refetchMessages(String rid) async {
     _isLoading = true;
     _isError = false;
@@ -94,7 +94,7 @@ class MessagesProvider with ChangeNotifier {
     fetchMessages(rid);
   }
 
-  /// fetch more messages, starts with setting a [silent loader] so that the method does 
+  /// fetch more messages, starts with setting a [silent loader] so that the method does
   /// not get called again. Check if [messages] is empty or [isError] or [isSearch] is set
   /// add fetched messages at the end of [messages], set seen and catch errors if any and return
   Future<void> fetchMoreMessages(String rid) async {
@@ -117,7 +117,7 @@ class MessagesProvider with ChangeNotifier {
       // set message as seen for the sender i.e the other user
       if (!message.isMe) {
         _messagesService.setSeen(
-            id: message.id, sid: user.uid, rid: rid, message: seenMap);
+            id: message.id/*!*/, sid: user.uid, rid: rid, message: seenMap);
       }
     });
     // add them the end of the messages list
@@ -130,51 +130,37 @@ class MessagesProvider with ChangeNotifier {
   /// Send a [message] to another user, store the [message] for the sender and store the
   /// [recipient] information for the sender, [cloud functions] will store the information
   /// for the [receiver]. There should not be a loader, should feel like contant flow.
-  /// If successfull return true, if an error occurs return false 
+  /// If successfull return true, if an error occurs return false
   Future<bool> sendMessage({
     @required String rid,
     @required String receiverName,
     @required String receiverImage,
-    String text,
-    String image,
-    String address,
-    double latitude,
-    double longitude,
-    String type = 'text',
-    String messageText,
+    @required String text,
+    Message message,
   }) async {
     final user = _authenticationService.currentUser;
     final time = Timestamp.now();
-
-    final lastMessage = (messageText == null) ? text : messageText;
-    if (lastMessage == null) {
-      print('Error no text provided');
-      return false;
-    }
 
     // information about the receiver displayed for the sender
     // chat -- sender --> receiver
     final recipient = Recipient(
       rid: rid,
-      time: time,
+      time: message?.time ?? time,
       notification: false,
       receiverImage: receiverImage,
       receiverName: receiverName,
-      lastMessage: lastMessage,
+      lastMessage: text,
     );
 
     // my message should not be seen by the recipeint before he load them in
-    final message = Message(
+    message ??= message = Message(
       sid: user.uid,
       text: text,
-      image: image,
-      address: address,
-      latitude: latitude,
-      longitude: longitude,
       time: time,
-      type: type,
+      type: 'text',
       seen: false,
     );
+
     try {
       await _messagesService.sendMessage(
           sid: user.uid, rid: rid, message: message, recipient: recipient);
@@ -185,10 +171,9 @@ class MessagesProvider with ChangeNotifier {
     return true;
   }
 
-  
   /// Send image message to a user, pick a image, cropp it and upload it to [storage]
   /// Then call [sendMessage]. There should not be a loader, should feel like contant flow.
-  /// If successfull return true, if an error occurs return false 
+  /// If successfull return true, if an error occurs return false
   Future<bool> sendImage({
     @required ImageSource source,
     @required String rid,
@@ -206,13 +191,21 @@ class MessagesProvider with ChangeNotifier {
       // Upload image to firebase storage
       final imageUrl = await _imageUploadService.uploadChatMessageImage(image);
       // Upload image to firestore chat
-      await sendMessage(
+      final user = _authenticationService.currentUser;
+      final time = Timestamp.now();
+      final message = ImageMessage(
+          sid: user.uid,
+          text: '',
           image: imageUrl,
+          time: time,
+          type: 'image',
+          seen: false);
+      await sendMessage(
           rid: rid,
+          text: 'You sent a image',
           receiverName: receiverName,
           receiverImage: receiverImage,
-          messageText: 'You sent a image',
-          type: 'image');
+          message: message);
     } catch (error) {
       print('Error sending message: $error');
       _messageLoading = false;
@@ -227,7 +220,7 @@ class MessagesProvider with ChangeNotifier {
   /// Send location message to a user, get the address, an image, upload image to [storage]
   /// Then call [sendMessage]. [messageLoading] will shoe a spinner while uploading message.
   /// For [currentLocation] if latitude or longitude is null, we return false as location
-  /// would not be reachable. Else if successfull return true, if an error occurs return false 
+  /// would not be reachable. Else if successfull return true, if an error occurs return false
   Future<bool> sendLocation(
       {@required bool currentLocation,
       @required String rid,
@@ -235,13 +228,13 @@ class MessagesProvider with ChangeNotifier {
       @required String receiverImage,
       double latitude,
       double longitude}) async {
-    _messageLoading = true; 
-    notifyListeners();   
+    _messageLoading = true;
+    notifyListeners();
     try {
       // check if current location
       if (currentLocation) {
         final location = await _locationService.getCurrentUserLocation();
-        if (location == null){
+        if (location == null) {
           _messageLoading = false;
           notifyListeners();
           return false;
@@ -249,11 +242,11 @@ class MessagesProvider with ChangeNotifier {
         latitude = location.latitude;
         longitude = location.longitude;
       }
-      if (latitude == null || longitude == null){
-          print('Error sending location: Lat or Long = null');
-          _messageLoading = false;
-          notifyListeners();
-          return false;
+      if (latitude == null || longitude == null) {
+        print('Error sending location: Lat or Long = null');
+        _messageLoading = false;
+        notifyListeners();
+        return false;
       }
       // Get location address
       final address = await _googleMapService.getPlaceAddress(
@@ -267,16 +260,15 @@ class MessagesProvider with ChangeNotifier {
       // delete cached file
       await _imageUploadService.deleteLastCachedFile();
       // Upload image to firestore chat
+      final user = _authenticationService.currentUser;
+      final time = Timestamp.now();
+      final message = LocationMessage(sid: user.uid, text: '', time: time, type: 'location', seen: false, image: imageUrl, address: address, latitude: latitude, longitude: longitude);
       await sendMessage(
-          image: imageUrl,
           rid: rid,
+          text: 'You sent a location',
           receiverName: receiverName,
           receiverImage: receiverImage,
-          address: address,
-          latitude: latitude,
-          longitude: longitude,
-          messageText: 'You sent a location',
-          type: 'location');   
+          message: message);
     } catch (error) {
       print('Error sending message: $error');
       _messageLoading = false;
@@ -289,7 +281,7 @@ class MessagesProvider with ChangeNotifier {
   }
 
   /// This method is mainly used in the [chat page] to unsubscribe from topics
-  /// unsubscribes from the chat topic of the user so that the [notifications] wont apear 
+  /// unsubscribes from the chat topic of the user so that the [notifications] wont apear
   /// dont need to return if action was succesfull ot not
   void unsubscribeFromChatNotifications() async {
     final user = _authenticationService.currentUser;
@@ -308,8 +300,6 @@ class MessagesProvider with ChangeNotifier {
   @override
   void dispose() async {
     super.dispose();
-    if (_subscription != null) {
-      await _subscription.cancel();
-    }
+    await _subscription.cancel();
   }
 }

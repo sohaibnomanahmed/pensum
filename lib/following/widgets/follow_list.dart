@@ -26,7 +26,6 @@ class FollowList extends StatelessWidget {
                     context
                         .read<FollowProvider>()
                         .removeFollowingNotification(follows[index].pid);
-                    // TODO what if firebase dont find book null occurs?? test
                     // navigate to books page
                     await Navigator.of(context).pushNamed(
                       DealsPage.routeName,

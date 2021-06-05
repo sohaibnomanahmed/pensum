@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:leaf/authentication/authentication_provider.dart';
 import 'package:leaf/notifications/notification_provider.dart';
 import 'package:leaf/notifications/widgets/badge.dart';
 import 'package:leaf/presence/presence_provider.dart';
@@ -56,8 +57,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 )),
         CupertinoTabView(
             builder: (_) {
+              final uid = context.read<AuthenticationProvider>().uid;
               return ChangeNotifierProvider(
-                  create: (_) => ProfileProvider(), child: ProfilePage());
+                  create: (_) => ProfileProvider(), child: ProfilePage(uid));
             },
             onGenerateRoute: dealsGeneratedRoutes),
         CupertinoTabView(

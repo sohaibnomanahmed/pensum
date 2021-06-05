@@ -7,8 +7,6 @@ import 'package:leaf/authentication/authentication_service.dart';
 import 'package:leaf/messages/messages_page.dart';
 import 'package:leaf/notifications/notification_service.dart';
 
-import 'models/notifications.dart';
-
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
   // make sure you call `initializeApp` before using other Firebase services.
@@ -21,15 +19,12 @@ class NotificationProvider with ChangeNotifier {
   final _authenticationService = AuthenticationService();
   final _notificationsService = NotificationService();
 
-  Notifications _notifications;
-  StreamSubscription _subscription;
   StreamSubscription _followingNotificationSubscription;
   StreamSubscription _chatNotificationSubscription;
   var _followingNotification = false;
   var _chatNotification = false;
 
   // getters
-  Notifications get notifications => _notifications;
   bool get followingNotification => _followingNotification;
   bool get chatNotification => _chatNotification;
 
@@ -202,14 +197,7 @@ class NotificationProvider with ChangeNotifier {
   @override
   void dispose() async {
     super.dispose();
-    if (_subscription != null) {
-      await _subscription.cancel();
-    }
-    if (_chatNotificationSubscription != null){
       await _chatNotificationSubscription.cancel();
-    }
-    if (_followingNotificationSubscription != null){
       await _followingNotificationSubscription.cancel();
-    }
   }
 }

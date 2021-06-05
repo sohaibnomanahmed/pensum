@@ -57,7 +57,7 @@ class Timeago extends TimerRefreshWidget {
     @required this.builder,
     @required this.date,
     this.locale,
-    @required this.allowFromNow,
+    this.allowFromNow = false,
     this.clock,
     Duration refreshRate = const Duration(minutes: 1),
   }) : super(key: key, refreshRate: refreshRate);

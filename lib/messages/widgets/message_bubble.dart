@@ -1,10 +1,8 @@
-import 'package:animations/animations.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
-import 'package:leaf/images/photo_page.dart';
-import 'package:leaf/location/map_page.dart';
+import 'package:leaf/messages/widgets/image_message_item.dart';
+import 'package:leaf/messages/widgets/location_message_item.dart';
 
 import '../models/message.dart';
 
@@ -17,7 +15,6 @@ class MessageBubble extends StatelessWidget {
   Widget build(BuildContext context) {
     final date = message.time.toDate();
     final formattedDate = DateFormat('EEE d MMM kk:mm').format(date);
-    final imageMessage = message.image;
     // need row, since the list takes the full width the container with gets over-ruled
     return Row(
       mainAxisAlignment:
@@ -67,43 +64,8 @@ class MessageBubble extends StatelessWidget {
                 ),
               ),
               if (message.type == 'text') Text(message.text),
-              if (message.type == 'image' && imageMessage != null)
-                OpenContainer(
-                  closedColor: Colors.transparent,
-                  closedElevation: 0,
-                  openBuilder: (_, __) => PhotoPage(imageMessage),
-                  closedBuilder: (_, __) => Image.network(
-                    imageMessage,
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => Center(
-                      child: Icon(
-                        Icons.wifi_off_rounded,
-                        size: 60,
-                        color: Theme.of(context).primaryColorDark,
-                      ),
-                    ),
-                  ),
-                ),
-              if (message.type == 'location')
-                OpenContainer(
-                  closedColor: Colors.transparent,
-                  closedElevation: 0,
-                  openBuilder: (_, __) => MapPage(
-                    initialLocation:
-                        LatLng(message.latitude, message.longitude),
-                  ),
-                  closedBuilder: (_, __) => Image.network(
-                    message.image,
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => Center(
-                      child: Icon(
-                        Icons.wifi_off_rounded,
-                        size: 60,
-                        color: Theme.of(context).primaryColorDark,
-                      ),
-                    ),
-                  ),
-                )
+              if (message.type == 'image') ImageMessageItem(message as ImageMessage),
+              if (message.type == 'location') LocationImageItem(message as LocationMessage)
             ],
           ),
         ),

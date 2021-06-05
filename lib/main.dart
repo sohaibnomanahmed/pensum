@@ -134,6 +134,9 @@ class MyApp extends StatelessWidget {
               );
             case ProfilePage.routeName:
               String uid = settings.arguments;
+              if(uid == null){
+                return MaterialPageRoute(builder: (_) => PageNotFound());
+              }
               return MaterialPageRoute(
                 builder: (_) => ChangeNotifierProvider(
                   create: (_) => ProfileProvider(),

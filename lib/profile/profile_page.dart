@@ -15,7 +15,7 @@ class ProfilePage extends StatefulWidget {
   static const routeName = '/profile';
   final String uid;
 
-  ProfilePage([this.uid]);
+  ProfilePage(this.uid);
 
   @override
   _ProfilePageState createState() => _ProfilePageState();

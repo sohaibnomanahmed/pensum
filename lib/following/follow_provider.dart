@@ -126,8 +126,6 @@ class FollowProvider with ChangeNotifier{
   @override
   void dispose() async {
     super.dispose();
-    if (_subscription != null) {
-      await _subscription.cancel();
-    }
+    await _subscription.cancel();
   }
 }

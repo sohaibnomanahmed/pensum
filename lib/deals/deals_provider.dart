@@ -276,11 +276,7 @@ class DealsProvider with ChangeNotifier {
   @override
   void dispose() async {
     super.dispose();
-    if (_dealsSubscription != null) {
       await _dealsSubscription.cancel();
-    }
-    if (_followSubscribtion != null) {
-      await _followSubscribtion.cancel();
-    }
+      await _followSubscribtion?.cancel();
   }
 }

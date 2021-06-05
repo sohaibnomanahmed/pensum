@@ -148,11 +148,7 @@ class BooksProvider with ChangeNotifier{
   @override
   void dispose() async {
     super.dispose();
-    if (_booksSubscription != null) {
-      await _booksSubscription.cancel();
-    }
-    if (_bookTitlesSubscription != null) {
-      await _bookTitlesSubscription.cancel();
-    }
+    await _booksSubscription.cancel();
+    await _bookTitlesSubscription?.cancel();
   }
 }
