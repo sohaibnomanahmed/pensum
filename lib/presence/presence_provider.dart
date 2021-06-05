@@ -23,7 +23,7 @@ class PresenceProvider with ChangeNotifier {
   Future<void> configurePresence() async {
     // set the user to be online
     try {
-      final user = _authenticationService.currentUser;
+      final user = _authenticationService.currentUser!;
       await _presenceService.configureUserPresence(user.uid);
     } catch (error) {
       print('Error setting presence: $error');

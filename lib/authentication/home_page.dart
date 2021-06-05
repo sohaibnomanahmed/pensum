@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:leaf/authentication/authentication_provider.dart';
+import 'package:leaf/books/models/book.dart';
 import 'package:leaf/notifications/notification_provider.dart';
 import 'package:leaf/notifications/widgets/badge.dart';
 import 'package:leaf/presence/presence_provider.dart';
@@ -38,7 +39,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         return MaterialPageRoute(
           builder: (_) => ChangeNotifierProvider(
               create: (_) => DealsProvider(),
-              child: DealsPage(args),),
+              child: DealsPage(args as Book),),
         );
       default:
         return MaterialPageRoute(builder: (_) => PageNotFound());
@@ -82,7 +83,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     context.read<NotificationProvider>().fetchChatNotification;
 
     // track if paused or resumed etc..
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance!.addObserver(this);
     Provider.of<PresenceProvider>(context, listen: false).configurePresence();
   }
 
@@ -102,7 +103,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   void dispose() {
     super.dispose();
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance!.removeObserver(this);
   }
 
   void _setCurrentIndex(int index) {

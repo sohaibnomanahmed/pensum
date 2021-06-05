@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 
 import 'models/deal.dart';
 import 'models/deal_filter.dart';
@@ -9,12 +8,12 @@ import 'models/deal_filter.dart';
 /// [Dealservice] object in their respective [provider], to not overlap same data. 
 class DealsService {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  DocumentSnapshot lastDeal;
-  DocumentSnapshot lastFilteredDeal;
+  late DocumentSnapshot lastDeal;
+  late DocumentSnapshot lastFilteredDeal;
 
   /// fetch deals
   Stream<List<Deal>> fetchDeals(
-      {@required String isbn, @required int pageSize}) {
+      {required String isbn, required int pageSize}) {
     return firestore
         .collection('books/' + isbn + '/deals')
         .orderBy('price')
@@ -34,7 +33,7 @@ class DealsService {
 
   /// fetch and return more deals, from current last. If no more deals return null
   Future<List<Deal>> fetchMoreDeals(
-      {@required String isbn, @required int pageSize}) async {
+      {required String isbn, required int pageSize}) async {
     final deals = await firestore
         .collection('books/' + isbn + '/deals')
         .orderBy('price')
@@ -49,12 +48,12 @@ class DealsService {
 
   /// filter deals for a spesific book
   Stream<List<Deal>> filterDeals({
-    @required String isbn,
-    @required int priceAbove,
-    @required int priceBelow,
-    @required List<String> places,
-    @required String quality,
-    @required int pageSize,
+    required String isbn,
+    required int priceAbove,
+    required int priceBelow,
+    required List<String> places,
+    required String quality,
+    required int pageSize,
   }) {
     var query = firestore
         .collection('books/' + isbn + '/deals')
@@ -80,9 +79,9 @@ class DealsService {
 
   /// fetch and return more filtered deals, from current last. If no more deals return null
   Future<List<Deal>> fetchMoreFilteredDeals({
-    @required String isbn,
-    @required int pageSize,
-    @required DealFilter dealFilter,
+    required String isbn,
+    required int pageSize,
+    required DealFilter dealFilter,
   }) async {
     var query = firestore
         .collection('books/' + isbn + '/deals')
@@ -91,10 +90,10 @@ class DealsService {
         .where('price', isGreaterThanOrEqualTo: dealFilter.priceAbove)
         .where('price', isLessThanOrEqualTo: dealFilter.priceBelow)
         .limit(pageSize);
-    if (dealFilter.quality.isNotEmpty) {
+    if (dealFilter.quality!.isNotEmpty) {
       query = query.where('quality', isEqualTo: dealFilter.quality);
     }
-    if (dealFilter.places.isNotEmpty) {
+    if (dealFilter.places!.isNotEmpty) {
       query = query.where('place', whereIn: dealFilter.places);
     }
     // get the deals matching the query
@@ -112,7 +111,7 @@ class DealsService {
   }
 
   /// add deal to a spesific book
-  Future<void> setDeal({@required Deal deal, @required String id}) {
+  Future<void> setDeal({required Deal deal, required String id}) {
     return firestore
         .collection('books')
         .doc(deal.pid)
@@ -122,7 +121,7 @@ class DealsService {
   }
 
   /// delete a deal
-  Future<void> deleteDeal({@required String productId, @required String id}) {
+  Future<void> deleteDeal({required String productId, required String id}) {
     return firestore
         .collection('books')
         .doc(productId)

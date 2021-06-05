@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 
 class ImageCropperService {
-  Future<File> pickImage(File image) async {
+  Future<File?> pickImage(File image) async {
     var croppedFile = await ImageCropper.cropImage(
         sourcePath: image.path,
         maxWidth: 2000,

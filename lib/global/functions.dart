@@ -10,13 +10,13 @@ class ButtonFunctions {
   /// spinner while proccessing the action, this also gives uppertunity to use the [lateErrorMessage]
   /// function, that can extract the spesified error message from the provider
   static Future<void> onPressHandler({
-    @required BuildContext context,
-    @required Future<bool> Function() action,
+    required BuildContext context,
+    required Future<bool> Function() action,
     bool popScreen = false,
     bool popScreenAfter = false,
-    Function lateErrorMessage,
-    String errorMessage,
-    String successMessage,
+    Function? lateErrorMessage,
+    String? errorMessage,
+    String? successMessage,
   }) async {
     // store variables that might not be avaiable later
     final scaffoldMessenger = ScaffoldMessenger.of(context);
@@ -46,7 +46,7 @@ class ButtonFunctions {
       scaffoldMessenger.showSnackBar(
         SnackBar(
           backgroundColor: errorColor,
-          content: Text(errorMessage),
+          content: Text(errorMessage!),
         ),
       );
     }

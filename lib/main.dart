@@ -88,7 +88,7 @@ class MyApp extends StatelessWidget {
             cardTheme: Theme.of(context).cardTheme.copyWith(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)))),
-        home: Consumer<User>(
+        home: Consumer<User?>(
           builder: (context, user, child) {
             return (user == null || !user.emailVerified)
                 ? AuthenticationPage()
@@ -115,7 +115,7 @@ class MyApp extends StatelessWidget {
         onGenerateRoute: (settings) {
           switch (settings.name) {
             case MessagesPage.routeName:
-              Map args = settings.arguments;
+              final args = settings.arguments as Map<String, String>;
               final rid = args['id'];
               final receiverImage = args['image'];
               final receiverName = args['name'];
@@ -133,7 +133,7 @@ class MyApp extends StatelessWidget {
                 ),
               );
             case ProfilePage.routeName:
-              String uid = settings.arguments;
+              final uid = settings.arguments as String?;
               if(uid == null){
                 return MaterialPageRoute(builder: (_) => PageNotFound());
               }

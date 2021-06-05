@@ -1,15 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 
 import 'models/Follow.dart';
 
 class FollowService {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  DocumentSnapshot lastFollow;
+  late DocumentSnapshot lastFollow;
 
   /// fetch follows
   Stream<List<Follow>> fetchFollowing(
-      {@required String uid, @required int pageSize}) {
+      {required String uid, required int pageSize}) {
     return firestore
         .collection('profiles')
         .doc(uid)
@@ -31,7 +30,7 @@ class FollowService {
 
   /// fetch and return more follows, from current last. If no more follows return null
   Future<List<Follow>> fetchMoreFollowing(
-      {@required String uid, @required int pageSize}) async {
+      {required String uid, required int pageSize}) async {
     final follows = await firestore
         .collection('profiles')
         .doc(uid)
@@ -59,7 +58,7 @@ class FollowService {
   }
 
   /// follow to a spesific book
-  Future<void> follow({@required String uid, @required Follow follow}) {
+  Future<void> follow({required String uid, required Follow follow}) {
     return firestore
         .collection('profiles')
         .doc(uid)
@@ -69,7 +68,7 @@ class FollowService {
   }
 
   /// get following status stream
-  Stream<bool> getFollowingStatus({@required String uid, @required String id}) {
+  Stream<bool> getFollowingStatus({required String uid, required String id}) {
     return firestore
         .collection('profiles')
         .doc(uid)
@@ -80,7 +79,7 @@ class FollowService {
   }
 
   /// remove a profile follow
-  Future<void> removeFollowing({@required String id, @required String uid}) {
+  Future<void> removeFollowing({required String id, required String uid}) {
     return firestore
         .collection('profiles')
         .doc(uid)
@@ -91,7 +90,7 @@ class FollowService {
 
   /// remove a notification for a spesific followed book
   Future<void> removeFollowingNotification(
-      {@required String uid, @required String id}) async {
+      {required String uid, required String id}) async {
     await firestore
         .collection('profiles')
         .doc(uid)

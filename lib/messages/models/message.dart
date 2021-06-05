@@ -1,41 +1,40 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 
 class Message {
-  final String id;
+  final String? id;
   final String sid; // sender id
   final String text;
 
   final Timestamp time;
   final String type;
   bool seen;
-  bool isMe;
+  late bool isMe;
 
   Message({
-    @required this.sid,
-    @required this.text,
-    @required this.time,
-    @required this.type,
-    @required this.seen,
+    required this.sid,
+    required this.text,
+    required this.time,
+    required this.type,
+    required this.seen,
     this.id,
   });
 
   factory Message.fromFirestore(DocumentSnapshot doc) {
-    Map data = doc.data();
+    final data = doc.data() as Map<String, dynamic>?;
     if (data == null) {
       throw 'Error creating Message from null value';
     }
     // non null-able fields
-    final String text = data['text'];
-    final String sid = data['sid'];
-    final String type = data['type'];
-    final bool seen = data['seen'];
-    final Timestamp time = data['time'];
+    final String? text = data['text'];
+    final String? sid = data['sid'];
+    final String? type = data['type'];
+    final bool? seen = data['seen'];
+    final Timestamp? time = data['time'];
     // non able fields
-    final String image = data['image'];
-    final String address = data['address'];
-    final double latitude = data['latitude'];
-    final double longitude = data['longitude'];
+    final String? image = data['image'];
+    final String? address = data['address'];
+    final double? latitude = data['latitude'];
+    final double? longitude = data['longitude'];
 
     if (sid == null ||
         time == null ||
@@ -106,15 +105,15 @@ class LocationMessage extends Message {
   final String image;
 
   LocationMessage(
-      {@required sid,
-      @required text,
-      @required time,
-      @required type,
-      @required seen,
-      @required this.image,
-      @required this.address,
-      @required this.latitude,
-      @required this.longitude,
+      {required sid,
+      required text,
+      required time,
+      required type,
+      required seen,
+      required this.image,
+      required this.address,
+      required this.latitude,
+      required this.longitude,
       id})
       : super(sid: sid, seen: seen, text: text, time: time, type: type, id: id);
 
@@ -138,12 +137,12 @@ class ImageMessage extends Message {
   final String image;
 
   ImageMessage(
-      {@required sid,
-      @required text,
-      @required time,
-      @required type,
-      @required seen,
-      @required this.image,
+      {required sid,
+      required text,
+      required time,
+      required type,
+      required seen,
+      required this.image,
       id})
       : super(sid: sid, seen: seen, text: text, time: time, type: type, id: id);
 

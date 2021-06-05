@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 
 import '../data/price_data.dart';
 
@@ -24,31 +23,31 @@ class Deal {
   final Timestamp time;
 
   Deal({
-    @required this.id,
-    @required this.uid,
-    @required this.userImage,
-    @required this.userName,
-    @required this.pid,
-    @required this.productImage,
-    @required this.productTitle,
-    @required this.price,
-    @required this.quality,
-    @required this.place,
-    @required this.description,
-    @required this.time,
+    required this.id,
+    required this.uid,
+    required this.userImage,
+    required this.userName,
+    required this.pid,
+    required this.productImage,
+    required this.productTitle,
+    required this.price,
+    required this.quality,
+    required this.place,
+    required this.description,
+    required this.time,
   });
 
   factory Deal.fromMap(Map data, String id) {
-    final String uid = data['uid'];
-    final String userImage = data['userImage'];
-    final String userName = data['userName'];
-    final String pid = data['pid'];
-    final String productImage = data['productImage'];
-    final String productTitle = data['productTitle'];
-    final String quality = data['quality'];
-    final String place = data['place'];
-    final String description = data['description'];
-    final Timestamp time = data['time'];
+    final String? uid = data['uid'];
+    final String? userImage = data['userImage'];
+    final String? userName = data['userName'];
+    final String? pid = data['pid'];
+    final String? productImage = data['productImage'];
+    final String? productTitle = data['productTitle'];
+    final String? quality = data['quality'];
+    final String? place = data['place'];
+    final String? description = data['description'];
+    final Timestamp? time = data['time'];
 
     if (uid == null ||
         userImage == null ||
@@ -87,7 +86,7 @@ class Deal {
   }
 
   factory Deal.fromFirestore(DocumentSnapshot doc) {
-    Map data = doc.data();
+    final data = doc.data() as Map<String, dynamic>?;
     if (data == null) {
       throw 'Error creating Deal from null value';
     }

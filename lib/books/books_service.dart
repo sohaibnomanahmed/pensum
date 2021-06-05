@@ -4,7 +4,7 @@ import 'models/book.dart';
 
 class BooksService {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  DocumentSnapshot lastBook;
+  late DocumentSnapshot lastBook;
 
   /// fetch books
   Stream<List<Book>> fetchBooks(int pageSize) {

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/book.dart';
 
 class BookItem extends StatelessWidget {
-  final Book book;
+  final Book? book;
 
   BookItem(this.book);
 
@@ -26,9 +26,9 @@ class BookItem extends StatelessWidget {
                       width: 70,
                     )
                   : Hero(
-                      tag: book.isbn,
+                      tag: book!.isbn,
                       child: Image.network(
-                        book.image,
+                        book!.image,
                         fit: BoxFit.cover,
                         height: 100,
                         width: 70,
@@ -55,16 +55,16 @@ class BookItem extends StatelessWidget {
                 (book == null)
                     ? Container(
                         height: 14, color: Colors.grey, width: double.infinity)
-                    : Text(book.titles.first,
+                    : Text(book!.titles.first,
                         style: Theme.of(context).textTheme.bodyText1),
                 (book == null)
                     ? Container(
                         height: 14, color: Colors.grey, width: double.infinity)
-                    : Text(book.getAuthors),
+                    : Text(book!.getAuthors),
                 (book == null)
                     ? Container(
                         height: 14, color: Colors.grey, width: double.infinity)
-                    : Text(book.year,
+                    : Text(book!.year,
                         style: Theme.of(context).textTheme.caption),
               ],
             ),

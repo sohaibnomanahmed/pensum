@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 
 class Recipient {
   final String rid;
@@ -10,25 +9,25 @@ class Recipient {
   bool notification;
 
   Recipient({
-    @required this.rid,
-    @required this.receiverImage,
-    @required this.receiverName,
-    @required this.lastMessage,
-    @required this.time,
-    @required this.notification,
+    required this.rid,
+    required this.receiverImage,
+    required this.receiverName,
+    required this.lastMessage,
+    required this.time,
+    required this.notification,
   });
 
   factory Recipient.fromFirestore(DocumentSnapshot doc) {
-    Map data = doc.data();
+    final data = doc.data() as Map<String, dynamic>?;
     if (data == null) {
       throw 'Error creating Recipient from null value';
     }
-    final String rid = data['rid'];
-    final String receiverName = data['receiverName'];
-    final String receiverImage = data['receiverImage'];
-    final String lastMessage = data['lastMessage'];
-    final Timestamp time = data['time'];
-    final bool notification = data['notification'];
+    final String? rid = data['rid'];
+    final String? receiverName = data['receiverName'];
+    final String? receiverImage = data['receiverImage'];
+    final String? lastMessage = data['lastMessage'];
+    final Timestamp? time = data['time'];
+    final bool? notification = data['notification'];
 
     if (
         rid == null ||

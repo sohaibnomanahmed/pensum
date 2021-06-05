@@ -16,7 +16,7 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
-  LatLng _currentPosition;
+  LatLng? _currentPosition;
 
   @override
   Widget build(BuildContext context) {

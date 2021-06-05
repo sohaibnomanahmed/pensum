@@ -32,7 +32,7 @@ class _PresenceBubbleState extends State<PresenceBubble> {
           // return shimmer
           return Shimmer.fromColors(
             highlightColor: Colors.white,
-            baseColor: Colors.grey[300],
+            baseColor: Colors.grey[300]!,
             child: CircleAvatar(
               backgroundColor: Colors.grey,
               radius: widget.size / 2,
@@ -60,7 +60,7 @@ class _PresenceBubbleState extends State<PresenceBubble> {
                     value,
                     style: TextStyle(color: Colors.white),
                   ),
-                  date: presence,
+                  date: presence as DateTime,
                   locale: 'en_short',
                 ),
               ),

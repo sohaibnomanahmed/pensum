@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'customClipper.dart';
 
 class BezierContainer extends StatelessWidget {
-  final Widget child;
+  final Widget? child;
   BezierContainer([this.child]);
 
   @override

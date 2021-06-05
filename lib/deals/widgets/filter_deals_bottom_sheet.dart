@@ -29,9 +29,9 @@ class _FilterDealsBottomSheetState extends State<FilterDealsBottomSheet> {
     final dealFilter = context.read<DealsProvider>().dealFilter;
     if (!dealFilter.isEmpty) {
       _currentRangeValues = RangeValues(
-          dealFilter.priceAbove.toDouble(), dealFilter.priceBelow.toDouble());
-      _quality = dealFilter.quality/*!*/;
-      _places = dealFilter.places/*!*/;    
+          dealFilter.priceAbove!.toDouble(), dealFilter.priceBelow!.toDouble());
+      _quality = dealFilter.quality!;
+      _places = dealFilter.places!;    
     }
   }
 
@@ -77,7 +77,7 @@ class _FilterDealsBottomSheetState extends State<FilterDealsBottomSheet> {
             DropdownButtonFormField(
               value: _quality.isNotEmpty ? _quality: null,
               hint: Text('Select quality'),
-              onChanged: (String value) => (value == null) ? null : _quality = value,
+              onChanged: (String? value) => (value == null) ? null : _quality = value,
               items: qualities
                   .map((quality) =>
                       DropdownMenuItem(value: quality, child: Text(quality)))
@@ -85,7 +85,7 @@ class _FilterDealsBottomSheetState extends State<FilterDealsBottomSheet> {
             ),
             DropdownButtonFormField(
               hint: Text('Add up to 10 places'),
-              onChanged: (String value) => setState(() {
+              onChanged: (String? value) => setState(() {
                 // firebase limit on array checks
                 if (value != null && _places.length < 10 && !_places.contains(value)) {
                   _places.add(value);

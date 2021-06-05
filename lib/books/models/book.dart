@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 
 class Book {
   final List<dynamic> titles;
@@ -13,30 +12,30 @@ class Book {
   final String isbn;
 
   Book({
-    @required this.titles,
-    @required this.authors,
-    @required this.image,
-    @required this.language,
-    @required this.publisher,
-    @required this.pages,
-    @required this.edition,
-    @required this.year,
-    @required this.isbn,
+    required this.titles,
+    required this.authors,
+    required this.image,
+    required this.language,
+    required this.publisher,
+    required this.pages,
+    required this.edition,
+    required this.year,
+    required this.isbn,
   });
 
   factory Book.fromFirestore(DocumentSnapshot doc) {
-    Map data = doc.data();
+    final data = doc.data() as Map<String, dynamic>?;
     if (data == null) {
       throw 'Error creating Book from null value';
     }
-    final List<dynamic> titles = data['title'];
-    final List<dynamic> authors = data['authors'];
-    final String image = data['image'];
-    final String language = data['language'];
-    final String publisher = data['publisher'];
-    final String pages = data['pages'];
-    final String edition = data['edition'];
-    final String year = data['year'];
+    final List<dynamic>? titles = data['title'];
+    final List<dynamic>? authors = data['authors'];
+    final String? image = data['image'];
+    final String? language = data['language'];
+    final String? publisher = data['publisher'];
+    final String? pages = data['pages'];
+    final String? edition = data['edition'];
+    final String? year = data['year'];
 
     if (titles == null ||
         authors == null ||

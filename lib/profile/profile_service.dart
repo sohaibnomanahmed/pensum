@@ -1,12 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:leaf/profile/models/profile.dart';
 
 class ProfileService {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   /// set profile data
-  Future<void> setProfile({@required String uid, @required Profile profile}) {
+  Future<void> setProfile({required String uid, required Profile profile}) {
     return firestore
         .collection('profiles')
         .doc(uid)
@@ -29,7 +28,7 @@ class ProfileService {
   }
 
   /// deletes a deal from the profile
-  Future<void> deleteDeal({@required String uid, @required String id}) async {
+  Future<void> deleteDeal({required String uid, required String id}) async {
     final profileData = await firestore.collection('profiles').doc(uid).get();
     final profile = Profile.fromFirestore(profileData);
     profile.userItems.remove(id);

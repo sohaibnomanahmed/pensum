@@ -22,10 +22,10 @@ class ProfileProvider with ChangeNotifier {
   final _imagePickerService = ImagePickerService();
   final _imageCropperService = ImageCropperService();
 
-  /*late*/Profile _profile;
+  late Profile _profile;
   var _isLoading = true;
   var _isError = false;
-  StreamSubscription _subscription;
+  late StreamSubscription _subscription;
 
   // getters
   ProfileProvider get provider => this;
@@ -39,7 +39,7 @@ class ProfileProvider with ChangeNotifier {
   /// the stream will be canceled, and we will set [isError]
   void fetchProfile(String uid) {
     // fetch user profile
-    var isMe = _authenticationService.currentUser.uid == uid;
+    var isMe = _authenticationService.currentUser!.uid == uid;
     final stream = _profileService.fetchProfile(uid);
     _subscription = stream.listen(
       (profile) {
@@ -75,12 +75,12 @@ class ProfileProvider with ChangeNotifier {
   /// Deletes a deal both from the users [profile] and from the books [deals page]
   /// if successfull return true, if an error occurs set error message and retun false 
   Future<bool> deleteDeal(
-      {@required String productId, @required String id}) async {
+      {required String productId, required String id}) async {
     try {
       // remove deal from the book
       await _dealsService.deleteDeal(productId: productId, id: id);
       // remove deal from users profile
-      final user = _authenticationService.currentUser;
+      final user = _authenticationService.currentUser!;
       await _profileService.deleteDeal(uid: user.uid, id: id);
     } catch (error) {
       print('Removing deal error: $error');
@@ -93,13 +93,13 @@ class ProfileProvider with ChangeNotifier {
   /// and will update the current [profile] of the user, returns true if
   /// successfull and false if an error occurs
   Future<bool> setProfile({
-    @required String firstname,
-    @required String lastname,
+    required String firstname,
+    required String lastname,
   }) async {
     _isLoading = true;
     notifyListeners();
     try {
-      final user = _authenticationService.currentUser;
+      final user = _authenticationService.currentUser!;
       // add changes to the user profile
       _profile.firstname = firstname;
       _profile.lastname = lastname;
@@ -140,7 +140,7 @@ class ProfileProvider with ChangeNotifier {
         return false;
       }
       // Upload image to firebase storage
-      final user = _authenticationService.currentUser;
+      final user = _authenticationService.currentUser!;
       final imageUrl = await _imageUploadService.uploadProfileImage(
           image: croppedImage, uid: user.uid);
       // Add new imageUrl to user

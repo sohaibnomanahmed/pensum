@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class LeafError extends StatelessWidget {
   final Function reload;
-  final String args;
+  final String? args;
 
   LeafError(this.reload, [this.args]);
 

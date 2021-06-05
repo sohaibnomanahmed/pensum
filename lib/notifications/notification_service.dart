@@ -6,7 +6,7 @@ class NotificationService {
   final FirebaseMessaging _messaging = FirebaseMessaging.instance;
 
   /// get initial message to check if we are returning from a terminated state
-  Future<RemoteMessage> get getInitialMessage => _messaging.getInitialMessage();
+  Future<RemoteMessage?> get getInitialMessage => _messaging.getInitialMessage();
 
   /// ask permission needed for ios
   Future<NotificationSettings> requestPermission() async {

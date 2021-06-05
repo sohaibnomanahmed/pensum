@@ -19,8 +19,8 @@ class NotificationProvider with ChangeNotifier {
   final _authenticationService = AuthenticationService();
   final _notificationsService = NotificationService();
 
-  StreamSubscription _followingNotificationSubscription;
-  StreamSubscription _chatNotificationSubscription;
+  late StreamSubscription _followingNotificationSubscription;
+  late StreamSubscription _chatNotificationSubscription;
   var _followingNotification = false;
   var _chatNotification = false;
 
@@ -34,7 +34,8 @@ class NotificationProvider with ChangeNotifier {
    * notifications. On the data propery a type field is given to check if 
    * notification is a message or book aler. 
    */
-  void configureNotifications(BuildContext context, Function(int index) setCurrentIndex) async {
+  void configureNotifications(
+      BuildContext context, Function(int index) setCurrentIndex) async {
     var settings = await _notificationsService.requestPermission();
     print('User granted permission: ${settings.authorizationStatus}');
 
@@ -47,7 +48,7 @@ class NotificationProvider with ChangeNotifier {
         print('Message also contained a notification: ${message.notification}');
       }
 
-      if (message?.data['type'] == 'message') {
+      if (message.data['type'] == 'message') {
         final id = message.data['id'];
         final name = message.data['name'];
         final image = message.data['image'];
@@ -76,7 +77,7 @@ class NotificationProvider with ChangeNotifier {
               )),
         );
       }
-      if (message?.data['type'] == 'book') {
+      if (message.data['type'] == 'book') {
         //final id = message.data['id'];
         final title = message.data['title'];
         final image = message.data['image'];
@@ -115,25 +116,23 @@ class NotificationProvider with ChangeNotifier {
 
     // Get any messages which caused the application to open from
     // a terminated state.
-    final initialMessage = await _notificationsService.getInitialMessage;
+    final initialMessage = await FirebaseMessaging.instance.getInitialMessage();
 
     // If the message also contains a data property with a "type" of "chat",
     // navigate to a chat screen
-    if (initialMessage != null) {
-      if (initialMessage?.data['type'] == 'message'){
-        await Navigator.pushNamed(
-          context,
-          MessagesPage.routeName,
-          arguments: {
-            'id': initialMessage?.data['id'],
-            'image': initialMessage?.data['image'],
-            'name': initialMessage?.data['name']
-          },
-        );
-      }
-      if (initialMessage?.data['type'] == 'book'){
-        setCurrentIndex(3);
-      }
+    if (initialMessage?.data['type'] == 'message') {
+      await Navigator.pushNamed(
+        context,
+        MessagesPage.routeName,
+        arguments: {
+          'id': initialMessage?.data['id'],
+          'image': initialMessage?.data['image'],
+          'name': initialMessage?.data['name']
+        },
+      );
+    }
+    if (initialMessage?.data['type'] == 'book') {
+      setCurrentIndex(3);
     }
 
     // Also handle any interaction when the app is in the background via a
@@ -144,13 +143,13 @@ class NotificationProvider with ChangeNotifier {
           context,
           MessagesPage.routeName,
           arguments: {
-            'id': initialMessage?.data['id'],
-            'image': initialMessage?.data['image'],
-            'name': initialMessage?.data['name']
+            'id': message.data['id'],
+            'image': message.data['image'],
+            'name': message.data['name']
           },
         );
       }
-      if (message.data['type'] == 'book'){
+      if (message.data['type'] == 'book') {
         setCurrentIndex(3);
       }
     });
@@ -163,9 +162,9 @@ class NotificationProvider with ChangeNotifier {
    * get following notification stream, should only get value
    * no error check or cancelation
    */
-  void get fetchFollowingNotification{
+  void get fetchFollowingNotification {
     // get original following notification indicator
-    final user = _authenticationService.currentUser;
+    final user = _authenticationService.currentUser!;
     final stream = _notificationsService.fetchFollowingNotification(user.uid);
     _followingNotificationSubscription = stream.listen(
       (followingNotification) {
@@ -175,13 +174,13 @@ class NotificationProvider with ChangeNotifier {
     );
   }
 
-   /*
+  /*
    * get following notification stream, should only get value
    * no error check or cancelation
    */
-  void get fetchChatNotification{
+  void get fetchChatNotification {
     // get original following notification indicator
-    final user = _authenticationService.currentUser;
+    final user = _authenticationService.currentUser!;
     final stream = _notificationsService.fetchChatNotification(user.uid);
     _chatNotificationSubscription = stream.listen(
       (chatNotification) {
@@ -197,7 +196,7 @@ class NotificationProvider with ChangeNotifier {
   @override
   void dispose() async {
     super.dispose();
-      await _chatNotificationSubscription.cancel();
-      await _followingNotificationSubscription.cancel();
+    await _chatNotificationSubscription.cancel();
+    await _followingNotificationSubscription.cancel();
   }
 }

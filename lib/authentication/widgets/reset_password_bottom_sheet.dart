@@ -42,7 +42,6 @@ class _ResetPasswordBottomSheetState extends State<ResetPasswordBottomSheet> {
                           action: () => context
                               .read<AuthenticationProvider>()
                               .resetPassword(_email),
-                          // TODO post null safety does late work here for lazy work?
                           lateErrorMessage: () => context
                               .read<AuthenticationProvider>()
                               .errorMessage,

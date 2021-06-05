@@ -32,8 +32,8 @@ class DealsProvider with ChangeNotifier {
   var _silentLoading = false;
   var _dealFilter = DealFilter.empty();
   bool _isFollowing = false;
-  StreamSubscription _dealsSubscription;
-  StreamSubscription _followSubscribtion;
+  late StreamSubscription _dealsSubscription;
+  StreamSubscription? _followSubscribtion;
 
   // getters
   bool get isLoading => _isLoading;
@@ -116,17 +116,17 @@ class DealsProvider with ChangeNotifier {
   /// After adding/updating book deals, add/update the [userItems] in the users [profile], 
   /// return true if successfull and false if an error occurs
   Future<bool> setDeal({
-    String id,
-    @required String pid,
-    @required String productImage,
-    @required String productTitle,
-    @required String price,
-    @required String quality,
-    @required String place,
-    @required String description,
+    String? id,
+    required String pid,
+    required String productImage,
+    required String productTitle,
+    required String price,
+    required String quality,
+    required String place,
+    required String description,
   }) async {
     try {
-      final user = _authenticationService.currentUser;
+      final user = _authenticationService.currentUser!;
       final userProfile = await _profileService.getProfile(user.uid);
       // get a deal id from the database
       id ??= _dealsService.getDealId(pid);
@@ -164,11 +164,11 @@ class DealsProvider with ChangeNotifier {
   /// stream as changes could occur and paging needs to be matched. 
   /// If an error occurs [isError] is set
   Future<void> filterDeals({
-    @required String isbn,
-    @required int priceAbove,
-    @required int priceBelow,
-    @required List<String> places,
-    @required String quality,
+    required String isbn,
+    required int priceAbove,
+    required int priceBelow,
+    required List<String> places,
+    required String quality,
   }) async {
     _isLoading = true;
     _isFilter = true;
@@ -211,7 +211,7 @@ class DealsProvider with ChangeNotifier {
     _isFilter = false;
     fetchDeals(isbn);
     } catch (error){
-      print('Error clearing filter: ' + error);
+      print('Error clearing filter');
       _isLoading = false;
       notifyListeners();
       return false;
@@ -226,7 +226,7 @@ class DealsProvider with ChangeNotifier {
     _isFollowBtnLoading = true;
     notifyListeners();
     try {
-      final user = _authenticationService.currentUser;
+      final user = _authenticationService.currentUser!;
       final time = Timestamp.now();
       final follow = Follow(
         pid: book.isbn,
@@ -253,7 +253,7 @@ class DealsProvider with ChangeNotifier {
   /// certain book, store result in [isFollowing] default is false i.g. no wifi
   /// if an error occurs set [isError]
   void getFollowStatus(String isbn) async {
-    final user = _authenticationService.currentUser;
+    final user = _authenticationService.currentUser!;
     final stream =
         _followService.getFollowingStatus(uid: user.uid, id: isbn);
     _followSubscribtion = stream.listen(

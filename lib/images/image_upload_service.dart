@@ -1,7 +1,6 @@
 import 'dart:io' as io;
 
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:uuid/uuid.dart';
 
@@ -12,7 +11,7 @@ class ImageUploadService{
   final _firebaseStorage = FirebaseStorage.instance;
   final _key = 'Network image';
 
-  Future<String> uploadProfileImage({@required io.File image, @required String uid}) async {
+  Future<String> uploadProfileImage({required io.File image, required String uid}) async {
     final storageReference =
         _firebaseStorage.ref().child('profile/' + uid);  
     await storageReference.putFile(image);

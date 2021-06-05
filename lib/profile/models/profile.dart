@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:leaf/deals/models/deal.dart';
 
 import '../../global/extensions.dart';
@@ -11,7 +10,7 @@ class Profile {
   String lastname;
   String imageUrl;
   Map<String, dynamic> userItems;
-  bool isMe;
+  late bool isMe;
 
   // getters
   String get fullName => firstname + ' ' + lastname;
@@ -36,27 +35,27 @@ class Profile {
   }
 
   Profile({
-    @required this.uid,
-    @required this.creationTime,
-    @required this.firstname,
-    @required this.lastname,
-    @required this.imageUrl,
-    @required this.userItems,
+    required this.uid,
+    required this.creationTime,
+    required this.firstname,
+    required this.lastname,
+    required this.imageUrl,
+    required this.userItems,
   }) {
     firstname = capitalizaName(firstname);
     lastname = capitalizaName(lastname);
   }
 
   factory Profile.fromFirestore(DocumentSnapshot doc) {
-    Map data = doc.data();
+    final data = doc.data() as Map<String, dynamic>?;
     if (data == null) {
       throw 'Error creating Profile from null value';
     }
-    final String firstname = data['firstname'];
-    final String lastname = data['lastname'];
-    final String imageUrl = data['imageUrl'];
-    final Timestamp creationTime = data['creationTime'];
-    final Map<String, dynamic> userItems = data['userItems'];
+    final String? firstname = data['firstname'];
+    final String? lastname = data['lastname'];
+    final String? imageUrl = data['imageUrl'];
+    final Timestamp? creationTime = data['creationTime'];
+    final Map<String, dynamic>? userItems = data['userItems'];
     
     if (firstname == null ||
         lastname == null ||

@@ -9,7 +9,7 @@ class SettingsPage extends StatelessWidget {
       appBar: CupertinoNavigationBar(
         leading: Icon(Icons.settings_rounded, size: 50, color: Theme.of(context).splashColor,),
         middle:
-            Text('Settings', style: Theme.of(context).textTheme.headline6.copyWith(
+            Text('Settings', style: Theme.of(context).textTheme.headline6!.copyWith(
               color: Theme.of(context).hintColor
             )),
       ),

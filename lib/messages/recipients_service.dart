@@ -1,16 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 
 import 'models/recipient.dart';
 
 class RecipientsService {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  DocumentSnapshot lastRecipient;
+  late DocumentSnapshot lastRecipient;
 
   /// fetch recipients
   Stream<List<Recipient>> fetchRecipients({
-    @required String sid,
-    @required int pageSize,
+    required String sid,
+    required int pageSize,
   }) {
     return firestore
         .collection('chats')
@@ -33,8 +32,8 @@ class RecipientsService {
 
   /// fetch more recipients
   Future<List<Recipient>> fetchMoreRecipients({
-    @required String sid,
-    @required int pageSize,
+    required String sid,
+    required int pageSize,
   }) async {
     final recipients = await firestore
         .collection('chats')
@@ -54,9 +53,9 @@ class RecipientsService {
 
   /// set seen value for a recipient, since they need to know if you have seen their message
   Future<void> setNotification({
-    @required String sid,
-    @required String rid,
-    @required Map<String, bool> recipient,
+    required String sid,
+    required String rid,
+    required Map<String, bool> recipient,
   }) {
     return firestore
         .collection('chats')

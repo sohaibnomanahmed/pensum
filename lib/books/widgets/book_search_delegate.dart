@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../books_provider.dart';
 
-class BookSearchDelegate extends SearchDelegate<String> {
-  List<String> bookMatches;
+class BookSearchDelegate extends SearchDelegate<String?> {
+  late List<String> bookMatches;
   final BuildContext parentContext;
   final Map<String, dynamic> bookTitles;
 
@@ -15,7 +15,7 @@ class BookSearchDelegate extends SearchDelegate<String> {
     final theme = Theme.of(context);
     return super.appBarTheme(context).copyWith(
         textTheme: theme.textTheme.copyWith(
-          headline6: theme.textTheme.bodyText2
+          headline6: theme.textTheme.bodyText2!
               .copyWith(color: Theme.of(context).hintColor),
         ),
         appBarTheme:
@@ -68,7 +68,7 @@ class BookSearchDelegate extends SearchDelegate<String> {
             width: 30,
             fit: BoxFit.cover,
             errorBuilder: (BuildContext context, Object exception,
-                StackTrace stackTrace) {
+                StackTrace? stackTrace) {
               return Icon(Icons.wifi_off_rounded);
             },
           ),
@@ -112,7 +112,7 @@ class BookSearchDelegate extends SearchDelegate<String> {
             width: 30,
             fit: BoxFit.cover,
             errorBuilder: (BuildContext context, Object exception,
-                StackTrace stackTrace) {
+                StackTrace? stackTrace) {
               return Icon(
                 Icons.wifi_off_rounded,
                 size: 30,

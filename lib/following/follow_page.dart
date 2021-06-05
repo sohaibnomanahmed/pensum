@@ -22,7 +22,7 @@ class _FollowPageState extends State<FollowPage> {
       appBar: CupertinoNavigationBar(
         leading: Icon(Icons.notifications_on_rounded, size: 45, color: Theme.of(context).splashColor),
         middle:
-            Text('Following', style: Theme.of(context).textTheme.headline6.copyWith(
+            Text('Following', style: Theme.of(context).textTheme.headline6!.copyWith(
               color: Theme.of(context).hintColor
             )),
       ),

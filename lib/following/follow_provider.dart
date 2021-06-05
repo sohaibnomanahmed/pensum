@@ -20,7 +20,7 @@ class FollowProvider with ChangeNotifier{
   var _isLoading = true;
   var _silentLoading = false;
   var _isError = false;
-  StreamSubscription _subscription;
+  late StreamSubscription _subscription;
 
   // getters
   bool get isLoading => _isLoading;
@@ -32,7 +32,7 @@ class FollowProvider with ChangeNotifier{
   /// if an error accours the stream will be canceled, and we will set [isError]
   void fetchFollows() {
     // get original first batch of follow
-    final user = _authenticationService.currentUser;
+    final user = _authenticationService.currentUser!;
     final stream = _followService.fetchFollowing(uid: user.uid, pageSize: _pageSize);
     _subscription = stream.listen(
       (follows) {
@@ -74,7 +74,7 @@ class FollowProvider with ChangeNotifier{
     // get more follows
     List<Follow> moreFollows;
     try{
-      final user = _authenticationService.currentUser;
+      final user = _authenticationService.currentUser!;
       moreFollows = await _followService.fetchMoreFollowing(uid: user.uid, pageSize: _pageSize);
     } catch (error){
       print('Failed to fetch more follows: $error');
@@ -94,7 +94,7 @@ class FollowProvider with ChangeNotifier{
   Future<bool> unfollow(String isbn) async {
     try {
       // remove deal from users profile
-      final user = _authenticationService.currentUser;
+      final user = _authenticationService.currentUser!;
       await _followService.removeFollowing(uid: user.uid, id: isbn);
       await _notificationsService.unsubscribeFromTopic(isbn);
     } catch (error) {
@@ -115,7 +115,7 @@ class FollowProvider with ChangeNotifier{
   /// in this case its not, so we wont return a [Future] to halt the activity  
   void removeFollowingNotification(String id) async {
     try{
-      final user = _authenticationService.currentUser;
+      final user = _authenticationService.currentUser!;
       await _followService.removeFollowingNotification(uid: user.uid, id: id);
     }catch(error){
       print('remove notification error: $error');

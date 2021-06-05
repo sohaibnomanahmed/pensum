@@ -8,9 +8,9 @@ class FastMessageBottomSheet extends StatelessWidget {
   final String receiverImage;
 
   const FastMessageBottomSheet({
-    @required this.rid,
-    @required this.receiverImage,
-    @required this.receiverName,
+    required this.rid,
+    required this.receiverImage,
+    required this.receiverName,
   });
 
   @override

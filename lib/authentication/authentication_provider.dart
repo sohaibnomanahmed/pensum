@@ -21,13 +21,13 @@ class AuthenticationProvider with ChangeNotifier {
   var _isLoading = false;
   final _unknownMessage = 'Error: please check your network connection';
   final _defaultMessage = 'Error: Somehting went wrong, please try again';
-  /*late*/String _errorMessage;
+  late String _errorMessage;
 
   // getters
   bool get isLoading => _isLoading;
-  bool get isEmailVerified => _authenticationService.currentUser.emailVerified;
-  String get uid => _authenticationService.currentUser.uid;
-  Stream<User> get authState => _authenticationService.authState;
+  bool get isEmailVerified => _authenticationService.currentUser!.emailVerified;
+  String get uid => _authenticationService.currentUser!.uid;
+  Stream<User?> get authState => _authenticationService.authState;
   String get errorMessage => _errorMessage;
 
   /// tries to create a user in using [firebase],  [firstname] and [lastname] 
@@ -35,10 +35,10 @@ class AuthenticationProvider with ChangeNotifier {
   /// if the successfull returns true if an error occurs, cathes the exception, 
   /// store error message and return false
   Future<bool> createUser({
-    @required String firstname,
-    @required String lastname,
-    @required String email,
-    @required String password,
+    required String firstname,
+    required String lastname,
+    required String email,
+    required String password,
   }) async {
     _isLoading = true;
     notifyListeners();
@@ -50,7 +50,7 @@ class AuthenticationProvider with ChangeNotifier {
       // create user
       final userCredentials = await _authenticationService.createUser(
           email: email, password: password);
-      final user = userCredentials.user;
+      final user = userCredentials.user!;
       final time = user.metadata.creationTime;
       if (time == null){
         _errorMessage = 'Failed trying to create the user, time not accesable';
@@ -94,13 +94,13 @@ class AuthenticationProvider with ChangeNotifier {
   /// tries to sign a user in using [firebase], if the successfull returns true
   /// if an error occurs, cathes the exception, store error message and return false
   Future<bool> signIn(
-      {@required String email, @required String password}) async {
+      {required String email, required String password}) async {
     _isLoading = true;
     notifyListeners();
     try {
       final userCredentials =
           await _authenticationService.signIn(email: email, password: password);
-      final user = userCredentials.user;
+      final user = userCredentials.user!;
       // send email varification
       if (!user.emailVerified) {
         _errorMessage = 'Email is not verified';
@@ -140,7 +140,7 @@ class AuthenticationProvider with ChangeNotifier {
     notifyListeners();
     try {
       // unsubscribe from all topics
-      final user = _authenticationService.currentUser;
+      final user = _authenticationService.currentUser!;
       final followings = await _followService.getAllFollowingIds(user.uid);
       await _notificationService.unsubscribeFromTopic(user.uid);
       for(var following in followings){
@@ -195,12 +195,12 @@ class AuthenticationProvider with ChangeNotifier {
     notifyListeners();
     try {
       // get email of current user
-      final email = _authenticationService.currentUser.email;
+      final email = _authenticationService.currentUser!.email!;
       // sicen deleting user is a sensitive opperation, wee need to reauthenticate
       await _authenticationService.reauthenticate(
           email: email, password: password);
       // unsubscribe from all topics
-      final user = _authenticationService.currentUser;
+      final user = _authenticationService.currentUser!;
       final followings = await _followService.getAllFollowingIds(user.uid);
       await _notificationService.unsubscribeFromTopic(user.uid);
       followings.forEach((following) async { 
@@ -223,7 +223,7 @@ class AuthenticationProvider with ChangeNotifier {
   }
 
   /// gets the [service account] used for feedbacks
-  Future<Profile> getAdminAccount() async {
+  Future<Profile?> getAdminAccount() async {
     try{
       final adminId = await _profileService.getAdminId();
       return await _profileService.getProfile(adminId);

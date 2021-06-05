@@ -1,18 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 
 import 'models/message.dart';
 import 'models/recipient.dart';
 
 class MessagesService {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  DocumentSnapshot lastMessage;
+  late DocumentSnapshot lastMessage;
 
   /// fetch messages
   Stream<List<Message>> fetchMessages({
-    @required int pageSize,
-    @required String sid,
-    @required String rid,
+    required int pageSize,
+    required String sid,
+    required String rid,
   }) {
     return firestore
         .collection('chats')
@@ -37,9 +36,9 @@ class MessagesService {
 
   /// fetch more messages
   Future<List<Message>> fetchMoreMessages({
-    @required int pageSize,
-    @required String sid,
-    @required String rid,
+    required int pageSize,
+    required String sid,
+    required String rid,
   }) async {
     final messages = await firestore
         .collection('chats')
@@ -61,10 +60,10 @@ class MessagesService {
 
   /// send message:, info is stored for the sender the receiver get data from cloud fucntions
   Future<void> sendMessage({
-    @required String sid,
-    @required String rid,
-    @required Message message,
-    @required Recipient recipient,
+    required String sid,
+    required String rid,
+    required Message message,
+    required Recipient recipient,
   }) async {
     // store message info for the sender
     await firestore
@@ -85,10 +84,10 @@ class MessagesService {
 
   /// set seen value for a message, located at the recipient
   Future<void> setSeen({
-    @required String id, // message id
-    @required String sid,
-    @required String rid,
-    @required Map<String, bool> message,
+    required String id, // message id
+    required String sid,
+    required String rid,
+    required Map<String, bool> message,
   }) {
     return firestore
         .collection('chats')

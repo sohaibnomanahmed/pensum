@@ -13,9 +13,9 @@ class MessageActionSheet extends StatelessWidget {
   final String receiverName;
 
   const MessageActionSheet({
-    @required this.rid,
-    @required this.receiverName,
-    @required this.receiverImage,
+    required this.rid,
+    required this.receiverName,
+    required this.receiverImage,
   });
 
   @override

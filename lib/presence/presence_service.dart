@@ -4,9 +4,9 @@ import 'package:firebase_database/firebase_database.dart';
 
 class PresenceService {
   FirebaseDatabase database = FirebaseDatabase.instance;
-  StreamSubscription subscription;
-  StreamSubscription subsub;
-  DatabaseReference con;
+  late StreamSubscription subscription;
+  late StreamSubscription subsub;
+  late DatabaseReference con;
 
   /// Configure user presence
   Future<void> configureUserPresence(String uid) async {

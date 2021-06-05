@@ -31,7 +31,7 @@ class MessagesProvider with ChangeNotifier {
   var _isLoading = true;
   var _messageLoading = false;
   var _silentLoading = false;
-  var _subscription;
+  late var _subscription;
 
   // getters
   MessagesProvider get provider => this;
@@ -47,7 +47,7 @@ class MessagesProvider with ChangeNotifier {
   /// if an error accours the stream will be canceled, and we will set [isError]
   void fetchMessages(String rid) async {
     // get original first batch of messages, should be called on build
-    final user = _authenticationService.currentUser;
+    final user = _authenticationService.currentUser!;
     final stream = _messagesService.fetchMessages(
         sid: user.uid, rid: rid, pageSize: _pageSize);
     _subscription = stream.listen((messages) {
@@ -68,7 +68,7 @@ class MessagesProvider with ChangeNotifier {
         // or set seen for yor self if you are messaging yourself
         if (!message.isMe || rid == user.uid) {
           _messagesService.setSeen(
-              id: message.id/*!*/, sid: user.uid, rid: rid, message: seenMap);
+              id: message.id!, sid: user.uid, rid: rid, message: seenMap);
         }
       });
       // set recipeint notification as false for receiver i.e one self
@@ -107,7 +107,7 @@ class MessagesProvider with ChangeNotifier {
     _silentLoading = true;
 
     // get current user and messages
-    final user = _authenticationService.currentUser;
+    final user = _authenticationService.currentUser!;
     var moreMessages = await _messagesService.fetchMoreMessages(
         sid: user.uid, rid: rid, pageSize: _pageSize);
 
@@ -117,7 +117,7 @@ class MessagesProvider with ChangeNotifier {
       // set message as seen for the sender i.e the other user
       if (!message.isMe) {
         _messagesService.setSeen(
-            id: message.id/*!*/, sid: user.uid, rid: rid, message: seenMap);
+            id: message.id!, sid: user.uid, rid: rid, message: seenMap);
       }
     });
     // add them the end of the messages list
@@ -132,13 +132,13 @@ class MessagesProvider with ChangeNotifier {
   /// for the [receiver]. There should not be a loader, should feel like contant flow.
   /// If successfull return true, if an error occurs return false
   Future<bool> sendMessage({
-    @required String rid,
-    @required String receiverName,
-    @required String receiverImage,
-    @required String text,
-    Message message,
+    required String rid,
+    required String receiverName,
+    required String receiverImage,
+    required String text,
+    Message? message,
   }) async {
-    final user = _authenticationService.currentUser;
+    final user = _authenticationService.currentUser!;
     final time = Timestamp.now();
 
     // information about the receiver displayed for the sender
@@ -175,10 +175,10 @@ class MessagesProvider with ChangeNotifier {
   /// Then call [sendMessage]. There should not be a loader, should feel like contant flow.
   /// If successfull return true, if an error occurs return false
   Future<bool> sendImage({
-    @required ImageSource source,
-    @required String rid,
-    @required String receiverName,
-    @required String receiverImage,
+    required ImageSource source,
+    required String rid,
+    required String receiverName,
+    required String receiverImage,
   }) async {
     _messageLoading = true;
     notifyListeners();
@@ -191,7 +191,7 @@ class MessagesProvider with ChangeNotifier {
       // Upload image to firebase storage
       final imageUrl = await _imageUploadService.uploadChatMessageImage(image);
       // Upload image to firestore chat
-      final user = _authenticationService.currentUser;
+      final user = _authenticationService.currentUser!;
       final time = Timestamp.now();
       final message = ImageMessage(
           sid: user.uid,
@@ -222,12 +222,12 @@ class MessagesProvider with ChangeNotifier {
   /// For [currentLocation] if latitude or longitude is null, we return false as location
   /// would not be reachable. Else if successfull return true, if an error occurs return false
   Future<bool> sendLocation(
-      {@required bool currentLocation,
-      @required String rid,
-      @required String receiverName,
-      @required String receiverImage,
-      double latitude,
-      double longitude}) async {
+      {required bool currentLocation,
+      required String rid,
+      required String receiverName,
+      required String receiverImage,
+      double? latitude,
+      double? longitude}) async {
     _messageLoading = true;
     notifyListeners();
     try {
@@ -260,7 +260,7 @@ class MessagesProvider with ChangeNotifier {
       // delete cached file
       await _imageUploadService.deleteLastCachedFile();
       // Upload image to firestore chat
-      final user = _authenticationService.currentUser;
+      final user = _authenticationService.currentUser!;
       final time = Timestamp.now();
       final message = LocationMessage(sid: user.uid, text: '', time: time, type: 'location', seen: false, image: imageUrl, address: address, latitude: latitude, longitude: longitude);
       await sendMessage(
@@ -284,7 +284,7 @@ class MessagesProvider with ChangeNotifier {
   /// unsubscribes from the chat topic of the user so that the [notifications] wont apear
   /// dont need to return if action was succesfull ot not
   void unsubscribeFromChatNotifications() async {
-    final user = _authenticationService.currentUser;
+    final user = _authenticationService.currentUser!;
     await _notificationService.unsubscribeFromTopic(user.uid);
   }
 
@@ -292,7 +292,7 @@ class MessagesProvider with ChangeNotifier {
   /// subscribes to the chat topic of the user so that the notifications will apear
   /// dont need to return if action was succesfull or not
   void subscribeToChatNotifications() async {
-    final user = _authenticationService.currentUser;
+    final user = _authenticationService.currentUser!;
     await _notificationService.subscribeToTopic(user.uid);
   }
 

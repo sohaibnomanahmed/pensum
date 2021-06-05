@@ -16,8 +16,8 @@ class BooksProvider with ChangeNotifier{
   var _silentLoading = false;
   var _isError = false;
   var _isSearch = false;
-  StreamSubscription _booksSubscription;
-  StreamSubscription _bookTitlesSubscription;
+  late StreamSubscription _booksSubscription;
+  StreamSubscription? _bookTitlesSubscription;
 
   // getters
   List<Book> get books => [..._books];
@@ -94,7 +94,7 @@ class BooksProvider with ChangeNotifier{
     final stream = _booksService.fetchBookTitles();
     _bookTitlesSubscription = stream.listen(
       (bookTitles) {
-        _bookTitles = bookTitles;
+        _bookTitles = bookTitles as Map<String, dynamic>;
         _isError = false;
         _isLoading = false;
         notifyListeners();

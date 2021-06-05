@@ -12,12 +12,12 @@ class AddDealBottomSheet extends StatefulWidget {
   final String pid;
   final String productImage;
   final String productTitle;
-  final Deal deal;
+  final Deal? deal;
 
   AddDealBottomSheet({
-    @required this.pid,
-    @required this.productImage,
-    @required this.productTitle,
+    required this.pid,
+    required this.productImage,
+    required this.productTitle,
     this.deal,
   });
 
@@ -61,7 +61,7 @@ class _AddDealBottomSheetState extends State<AddDealBottomSheet> {
               DropdownButtonFormField(
                 value: _price.isEmpty ? null : _price,
                 hint: Text('Select price'),
-                onChanged: (String value) => value == null ? null : setState(() {
+                onChanged: (String? value) => value == null ? null : setState(() {
                   _price = value;
                 }),
                 items: prices
@@ -72,7 +72,7 @@ class _AddDealBottomSheetState extends State<AddDealBottomSheet> {
               DropdownButtonFormField(
                 value: _quality.isEmpty ? null : _quality,
                 hint: Text('Select quality'),
-                onChanged: (String value) => value == null ? null : setState(() {
+                onChanged: (String? value) => value == null ? null : setState(() {
                   _quality = value;
                 }),
                 items: qualities
@@ -83,7 +83,7 @@ class _AddDealBottomSheetState extends State<AddDealBottomSheet> {
               DropdownButtonFormField(
                 value: _place.isEmpty ? null : _place,
                 hint: Text('Select place'),
-                onChanged: (String value) => value == null ? null : setState(() {
+                onChanged: (String? value) => value == null ? null : setState(() {
                   _place = value;
                 }),
                 items: places

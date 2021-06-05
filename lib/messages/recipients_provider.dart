@@ -14,7 +14,7 @@ class RecipientsProvider with ChangeNotifier {
   var _isError = false;
   var _isLoading = true;
   var _silentLoading = false;
-  var _subscription;
+  late var _subscription;
 
   // getters
   bool get isLoading => _isLoading;
@@ -26,7 +26,7 @@ class RecipientsProvider with ChangeNotifier {
   /// if an error accours the stream will be canceled, and we will set [isError]
   void fetchRecipients() async {
     // get original first batch of messages, should be called on build
-    final user = _authenticationService.currentUser;
+    final user = _authenticationService.currentUser!;
     final stream =
         _recipientsService.fetchRecipients(sid: user.uid, pageSize: _pageSize);
     _subscription = stream.listen((recipients) {
@@ -63,7 +63,7 @@ class RecipientsProvider with ChangeNotifier {
     _silentLoading = true;
 
     // get current user and messages
-    final user = _authenticationService.currentUser;
+    final user = _authenticationService.currentUser!;
     var moreRecipients = await _recipientsService.fetchMoreRecipients(
         sid: user.uid, pageSize: _pageSize);
     // add them the end of the messages list
