@@ -13,7 +13,7 @@ import 'package:leaf/profile/profile_service.dart';
 import '../books/models/book.dart';
 import 'models/deal.dart';
 
-/// DealsProvider cant store previous deals in a [_cache] variable since
+/// DealsProvider cant store previous deals in a [cache] variable since
 /// there are made multiple streams, and the [lastDeal] pointer in 
 /// DealService would become wrong without changing the stream
 class DealsProvider with ChangeNotifier {
@@ -37,6 +37,7 @@ class DealsProvider with ChangeNotifier {
 
   // getters
   bool get isLoading => _isLoading;
+  bool get silentLoading => _silentLoading;
   bool get isError => _isError;
   bool get isFilter => _isFilter;
   bool get isFollowing => _isFollowing;
@@ -83,11 +84,12 @@ class DealsProvider with ChangeNotifier {
   Future<void> fetchMoreDeals(String isbn) async {
     // only get called one time and not on error screen
     // Aslo if no lastDeal to start from, needs to return
-    if (_deals.isEmpty || _silentLoading || _isError) {
+    if (_deals.isEmpty || _isError) {
       return;
     }
     // set silent loader
     _silentLoading = true;
+    notifyListeners();
 
     // get more books
     List<Deal> moreDeals;
@@ -106,9 +108,8 @@ class DealsProvider with ChangeNotifier {
     }
     // add them the end of the messages list
     _deals.addAll(moreDeals);
-    // update UI then reset the silent loader
-    notifyListeners();
     _silentLoading = false;
+    notifyListeners();
     return;
   }
 

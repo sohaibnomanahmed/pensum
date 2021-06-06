@@ -18,6 +18,7 @@ class RecipientsProvider with ChangeNotifier {
 
   // getters
   bool get isLoading => _isLoading;
+  bool get silentLoading => _silentLoading;
   bool get isError => _isError;
   List<Recipient> get recipients => [..._recipients];
 
@@ -56,11 +57,12 @@ class RecipientsProvider with ChangeNotifier {
   Future<void> fetchMoreRecipients() async {
     // only get called one time and not on error screen
     // Aslo if no lastFollow to start from, needs to return
-    if (_silentLoading || _recipients.isEmpty || _isError) {
+    if (_recipients.isEmpty || _isError) {
       return;
     }
     // set silent loader
     _silentLoading = true;
+    notifyListeners();
 
     // get current user and messages
     final user = _authenticationService.currentUser!;
@@ -68,9 +70,8 @@ class RecipientsProvider with ChangeNotifier {
         sid: user.uid, pageSize: _pageSize);
     // add them the end of the messages list
     _recipients.addAll(moreRecipients);
-    // update UI wait for a sec to let it complate before setting silent loading to false
-    notifyListeners();
     _silentLoading = false;
+    notifyListeners();
   }
 
   /// Dispose when the provider is destroyed, cancel the recipients subscription

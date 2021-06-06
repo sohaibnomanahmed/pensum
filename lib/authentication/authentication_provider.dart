@@ -19,7 +19,6 @@ class AuthenticationProvider with ChangeNotifier {
   final _presenceService = GlobalServices.presenceService;
 
   var _isLoading = false;
-  final _unknownMessage = 'Error: please check your network connection';
   final _defaultMessage = 'Error: Somehting went wrong, please try again';
   late String _errorMessage;
 
@@ -44,6 +43,7 @@ class AuthenticationProvider with ChangeNotifier {
     notifyListeners();
     if (firstname.isEmpty || lastname.isEmpty){
       _errorMessage = 'Firstname or lastname can\'t be empty';
+      _isLoading = false;
       return false;
     }
     try {
@@ -77,9 +77,6 @@ class AuthenticationProvider with ChangeNotifier {
       // await _presenceService.setUserPresence(userCredential.user.uid, false);
     } on FirebaseAuthException catch (error) {
       _errorMessage = error.message ?? _defaultMessage;
-      if (error.code == 'unknown') {
-        _errorMessage = _unknownMessage;
-      }
       _isLoading = false;
       notifyListeners();
       return false;
@@ -119,9 +116,6 @@ class AuthenticationProvider with ChangeNotifier {
 
     } on FirebaseAuthException catch (error) {
       _errorMessage = error.message ?? _defaultMessage;
-      if (error.code == 'unknown') {
-        _errorMessage = _unknownMessage;
-      }
       _isLoading = false;
       notifyListeners();
       return false;
@@ -153,9 +147,6 @@ class AuthenticationProvider with ChangeNotifier {
       await _authenticationService.signOut();
     } on FirebaseAuthException catch (error) {
       _errorMessage = error.message ?? _defaultMessage;
-      if (error.code == 'unknown') {
-        _errorMessage = _unknownMessage;
-      }
       _isLoading = false;
       notifyListeners();
       return false;
@@ -176,9 +167,6 @@ class AuthenticationProvider with ChangeNotifier {
       await _authenticationService.resetPassword(email);
     } on FirebaseAuthException catch (error) {
       _errorMessage = error.message ?? _defaultMessage;
-      if (error.code == 'unknown') {
-        _errorMessage = _unknownMessage;
-      }
       _isLoading = false;
       notifyListeners();
       return false;
@@ -210,9 +198,6 @@ class AuthenticationProvider with ChangeNotifier {
       await _authenticationService.deleteUser();
     } on FirebaseAuthException catch (error) {
       _errorMessage = error.message ?? _defaultMessage;
-      if (error.code == 'unknown') {
-        _errorMessage = _unknownMessage;
-      }
       _isLoading = false;
       notifyListeners();
       return false;

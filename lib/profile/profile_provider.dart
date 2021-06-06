@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:leaf/authentication/authentication_service.dart';
 import 'package:leaf/books/books_service.dart';
@@ -22,7 +23,7 @@ class ProfileProvider with ChangeNotifier {
   final _imagePickerService = ImagePickerService();
   final _imageCropperService = ImageCropperService();
 
-  late Profile _profile;
+  Profile? _profile;
   var _isLoading = true;
   var _isError = false;
   late StreamSubscription _subscription;
@@ -31,7 +32,7 @@ class ProfileProvider with ChangeNotifier {
   ProfileProvider get provider => this;
   bool get isLoading => _isLoading;
   bool get isError => _isError;
-  Profile get profile => _profile;
+  Profile? get profile => _profile;
 
   /// Subsbribe to a profile stream, Should be called in the [init state] method of the page
   /// from where it is called, check if null and stores the result in [profile], store if
@@ -44,7 +45,7 @@ class ProfileProvider with ChangeNotifier {
     _subscription = stream.listen(
       (profile) {
         _profile = profile;
-        _profile.isMe = isMe;
+        _profile!.isMe = isMe;
         _isLoading = false;
         notifyListeners();
       },
@@ -74,14 +75,17 @@ class ProfileProvider with ChangeNotifier {
 
   /// Deletes a deal both from the users [profile] and from the books [deals page]
   /// if successfull return true, if an error occurs set error message and retun false 
-  Future<bool> deleteDeal(
+  Future<bool> deleteProfileDeal(
       {required String productId, required String id}) async {
     try {
       // remove deal from the book
-      await _dealsService.deleteDeal(productId: productId, id: id);
+      final p1 = _dealsService.deleteDeal(productId: productId, id: id);
       // remove deal from users profile
       final user = _authenticationService.currentUser!;
-      await _profileService.deleteDeal(uid: user.uid, id: id);
+      _profile!.userItems.remove(id);
+      final p2 = _profileService.setProfile(uid: user.uid, profile: _profile!);
+      await Future.wait([p1, p2]);
+      notifyListeners();
     } catch (error) {
       print('Removing deal error: $error');
       return false;
@@ -92,27 +96,22 @@ class ProfileProvider with ChangeNotifier {
   /// set the user [profile], this is called from the [profile page]
   /// and will update the current [profile] of the user, returns true if
   /// successfull and false if an error occurs
-  Future<bool> setProfile({
+  Future<bool> setProfileName({
     required String firstname,
     required String lastname,
   }) async {
-    _isLoading = true;
-    notifyListeners();
     try {
       final user = _authenticationService.currentUser!;
       // add changes to the user profile
-      _profile.firstname = firstname;
-      _profile.lastname = lastname;
+      _profile!.firstname = firstname;
+      _profile!.lastname = lastname;
       // update the user object in the database
-      await _profileService.setProfile(uid: user.uid, profile: _profile);
+      await _profileService.setProfile(uid: user.uid, profile: _profile!);
+      notifyListeners();
     } catch (error) {
       print('Add deal error: $error');
-      _isLoading = false;
-      notifyListeners();
       return false;
     }
-    _isLoading = false;
-    notifyListeners();
     return true;
   }
 
@@ -131,8 +130,8 @@ class ProfileProvider with ChangeNotifier {
         notifyListeners();
         return false;
       }
-      // Crop choosen image
-      var croppedImage = await _imageCropperService.pickImage(image);
+      // Crop choosen image, need to compress as picker dont compress
+      var croppedImage = await _imageCropperService.pickImage(image: image, style: CropStyle.circle, ratio: CropAspectRatio(ratioX: 1, ratioY: 1));
       if (croppedImage == null) {
         print('Error cropping image');
         _isLoading = false;
@@ -144,10 +143,10 @@ class ProfileProvider with ChangeNotifier {
       final imageUrl = await _imageUploadService.uploadProfileImage(
           image: croppedImage, uid: user.uid);
       // Add new imageUrl to user
-      _profile.imageUrl = imageUrl;
+      _profile!.imageUrl = imageUrl;
 
       // Upload imageUrl to firestore user data
-      await _profileService.setProfile(uid: user.uid, profile: _profile);
+      await _profileService.setProfile(uid: user.uid, profile: _profile!);
     } catch (error) {
       print(error);
       _isLoading = false;

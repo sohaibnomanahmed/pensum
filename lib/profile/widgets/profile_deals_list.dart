@@ -8,7 +8,7 @@ import '../profile_provider.dart';
 class ProfileDealsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final profileDeals = context.watch<ProfileProvider>().profile.deals;
+    final profileDeals = context.watch<ProfileProvider>().profile!.deals;
     // list view puts on top padding if not app bar
     // https://github.com/flutter/flutter/issues/14842
     return MediaQuery.removePadding(

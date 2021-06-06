@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 
 class ImageCropperService {
-  Future<File?> pickImage(File image) async {
+  Future<File?> pickImage({required File image, required CropStyle style, CropAspectRatio? ratio}) async {
     var croppedFile = await ImageCropper.cropImage(
         sourcePath: image.path,
         maxWidth: 2000,
@@ -14,8 +14,8 @@ class ImageCropperService {
           CropAspectRatioPreset.ratio4x3,
           CropAspectRatioPreset.ratio16x9,
         ],
-        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
-        cropStyle: CropStyle.circle,
+        aspectRatio: ratio,
+        cropStyle: style,
         androidUiSettings: AndroidUiSettings(
           showCropGrid: false,
           cropFrameColor: Color.fromRGBO(0, 0, 0, 0),

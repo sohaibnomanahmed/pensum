@@ -24,7 +24,7 @@ class _MapPageState extends State<MapPage> {
       body: GoogleMap(
         initialCameraPosition: CameraPosition(
           target: widget.initialLocation,
-          zoom: 16,
+          zoom: 13,
         ),
         onTap: widget.isSelecting
             ? (LatLng position) {

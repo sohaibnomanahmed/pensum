@@ -23,6 +23,7 @@ class BooksProvider with ChangeNotifier{
   List<Book> get books => [..._books];
   Map<String, dynamic> get bookTitles => {..._bookTitles};
   bool get isLoading => _isLoading;
+  bool get silentLoading => _silentLoading;
   bool get isError => _isError;
   bool get isSearch => _isSearch;
 
@@ -63,11 +64,12 @@ class BooksProvider with ChangeNotifier{
   Future<void> fetchMoreBooks() async {
     // only get called one time and not on error or in a search
     // Aslo if no lastBook to start from, needs to return
-    if (_books.isEmpty || _silentLoading || _isError || _isSearch) {
+    if (_books.isEmpty || _isError || _isSearch) {
       return;
     }
     // set silent loader
     _silentLoading = true;
+    notifyListeners();
 
     // get more books
     List<Book> moreBooks;
@@ -80,9 +82,8 @@ class BooksProvider with ChangeNotifier{
     }
     // add them the end of the messages list
     _books.addAll(moreBooks);
-    // update UI then reset the silent loader
-    notifyListeners();
     _silentLoading = false;
+    notifyListeners();
     return;
   }
 

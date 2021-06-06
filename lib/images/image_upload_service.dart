@@ -24,10 +24,10 @@ class ImageUploadService{
     final storageReference =
         _firebaseStorage.ref().child('chat/' + uuid.v4());
 
-    final uploadTask = storageReference.putFile(image);
-
+    await storageReference.putFile(image);
+    //final uploadTask = storageReference.putFile(image);
     // Cancel your subscription when done.
-    await uploadTask.whenComplete(() => null);
+    //await uploadTask.whenComplete(() => null);
 
     final url = await storageReference.getDownloadURL();
     return url;

@@ -38,11 +38,14 @@ dependencies:
   firebase_messaging: "^10.0.0"
   firebase_crashlytics: "^2.0.4"
 
+  # google fonts
+  google_fonts: ^2.1.0
+
   # provider
   provider: ^5.0.0
 
   # image picker
-  image_picker: ^0.7.5+3
+  image_picker: ^0.8.0+1
 
   # image cropper
   image_cropper: ^1.4.0
@@ -78,9 +81,6 @@ dev_dependencies:
 
   # launcher icon
   flutter_launcher_icons: ^0.9.0
-
-  # google fonts
-  google_fonts: ^2.1.0
   
   # linter
   pedantic: ^1.11.0
@@ -110,6 +110,7 @@ flutter:
     - assets/images/robot.png
     - assets/images/error.png
     - assets/images/motor_cycle.png
+    - assets/fonts/Raleway/static/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

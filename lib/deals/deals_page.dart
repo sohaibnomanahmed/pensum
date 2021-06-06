@@ -31,6 +31,7 @@ class _DealsPageState extends State<DealsPage> {
   Widget build(BuildContext context) {
     final isFilter = context.watch<DealsProvider>().isFilter;
     final isLoading = context.watch<DealsProvider>().isLoading;
+    final silentLoading = context.watch<DealsProvider>().silentLoading;
     final isError = context.watch<DealsProvider>().isError;
     final isFollowBtnLoading =
         context.watch<DealsProvider>().isFollowBtnLoading;
@@ -41,7 +42,9 @@ class _DealsPageState extends State<DealsPage> {
         onNotification: (ScrollNotification scrollInfo) {
           if (scrollInfo.metrics.pixels >
               (scrollInfo.metrics.maxScrollExtent * 0.8)) {
-            context.read<DealsProvider>().fetchMoreDeals(widget.book.isbn);
+            if (!silentLoading){    
+              context.read<DealsProvider>().fetchMoreDeals(widget.book.isbn);
+            }
           }
           return true;
         },

@@ -20,12 +20,15 @@ class _BooksPageState extends State<BooksPage> {
   @override
   Widget build(BuildContext context) {
     final isSearch = context.watch<BooksProvider>().isSearch;
+    final silentLoading = context.watch<BooksProvider>().silentLoading;
     return Scaffold(
       body: NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification scrollInfo) {
           if (scrollInfo.metrics.pixels >
               (scrollInfo.metrics.maxScrollExtent * 0.8)) {
-            context.read<BooksProvider>().fetchMoreBooks();
+            if (!silentLoading){
+              context.read<BooksProvider>().fetchMoreBooks();
+            }    
           }
           return true;
         },

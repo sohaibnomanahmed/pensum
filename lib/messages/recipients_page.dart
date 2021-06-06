@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -19,10 +20,28 @@ class _RecipientsPageState extends State<RecipientsPage>{
   @override
   Widget build(BuildContext context) {
     final isLoading = context.watch<RecipientsProvider>().isLoading;
-    // a search should come wheen afforable
+    final silentLoading = context.watch<RecipientsProvider>().silentLoading;
     return Scaffold(
+        appBar: CupertinoNavigationBar(
+        leading: Icon(Icons.forum_rounded, size: 50, color: Theme.of(context).splashColor,),
+        middle:
+            Text('Messages', style: Theme.of(context).textTheme.headline6!.copyWith(
+              color: Theme.of(context).hintColor
+            )),
+      ),
         body: isLoading
             ? Center(child: CircularProgressIndicator())
-            : RecipientsList());
+            : NotificationListener<ScrollNotification>(
+                          onNotification: (ScrollNotification scrollInfo) {
+                            if (scrollInfo.metrics.pixels >
+                                (scrollInfo.metrics.maxScrollExtent * 0.8)) {
+                              if (!silentLoading){    
+                                context
+                                    .read<RecipientsProvider>()
+                                    .fetchMoreRecipients();
+                              }
+                            }
+                            return true;
+                          },child: RecipientsList()));
   }
 }

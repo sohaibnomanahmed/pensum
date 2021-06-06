@@ -61,7 +61,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
                           popScreen: true,
                           action: () async => await context
                               .read<ProfileProvider>()
-                              .setProfile(
+                              .setProfileName(
                                   firstname: Profile.capitalizaName(_firstname),
                                   lastname: Profile.capitalizaName(_lastname)),
                           errorMessage:

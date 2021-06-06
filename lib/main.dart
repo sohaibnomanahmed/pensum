@@ -52,7 +52,7 @@ Future<void> main() async {
 
   await FirebaseAuth.instance.authStateChanges().isEmpty;
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  // TODO test out, add internalization, and commercial images
+  // TODO test out all providers creating and disposing, add internalization, and commercial images
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent, // for Android
       statusBarIconBrightness: Brightness.dark, // for Android
@@ -79,6 +79,7 @@ class MyApp extends StatelessWidget {
         title: 'Leaf',
         theme: ThemeData(
             primarySwatch: Colors.teal,
+            // TODO store fonts
             textTheme:
                 GoogleFonts.ralewayTextTheme(Theme.of(context).textTheme),
             elevatedButtonTheme: ElevatedButtonThemeData(

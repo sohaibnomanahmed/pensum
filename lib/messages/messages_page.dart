@@ -41,6 +41,7 @@ class _MessagesPageState extends State<MessagesPage> {
   @override
   Widget build(BuildContext context) {
     final isLoading = context.watch<MessagesProvider>().isLoading;
+    final silentLoading = context.watch<MessagesProvider>().silentLoading;
     final isError = context.watch<MessagesProvider>().isError;
     return Scaffold(
       appBar: AppBar(
@@ -81,9 +82,11 @@ class _MessagesPageState extends State<MessagesPage> {
                           onNotification: (ScrollNotification scrollInfo) {
                             if (scrollInfo.metrics.pixels >
                                 (scrollInfo.metrics.maxScrollExtent * 0.8)) {
-                              context
-                                  .read<MessagesProvider>()
-                                  .fetchMoreMessages(widget.rid);
+                              if (!silentLoading){    
+                                context
+                                    .read<MessagesProvider>()
+                                    .fetchMoreMessages(widget.rid);
+                              }
                             }
                             return true;
                           },

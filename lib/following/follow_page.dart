@@ -18,6 +18,7 @@ class _FollowPageState extends State<FollowPage> {
 
   @override
   Widget build(BuildContext context) {
+    final silentLoading = context.watch<FollowProvider>().silentLoading;
     return Scaffold(
       appBar: CupertinoNavigationBar(
         leading: Icon(Icons.notifications_on_rounded, size: 45, color: Theme.of(context).splashColor),
@@ -30,7 +31,9 @@ class _FollowPageState extends State<FollowPage> {
           onNotification: (ScrollNotification scrollInfo) {
             if (scrollInfo.metrics.pixels >
                 (scrollInfo.metrics.maxScrollExtent * 0.8)) {
-              context.read<FollowProvider>().fetchMoreFollows();
+              if (!silentLoading){    
+                context.read<FollowProvider>().fetchMoreFollows();
+              }
             }
             return true;
           },

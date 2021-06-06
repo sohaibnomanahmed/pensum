@@ -47,20 +47,24 @@ class _MessageBarState extends State<MessageBar> {
               onPressed: _message.isEmpty
                   ? null
                   : () async {
+                      // we send message cant be set to empty before it is sent
+                      final message = _message;
+                      // set state to disable button
+                      setState(() {
+                        _message = '';
+                      });
                       _controller.clear();
                       await ButtonFunctions.onPressHandler(
                           context: context,
                           action: () async => await context
                               .read<MessagesProvider>()
                               .sendMessage(
-                                text: _message,
+                                text: message,
                                 rid: widget.rid,
                                 receiverName: widget.receiverName,
                                 receiverImage: widget.receiverImage,
                               ),
                           errorMessage: 'Something went wrong!');
-                      // we send message cant be set to empty before it is sent
-                      _message = '';
                     }),
           hintText: 'Send a message...',
           border: InputBorder.none,

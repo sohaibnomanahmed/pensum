@@ -16,6 +16,7 @@ class SettingsList extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
+          // TODO just call method?
           ListTile(
             leading: Icon(Icons.lock_rounded),
             title: Text('Reset Password'),

@@ -27,14 +27,6 @@ class ProfileService {
         .map((profile) => Profile.fromFirestore(profile));
   }
 
-  /// deletes a deal from the profile
-  Future<void> deleteDeal({required String uid, required String id}) async {
-    final profileData = await firestore.collection('profiles').doc(uid).get();
-    final profile = Profile.fromFirestore(profileData);
-    profile.userItems.remove(id);
-    return firestore.collection('profiles').doc(uid).update(profile.toMap());
-  }
-
   /// get the id for the service account
   Future<String> getAdminId() async{
     final admins = await firestore.collection('admin').get();

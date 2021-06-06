@@ -51,7 +51,7 @@ class ProfileDealItem extends StatelessWidget {
               Text(deal.quality)
             ],
           ),
-          trailing: !profile.isMe
+          trailing: !profile!.isMe
               ? null
               : Row(
                   mainAxisSize: MainAxisSize.min,
@@ -80,7 +80,7 @@ class ProfileDealItem extends StatelessWidget {
                         context: context,
                         action: () async => await context
                             .read<ProfileProvider>()
-                            .deleteDeal(productId: deal.pid, id: deal.id),
+                            .deleteProfileDeal(productId: deal.pid, id: deal.id),
                         errorMessage: 'Error deleting deal',
                         successMessage: 'Succesfully deleted the deal',
                       ),

@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:leaf/authentication/authentication_service.dart';
+import 'package:leaf/images/image_cropper_service.dart';
 import 'package:leaf/images/image_picker_service.dart';
 import 'package:leaf/images/image_upload_service.dart';
 import 'package:leaf/location/google_map_service.dart';
@@ -21,6 +23,7 @@ class MessagesProvider with ChangeNotifier {
   final _recipientService = RecipientsService();
   final _imageUploadService = ImageUploadService();
   final _imagePickerService = ImagePickerService();
+  final _imageCropperService = ImageCropperService();
   final _googleMapService = GoogleMapService();
   final _locationService = LocationService();
 
@@ -37,6 +40,7 @@ class MessagesProvider with ChangeNotifier {
   MessagesProvider get provider => this;
   List<Message> get messages => [..._messages];
   bool get isLoading => _isLoading;
+  bool get silentLoading => _silentLoading;
   bool get messageLoading => _messageLoading;
   bool get isError => _isError;
 
@@ -100,11 +104,12 @@ class MessagesProvider with ChangeNotifier {
   Future<void> fetchMoreMessages(String rid) async {
     // only get called one time and not on error screen
     // Aslo if no lastFollow to start from, needs to return
-    if (_silentLoading || _messages.isEmpty || _isError) {
+    if (_messages.isEmpty || _isError) {
       return;
     }
     // set silent loader
     _silentLoading = true;
+    notifyListeners();
 
     // get current user and messages
     final user = _authenticationService.currentUser!;
@@ -115,6 +120,7 @@ class MessagesProvider with ChangeNotifier {
     moreMessages.forEach((message) {
       message.isMe = message.sid == user.uid;
       // set message as seen for the sender i.e the other user
+      // Note! is not updated on the fly not a stream, but next time the user enters
       if (!message.isMe) {
         _messagesService.setSeen(
             id: message.id!, sid: user.uid, rid: rid, message: seenMap);
@@ -122,9 +128,8 @@ class MessagesProvider with ChangeNotifier {
     });
     // add them the end of the messages list
     _messages.addAll(moreMessages);
-    // update UI wait for a sec to let it complate before setting silent loading to false
-    notifyListeners();
     _silentLoading = false;
+    notifyListeners();
   }
 
   /// Send a [message] to another user, store the [message] for the sender and store the
@@ -186,10 +191,21 @@ class MessagesProvider with ChangeNotifier {
       // Choose image from image picker service
       final image = await _imagePickerService.pickImage(source);
       if (image == null) {
+        _messageLoading = false;
+        notifyListeners();
+        // return true since its not an error
+        return true;
+      }
+      // Crop choosen image, need to compress as picker dont compress
+      var croppedImage = await _imageCropperService.pickImage(image: image, style: CropStyle.rectangle);
+      if (croppedImage == null) {
+        _messageLoading = false;
+        notifyListeners();
+        // return true since its not an error
         return true;
       }
       // Upload image to firebase storage
-      final imageUrl = await _imageUploadService.uploadChatMessageImage(image);
+      final imageUrl = await _imageUploadService.uploadChatMessageImage(croppedImage);
       // Upload image to firestore chat
       final user = _authenticationService.currentUser!;
       final time = Timestamp.now();

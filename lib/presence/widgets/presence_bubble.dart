@@ -48,7 +48,7 @@ class _PresenceBubbleState extends State<PresenceBubble> {
           );
         } else {
           return Container(
-            height: widget.size / 1.2,
+            height: widget.size,
             decoration: BoxDecoration(
                 color: Colors.amber[900],
                 borderRadius: BorderRadius.circular(8)),

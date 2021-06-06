@@ -24,6 +24,7 @@ class FollowProvider with ChangeNotifier{
 
   // getters
   bool get isLoading => _isLoading;
+  bool get silentLoading => _silentLoading;
   bool get isError => _isError;
   List<Follow> get follows => [..._follows];
 
@@ -65,11 +66,12 @@ class FollowProvider with ChangeNotifier{
   Future<void> fetchMoreFollows() async {
     // only get called one time and not on error screen
     // Aslo if no lastFollow to start from, needs to return
-    if (_follows.isEmpty || _silentLoading || _isError) {
+    if (_follows.isEmpty || _isError) {
       return;
     }
     // set silent loader
     _silentLoading = true;
+    notifyListeners();
 
     // get more follows
     List<Follow> moreFollows;
@@ -83,9 +85,8 @@ class FollowProvider with ChangeNotifier{
     }
     // add them the end of the follows list
     _follows.addAll(moreFollows);
-    // update UI then reset the silent loader
-    notifyListeners();
     _silentLoading = false;
+    notifyListeners();
     return;
   }
 
