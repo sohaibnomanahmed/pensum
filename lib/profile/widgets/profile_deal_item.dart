@@ -10,7 +10,7 @@ import '../../deals/models/deal.dart';
 class ProfileDealItem extends StatelessWidget {
   final Deal deal;
 
-  ProfileDealItem(this.deal);
+  const ProfileDealItem({Key? key, required this.deal}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

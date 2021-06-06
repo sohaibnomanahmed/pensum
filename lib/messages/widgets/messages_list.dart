@@ -14,10 +14,10 @@ class MessagesList extends StatelessWidget {
       child: Column(
         children: [
           Expanded(
-            child: ListView.builder(
+            child: ListView.builder(        
               padding: const EdgeInsets.all(12.0),
               reverse: true,
-              itemBuilder: (_, index) => MessageBubble(messages[index]),
+              itemBuilder: (_, index) => MessageBubble(key: ValueKey(messages[index].id), message: messages[index]),
               itemCount: messages.length,
             ),
           ),

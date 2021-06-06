@@ -32,7 +32,7 @@ class FollowList extends StatelessWidget {
                       arguments: book,
                     );
                   },
-                  child: FollowItem(follows[index]),
+                  child: FollowItem(key: ValueKey(follows[index].pid),follow: follows[index]),
                 ),
                 itemCount: follows.length,
               );

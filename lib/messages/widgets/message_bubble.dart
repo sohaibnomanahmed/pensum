@@ -9,7 +9,7 @@ import '../models/message.dart';
 class MessageBubble extends StatelessWidget {
   final Message message;
 
-  const MessageBubble(this.message);
+  const MessageBubble({Key? key, required this.message}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

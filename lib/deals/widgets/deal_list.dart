@@ -12,7 +12,7 @@ class DealList extends StatelessWidget {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       separatorBuilder: (_, __) => Divider(),
-      itemBuilder: (context, index) => DealItem(deals[index]),
+      itemBuilder: (context, index) => DealItem(key: ValueKey(deals[index].id), deal: deals[index]),
       itemCount: deals.length,
     );
   }

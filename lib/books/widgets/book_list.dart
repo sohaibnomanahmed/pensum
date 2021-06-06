@@ -22,13 +22,13 @@ class BookList extends StatelessWidget {
                   ? Shimmer.fromColors(
                       highlightColor: Theme.of(context).canvasColor,
                       baseColor: Theme.of(context).splashColor,
-                      child: BookItem(null),
+                      child: BookItem(),
                     )
                   : InkWell(
                       onTap: () => Navigator.of(context).pushNamed(
                           DealsPage.routeName,
                           arguments: books[index]),
-                      child: BookItem(books[index]),
+                      child: BookItem(key: ValueKey(books[index].isbn), book: books[index]),
                     ),
               childCount: isLoading ? 6 : books.length,
             ),

@@ -5,7 +5,7 @@ import '../models/book.dart';
 class BookItem extends StatelessWidget {
   final Book? book;
 
-  BookItem(this.book);
+  const BookItem({Key? key, this.book}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

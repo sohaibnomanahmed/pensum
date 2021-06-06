@@ -10,7 +10,7 @@ import '../models/deal.dart';
 class DealItem extends StatelessWidget {
   final Deal deal;
 
-  DealItem(this.deal);
+  const DealItem({Key? key, required this.deal}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -6,9 +6,9 @@ import 'package:leaf/following/follow_provider.dart';
 import 'package:leaf/following/models/Follow.dart';
 
 class FollowItem extends StatelessWidget {
-  final Follow _follow;
+  final Follow follow;
 
-  FollowItem(this._follow);
+  const FollowItem({Key? key, required this.follow}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +17,9 @@ class FollowItem extends StatelessWidget {
         height: 90,
         width: 50,
         child: Hero(
-          tag: _follow.pid,
+          tag: follow.pid,
           child: Image.network(
-            _follow.image,
+            follow.image,
             errorBuilder: (_, __, ___) => Icon(
               Icons.wifi_off_rounded,
               color: Theme.of(context).primaryColorDark,
@@ -27,12 +27,12 @@ class FollowItem extends StatelessWidget {
           ),
         ),
       ),
-      title: Text(_follow.title),
-      subtitle: Text(_follow.year),
+      title: Text(follow.title),
+      subtitle: Text(follow.year),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (_follow.notification)
+          if (follow.notification)
             CircleAvatar(
                 radius: 5, backgroundColor: Theme.of(context).backgroundColor),
           IconButton(
@@ -41,7 +41,7 @@ class FollowItem extends StatelessWidget {
             onPressed: () => ButtonFunctions.onPressHandler(
               context: context,
               action: () async =>
-                  await context.read<FollowProvider>().unfollow(_follow.pid),
+                  await context.read<FollowProvider>().unfollow(follow.pid),
               errorMessage: 'Something went wrong, please try again!',
               successMessage: 'Succesfully unfollowed',
             ),

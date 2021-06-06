@@ -42,7 +42,7 @@ class ProfileDealsList extends StatelessWidget {
             //   );
             // }
           },
-          child: ProfileDealItem(profileDeals[index]),
+          child: ProfileDealItem(key: ValueKey(profileDeals[index].pid), deal: profileDeals[index]),
         ),
         itemCount: profileDeals.length,
       ),
