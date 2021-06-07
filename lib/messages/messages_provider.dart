@@ -33,7 +33,6 @@ class MessagesProvider with ChangeNotifier {
   var _isError = false;
   var _isLoading = true;
   var _messageLoading = false;
-  var _silentLoading = false;
   late var _subscription;
 
   MessagesProvider(){
@@ -45,7 +44,6 @@ class MessagesProvider with ChangeNotifier {
   MessagesProvider get provider => this;
   List<Message> get messages => [..._messages];
   bool get isLoading => _isLoading;
-  bool get silentLoading => _silentLoading;
   bool get messageLoading => _messageLoading;
   bool get isError => _isError;
 
@@ -60,6 +58,7 @@ class MessagesProvider with ChangeNotifier {
     final stream = _messagesService.fetchMessages(
         sid: user.uid, rid: rid, pageSize: _pageSize);
     _subscription = stream.listen((messages) {
+      print(messages);
       messages.reversed.toList().forEach((message) {
         message.isMe = message.sid == user.uid;
         // if not already loaded, add to _message list
@@ -112,14 +111,17 @@ class MessagesProvider with ChangeNotifier {
     if (_messages.isEmpty || _isError) {
       return;
     }
-    // set silent loader
-    _silentLoading = true;
-    notifyListeners();
 
     // get current user and messages
     final user = _authenticationService.currentUser!;
-    var moreMessages = await _messagesService.fetchMoreMessages(
+    List<Message> moreMessages;
+    try{
+      moreMessages = await _messagesService.fetchMoreMessages(
         sid: user.uid, rid: rid, pageSize: _pageSize);
+    } catch (error){
+      print('Error fetching more messages $error');
+      return;
+    }    
 
     // set isMe boolean on all messages
     moreMessages.forEach((message) {
@@ -133,7 +135,6 @@ class MessagesProvider with ChangeNotifier {
     });
     // add them the end of the messages list
     _messages.addAll(moreMessages);
-    _silentLoading = false;
     notifyListeners();
   }
 
@@ -322,6 +323,7 @@ class MessagesProvider with ChangeNotifier {
   void dispose() async {
     super.dispose();
     print('Disposing message provider');
+    _messages.clear();
     await _subscription.cancel();
   }
 }

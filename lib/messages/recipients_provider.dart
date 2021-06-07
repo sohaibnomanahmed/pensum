@@ -13,12 +13,10 @@ class RecipientsProvider with ChangeNotifier {
   final _pageSize = 10;
   var _isError = false;
   var _isLoading = true;
-  var _silentLoading = false;
   late var _subscription;
 
   // getters
   bool get isLoading => _isLoading;
-  bool get silentLoading => _silentLoading;
   bool get isError => _isError;
   List<Recipient> get recipients => [..._recipients];
 
@@ -60,17 +58,20 @@ class RecipientsProvider with ChangeNotifier {
     if (_recipients.isEmpty || _isError) {
       return;
     }
-    // set silent loader
-    _silentLoading = true;
-    notifyListeners();
 
     // get current user and messages
     final user = _authenticationService.currentUser!;
-    var moreRecipients = await _recipientsService.fetchMoreRecipients(
+    List<Recipient> moreRecipients;
+    try{
+      moreRecipients = await _recipientsService.fetchMoreRecipients(
         sid: user.uid, pageSize: _pageSize);
+    } catch(error){
+      print('Error fetching more recipients $error');
+      return;
+    }
+    
     // add them the end of the messages list
     _recipients.addAll(moreRecipients);
-    _silentLoading = false;
     notifyListeners();
   }
 

@@ -11,6 +11,8 @@ class BooksPage extends StatefulWidget {
 }
 
 class _BooksPageState extends State<BooksPage> {
+  late bool lock;
+
   @override
   void initState() {
     super.initState();
@@ -19,16 +21,18 @@ class _BooksPageState extends State<BooksPage> {
 
   @override
   Widget build(BuildContext context) {
+    // set lock to prevent multiple calls to the function
+    lock = false;
     final isSearch = context.watch<BooksProvider>().isSearch;
-    final silentLoading = context.watch<BooksProvider>().silentLoading;
     return Scaffold(
       body: NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification scrollInfo) {
           if (scrollInfo.metrics.pixels >
               (scrollInfo.metrics.maxScrollExtent * 0.8)) {
-            if (!silentLoading){
+            if (!lock){
+              lock = true;
               context.read<BooksProvider>().fetchMoreBooks();
-            }    
+            }
           }
           return true;
         },

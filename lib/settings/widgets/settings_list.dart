@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:leaf/authentication/widgets/reset_password_bottom_sheet.dart';
 import 'package:leaf/global/functions.dart';
 import 'package:leaf/messages/messages_page.dart';
 import 'package:provider/provider.dart';
@@ -12,28 +11,38 @@ class SettingsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isLoading = context.watch<AuthenticationProvider>().isLoading;
+    final email = context.watch<AuthenticationProvider>().email;
     final scaffoldMessenger = ScaffoldMessenger.of(context);
     return SingleChildScrollView(
       child: Column(
         children: [
-          // TODO just call method?
           ListTile(
             leading: Icon(Icons.lock_rounded),
-            title: Text('Reset Password'),
-            onTap: () => showModalBottomSheet(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(5.0),
-                ),
-              ),
-              context: context,
-              isScrollControlled: true,
-              builder: (_) => ResetPasswordBottomSheet(),
-            ),
+            title: isLoading ? SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(),
+                    ): Text('Reset Password'),
+            onTap: isLoading ? null : () => () async => ButtonFunctions.onPressHandler(
+                          context: context,
+                          action: () => context
+                              .read<AuthenticationProvider>()
+                              .resetPassword(email!),
+                          lateErrorMessage: () => context
+                              .read<AuthenticationProvider>()
+                              .errorMessage,
+                          popScreenAfter: true,
+                          successMessage:
+                              'Reset password email sent, please check your inbox',
+                        ),
           ),
           ListTile(
             leading: Icon(Icons.feedback_rounded),
-            title: Text('Send Feedback'),
+            title: isLoading ? SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(),
+                    ) : Text('Send Feedback'),
             onTap: isLoading
                 ? null
                 : () async {

@@ -10,6 +10,8 @@ class FollowPage extends StatefulWidget {
 }
 
 class _FollowPageState extends State<FollowPage> {
+  late bool lock;
+
   @override
   void initState() {
     super.initState();
@@ -18,7 +20,7 @@ class _FollowPageState extends State<FollowPage> {
 
   @override
   Widget build(BuildContext context) {
-    final silentLoading = context.watch<FollowProvider>().silentLoading;
+    lock = false;
     return Scaffold(
       appBar: CupertinoNavigationBar(
         leading: Icon(Icons.notifications_on_rounded, size: 45, color: Theme.of(context).splashColor),
@@ -31,7 +33,8 @@ class _FollowPageState extends State<FollowPage> {
           onNotification: (ScrollNotification scrollInfo) {
             if (scrollInfo.metrics.pixels >
                 (scrollInfo.metrics.maxScrollExtent * 0.8)) {
-              if (!silentLoading){    
+              if (!lock){  
+                lock = true;  
                 context.read<FollowProvider>().fetchMoreFollows();
               }
             }

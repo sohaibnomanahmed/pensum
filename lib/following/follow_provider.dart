@@ -18,13 +18,11 @@ class FollowProvider with ChangeNotifier{
   List<Follow> _follows = [];
   final _pageSize = 10;
   var _isLoading = true;
-  var _silentLoading = false;
   var _isError = false;
   late StreamSubscription _subscription;
 
   // getters
   bool get isLoading => _isLoading;
-  bool get silentLoading => _silentLoading;
   bool get isError => _isError;
   List<Follow> get follows => [..._follows];
 
@@ -69,9 +67,6 @@ class FollowProvider with ChangeNotifier{
     if (_follows.isEmpty || _isError) {
       return;
     }
-    // set silent loader
-    _silentLoading = true;
-    notifyListeners();
 
     // get more follows
     List<Follow> moreFollows;
@@ -80,14 +75,11 @@ class FollowProvider with ChangeNotifier{
       moreFollows = await _followService.fetchMoreFollowing(uid: user.uid, pageSize: _pageSize);
     } catch (error){
       print('Failed to fetch more follows: $error');
-      _silentLoading = false;
       return;
     }
     // add them the end of the follows list
     _follows.addAll(moreFollows);
-    _silentLoading = false;
     notifyListeners();
-    return;
   }
 
   /// Unfollow a spesific [Book], should unsubscribe from [notifications]

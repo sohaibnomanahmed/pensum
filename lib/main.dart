@@ -79,7 +79,6 @@ class MyApp extends StatelessWidget {
         title: 'Leaf',
         theme: ThemeData(
             primarySwatch: Colors.teal,
-            // TODO store fonts
             textTheme:
                 GoogleFonts.ralewayTextTheme(Theme.of(context).textTheme),
             elevatedButtonTheme: ElevatedButtonThemeData(

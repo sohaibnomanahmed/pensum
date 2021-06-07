@@ -11,6 +11,7 @@ class RecipientsPage extends StatefulWidget {
 }
 
 class _RecipientsPageState extends State<RecipientsPage>{
+  late bool lock;
   @override
   void initState() {
     super.initState();
@@ -19,8 +20,8 @@ class _RecipientsPageState extends State<RecipientsPage>{
 
   @override
   Widget build(BuildContext context) {
+    lock = false;
     final isLoading = context.watch<RecipientsProvider>().isLoading;
-    final silentLoading = context.watch<RecipientsProvider>().silentLoading;
     return Scaffold(
         appBar: CupertinoNavigationBar(
         leading: Icon(Icons.forum_rounded, size: 50, color: Theme.of(context).splashColor,),
@@ -35,7 +36,8 @@ class _RecipientsPageState extends State<RecipientsPage>{
                           onNotification: (ScrollNotification scrollInfo) {
                             if (scrollInfo.metrics.pixels >
                                 (scrollInfo.metrics.maxScrollExtent * 0.8)) {
-                              if (!silentLoading){    
+                              if (!lock){
+                                lock = true;  
                                 context
                                     .read<RecipientsProvider>()
                                     .fetchMoreRecipients();

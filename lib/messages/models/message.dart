@@ -1,10 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Message {
+class Message{
   final String? id;
   final String sid; // sender id
   final String text;
-
   final Timestamp time;
   final String type;
   bool seen;
@@ -79,6 +78,11 @@ class Message {
       return Message(
           text: text, sid: sid, time: time, type: type, seen: seen, id: doc.id);
     }
+  }
+
+  @override
+  String toString(){
+    return text;
   }
 
   Map<String, dynamic> toMap() {

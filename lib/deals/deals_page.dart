@@ -21,6 +21,8 @@ class DealsPage extends StatefulWidget {
 }
 
 class _DealsPageState extends State<DealsPage> {
+  late bool lock;
+
   @override
   void initState() {
     super.initState();
@@ -29,9 +31,9 @@ class _DealsPageState extends State<DealsPage> {
 
   @override
   Widget build(BuildContext context) {
+    lock = false;
     final isFilter = context.watch<DealsProvider>().isFilter;
     final isLoading = context.watch<DealsProvider>().isLoading;
-    final silentLoading = context.watch<DealsProvider>().silentLoading;
     final isError = context.watch<DealsProvider>().isError;
     final isFollowBtnLoading =
         context.watch<DealsProvider>().isFollowBtnLoading;
@@ -42,7 +44,8 @@ class _DealsPageState extends State<DealsPage> {
         onNotification: (ScrollNotification scrollInfo) {
           if (scrollInfo.metrics.pixels >
               (scrollInfo.metrics.maxScrollExtent * 0.8)) {
-            if (!silentLoading){    
+            if (!lock){  
+              lock = true;  
               context.read<DealsProvider>().fetchMoreDeals(widget.book.isbn);
             }
           }

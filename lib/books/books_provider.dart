@@ -13,7 +13,6 @@ class BooksProvider with ChangeNotifier{
   Map<String, dynamic> _bookTitles = {};
   final _pageSize = 10;
   var _isLoading = true;
-  var _silentLoading = false;
   var _isError = false;
   var _isSearch = false;
   late StreamSubscription _booksSubscription;
@@ -23,7 +22,6 @@ class BooksProvider with ChangeNotifier{
   List<Book> get books => [..._books];
   Map<String, dynamic> get bookTitles => {..._bookTitles};
   bool get isLoading => _isLoading;
-  bool get silentLoading => _silentLoading;
   bool get isError => _isError;
   bool get isSearch => _isSearch;
 
@@ -67,24 +65,17 @@ class BooksProvider with ChangeNotifier{
     if (_books.isEmpty || _isError || _isSearch) {
       return;
     }
-    // set silent loader
-    _silentLoading = true;
-    notifyListeners();
 
-    // get more books
     List<Book> moreBooks;
     try{
       moreBooks = await _booksService.fetchMoreBooks(_pageSize);
     } catch (error){
       print('Failed to fetch more books: $error');
-      _silentLoading = false;
       return;
     }
     // add them the end of the messages list
     _books.addAll(moreBooks);
-    _silentLoading = false;
     notifyListeners();
-    return;
   }
 
   /// Subscbribe to the book titles stream, should only be called from [fetchBooks]

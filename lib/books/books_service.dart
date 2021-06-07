@@ -8,6 +8,7 @@ class BooksService {
 
   /// fetch books
   Stream<List<Book>> fetchBooks(int pageSize) {
+    print('fetching books');
     return firestore
         .collection('books')
         .orderBy('year', descending: true)
@@ -17,6 +18,7 @@ class BooksService {
       (list) {
         if (list.docs.isNotEmpty) {
           lastBook = list.docs.last;
+          print('last book ${lastBook.data()!}');
         }
         return list.docs
             .map((document) => Book.fromFirestore(document))
@@ -27,6 +29,7 @@ class BooksService {
 
   /// fetch and return more books, from current last. If no more books return null
   Future<List<Book>> fetchMoreBooks(int pageSize) async {
+    print('more books fetch');
     final books = await firestore
         .collection('books')
         .orderBy('year', descending: true)
@@ -34,7 +37,9 @@ class BooksService {
         .limit(pageSize)
         .get();
     if (books.docs.isNotEmpty) {
+      print('start from book ${lastBook.data()!}');
       lastBook = books.docs.last;
+      print('last book ${lastBook.data()!}');
     }
     return books.docs.map((document) => Book.fromFirestore(document)).toList();
   }

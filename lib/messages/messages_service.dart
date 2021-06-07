@@ -94,6 +94,7 @@ class MessagesService {
     required String rid,
     required Map<String, bool> message,
   }) {
+    print('updating seen');
     return firestore
         .collection('chats')
         .doc(rid)

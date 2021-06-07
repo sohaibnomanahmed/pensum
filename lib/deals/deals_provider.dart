@@ -29,7 +29,6 @@ class DealsProvider with ChangeNotifier {
   var _isError = false;
   var _isLoading = true;
   var _isFollowBtnLoading = false;
-  var _silentLoading = false;
   var _dealFilter = DealFilter.empty();
   bool _isFollowing = false;
   late StreamSubscription _dealsSubscription;
@@ -37,7 +36,6 @@ class DealsProvider with ChangeNotifier {
 
   // getters
   bool get isLoading => _isLoading;
-  bool get silentLoading => _silentLoading;
   bool get isError => _isError;
   bool get isFilter => _isFilter;
   bool get isFollowing => _isFollowing;
@@ -87,9 +85,6 @@ class DealsProvider with ChangeNotifier {
     if (_deals.isEmpty || _isError) {
       return;
     }
-    // set silent loader
-    _silentLoading = true;
-    notifyListeners();
 
     // get more books
     List<Deal> moreDeals;
@@ -103,14 +98,11 @@ class DealsProvider with ChangeNotifier {
       }
     } catch (error) {
       print('Failed to fetch more books: $error');
-      _silentLoading = false;
       return;
     }
     // add them the end of the messages list
     _deals.addAll(moreDeals);
-    _silentLoading = false;
     notifyListeners();
-    return;
   }
 
   /// A new [deal] will be created, or a previous [deal] will be updated with merging. 
