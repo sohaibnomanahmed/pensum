@@ -53,6 +53,7 @@ Future<void> main() async {
   await FirebaseAuth.instance.authStateChanges().isEmpty;
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   // TODO test out all providers creating and disposing, add internalization, and commercial images
+  // todo followings not deleted and presence on account delete
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent, // for Android
       statusBarIconBrightness: Brightness.dark, // for Android
@@ -115,7 +116,7 @@ class MyApp extends StatelessWidget {
         onGenerateRoute: (settings) {
           switch (settings.name) {
             case MessagesPage.routeName:
-              final args = settings.arguments as Map<String, String>;
+              final args = settings.arguments as Map<String, dynamic>;
               final rid = args['id'];
               final receiverImage = args['image'];
               final receiverName = args['name'];

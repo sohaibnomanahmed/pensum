@@ -17,32 +17,30 @@ class SettingsList extends StatelessWidget {
       child: Column(
         children: [
           ListTile(
-            leading: Icon(Icons.lock_rounded),
-            title: isLoading ? SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: CircularProgressIndicator(),
-                    ): Text('Reset Password'),
-            onTap: isLoading ? null : () => () async => ButtonFunctions.onPressHandler(
-                          context: context,
-                          action: () => context
-                              .read<AuthenticationProvider>()
-                              .resetPassword(email!),
-                          lateErrorMessage: () => context
-                              .read<AuthenticationProvider>()
-                              .errorMessage,
-                          popScreenAfter: true,
-                          successMessage:
-                              'Reset password email sent, please check your inbox',
-                        ),
+            leading: isLoading
+                ? SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(),
+                  )
+                : Icon(Icons.lock_rounded),
+            title: Text('Reset Password'),
+            onTap: isLoading
+                ? null
+                : () async => ButtonFunctions.onPressHandler(
+                      context: context,
+                      action: () => context
+                          .read<AuthenticationProvider>()
+                          .resetPassword(email!),
+                      lateErrorMessage: () =>
+                          context.read<AuthenticationProvider>().errorMessage,
+                      successMessage:
+                          'Reset password email sent, please check your inbox',
+                    ),
           ),
           ListTile(
             leading: Icon(Icons.feedback_rounded),
-            title: isLoading ? SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: CircularProgressIndicator(),
-                    ) : Text('Send Feedback'),
+            title: Text('Send Feedback'),
             onTap: isLoading
                 ? null
                 : () async {

@@ -7,7 +7,9 @@ class MessagesService {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   late DocumentSnapshot lastMessage;
 
-  /// fetch messages
+  /// fetch messages, sometimes fetches old messaes then the 10 new,
+  /// this will make the ordering wrong as if there was 13 new the 3 wont 
+  /// be shown in correct position.
   Stream<List<Message>> fetchMessages({
     required int pageSize,
     required String sid,
