@@ -1,0 +1,19 @@
+{
+  "name": "profile/9CCuezAOSgu7NMhlDzsuutGyOdqA",
+  "bucket": "leaf-dev-f3914.appspot.com",
+  "contentType": "image/jpeg",
+  "metageneration": 1,
+  "generation": 1623265726286,
+  "storageClass": "STANDARD",
+  "etag": "someETag",
+  "contentDisposition": "inline",
+  "contentEncoding": "identity",
+  "downloadTokens": [
+    "074bf303-c76d-425f-83a5-9821d92b3d71"
+  ],
+  "timeCreated": "2021-06-09T19:08:46.285Z",
+  "updated": "2021-06-09T19:08:46.328Z",
+  "size": 2066961,
+  "md5Hash": "ju6huEraP/vTsS5D8+6k4A==",
+  "crc32c": "1900255667"
+}
