@@ -93,13 +93,18 @@ class Deal {
     return Deal.fromMap(data, doc.id);
   }
 
-  Map<String, dynamic> toMap() {
-    // store the price as int, so it can be ordered on firebase
+  static int convertPriceToInt(String price){
     var convertedPrice = 0;
     if (price != prices.first) {
       // remove the ' kr' part from the string
       convertedPrice = int.parse(price.replaceAll(RegExp('[^0-9]'), ''));
     }
+    return convertedPrice;
+  }
+
+  Map<String, dynamic> toMap() {
+    // store the price as int, so it can be ordered on firebase
+    final convertedPrice = convertPriceToInt(price);
     return {
       'uid': uid,
       'userImage': userImage,

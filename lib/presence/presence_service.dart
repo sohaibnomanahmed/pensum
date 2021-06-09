@@ -1,9 +1,14 @@
 import 'dart:async';
 
+//import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class PresenceService {
   FirebaseDatabase database = FirebaseDatabase.instance;
+  // FirebaseDatabase database = FirebaseDatabase(
+  //   app: Firebase.app(),
+  //   databaseURL: 'localhost:9000?ns=leaf-dev-f3914',
+  // );
   late StreamSubscription subscription;
   late StreamSubscription subsub;
   late DatabaseReference con;
