@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:leaf/presence/widgets/presence_bubble.dart';
 import 'package:leaf/profile/profile_page.dart';
@@ -15,7 +16,9 @@ class MessagesPage extends StatefulWidget {
   final String receiverImage;
 
   const MessagesPage(
-      {required this.rid, required this.receiverName, required this.receiverImage});
+      {required this.rid,
+      required this.receiverName,
+      required this.receiverImage});
 
   @override
   _MessagesPageState createState() => _MessagesPageState();
@@ -45,30 +48,29 @@ class _MessagesPageState extends State<MessagesPage> {
     final isLoading = context.watch<MessagesProvider>().isLoading;
     final isError = context.watch<MessagesProvider>().isError;
     return Scaffold(
-      appBar: AppBar(
-          title: ListTile(
-            contentPadding: EdgeInsets.only(left: 0.0, right: 0.0),
-            onTap: () {
-              Navigator.of(context, rootNavigator: true).pushNamed(
-                ProfilePage.routeName,
-                arguments: widget.rid,
-              );
-            },
-            leading: Stack(
-              alignment: Alignment.bottomRight,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: CircleAvatar(
-                    backgroundImage: NetworkImage(widget.receiverImage),
-                  ),
-                ),
-                PresenceBubble(widget.rid, 18)
-              ],
-            ),
-            title: Text(widget.receiverName),
+      appBar: CupertinoNavigationBar(
+        //padding: EdgeInsetsDirectional.fromSTEB(15, 5, 15, 5),
+        backgroundColor: CupertinoColors.extraLightBackgroundGray.withOpacity(0.5),
+        middle: GestureDetector(
+          onTap: () {
+            Navigator.of(context, rootNavigator: true).pushNamed(
+              ProfilePage.routeName,
+              arguments: widget.rid,
+            );
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              CircleAvatar(
+                backgroundImage: NetworkImage(widget.receiverImage),
+              ),
+              SizedBox(width: 10,),
+              Text(widget.receiverName),
+            ],
           ),
-          elevation: 0),
+        ),
+        trailing: PresenceBubble(widget.rid, 14),
+      ),
       body: isError
           ? Center(
               child: LeafError(
@@ -83,8 +85,8 @@ class _MessagesPageState extends State<MessagesPage> {
                           onNotification: (ScrollNotification scrollInfo) {
                             if (scrollInfo.metrics.pixels >
                                 (scrollInfo.metrics.maxScrollExtent * 0.8)) {
-                              if (!lock){  
-                                lock = true;  
+                              if (!lock) {
+                                lock = true;
                                 context
                                     .read<MessagesProvider>()
                                     .fetchMoreMessages(widget.rid);
