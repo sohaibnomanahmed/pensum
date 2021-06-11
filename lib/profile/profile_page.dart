@@ -30,10 +30,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
-    final height = mediaQuery.size.height;
-    final width = mediaQuery.size.width;
-
     final profile = context.watch<ProfileProvider>().profile;
     final isLoading = context.watch<ProfileProvider>().isLoading;
     final isError = context.watch<ProfileProvider>().isError;
@@ -62,8 +58,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: Stack(
                     children: [
                       Positioned(
-                        top: -height * .25, // .2 old val
-                        right: -width * .5, // .2 old val
+                        top: -BezierContainer.height * .25, // .2 old val
+                        right: -BezierContainer.width * .5, // .2 old val
                         child: BezierContainer(),
                       ),
                       Column(
