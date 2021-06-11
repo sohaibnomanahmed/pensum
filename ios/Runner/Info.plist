@@ -25,15 +25,15 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Need access to select a location</string>
+	<string>Enable location to select a location, location images are stored for previews in chat</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Need access to select a location</string>
+	<string>Enable location to select a location, location images are stored for previews in chat</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Enable camera to take a picture</string>
+	<string>Enable camera access to take an image, profile images stored on server are deleted when changing them and also immediately when deleting your account</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Enable microphone to record a video</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Enable photos access to upload a profile picture or send image messages</string>
+	<string>Enable photo access to choose an image, profile images stored on server are deleted when changing them and also immediately when deleting your account</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
     	<key>NSAllowsLocalNetworking</key>
