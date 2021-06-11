@@ -27,6 +27,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
+  // TODO comment emualtor addition
   // Switch host based on platform.
   final host = defaultTargetPlatform == TargetPlatform.android
       ? '10.0.2.2:9080'
@@ -51,7 +52,7 @@ Future<void> main() async {
 
   await FirebaseAuth.instance.authStateChanges().isEmpty;
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  // TODO test out all providers creating and disposing, add internalization, and commercial images
+  // TODO test top bar
   // todo followings not deleted and presence on account delete
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent, // for Android
@@ -77,6 +78,8 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Leaf',
+        // TODO remove debug banner
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
             primarySwatch: Colors.teal,
             textTheme:
