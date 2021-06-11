@@ -18,6 +18,7 @@ class PresenceBubble extends StatefulWidget {
 }
 
 class _PresenceBubbleState extends State<PresenceBubble> {
+  // TODO re add presence bubble
   @override
   Widget build(BuildContext context) {
     /**
