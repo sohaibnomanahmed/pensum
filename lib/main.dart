@@ -18,25 +18,25 @@ import 'messages/messages_provider.dart';
 import 'global/404_page.dart';
 import 'notifications/notification_provider.dart';
 
-// emulator related
-import 'package:flutter/foundation.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+// ------------- EMULATOR -----------------
+// import 'package:flutter/foundation.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:firebase_storage/firebase_storage.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  // TODO comment emualtor addition
-  // Switch host based on platform.
-  final host = defaultTargetPlatform == TargetPlatform.android
-      ? '10.0.2.2:9080'
-      : 'localhost:9080';
-  // setup local developement environment
-  FirebaseFirestore.instance.settings  =
-    Settings(host: host, sslEnabled: false, persistenceEnabled: false);
-  await FirebaseAuth.instance.useEmulator('http://localhost:9099');
-  await FirebaseStorage.instance.useEmulator(host: 'localhost', port: 9199);
+  // ------------- EMULATOR -----------------
+  // // Switch host based on platform.
+  // final host = defaultTargetPlatform == TargetPlatform.android
+  //     ? '10.0.2.2:9080'
+  //     : 'localhost:9080';
+  // // setup local developement environment
+  // FirebaseFirestore.instance.settings  =
+  //   Settings(host: host, sslEnabled: false, persistenceEnabled: false);
+  // await FirebaseAuth.instance.useEmulator('http://localhost:9099');
+  // await FirebaseStorage.instance.useEmulator(host: 'localhost', port: 9199);
 
   if (kDebugMode) {
     // Force disable Crashlytics collection while doing every day development.
@@ -51,9 +51,8 @@ Future<void> main() async {
   }
 
   await FirebaseAuth.instance.authStateChanges().isEmpty;
-  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   // TODO test top bar
-  // todo followings not deleted and presence on account delete
+  // TODO followings not deleted and presence on account delete
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent, // for Android
       statusBarIconBrightness: Brightness.dark, // for Android
@@ -78,8 +77,6 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Leaf',
-        // TODO remove debug banner
-        debugShowCheckedModeBanner: false,
         theme: ThemeData(
             primarySwatch: Colors.teal,
             textTheme:
