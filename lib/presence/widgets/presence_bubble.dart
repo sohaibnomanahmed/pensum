@@ -18,7 +18,6 @@ class PresenceBubble extends StatefulWidget {
 }
 
 class _PresenceBubbleState extends State<PresenceBubble> {
-  // TODO re add presence bubble
   @override
   Widget build(BuildContext context) {
     /**
@@ -26,49 +25,49 @@ class _PresenceBubbleState extends State<PresenceBubble> {
          * some documentation is in this medium article
          * https://medium.com/codechai/realtime-database-in-flutter-bef0f29e3378 
          */   
-    // return StreamBuilder(
-    //   stream: PresenceService().getUserPresenceStream(widget.uid),
-    //   builder: (context, snap) {
-    //     if (snap.connectionState == ConnectionState.waiting) {
-    //       // return shimmer
-    //       return Shimmer.fromColors(
-    //         highlightColor: Colors.white,
-    //         baseColor: Colors.grey[300]!,
-    //         child: CircleAvatar(
-    //           backgroundColor: Colors.grey,
-    //           radius: widget.size / 2,
-    //         ),
-    //       );
-    //     }
-    //     var presence = snap.data;
+    return StreamBuilder(
+      stream: PresenceService().getUserPresenceStream(widget.uid),
+      builder: (context, snap) {
+        if (snap.connectionState == ConnectionState.waiting) {
+          // return shimmer
+          return Shimmer.fromColors(
+            highlightColor: Colors.white,
+            baseColor: Colors.grey[300]!,
+            child: CircleAvatar(
+              backgroundColor: Colors.grey,
+              radius: widget.size / 2,
+            ),
+          );
+        }
+        var presence = snap.data;
 
-    //     if (presence == true) {
+        if (presence == true) {
           return CircleAvatar(
             backgroundColor: Colors.green,
             radius: widget.size / 2,
           );
-    //     } else {
-    //       return Container(
-    //         height: widget.size,
-    //         decoration: BoxDecoration(
-    //             color: Colors.amber[900],
-    //             borderRadius: BorderRadius.circular(8)),
-    //         child: Padding(
-    //           padding: EdgeInsets.all(4),
-    //           child: FittedBox(
-    //             child: Timeago(
-    //               builder: (_, value) => Text(
-    //                 value,
-    //                 style: TextStyle(color: Colors.white),
-    //               ),
-    //               date: presence as DateTime,
-    //               locale: 'en_short',
-    //             ),
-    //           ),
-    //         ),
-    //       );
-    //     }
-    //   },
-    // );
+        } else {
+          return Container(
+            height: widget.size,
+            decoration: BoxDecoration(
+                color: Colors.amber[900],
+                borderRadius: BorderRadius.circular(8)),
+            child: Padding(
+              padding: EdgeInsets.all(4),
+              child: FittedBox(
+                child: Timeago(
+                  builder: (_, value) => Text(
+                    value,
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  date: presence as DateTime,
+                  locale: 'en_short',
+                ),
+              ),
+            ),
+          );
+        }
+      },
+    );
   }
 }
