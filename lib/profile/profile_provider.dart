@@ -125,7 +125,6 @@ class ProfileProvider with ChangeNotifier {
       // Choose image from image picker service
       final image = await _imagePickerService.pickImage(source);
       if (image == null) {
-        print('Error picking image');
         _isLoading = false;
         notifyListeners();
         return false;
@@ -133,7 +132,6 @@ class ProfileProvider with ChangeNotifier {
       // Crop choosen image, need to compress as picker dont compress
       var croppedImage = await _imageCropperService.pickImage(image: image, style: CropStyle.circle, ratio: CropAspectRatio(ratioX: 1, ratioY: 1));
       if (croppedImage == null) {
-        print('Error cropping image');
         _isLoading = false;
         notifyListeners();
         return false;

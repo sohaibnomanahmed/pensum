@@ -15,7 +15,6 @@ class MessagesService {
     required String sid,
     required String rid,
   }) {
-    print('Original messages');
     return firestore
         .collection('chats')
         .doc(sid)
@@ -29,7 +28,6 @@ class MessagesService {
       (list) {
         if (list.docs.isNotEmpty) {
           lastMessage = list.docs.last;
-          print('last: ${lastMessage['text']}');
         }
         return list.docs
             .map((document) => Message.fromFirestore(document))
@@ -44,7 +42,6 @@ class MessagesService {
     required String sid,
     required String rid,
   }) async {
-    print('Fetch more:');
     final messages = await firestore
         .collection('chats')
         .doc(sid)
@@ -56,9 +53,7 @@ class MessagesService {
         .limit(pageSize)
         .get();
     if (messages.docs.isNotEmpty) {
-      print('start from: ${lastMessage['text']}');
       lastMessage = messages.docs.last;
-      print('new last: ${lastMessage['text']}');
     }
     return messages.docs
         .map((document) => Message.fromFirestore(document))
@@ -96,7 +91,6 @@ class MessagesService {
     required String rid,
     required Map<String, bool> message,
   }) {
-    print('updating seen');
     return firestore
         .collection('chats')
         .doc(rid)

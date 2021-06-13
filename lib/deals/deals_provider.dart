@@ -204,7 +204,7 @@ class DealsProvider with ChangeNotifier {
     _isFilter = false;
     fetchDeals(isbn);
     } catch (error){
-      print('Error clearing filter');
+      print('Error clearing filter $error');
       _isLoading = false;
       notifyListeners();
       return false;

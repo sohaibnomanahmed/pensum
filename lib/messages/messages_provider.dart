@@ -35,11 +35,6 @@ class MessagesProvider with ChangeNotifier {
   var _messageLoading = false;
   late var _subscription;
 
-  MessagesProvider(){
-    print('Creating message provider');
-    print('messages length: ${_messages.length}');
-  }
-
   // getters
   MessagesProvider get provider => this;
   List<Message> get messages => [..._messages];
@@ -322,7 +317,6 @@ class MessagesProvider with ChangeNotifier {
   @override
   void dispose() async {
     super.dispose();
-    print('Disposing message provider');
     _messages.clear();
     await _subscription.cancel();
   }

@@ -51,8 +51,6 @@ Future<void> main() async {
   }
 
   await FirebaseAuth.instance.authStateChanges().isEmpty;
-  // TODO test top bar
-  // TODO followings not deleted and presence on account delete
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent, // for Android
       statusBarIconBrightness: Brightness.dark, // for Android
