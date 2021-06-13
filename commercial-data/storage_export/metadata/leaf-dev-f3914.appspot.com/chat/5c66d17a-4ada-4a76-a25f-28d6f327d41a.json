@@ -1,0 +1,19 @@
+{
+  "name": "chat/5c66d17a-4ada-4a76-a25f-28d6f327d41a",
+  "bucket": "leaf-dev-f3914.appspot.com",
+  "contentType": "image/png",
+  "metageneration": 1,
+  "generation": 1623401606885,
+  "storageClass": "STANDARD",
+  "etag": "someETag",
+  "contentDisposition": "inline",
+  "contentEncoding": "identity",
+  "downloadTokens": [
+    "af39415e-80ff-4722-a857-83768d6076da"
+  ],
+  "timeCreated": "2021-06-11T08:53:26.884Z",
+  "updated": "2021-06-11T08:53:26.887Z",
+  "size": 46735,
+  "md5Hash": "F0n/E27j6nG07S8RYM2gSA==",
+  "crc32c": "3941471659"
+}

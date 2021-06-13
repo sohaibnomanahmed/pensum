@@ -8,15 +8,14 @@ class AuthenticationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final height = mediaQuery.size.height;
-    final width = mediaQuery.size.width;
     return Scaffold(
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Stack(
           children: [
             Positioned(
-              top: -height * .10,
-              right: -width * .3,
+              top: -BezierContainer.height * .10,
+              right: -BezierContainer.width * .3,
               child: BezierContainer(Icon(
                 Icons.eco,
                 size: 100,

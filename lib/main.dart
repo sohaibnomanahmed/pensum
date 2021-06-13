@@ -1,16 +1,15 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:leaf/presence/presence_provider.dart';
-import 'package:leaf/profile/profile_page.dart';
-import 'package:leaf/profile/profile_provider.dart';
 import 'package:provider/provider.dart';
 
+import 'presence/presence_provider.dart';
+import 'profile/profile_page.dart';
+import 'profile/profile_provider.dart';
 import 'authentication/authentication_provider.dart';
 import 'authentication/authentication_page.dart';
 import 'authentication/home_page.dart';
@@ -19,7 +18,7 @@ import 'messages/messages_provider.dart';
 import 'global/404_page.dart';
 import 'notifications/notification_provider.dart';
 
-// emulator related
+// ------------- EMULATOR -----------------
 // import 'package:flutter/foundation.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:firebase_storage/firebase_storage.dart';
@@ -28,15 +27,16 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  // Switch host based on platform.
+  // ------------- EMULATOR -----------------
+  // // Switch host based on platform.
   // final host = defaultTargetPlatform == TargetPlatform.android
-  //     ? '10.0.2.2:8080'
-  //     : 'localhost:8080';
+  //     ? '10.0.2.2:9080'
+  //     : 'localhost:9080';
   // // setup local developement environment
   // FirebaseFirestore.instance.settings  =
   //   Settings(host: host, sslEnabled: false, persistenceEnabled: false);
   // await FirebaseAuth.instance.useEmulator('http://localhost:9099');
-  // await FirebaseStorage.instance.useEmulator(host: 'localhost', port: 9080);
+  // await FirebaseStorage.instance.useEmulator(host: 'localhost', port: 9199);
 
   if (kDebugMode) {
     // Force disable Crashlytics collection while doing every day development.
@@ -51,9 +51,8 @@ Future<void> main() async {
   }
 
   await FirebaseAuth.instance.authStateChanges().isEmpty;
-  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  // TODO test out all providers creating and disposing, add internalization, and commercial images
-  // todo followings not deleted and presence on account delete
+  // TODO test top bar
+  // TODO followings not deleted and presence on account delete
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent, // for Android
       statusBarIconBrightness: Brightness.dark, // for Android
