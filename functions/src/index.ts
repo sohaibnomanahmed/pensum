@@ -9,10 +9,10 @@ import * as admin from 'firebase-admin'
 //   response.send("Hello from Firebase!");
 // });
 
-var serviceAccount = require("../serviceKeyDev.json");
+//var serviceAccount = require("../serviceKeyDev.json");
 
 admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
+    //credential: admin.credential.cert(serviceAccount)
 })
 
 // makes a certain account into admin, this admin account is used as feedback related account
