@@ -7,7 +7,15 @@ import 'package:leaf/authentication/authentication_provider.dart';
 
 import 'delete_account_bottom_sheet.dart';
 
-class SettingsList extends StatelessWidget {
+class SettingsList extends StatefulWidget {
+  @override
+  _SettingsListState createState() => _SettingsListState();
+}
+
+class _SettingsListState extends State<SettingsList> {
+  bool resetBtn = false;
+  bool signOutBtn = false;
+
   @override
   Widget build(BuildContext context) {
     final isLoading = context.watch<AuthenticationProvider>().isLoading;
@@ -17,27 +25,32 @@ class SettingsList extends StatelessWidget {
       child: Column(
         children: [
           ListTile(
-            leading: isLoading
-                ? SizedBox(
-                    height: 20,
-                    width: 20,
-                    child: CircularProgressIndicator(),
-                  )
-                : Icon(Icons.lock_rounded),
-            title: Text('Reset Password'),
-            onTap: isLoading
-                ? null
-                : () async => ButtonFunctions.onPressHandler(
-                      context: context,
-                      action: () => context
-                          .read<AuthenticationProvider>()
-                          .resetPassword(email!),
-                      lateErrorMessage: () =>
-                          context.read<AuthenticationProvider>().errorMessage,
-                      successMessage:
-                          'Reset password email sent, please check your inbox',
-                    ),
-          ),
+              leading: isLoading && resetBtn
+                  ? SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(),
+                    )
+                  : Icon(Icons.lock_rounded),
+              title: Text('Reset Password'),
+              onTap: isLoading
+                  ? null
+                  : () async {
+                      resetBtn = true;
+                      await ButtonFunctions.onPressHandler(
+                        context: context,
+                        action: () => context
+                            .read<AuthenticationProvider>()
+                            .resetPassword(email!),
+                        lateErrorMessage: () =>
+                            context.read<AuthenticationProvider>().errorMessage,
+                        successMessage:
+                            'Reset password email sent, please check your inbox',
+                      );
+                      setState(() {
+                        resetBtn = false;
+                      });
+                    }),
           ListTile(
             leading: Icon(Icons.feedback_rounded),
             title: Text('Send Feedback'),
@@ -72,7 +85,7 @@ class SettingsList extends StatelessWidget {
                   },
           ),
           ListTile(
-              leading: isLoading
+              leading: isLoading && signOutBtn
                   ? SizedBox(
                       height: 20,
                       width: 20,
@@ -82,12 +95,18 @@ class SettingsList extends StatelessWidget {
               title: Text('Sign out'),
               onTap: isLoading
                   ? null
-                  : () async => ButtonFunctions.onPressHandler(
+                  : () async {
+                    signOutBtn = true;
+                    await ButtonFunctions.onPressHandler(
                       context: context,
-                      action: () async => await context
+                      action: () => context
                           .read<AuthenticationProvider>()
                           .signOut(),
-                      errorMessage: 'Something went wrong, please try again')),
+                      errorMessage: 'Something went wrong, please try again');
+                      setState(() {
+                        signOutBtn = false;
+                      });
+                      }),
           ListTile(
             leading: Icon(Icons.delete_rounded),
             title: Text('Delete Account'),

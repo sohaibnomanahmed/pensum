@@ -34,6 +34,8 @@
 	<string>Enable microphone to record a video</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Enable photo access to choose an image, profile images stored on server are deleted when changing them and also immediately when deleting your account</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

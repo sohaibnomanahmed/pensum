@@ -69,7 +69,7 @@ class _MessagesPageState extends State<MessagesPage> {
             ],
           ),
         ),
-        trailing: PresenceBubble(widget.rid, 14),
+        trailing: PresenceBubble(widget.rid, 18),
       ),
       body: isError
           ? Center(
