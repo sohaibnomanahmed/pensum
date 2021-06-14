@@ -14,8 +14,8 @@ A flutter project for buying and selling books, mainly campus curriculum sociall
 
 ### Screenshots
 
-<img src="screenshots/IMG_0316.PNG" alt="drawing" width="200"/> <img src="screenshots/IMG_0322.PNG" alt="drawing" width="200"/> <img src="screenshots/IMG_0319.PNG" alt="drawing" width="200"/>\
-<img src="screenshots/IMG_0325.PNG" alt="drawing" width="200"/> <img src="screenshots/IMG_0323.PNG" alt="drawing" width="200"/> <img src="screenshots/IMG_0321.PNG" alt="drawing" width="200"/>
+<img src="screenshots/1.PNG" alt="drawing" width="200"/> <img src="screenshots/2.PNG" alt="drawing" width="200"/> <img src="screenshots/IMG_0319.PNG" alt="drawing" width="200"/>\
+<img src="screenshots/3.PNG" alt="drawing" width="200"/> <img src="screenshots/5.PNG" alt="drawing" width="200"/> <img src="screenshots/IMG_0321.PNG" alt="drawing" width="200"/>
 
 ### Usage
 
