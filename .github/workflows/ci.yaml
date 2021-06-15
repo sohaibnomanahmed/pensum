@@ -44,7 +44,12 @@ jobs:
 
       # Run flutter commands to test code
       - run: flutter clean
-      - run: flutter pub get   
+      - run: flutter pub get
+      # get firebase config
+      - name: Decode Google-service-Info.plist
+        env: 
+          FIREBASE_IOS: ${{ secrets.FIREBASE_IOS }}
+        run: echo $FIREBASE_IOS > leaf/ios/Runner/Google-service-Info.plist
       - run: flutter build ios --no-codesign
 
   build_appbundle:
@@ -62,5 +67,10 @@ jobs:
 
       # Run flutter commands to test code
       - run: flutter clean
-      - run: flutter pub get   
+      - run: flutter pub get
+      # get firebase config
+      - name: Decode google-services.json
+        env: 
+          FIREBASE_ANDROID: ${{ secrets.FIREBASE_ANDROID }}
+        run: echo $FIREBASE_ANDROID > leaf/android/app/google-services.json 
       - run: flutter build appbundle     
