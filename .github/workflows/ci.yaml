@@ -40,7 +40,9 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: "12.x"
-      - uses: subosito/flutter-action@v1    
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: 'stable'  
 
       # Run flutter commands to test code
       - run: flutter clean
@@ -49,7 +51,7 @@ jobs:
       - name: Decode Google-service-Info.plist
         env: 
           FIREBASE_IOS: ${{ secrets.FIREBASE_IOS }}
-        run: echo $FIREBASE_IOS > leaf/ios/Runner/Google-service-Info.plist
+        run: echo $FIREBASE_IOS > ./ios/Runner/Google-service-Info.plist
       - run: flutter build ios --no-codesign
 
   build_appbundle:
@@ -72,5 +74,5 @@ jobs:
       - name: Decode google-services.json
         env: 
           FIREBASE_ANDROID: ${{ secrets.FIREBASE_ANDROID }}
-        run: echo $FIREBASE_ANDROID > leaf/android/app/google-services.json 
+        run: echo $FIREBASE_ANDROID > ./android/app/google-services.json 
       - run: flutter build appbundle     
