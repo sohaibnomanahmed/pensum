@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:leaf/global/widgets/paging_view.dart';
 import 'package:provider/provider.dart';
 
@@ -24,17 +25,20 @@ class _BooksPageState extends State<BooksPage> {
     return Scaffold(
       body: PagingView(
         action: context.read<BooksProvider>().fetchMoreBooks,
-        child: SafeArea(
-          child: CustomScrollView(
-            slivers: [
-              SliverAppBar(
-                backgroundColor: Theme.of(context).canvasColor,
-                elevation: 1,
-                title: BookSearchBar(),
-                floating: true,
-              ),
-              BookList(),
-            ],
+        child: AnnotatedRegion<SystemUiOverlayStyle>(
+          value: SystemUiOverlayStyle.dark,
+          child: SafeArea(
+            child: CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  backgroundColor: Theme.of(context).canvasColor,
+                  elevation: 1,
+                  title: BookSearchBar(),
+                  floating: true,
+                ),
+                BookList(),
+              ],
+            ),
           ),
         ),
       ),

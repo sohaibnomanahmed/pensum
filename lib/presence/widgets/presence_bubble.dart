@@ -51,9 +51,9 @@ class _PresenceBubbleState extends State<PresenceBubble> {
             height: widget.size,
             decoration: BoxDecoration(
                 color: Colors.amber[900],
-                borderRadius: BorderRadius.circular(widget.size > 20 ? 16 : 12)),
+                borderRadius: BorderRadius.circular(widget.size/(1.125))),
             child: Padding(
-              padding: EdgeInsets.all(widget.size > 20 ? 8 : 4),
+              padding: EdgeInsets.all(widget.size/(4.5)),
               child: FittedBox(
                 child: Timeago(
                   builder: (_, value) => Text(

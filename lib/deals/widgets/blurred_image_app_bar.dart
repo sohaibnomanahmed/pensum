@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:leaf/books/models/book.dart';
 import 'package:provider/provider.dart';
 
@@ -14,7 +15,6 @@ class BlurredImageAppBar extends StatelessWidget with PreferredSizeWidget {
   final Size preferredSize;
 
   final Book book;
-  //final DealsProvider dealsProvider;
 
   BlurredImageAppBar(this.book)
       : preferredSize = Size.fromHeight(50.0);
@@ -22,6 +22,7 @@ class BlurredImageAppBar extends StatelessWidget with PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      brightness: Brightness.dark,
       title: Text(book.titles.first),
       flexibleSpace: ClipRect(
         child: Container(

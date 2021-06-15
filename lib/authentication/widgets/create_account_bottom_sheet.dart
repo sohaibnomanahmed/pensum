@@ -41,10 +41,12 @@ class _CreateAccountBottomSheetState extends State<CreateAccountBottomSheet> {
                 color: Theme.of(context).primaryColor,
               ),
               TextField(
+                textCapitalization: TextCapitalization.words,
                 decoration: InputDecoration(labelText: 'Firstname'),
                 onChanged: (value) => _firstname = value,
               ),
               TextField(
+                textCapitalization: TextCapitalization.words,
                 decoration: InputDecoration(labelText: 'Lastname'),
                 onChanged: (value) => _lastname = value,
               ),
