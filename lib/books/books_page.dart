@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:leaf/global/widgets/paging_view.dart';
 import 'package:provider/provider.dart';
 
 import 'widgets/book_list.dart';
@@ -11,8 +12,6 @@ class BooksPage extends StatefulWidget {
 }
 
 class _BooksPageState extends State<BooksPage> {
-  late bool lock;
-
   @override
   void initState() {
     super.initState();
@@ -21,21 +20,10 @@ class _BooksPageState extends State<BooksPage> {
 
   @override
   Widget build(BuildContext context) {
-    // set lock to prevent multiple calls to the function
-    lock = false;
     final isSearch = context.watch<BooksProvider>().isSearch;
     return Scaffold(
-      body: NotificationListener<ScrollNotification>(
-        onNotification: (ScrollNotification scrollInfo) {
-          if (scrollInfo.metrics.pixels >
-              (scrollInfo.metrics.maxScrollExtent * 0.8)) {
-            if (!lock){
-              lock = true;
-              context.read<BooksProvider>().fetchMoreBooks();
-            }
-          }
-          return true;
-        },
+      body: PagingView(
+        action: context.read<BooksProvider>().fetchMoreBooks,
         child: SafeArea(
           child: CustomScrollView(
             slivers: [

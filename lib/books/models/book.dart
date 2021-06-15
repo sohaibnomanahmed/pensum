@@ -66,7 +66,7 @@ class Book {
       if (author == authors.last) {
         res += author;
       } else {
-        res += author + '. ';
+        res += author + ', ';
       }
     });
     return res;
