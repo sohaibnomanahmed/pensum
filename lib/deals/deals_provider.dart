@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:leaf/authentication/authentication_service.dart';
+import 'package:leaf/books/books_service.dart';
 import 'package:leaf/deals/deals_service.dart';
 import 'package:leaf/deals/models/deal_filter.dart';
 import 'package:leaf/following/follow_service.dart';
@@ -20,6 +21,7 @@ class DealsProvider with ChangeNotifier {
   final _authenticationService = AuthenticationService();
   final _profileService = ProfileService();
   final _dealsService = DealsService();
+  final _booksService = BooksService();
   final _followService = FollowService();
   final _notificationsService = NotificationService();
 
@@ -121,6 +123,10 @@ class DealsProvider with ChangeNotifier {
     try {
       final user = _authenticationService.currentUser!;
       final userProfile = await _profileService.getProfile(user.uid);
+      if (id == null){
+        // new deal as id is null, update books deal count
+        await _booksService.incrementDealsCount(pid);
+      }
       // get a deal id from the database
       id ??= _dealsService.getDealId(pid);
       final deal = Deal(

@@ -121,10 +121,10 @@ class DealsService {
   }
 
   /// delete a deal
-  Future<void> deleteDeal({required String productId, required String id}) {
+  Future<void> deleteDeal({required String pid, required String id}) {
     return firestore
         .collection('books')
-        .doc(productId)
+        .doc(pid)
         .collection('deals')
         .doc(id)
         .delete();

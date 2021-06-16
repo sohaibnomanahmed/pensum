@@ -76,15 +76,16 @@ class ProfileProvider with ChangeNotifier {
   /// Deletes a deal both from the users [profile] and from the books [deals page]
   /// if successfull return true, if an error occurs set error message and retun false 
   Future<bool> deleteProfileDeal(
-      {required String productId, required String id}) async {
+      {required String pid, required String id}) async {
     try {
       // remove deal from the book
-      final p1 = _dealsService.deleteDeal(productId: productId, id: id);
+      final p1 = _dealsService.deleteDeal(pid: pid, id: id);
       // remove deal from users profile
       final user = _authenticationService.currentUser!;
       _profile!.userItems.remove(id);
       final p2 = _profileService.setProfile(uid: user.uid, profile: _profile!);
-      await Future.wait([p1, p2]);
+      final p3 = _booksService.decrementDealsCount(pid);
+      await Future.wait([p1, p2, p3]);
       notifyListeners();
     } catch (error) {
       print('Removing deal error: $error');

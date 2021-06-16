@@ -12,6 +12,7 @@ void main() {
       pages: '',
       publisher: '',
       year: '',
+      deals: 0,
       authors: ['Jack Frost', 'Bella Hadi', 'Hassan Ali']
     );
     final authors = book.getAuthors;

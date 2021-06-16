@@ -10,6 +10,7 @@ class Book {
   final String edition;
   final String year;
   final String isbn;
+  final int deals; // number of deals for this book
 
   Book({
     required this.titles,
@@ -21,6 +22,7 @@ class Book {
     required this.edition,
     required this.year,
     required this.isbn,
+    required this.deals
   });
 
   factory Book.fromFirestore(DocumentSnapshot doc) {
@@ -36,6 +38,7 @@ class Book {
     final String? pages = data['pages'];
     final String? edition = data['edition'];
     final String? year = data['year'];
+    final int? deals = data['deals'];
 
     if (titles == null ||
         authors == null ||
@@ -44,7 +47,8 @@ class Book {
         publisher == null ||
         pages == null ||
         edition == null ||
-        year == null) {
+        year == null ||
+        deals == null) {
       throw 'Error creating Book from null value';
     }
 
@@ -57,6 +61,7 @@ class Book {
         pages: pages,
         edition: edition,
         year: year,
+        deals: deals,
         isbn: doc.id);
   }
 
@@ -83,6 +88,7 @@ class Book {
       'edition': edition,
       'year': year,
       'isbn': isbn,
+      'deals': deals
     };
   }
 }

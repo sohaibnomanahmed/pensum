@@ -80,7 +80,7 @@ class ProfileDealItem extends StatelessWidget {
                         context: context,
                         action: () async => await context
                             .read<ProfileProvider>()
-                            .deleteProfileDeal(productId: deal.pid, id: deal.id),
+                            .deleteProfileDeal(pid: deal.pid, id: deal.id),
                         errorMessage: 'Error deleting deal',
                         successMessage: 'Succesfully deleted the deal',
                       ),

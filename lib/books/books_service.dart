@@ -60,6 +60,18 @@ class BooksService {
     return Book.fromFirestore(book);
   }
 
+  // increments deals count for a spesific book
+  Future<void> incrementDealsCount(String isbn) async {
+    final docRef = firestore.collection('books').doc(isbn);
+    return docRef.update(({'deals': FieldValue.increment(1)}));
+  }
+
+  // decrements deals count for a spesific book
+  Future<void> decrementDealsCount(String isbn) async {
+    final docRef = firestore.collection('books').doc(isbn);
+    return docRef.update(({'deals': FieldValue.increment(-1)}));
+  }
+
   /// Search books by title
   Future<List<Book>> searchBooksByTitle(String title) async {
     final books = await firestore
