@@ -1,19 +1,13 @@
 import * as functions from 'firebase-functions'
 import * as admin from 'firebase-admin'
-
-// // Start writing Firebase Functions
-// // https://firebase.google.com/docs/functions/typescript
-//
-// export const helloWorld = functions.https.onRequest((request, response) => {
-//   functions.logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+const firebase_tools = require('firebase-tools');
 
 //var serviceAccount = require("../serviceKeyDev.json");
 
-admin.initializeApp({
-    //credential: admin.credential.cert(serviceAccount)
-})
+admin.initializeApp(
+    // ---------- FIREBASE EMULATOR: was maybe for storage now we have storage emulator maybe not needed
+    //{credential: admin.credential.cert(serviceAccount)}
+)
 
 // makes a certain account into admin, this admin account is used as feedback related account
 export const onServiceAccountCreation = functions.auth.user().onCreate(async user => {
@@ -240,12 +234,22 @@ export const onAddDeal = functions.firestore
 // auth trigger (user deleted)
 export const onUserDelete = functions.auth.user().onDelete(async user => {
     const promises = []
-    // delete user data
+    // delete user profile
     const userDoc = admin.firestore().collection('profiles').doc(user.uid)
     promises.push(userDoc.delete())
+    // delete user followings collection in profile
+    const userFollowings = await admin.firestore().collection('profiles').doc(user.uid).collection('following').get();
+    userFollowings.forEach(doc => {
+         promises.push(doc.ref.delete())
+    })
     // delete users message data
-    const messagesDoc = admin.firestore().collection('messages').doc(user.uid)
-    promises.push(messagesDoc.delete())
+    promises.push(firebase_tools.firestore
+      .delete('chats/' + user.uid, {
+        project: process.env.GCLOUD_PROJECT,
+        recursive: true,
+        yes: true
+      }))
+
     // delete users deals, finds all collection with name deals and joins them togheter
     const deals = await admin.firestore().collectionGroup('deals').where("uid", "==", user.uid).get()
     const dealDocs = deals.docs
@@ -253,6 +257,9 @@ export const onUserDelete = functions.auth.user().onDelete(async user => {
         const p = doc.ref.delete()
         promises.push(p)
     })
+    // delete user presence value from realtime database
+    const presenceMap = admin.database().ref('presence').child(user.uid)
+    promises.push(presenceMap.remove())
     // return when all promises are done
     return Promise.all(promises)
 });

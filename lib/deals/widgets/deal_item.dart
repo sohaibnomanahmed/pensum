@@ -24,7 +24,8 @@ class DealItem extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.all(5.0),
-                child: CircleAvatar(backgroundImage: NetworkImage(deal.userImage)),
+                child:
+                    CircleAvatar(backgroundImage: NetworkImage(deal.userImage)),
               ),
               PresenceBubble(deal.uid, 18)
             ],
@@ -46,14 +47,6 @@ class DealItem extends StatelessWidget {
             ],
           ),
           trailing: GestureDetector(
-            onTap: () => Navigator.of(context, rootNavigator: true).pushNamed(
-              MessagesPage.routeName,
-              arguments: {
-                'id': deal.uid,
-                'image': deal.userImage,
-                'name': deal.userName
-              },
-            ),
             onLongPress: () => showModalBottomSheet(
               shape: RoundedRectangleBorder(
                   borderRadius:
@@ -70,8 +63,19 @@ class DealItem extends StatelessWidget {
                 ),
               ),
             ),
-            child:
-                Icon(Icons.send_rounded, color: Theme.of(context).primaryColor),
+            child: IconButton(
+              icon: Icon(Icons.send_rounded,
+                  color: Theme.of(context).primaryColor),
+              onPressed: () =>
+                  Navigator.of(context, rootNavigator: true).pushNamed(
+                MessagesPage.routeName,
+                arguments: {
+                  'id': deal.uid,
+                  'image': deal.userImage,
+                  'name': deal.userName
+                },
+              ),
+            ),
           ),
         ),
         if (deal.description.isNotEmpty)
