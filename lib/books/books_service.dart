@@ -10,7 +10,7 @@ class BooksService {
   Stream<List<Book>> fetchBooks(int pageSize) {
     return firestore
         .collection('books')
-        .orderBy('year', descending: true)
+        .orderBy('deals', descending: true)
         .limit(pageSize)
         .snapshots()
         .map(
@@ -29,7 +29,7 @@ class BooksService {
   Future<List<Book>> fetchMoreBooks(int pageSize) async {
     final books = await firestore
         .collection('books')
-        .orderBy('year', descending: true)
+        .orderBy('deals', descending: true)
         .startAfterDocument(lastBook)
         .limit(pageSize)
         .get();

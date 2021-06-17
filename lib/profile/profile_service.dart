@@ -9,7 +9,7 @@ class ProfileService {
     return firestore
         .collection('profiles')
         .doc(uid)
-        .set(profile.toMap(), SetOptions(merge: true));
+        .set(profile.toMap());
   }
 
   /// get profile data 

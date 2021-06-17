@@ -84,9 +84,7 @@ class ProfileProvider with ChangeNotifier {
       final user = _authenticationService.currentUser!;
       _profile!.userItems.remove(id);
       final p2 = _profileService.setProfile(uid: user.uid, profile: _profile!);
-      final p3 = _booksService.decrementDealsCount(pid);
-      await Future.wait([p1, p2, p3]);
-      notifyListeners();
+      await Future.wait([p1, p2]);
     } catch (error) {
       print('Removing deal error: $error');
       return false;
@@ -108,7 +106,8 @@ class ProfileProvider with ChangeNotifier {
       _profile!.lastname = lastname;
       // update the user object in the database
       await _profileService.setProfile(uid: user.uid, profile: _profile!);
-      notifyListeners();
+      // TODO should refetch from firebase even no wifi
+      //notifyListeners();
     } catch (error) {
       print('Add deal error: $error');
       return false;

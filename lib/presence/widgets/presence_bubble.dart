@@ -41,7 +41,12 @@ class _PresenceBubbleState extends State<PresenceBubble> {
         }
         var presence = snap.data;
 
-        if (presence == true) {
+        if (presence == null) {
+          return CircleAvatar(
+            backgroundColor: Colors.red,
+            radius: widget.size / 2,
+          );
+        } else if (presence == true) {
           return CircleAvatar(
             backgroundColor: Colors.green,
             radius: widget.size / 2,

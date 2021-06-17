@@ -123,10 +123,7 @@ class DealsProvider with ChangeNotifier {
     try {
       final user = _authenticationService.currentUser!;
       final userProfile = await _profileService.getProfile(user.uid);
-      if (id == null){
-        // new deal as id is null, update books deal count
-        await _booksService.incrementDealsCount(pid);
-      }
+ 
       // get a deal id from the database
       id ??= _dealsService.getDealId(pid);
       final deal = Deal(
@@ -144,12 +141,13 @@ class DealsProvider with ChangeNotifier {
         time: Timestamp.now(),
       );
       // add deal to the corresponding book collection database
-      await _dealsService.setDeal(deal: deal, id: id);
+      final p1 = _dealsService.setDeal(deal: deal, id: id);
       // add deal to the user objects item list
       userProfile.userItems[id] = deal.toMap();
       // update the user object in the database
-      await _profileService.setProfile(
+      final p2 = _profileService.setProfile(
           uid: userProfile.uid, profile: userProfile);
+      await Future.wait([p1, p2]);    
     } catch (error) {
       print('Add deal error: $error');
       return false;

@@ -1,5 +1,7 @@
 import * as functions from 'firebase-functions'
 import * as admin from 'firebase-admin'
+
+const FieldValue = require('firebase-admin').firestore.FieldValue;
 const firebase_tools = require('firebase-tools');
 
 //var serviceAccount = require("../serviceKeyDev.json");
@@ -185,10 +187,10 @@ export const onSendMessage = functions.firestore
         return Promise.all(promises)
     });
 
-// Deal notifications when a new deal is added  
+// Deal notifications when a new deal is added, also increment deals count 
 export const onAddDeal = functions.firestore
 .document('books/{bookIsbn}/deals/{dealId}')
-.onCreate(async (snapshot, context) => {
+.onCreate(async (_, context) => {
     // cant return before all futures are done, this wait for all to be done
     // before returning and have them be done async
     const promises: Promise<any>[] = [] // need this since the promises are of different type
@@ -199,6 +201,10 @@ export const onAddDeal = functions.firestore
     const bookImage = bookDoc.data()!.image
     const bookTitle = bookDoc.data()!.title[0]
     const bookMessage = 'New deal added for ' + bookTitle
+
+    // update book deals count
+    await admin.firestore().collection('books').doc(bookISBN).update({deals: FieldValue.increment(1)})
+
 
     // build the notification
     const type = 'book'
@@ -229,6 +235,17 @@ export const onAddDeal = functions.firestore
     // send the notification to the recievers topic
     promises.push(admin.messaging().sendToTopic(bookISBN, payload))
     return Promise.all(promises)
+});
+
+// Decrement deals count, when a deal is deleted, better than having it in the frontend
+// because of scope and also sometimes user deleted the deal, but its not reflected in books collection
+export const onDeleteDeal = functions.firestore
+.document('books/{bookIsbn}/deals/{dealId}')
+.onDelete(async (_, context) => {
+    // get book isbn
+    const bookISBN = context.params.bookIsbn
+    // update book deals count
+    return admin.firestore().collection('books').doc(bookISBN).update({deals: FieldValue.increment(-1)})
 });
 
 // auth trigger (user deleted)

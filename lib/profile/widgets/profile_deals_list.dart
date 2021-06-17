@@ -20,7 +20,7 @@ class ProfileDealsList extends StatelessWidget {
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         separatorBuilder: (_, __) => Divider(),
-        itemBuilder: (_, index) => ProfileDealItem(key: ValueKey(profileDeals[index].pid), deal: profileDeals[index]),
+        itemBuilder: (_, index) => ProfileDealItem(deal: profileDeals[index]),
         itemCount: profileDeals.length,
       ),
     );
