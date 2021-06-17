@@ -43,11 +43,13 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
               Icon(Icons.person_pin_circle_rounded,
                   size: 80, color: Theme.of(context).primaryColor),
               TextFormField(
+                textCapitalization: TextCapitalization.words,
                 initialValue: _firstname.isEmpty ? null : _firstname,
                 decoration: InputDecoration(labelText: 'Firstname'),
                 onChanged: (value) => _firstname = value,
               ),
               TextFormField(
+                textCapitalization: TextCapitalization.words,
                 initialValue: _lastname.isEmpty ? null : _lastname,
                 decoration: InputDecoration(labelText: 'Lastname'),
                 onChanged: (value) => _lastname = value,

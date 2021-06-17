@@ -92,6 +92,7 @@ class _AddDealBottomSheetState extends State<AddDealBottomSheet> {
                     .toList(),
               ),
               TextFormField(
+                textCapitalization: TextCapitalization.sentences,
                 maxLength: 150,
                 initialValue: _description.isEmpty ? null : _description,
                 minLines: 3,

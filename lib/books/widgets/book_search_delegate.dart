@@ -90,7 +90,7 @@ class BookSearchDelegate extends SearchDelegate<String?> {
       multiLine: false,
     );
     bookMatches = bookTitles.keys
-        .where((k) => regExp.hasMatch(bookTitles[k]['title']))
+        .where((k) => regExp.hasMatch(bookTitles[k]['title'] + bookTitles[k]['authors']))
         .toList();
 
     return ListView.builder(

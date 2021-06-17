@@ -69,6 +69,20 @@ class BookItem extends StatelessWidget {
               ],
             ),
           ),
+          if (book != null)
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+              decoration: BoxDecoration(
+                  color: book!.deals > 0
+                      ? book!.deals > 3
+                          ? book!.deals > 7
+                              ? Colors.green[400]
+                              : Colors.green[200]
+                          : Colors.deepOrange[200]
+                      : Colors.grey[200],
+                  borderRadius: BorderRadius.circular(10)),
+              child: FittedBox(child: Text('${book!.deals}')),
+            )
         ],
       ),
     );
