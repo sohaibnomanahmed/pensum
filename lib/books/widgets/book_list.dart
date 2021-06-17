@@ -28,7 +28,7 @@ class BookList extends StatelessWidget {
                       onTap: () => Navigator.of(context).pushNamed(
                           DealsPage.routeName,
                           arguments: books[index]),
-                      child: BookItem(key: ValueKey(books[index].isbn), book: books[index]),
+                      child: BookItem(book: books[index]),
                     ),
               childCount: isLoading ? 6 : books.length,
             ),

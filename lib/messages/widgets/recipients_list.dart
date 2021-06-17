@@ -20,7 +20,7 @@ class RecipientsList extends StatelessWidget {
             'name': recipients[index].receiverName,
           },
         ),
-        child: RecipientItem(key: ValueKey(recipients[index].rid), recipient: recipients[index]),
+        child: RecipientItem(recipient: recipients[index]),
       ),
       itemCount: recipients.length,
     );

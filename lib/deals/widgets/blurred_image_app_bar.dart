@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:leaf/books/models/book.dart';
 import 'package:provider/provider.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import '../deals_provider.dart';
 import 'add_deal_bottom_sheet.dart';
@@ -13,10 +14,12 @@ import 'filter_deals_bottom_sheet.dart';
 class BlurredImageAppBar extends StatelessWidget with PreferredSizeWidget {
   @override
   final Size preferredSize;
+  final GlobalKey one;
+  final GlobalKey two;
 
   final Book book;
 
-  BlurredImageAppBar(this.book)
+  BlurredImageAppBar(this.book, this.one, this.two)
       : preferredSize = Size.fromHeight(50.0);
 
   @override
@@ -42,28 +45,42 @@ class BlurredImageAppBar extends StatelessWidget with PreferredSizeWidget {
       ),
       elevation: 0,
       actions: [
-        IconButton(
-          icon: Icon(Icons.filter_list_rounded),
-          onPressed: () => showModalBottomSheet(
-            isScrollControlled: true,
-            context: context,
-            builder: (_) => ChangeNotifierProvider.value(
-              value: context.read<DealsProvider>().provider,
-              child: FilterDealsBottomSheet(book),
+        Showcase(
+          key: two,
+          description: 'Filter deals by price, place or quality',
+          shapeBorder: CircleBorder(),
+          contentPadding: EdgeInsets.all(10),
+          showArrow: false,
+          child: IconButton(
+            icon: Icon(Icons.filter_list_rounded),
+            onPressed: () => showModalBottomSheet(
+              isScrollControlled: true,
+              context: context,
+              builder: (_) => ChangeNotifierProvider.value(
+                value: context.read<DealsProvider>().provider,
+                child: FilterDealsBottomSheet(book),
+              ),
             ),
           ),
         ),
-        IconButton(
-          icon: Icon(Icons.add),
-          onPressed: () => showModalBottomSheet(
-            isScrollControlled: true,
-            context: context,
-            builder: (_) => ChangeNotifierProvider.value(
-              value: context.read<DealsProvider>().provider,
-              child: AddDealBottomSheet(
-                pid: book.isbn,
-                productImage: book.image,
-                productTitle: book.titles.first,
+        Showcase(
+          key: one,
+          description: 'Add a new deal to this book',
+          shapeBorder: CircleBorder(),
+          contentPadding: EdgeInsets.all(10),
+          showArrow: false,
+          child: IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () => showModalBottomSheet(
+              isScrollControlled: true,
+              context: context,
+              builder: (_) => ChangeNotifierProvider.value(
+                value: context.read<DealsProvider>().provider,
+                child: AddDealBottomSheet(
+                  pid: book.isbn,
+                  productImage: book.image,
+                  productTitle: book.titles.first,
+                ),
               ),
             ),
           ),

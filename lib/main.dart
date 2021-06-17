@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import 'presence/presence_provider.dart';
 import 'profile/profile_page.dart';
@@ -99,7 +100,7 @@ class MyApp extends StatelessWidget {
                         create: (ctx) => PresenceProvider(),
                       ),
                     ],
-                    child: HomePage(),
+                    child: ShowCaseWidget(builder: Builder(builder: (_) => HomePage())),
                   );
           },
         ),

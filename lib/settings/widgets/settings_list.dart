@@ -54,6 +54,7 @@ class _SettingsListState extends State<SettingsList> {
           ListTile(
             leading: Icon(Icons.feedback_rounded),
             title: Text('Send Feedback'),
+            subtitle: Text('Contact us if you have any issues or requests like adding a new book or a new feature'),
             onTap: isLoading
                 ? null
                 : () async {

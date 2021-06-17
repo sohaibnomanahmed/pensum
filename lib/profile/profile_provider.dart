@@ -106,8 +106,6 @@ class ProfileProvider with ChangeNotifier {
       _profile!.lastname = lastname;
       // update the user object in the database
       await _profileService.setProfile(uid: user.uid, profile: _profile!);
-      // TODO should refetch from firebase even no wifi
-      //notifyListeners();
     } catch (error) {
       print('Add deal error: $error');
       return false;

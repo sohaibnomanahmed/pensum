@@ -17,7 +17,7 @@ class MessagesList extends StatelessWidget {
             child: ListView.builder(        
               padding: const EdgeInsets.all(12.0),
               reverse: true,
-              itemBuilder: (_, index) => MessageBubble(key: ValueKey(messages[index].id), message: messages[index]),
+              itemBuilder: (_, index) => MessageBubble(message: messages[index]),
               itemCount: messages.length,
             ),
           ),
