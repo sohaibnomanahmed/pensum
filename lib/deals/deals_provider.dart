@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:leaf/authentication/authentication_service.dart';
-import 'package:leaf/books/books_service.dart';
 import 'package:leaf/deals/deals_service.dart';
 import 'package:leaf/deals/models/deal_filter.dart';
 import 'package:leaf/following/follow_service.dart';
@@ -21,7 +20,6 @@ class DealsProvider with ChangeNotifier {
   final _authenticationService = AuthenticationService();
   final _profileService = ProfileService();
   final _dealsService = DealsService();
-  final _booksService = BooksService();
   final _followService = FollowService();
   final _notificationsService = NotificationService();
 
