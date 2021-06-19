@@ -89,6 +89,7 @@ class _DealsPageState extends State<DealsPage> {
                   description:
                       'Follow a book to receive notifications on new deals',
                   contentPadding: EdgeInsets.all(10),
+                  shapeBorder: RoundedRectangleBorder(),
                   showArrow: false,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(tapTargetSize: MaterialTapTargetSize.shrinkWrap),

@@ -6,6 +6,7 @@ import 'package:leaf/notifications/notification_provider.dart';
 import 'package:leaf/notifications/widgets/badge.dart';
 import 'package:leaf/presence/presence_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 import '../following/follow_page.dart';
 import '../following/follow_provider.dart';
@@ -38,7 +39,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         }
         return MaterialPageRoute(
           builder: (_) => ChangeNotifierProvider(
-              create: (_) => DealsProvider(), child: DealsPage(args as Book)),
+              create: (_) => DealsProvider(),
+              child: ShowCaseWidget(
+                  builder: Builder(builder: (_) => DealsPage(args as Book)))),
         );
       default:
         return MaterialPageRoute(builder: (_) => PageNotFound());

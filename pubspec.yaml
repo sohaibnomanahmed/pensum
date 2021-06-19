@@ -79,6 +79,9 @@ dependencies:
   # shared preferences
   shared_preferences: ^2.0.6
 
+  # onboarding screen
+  introduction_screen: ^2.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -119,6 +122,9 @@ flutter:
     - assets/images/robot.png
     - assets/images/error.png
     - assets/images/motor_cycle.png
+    - assets/images/onboard1.png
+    - assets/images/onboard2.png
+    - assets/images/onboard3.png
     - assets/fonts/Raleway/static/
   #   - images/a_dot_ham.jpeg
 

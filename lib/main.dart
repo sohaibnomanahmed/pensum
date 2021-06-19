@@ -5,8 +5,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:leaf/authentication/onboarding_page.dart';
 import 'package:provider/provider.dart';
-import 'package:showcaseview/showcaseview.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'presence/presence_provider.dart';
 import 'profile/profile_page.dart';
@@ -19,7 +20,7 @@ import 'messages/messages_provider.dart';
 import 'global/404_page.dart';
 import 'notifications/notification_provider.dart';
 
-// ------------- EMULATOR -----------------
+// ------------- FIREBASE EMULATOR -----------------
 // import 'package:flutter/foundation.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:firebase_storage/firebase_storage.dart';
@@ -28,7 +29,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  // ------------- EMULATOR -----------------
+  // ------------- FIREBASE EMULATOR -----------------
   // // Switch host based on platform.
   // final host = defaultTargetPlatform == TargetPlatform.android
   //     ? '10.0.2.2:9080'
@@ -46,11 +47,12 @@ Future<void> main() async {
   } else {
     // Handle Crashlytics enabled status when not in Debug,
     // e.g. allow your users to opt-in to crash reporting.
-    
+
     // Pass all uncaught errors from the framework to Crashlytics.
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   }
-
+  // check if onboarding is needed
+  _sharedPreferences = await SharedPreferences.getInstance();
   await FirebaseAuth.instance.authStateChanges().isEmpty;
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent, // for Android
@@ -59,6 +61,10 @@ Future<void> main() async {
       ));
   runApp(MyApp());
 }
+
+// shared prefrences to check if onboarding is complete or not
+late SharedPreferences _sharedPreferences;
+bool lock = false;
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -89,6 +95,14 @@ class MyApp extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10)))),
         home: Consumer<User?>(
           builder: (context, user, child) {
+            if (_sharedPreferences.getBool('ONBOARD') ?? true && !lock) {
+              // avoid race conditions
+              lock = true;
+              late OverlayEntry onboardingScreen;
+              onboardingScreen = OverlayEntry(
+                  builder: (_) => OnboardingPage(onboardingScreen));
+              WidgetsBinding.instance!.addPostFrameCallback((_) => Overlay.of(context)!.insert(onboardingScreen));
+            }
             return (user == null || !user.emailVerified)
                 ? AuthenticationPage()
                 : MultiProvider(
@@ -100,7 +114,7 @@ class MyApp extends StatelessWidget {
                         create: (ctx) => PresenceProvider(),
                       ),
                     ],
-                    child: ShowCaseWidget(builder: Builder(builder: (_) => HomePage())),
+                    child: HomePage(),
                   );
           },
         ),
@@ -118,7 +132,9 @@ class MyApp extends StatelessWidget {
               final rid = args['id'];
               final receiverImage = args['image'];
               final receiverName = args['name'];
-              if(rid == null || receiverName == null || receiverImage == null){
+              if (rid == null ||
+                  receiverName == null ||
+                  receiverImage == null) {
                 return MaterialPageRoute(builder: (_) => PageNotFound());
               }
               return MaterialPageRoute(
@@ -133,7 +149,7 @@ class MyApp extends StatelessWidget {
               );
             case ProfilePage.routeName:
               final uid = settings.arguments as String?;
-              if(uid == null){
+              if (uid == null) {
                 return MaterialPageRoute(builder: (_) => PageNotFound());
               }
               return MaterialPageRoute(
