@@ -64,25 +64,40 @@ class BookItem extends StatelessWidget {
                 (book == null)
                     ? Container(
                         height: 14, color: Colors.grey, width: double.infinity)
-                    : Text(book!.year,
-                        style: Theme.of(context).textTheme.caption),
+                    : Row(children: [
+                        Text(book!.year,
+                            style: Theme.of(context).textTheme.caption),
+                        SizedBox(width: 5,),    
+                        if (book != null)
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 5, vertical: 2),
+                            decoration: BoxDecoration(
+                                color: Theme.of(context).splashColor,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: FittedBox(
+                                child: Text('Deals: ${book!.deals}',
+                                    style:
+                                        Theme.of(context).textTheme.caption)),
+                          )
+                      ]),
               ],
             ),
           ),
-          if (book != null)
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-              decoration: BoxDecoration(
-                  color: book!.deals > 0
-                      ? book!.deals > 3
-                          ? book!.deals > 7
-                              ? Colors.green[400]
-                              : Colors.green[200]
-                          : Colors.deepOrange[200]
-                      : Colors.grey[200],
-                  borderRadius: BorderRadius.circular(10)),
-              child: FittedBox(child: Text('${book!.deals}')),
-            )
+          // if (book != null)
+          //   Container(
+          //     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+          //     decoration: BoxDecoration(
+          //         color: book!.deals > 0
+          //             ? book!.deals > 3
+          //                 ? book!.deals > 7
+          //                     ? Colors.green[400]
+          //                     : Colors.green[200]
+          //                 : Colors.deepOrange[200]
+          //             : Colors.grey[200],
+          //         borderRadius: BorderRadius.circular(10)),
+          //     child: FittedBox(child: Text('${book!.deals}')),
+          //   )
         ],
       ),
     );

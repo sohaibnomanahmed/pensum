@@ -1,4 +1,5 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -93,6 +94,22 @@ class MyApp extends StatelessWidget {
             cardTheme: Theme.of(context).cardTheme.copyWith(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)))),
+        // HAS STILL MANY ISSUES NOT YET READY FOR EASY USE
+        // darkTheme: ThemeData(
+        //   primarySwatch: Colors.teal,
+        //   brightness: Brightness.dark,
+        //   cupertinoOverrideTheme: CupertinoThemeData(brightness: Brightness.dark),
+        //   textTheme: GoogleFonts.ralewayTextTheme(
+        //       ThemeData(brightness: Brightness.dark).textTheme),
+        //   elevatedButtonTheme: ElevatedButtonThemeData(
+        //       style: ElevatedButton.styleFrom(
+        //     elevation: 0,
+        //   )),
+        //   cardTheme: Theme.of(context).cardTheme.copyWith(
+        //       shape: RoundedRectangleBorder(
+        //           borderRadius: BorderRadius.circular(10))),
+        // ),
+        //ThemeData.dark(),
         home: Consumer<User?>(
           builder: (context, user, child) {
             if (_sharedPreferences.getBool('ONBOARD') ?? true && !lock) {
@@ -101,7 +118,8 @@ class MyApp extends StatelessWidget {
               late OverlayEntry onboardingScreen;
               onboardingScreen = OverlayEntry(
                   builder: (_) => OnboardingPage(onboardingScreen));
-              WidgetsBinding.instance!.addPostFrameCallback((_) => Overlay.of(context)!.insert(onboardingScreen));
+              WidgetsBinding.instance!.addPostFrameCallback(
+                  (_) => Overlay.of(context)!.insert(onboardingScreen));
             }
             return (user == null || !user.emailVerified)
                 ? AuthenticationPage()
