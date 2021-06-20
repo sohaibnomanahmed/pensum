@@ -95,7 +95,7 @@ dev_dependencies:
   pedantic: ^1.11.0
 
   # mockito
-  # mockito: ^5.0.10
+  mockito: ^5.0.10
 
 flutter_icons:
   android: true

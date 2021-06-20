@@ -1,9 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:leaf/authentication/authentication_service.dart';
 import 'package:leaf/global/services.dart';
 
 class PresenceProvider with ChangeNotifier {
-  final _authenticationService = AuthenticationService();
+  final _authenticationService = AuthenticationService(FirebaseAuth.instance);
   final _presenceService = GlobalServices.presenceService;
 
   /*

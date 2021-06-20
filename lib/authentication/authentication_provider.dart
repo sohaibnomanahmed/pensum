@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:leaf/authentication/authentication_service.dart';
 import 'package:leaf/following/follow_service.dart';
 import 'package:leaf/global/services.dart';
 import 'package:leaf/notifications/notification_service.dart';
+import 'package:leaf/presence/presence_service.dart';
 import 'package:leaf/profile/profile_service.dart';
 
 import '../profile/models/profile.dart';
@@ -12,11 +14,29 @@ import '../profile/models/profile.dart';
 /// provider to have an [errorMessage] variable, this is so since authentication
 /// from firebase gives usefull feedback to the user on error whihc then are dispalyed
 class AuthenticationProvider with ChangeNotifier {
-  final _authenticationService = AuthenticationService();
-  final _profileService = ProfileService();
-  final _followService = FollowService();
-  final _notificationService = NotificationService();
-  final _presenceService = GlobalServices.presenceService;
+  final AuthenticationService authenticationService;
+  final ProfileService profileService;
+  final FollowService followService;
+  final NotificationService notificationService;
+  final PresenceService presenceService;
+
+  AuthenticationProvider({
+    required this.authenticationService,
+    required this.profileService,
+    required this.followService,
+    required this.notificationService,
+    required this.presenceService,
+  });
+
+  factory AuthenticationProvider.basic() {
+    return AuthenticationProvider(
+      authenticationService: GlobalServices.authenticationService,
+      notificationService: GlobalServices.notificationService,
+      presenceService: GlobalServices.presenceService,
+      profileService: ProfileService(FirebaseFirestore.instance),
+      followService: FollowService(FirebaseFirestore.instance),
+    );
+  }
 
   var _isLoading = false;
   final _defaultMessage = 'Error: Somehting went wrong, please try again';
@@ -24,15 +44,15 @@ class AuthenticationProvider with ChangeNotifier {
 
   // getters
   bool get isLoading => _isLoading;
-  bool get isEmailVerified => _authenticationService.currentUser!.emailVerified;
-  String get uid => _authenticationService.currentUser!.uid;
-  String? get email => _authenticationService.currentUser!.email;
-  Stream<User?> get authState => _authenticationService.authState;
+  bool get isEmailVerified => authenticationService.currentUser!.emailVerified;
+  String get uid => authenticationService.currentUser!.uid;
+  String? get email => authenticationService.currentUser!.email;
+  Stream<User?> get authState => authenticationService.authState;
   String get errorMessage => _errorMessage;
 
-  /// tries to create a user in using [firebase],  [firstname] and [lastname] 
-  /// needs to be manually checked, email and password is covered by firebase 
-  /// if the successfull returns true if an error occurs, cathes the exception, 
+  /// tries to create a user in using [firebase],  [firstname] and [lastname]
+  /// needs to be manually checked, email and password is covered by firebase
+  /// if the successfull returns true if an error occurs, cathes the exception,
   /// store error message and return false
   Future<bool> createUser({
     required String firstname,
@@ -42,36 +62,36 @@ class AuthenticationProvider with ChangeNotifier {
   }) async {
     _isLoading = true;
     notifyListeners();
-    if (firstname.isEmpty || lastname.isEmpty){
+    if (firstname.isEmpty || lastname.isEmpty) {
       _errorMessage = 'Firstname or lastname can\'t be empty';
       _isLoading = false;
       return false;
     }
     try {
       // create user
-      final userCredentials = await _authenticationService.createUser(
+      final userCredentials = await authenticationService.createUser(
           email: email, password: password);
       final user = userCredentials.user!;
       final time = user.metadata.creationTime;
-      if (time == null){
+      if (time == null) {
         _errorMessage = 'Failed trying to create the user, time not accesable';
         return false;
       }
       // create profile data in firestore
       final profile = Profile(
-        uid: user.uid,
-        creationTime: time,
-        firstname: firstname,
-        lastname: lastname,
-        imageUrl: 'https://firebasestorage.googleapis.com/v0/b/leaf-e52aa.appspot.com/o/profile.png?alt=media&token=ef36af4e-c528-4851-b429-53f867672b33',
-        userItems: {}
-      );
-      await _profileService.setProfile(uid: user.uid, profile: profile);
+          uid: user.uid,
+          creationTime: time,
+          firstname: firstname,
+          lastname: lastname,
+          imageUrl:
+              'https://firebasestorage.googleapis.com/v0/b/leaf-e52aa.appspot.com/o/profile.png?alt=media&token=ef36af4e-c528-4851-b429-53f867672b33',
+          userItems: {});
+      await profileService.setProfile(uid: user.uid, profile: profile);
       // send email varification
       if (!user.emailVerified) {
         await user.sendEmailVerification();
         // log user out so he/she can log inn
-        await _authenticationService.signOut();
+        await authenticationService.signOut();
       }
 
       // set the user to be offline
@@ -81,7 +101,7 @@ class AuthenticationProvider with ChangeNotifier {
       _isLoading = false;
       notifyListeners();
       return false;
-    } catch (error){
+    } catch (error) {
       print('Error during auth: $error');
     }
     _isLoading = false;
@@ -91,36 +111,34 @@ class AuthenticationProvider with ChangeNotifier {
 
   /// tries to sign a user in using [firebase], if the successfull returns true
   /// if an error occurs, cathes the exception, store error message and return false
-  Future<bool> signIn(
-      {required String email, required String password}) async {
+  Future<bool> signIn({required String email, required String password}) async {
     _isLoading = true;
     notifyListeners();
     try {
       final userCredentials =
-          await _authenticationService.signIn(email: email, password: password);
+          await authenticationService.signIn(email: email, password: password);
       final user = userCredentials.user!;
       // send email varification
       if (!user.emailVerified) {
         _errorMessage = 'Email is not verified';
-        await _authenticationService.signOut();
+        await authenticationService.signOut();
         _isLoading = false;
         notifyListeners();
         return false;
       }
 
       // subscribe to all topics
-      final followings = await _followService.getAllFollowingIds(user.uid);
-      await _notificationService.subscribeToTopic(user.uid);
-      followings.forEach((following) async { 
-        await _notificationService.subscribeToTopic(following);
+      final followings = await followService.getAllFollowingIds(user.uid);
+      await notificationService.subscribeToTopic(user.uid);
+      followings.forEach((following) async {
+        await notificationService.subscribeToTopic(following);
       });
-
     } on FirebaseAuthException catch (error) {
       _errorMessage = error.message ?? _defaultMessage;
       _isLoading = false;
       notifyListeners();
       return false;
-    } catch (error){
+    } catch (error) {
       print('Error during auth: $error');
     }
     _isLoading = false;
@@ -135,23 +153,24 @@ class AuthenticationProvider with ChangeNotifier {
     notifyListeners();
     try {
       // unsubscribe from all topics
-      final user = _authenticationService.currentUser!;
-      final followings = await _followService.getAllFollowingIds(user.uid);
-      await _notificationService.unsubscribeFromTopic(user.uid);
-      for(var following in followings){
-        await _notificationService.unsubscribeFromTopic(following);
-      };
+      final user = authenticationService.currentUser!;
+      final followings = await followService.getAllFollowingIds(user.uid);
+      await notificationService.unsubscribeFromTopic(user.uid);
+      for (var following in followings) {
+        await notificationService.unsubscribeFromTopic(following);
+      }
+      ;
 
       // remove presence
-      await _presenceService.disconnect(signout: true);
+      await presenceService.disconnect(signout: true);
 
-      await _authenticationService.signOut();
+      await authenticationService.signOut();
     } on FirebaseAuthException catch (error) {
       _errorMessage = error.message ?? _defaultMessage;
       _isLoading = false;
       notifyListeners();
       return false;
-    } catch (error){
+    } catch (error) {
       print('Error during auth: $error');
     }
     _isLoading = false;
@@ -165,7 +184,7 @@ class AuthenticationProvider with ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     try {
-      await _authenticationService.resetPassword(email);
+      await authenticationService.resetPassword(email);
     } on FirebaseAuthException catch (error) {
       _errorMessage = error.message ?? _defaultMessage;
       _isLoading = false;
@@ -184,19 +203,19 @@ class AuthenticationProvider with ChangeNotifier {
     notifyListeners();
     try {
       // get email of current user
-      final email = _authenticationService.currentUser!.email!;
+      final email = authenticationService.currentUser!.email!;
       // sicen deleting user is a sensitive opperation, wee need to reauthenticate
-      await _authenticationService.reauthenticate(
+      await authenticationService.reauthenticate(
           email: email, password: password);
       // unsubscribe from all topics
-      final user = _authenticationService.currentUser!;
-      final followings = await _followService.getAllFollowingIds(user.uid);
-      await _notificationService.unsubscribeFromTopic(user.uid);
-      followings.forEach((following) async { 
-        await _notificationService.unsubscribeFromTopic(following);
-      });    
+      final user = authenticationService.currentUser!;
+      final followings = await followService.getAllFollowingIds(user.uid);
+      await notificationService.unsubscribeFromTopic(user.uid);
+      followings.forEach((following) async {
+        await notificationService.unsubscribeFromTopic(following);
+      });
       // delete the current user
-      await _authenticationService.deleteUser();
+      await authenticationService.deleteUser();
     } on FirebaseAuthException catch (error) {
       _errorMessage = error.message ?? _defaultMessage;
       _isLoading = false;
@@ -210,10 +229,10 @@ class AuthenticationProvider with ChangeNotifier {
 
   /// gets the [service account] used for feedbacks
   Future<Profile?> getAdminAccount() async {
-    try{
-      final adminId = await _profileService.getAdminId();
-      return await _profileService.getProfile(adminId);
-    } catch (error){
+    try {
+      final adminId = await profileService.getAdminId();
+      return await profileService.getProfile(adminId);
+    } catch (error) {
       print('Getting admin account error: $error');
       return null;
     }

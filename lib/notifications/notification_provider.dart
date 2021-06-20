@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +18,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 class NotificationProvider with ChangeNotifier {
-  final _authenticationService = AuthenticationService();
-  final _notificationsService = NotificationService();
+  final _authenticationService = AuthenticationService(FirebaseAuth.instance);
+  final _notificationsService = NotificationService(FirebaseFirestore.instance, FirebaseMessaging.instance);
 
   late StreamSubscription _followingNotificationSubscription;
   late StreamSubscription _chatNotificationSubscription;

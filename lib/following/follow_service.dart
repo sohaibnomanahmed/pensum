@@ -3,8 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'models/Follow.dart';
 
 class FollowService {
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore firestore;
   late DocumentSnapshot lastFollow;
+
+  FollowService(this.firestore);
 
   /// fetch follows
   Stream<List<Follow>> fetchFollowing(

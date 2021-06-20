@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -15,8 +17,8 @@ import 'package:leaf/profile/profile_service.dart';
 import '../profile/models/profile.dart';
 
 class ProfileProvider with ChangeNotifier {
-  final _authenticationService = AuthenticationService();
-  final _profileService = ProfileService();
+  final _authenticationService = AuthenticationService(FirebaseAuth.instance);
+  final _profileService = ProfileService(FirebaseFirestore.instance);
   final _dealsService = DealsService();
   final _booksService = BooksService();
   final _imageUploadService = ImageUploadService();

@@ -3,9 +3,9 @@ import 'package:leaf/profile/models/profile.dart';
 
 void main() {
   test(
-      'Given user with firstname " rob " and lastname " BOB" When fullname is called Then fullname is "Rob Bob"',
+      'Should make user input for firstname and lastname stored in default naming convention',
       () async {
-    // ARRANGE
+    // GIVEN: user with firstname " rob " and lastname " BOB"
     final user = Profile(
       uid: '1',
       firstname: ' rob ',
@@ -15,10 +15,10 @@ void main() {
       creationTime: DateTime.now(),
     );
 
-    // ACT
+    // WHEN: fullname is called
     final fullname = user.fullName;
 
-    // ASSERT
+    // THEN: fullname is "Rob Bob"
     expect(fullname, 'Rob Bob');
   });
 }
