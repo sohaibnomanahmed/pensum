@@ -2,10 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:leaf/authentication/authentication_service.dart';
-import 'package:leaf/following/follow_service.dart';
 import 'package:leaf/global/services.dart';
-import 'package:leaf/notifications/notification_service.dart';
-import 'package:leaf/presence/presence_service.dart';
 import 'package:leaf/profile/profile_service.dart';
 
 import '../profile/models/profile.dart';
@@ -16,25 +13,16 @@ import '../profile/models/profile.dart';
 class AuthenticationProvider with ChangeNotifier {
   final AuthenticationService authenticationService;
   final ProfileService profileService;
-  final FollowService followService;
-  final NotificationService notificationService;
-  final PresenceService presenceService;
 
   AuthenticationProvider({
     required this.authenticationService,
     required this.profileService,
-    required this.followService,
-    required this.notificationService,
-    required this.presenceService,
   });
 
   factory AuthenticationProvider.basic() {
     return AuthenticationProvider(
       authenticationService: GlobalServices.authenticationService,
-      notificationService: GlobalServices.notificationService,
-      presenceService: GlobalServices.presenceService,
       profileService: ProfileService(FirebaseFirestore.instance),
-      followService: FollowService(FirebaseFirestore.instance),
     );
   }
 
@@ -126,13 +114,6 @@ class AuthenticationProvider with ChangeNotifier {
         notifyListeners();
         return false;
       }
-
-      // subscribe to all topics
-      final followings = await followService.getAllFollowingIds(user.uid);
-      await notificationService.subscribeToTopic(user.uid);
-      followings.forEach((following) async {
-        await notificationService.subscribeToTopic(following);
-      });
     } on FirebaseAuthException catch (error) {
       _errorMessage = error.message ?? _defaultMessage;
       _isLoading = false;
@@ -152,18 +133,6 @@ class AuthenticationProvider with ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     try {
-      // unsubscribe from all topics
-      final user = authenticationService.currentUser!;
-      final followings = await followService.getAllFollowingIds(user.uid);
-      await notificationService.unsubscribeFromTopic(user.uid);
-      for (var following in followings) {
-        await notificationService.unsubscribeFromTopic(following);
-      }
-      ;
-
-      // remove presence
-      await presenceService.disconnect(signout: true);
-
       await authenticationService.signOut();
     } on FirebaseAuthException catch (error) {
       _errorMessage = error.message ?? _defaultMessage;
@@ -207,13 +176,6 @@ class AuthenticationProvider with ChangeNotifier {
       // sicen deleting user is a sensitive opperation, wee need to reauthenticate
       await authenticationService.reauthenticate(
           email: email, password: password);
-      // unsubscribe from all topics
-      final user = authenticationService.currentUser!;
-      final followings = await followService.getAllFollowingIds(user.uid);
-      await notificationService.unsubscribeFromTopic(user.uid);
-      followings.forEach((following) async {
-        await notificationService.unsubscribeFromTopic(following);
-      });
       // delete the current user
       await authenticationService.deleteUser();
     } on FirebaseAuthException catch (error) {

@@ -94,8 +94,9 @@ dev_dependencies:
   # linter
   pedantic: ^1.11.0
 
-  # mockito
-  mockito: ^5.0.10
+  # firebase testing
+  firebase_auth_mocks: ^0.7.1
+  fake_cloud_firestore: ^1.1.2
 
 flutter_icons:
   android: true

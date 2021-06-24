@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   List<Widget> get _pages => [
         CupertinoTabView(
             builder: (_) => ChangeNotifierProvider(
-                create: (_) => BooksProvider(), child: BooksPage()),
+                create: (_) => BooksProvider.basic(), child: BooksPage()),
             onGenerateRoute: dealsGeneratedRoutes),
         CupertinoTabView(
             builder: (ctx) => ChangeNotifierProvider(
@@ -83,6 +83,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     // fetch notification indicators for bottombar
     context.read<NotificationProvider>().fetchFollowingNotification;
     context.read<NotificationProvider>().fetchChatNotification;
+
+    // subcribe to all topics
+    context.read<NotificationProvider>().subcribeToAllTopics();
 
     // track if paused or resumed etc..
     WidgetsBinding.instance!.addObserver(this);

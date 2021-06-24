@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:leaf/authentication/authentication_provider.dart';
 import 'package:leaf/global/functions.dart';
+import 'package:leaf/notifications/notification_provider.dart';
+import 'package:leaf/notifications/notification_service.dart';
+import 'package:leaf/presence/presence_provider.dart';
 import 'package:provider/provider.dart';
 
 class DeleteAccountBottomSheet extends StatefulWidget {
@@ -59,9 +62,15 @@ class _DeleteAccountBottomSheetState extends State<DeleteAccountBottomSheet> {
                   ? null
                   : () async => ButtonFunctions.onPressHandler(
                       context: context,
-                      action: () async => await context
+                      action: () async {
+                        // unsubscribe from all topics
+                        await context.read<NotificationProvider>().unsubscribeFromAllTopics();
+                        // remove presence
+                        await context.read<PresenceProvider>().removePresence();
+                        return context
                           .read<AuthenticationProvider>()
-                          .deleteUser(_password),
+                          .deleteUser(_password);
+                          },
                       popScreenAfter: true,
                       errorMessage:
                           'Error occured while trying to delete account',

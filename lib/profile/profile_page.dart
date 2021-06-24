@@ -102,7 +102,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                         .provider,
                                                     child:
                                                         EditProfileBottomSheet(
-                                                      profile.firstname,       
+                                                      profile.firstname,
                                                       profile.lastname,
                                                     ),
                                                   ),
@@ -133,9 +133,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 color: Theme.of(context).primaryColor),
                             title: Text('Deals'),
                           ),
-                          Divider(
-                            height: 1,
-                          ),
+                          Divider(height: 1),
                           ProfileDealsList(),
                         ],
                       ),

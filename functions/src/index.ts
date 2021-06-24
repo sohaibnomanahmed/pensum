@@ -277,6 +277,7 @@ export const onUserDelete = functions.auth.user().onDelete(async user => {
     // delete user presence value from realtime database
     const presenceMap = admin.database().ref('presence').child(user.uid)
     promises.push(presenceMap.remove())
+
     // return when all promises are done
     return Promise.all(promises)
 });

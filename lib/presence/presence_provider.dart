@@ -56,4 +56,9 @@ class PresenceProvider with ChangeNotifier {
       print('Error setting presence: $error');
     }
   }
+
+  // remove presence
+  Future<void> removePresence() async {
+    return _presenceService.disconnect(signout: true);
+  }
 }

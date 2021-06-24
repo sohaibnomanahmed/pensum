@@ -28,8 +28,13 @@ class ButtonFunctions {
       Navigator.of(context).pop();
     }
 
-    // do some action
-    final result = await action();
+    // do some action, try-catch is for multiple actions inside action if any fail return false
+    var result = false;
+    try{
+      result = await action();
+    } catch (error){
+      result = false;
+    }
 
     // pop screen
     if (popScreenAfter) {

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:leaf/global/functions.dart';
 import 'package:leaf/messages/messages_page.dart';
+import 'package:leaf/notifications/notification_provider.dart';
+import 'package:leaf/presence/presence_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'package:leaf/authentication/authentication_provider.dart';
@@ -100,9 +102,13 @@ class _SettingsListState extends State<SettingsList> {
                     signOutBtn = true;
                     await ButtonFunctions.onPressHandler(
                       context: context,
-                      action: () => context
+                      action: () async { 
+                        // unsubscribe from all topics
+                        await context.read<NotificationProvider>().unsubscribeFromAllTopics();
+                        // sign out
+                        return context
                           .read<AuthenticationProvider>()
-                          .signOut(),
+                          .signOut();},
                       errorMessage: 'Something went wrong, please try again');
                       setState(() {
                         signOutBtn = false;

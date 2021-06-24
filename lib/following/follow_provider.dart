@@ -8,13 +8,12 @@ import 'package:leaf/books/books_service.dart';
 import 'package:leaf/books/models/book.dart';
 import 'package:leaf/following/follow_service.dart';
 import 'package:leaf/global/services.dart';
-import 'package:leaf/notifications/notification_service.dart';
 
 import 'models/Follow.dart';
 
 class FollowProvider with ChangeNotifier{
   final _authenticationService = AuthenticationService(FirebaseAuth.instance);
-  final _booksService = BooksService();
+  final _booksService = BooksService(FirebaseFirestore.instance);
   final _followService = FollowService(FirebaseFirestore.instance);
   final _notificationsService = GlobalServices.notificationService;
 

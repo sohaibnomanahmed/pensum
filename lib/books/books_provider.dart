@@ -1,12 +1,19 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:leaf/books/books_service.dart';
 
 import 'models/book.dart';
 
 class BooksProvider with ChangeNotifier{
-  final _booksService = BooksService();
+  late BooksService booksService;
+
+  BooksProvider(this.booksService);
+
+  factory BooksProvider.basic(){
+    return BooksProvider(BooksService(FirebaseFirestore.instance));
+  }
 
   List<Book> _books = [];
   List<Book> _cachedBooks = [];
@@ -31,7 +38,7 @@ class BooksProvider with ChangeNotifier{
   /// if an error accours the stream will be canceled, and we will set [isError]
   void fetchBooks() {
     // get original first batch of books
-    final stream = _booksService.fetchBooks(_pageSize);
+    final stream = booksService.fetchBooks(_pageSize);
     _booksSubscription = stream.listen(
       (books) {
         _books = books;
@@ -68,7 +75,7 @@ class BooksProvider with ChangeNotifier{
 
     List<Book> moreBooks;
     try{
-      moreBooks = await _booksService.fetchMoreBooks(_pageSize);
+      moreBooks = await booksService.fetchMoreBooks(_pageSize);
     } catch (error){
       print('Failed to fetch more books: $error');
       return;
@@ -83,7 +90,7 @@ class BooksProvider with ChangeNotifier{
   /// the stream will be canceled, and we will set [isError]
   void fetchBookTitles() {
     // get book titles
-    final stream = _booksService.fetchBookTitles();
+    final stream = booksService.fetchBookTitles();
     _bookTitlesSubscription = stream.listen(
       (bookTitles) {
         _bookTitles = bookTitles as Map<String, dynamic>;
@@ -116,7 +123,7 @@ class BooksProvider with ChangeNotifier{
     _isLoading = true;
     notifyListeners();
     try{
-      _books = await _booksService.searchBooksByTitle(title);
+      _books = await booksService.searchBooksByTitle(title);
     } catch (error){
       print('Failed to fetch books: $error');
       _isError = true;

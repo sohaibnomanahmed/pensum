@@ -20,7 +20,7 @@ class ProfileProvider with ChangeNotifier {
   final _authenticationService = AuthenticationService(FirebaseAuth.instance);
   final _profileService = ProfileService(FirebaseFirestore.instance);
   final _dealsService = DealsService();
-  final _booksService = BooksService();
+  final _booksService = BooksService(FirebaseFirestore.instance);
   final _imageUploadService = ImageUploadService();
   final _imagePickerService = ImagePickerService();
   final _imageCropperService = ImageCropperService();

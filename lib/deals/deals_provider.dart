@@ -9,7 +9,6 @@ import 'package:leaf/deals/models/deal_filter.dart';
 import 'package:leaf/following/follow_service.dart';
 import 'package:leaf/following/models/Follow.dart';
 import 'package:leaf/global/services.dart';
-import 'package:leaf/notifications/notification_service.dart';
 import 'package:leaf/profile/profile_service.dart';
 
 import '../books/models/book.dart';

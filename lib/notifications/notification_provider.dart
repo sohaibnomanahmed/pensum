@@ -6,6 +6,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:leaf/authentication/authentication_service.dart';
+import 'package:leaf/following/follow_service.dart';
 import 'package:leaf/messages/messages_page.dart';
 import 'package:leaf/notifications/notification_service.dart';
 
@@ -19,7 +20,9 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 class NotificationProvider with ChangeNotifier {
   final _authenticationService = AuthenticationService(FirebaseAuth.instance);
-  final _notificationsService = NotificationService(FirebaseFirestore.instance, FirebaseMessaging.instance);
+  final _notificationsService = NotificationService(
+      FirebaseFirestore.instance, FirebaseMessaging.instance);
+  final _followService = FollowService(FirebaseFirestore.instance);
 
   late StreamSubscription _followingNotificationSubscription;
   late StreamSubscription _chatNotificationSubscription;
@@ -190,6 +193,26 @@ class NotificationProvider with ChangeNotifier {
         notifyListeners();
       },
     );
+  }
+
+  Future<void> unsubscribeFromAllTopics() async {
+    // unsubscribe from all topics
+    final user = _authenticationService.currentUser!;
+    final followings = await _followService.getAllFollowingIds(user.uid);
+    await _notificationsService.unsubscribeFromTopic(user.uid);
+    for (var following in followings) {
+      await _notificationsService.unsubscribeFromTopic(following);
+    }
+  }
+
+  Future<void> subcribeToAllTopics() async {
+    // subscribe to all topics
+    final user = _authenticationService.currentUser!;
+    final followings = await _followService.getAllFollowingIds(user.uid);
+    await _notificationsService.subscribeToTopic(user.uid);
+    followings.forEach((following) async {
+      await _notificationsService.subscribeToTopic(following);
+    });
   }
 
   /*
