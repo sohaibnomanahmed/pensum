@@ -50,32 +50,7 @@ class BookSearchDelegate extends SearchDelegate<String?> {
   @override
   Widget buildResults(BuildContext context) {
     FocusScope.of(context).unfocus();
-    return ListView.builder(
-      itemCount: bookMatches.length,
-      itemBuilder: (ctx, index) => ListTile(
-        onTap: () {
-          final title = bookTitles[bookMatches[index]]['title'] ?? '';
-          parentContext.read<BooksProvider>().fetchSearchedBook(title);
-          close(context, null);
-        },
-        title: Text(
-          bookTitles[bookMatches[index]]['title'],
-          style: Theme.of(context).textTheme.bodyText2,
-        ),
-        leading: Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: Image.network(
-            bookTitles[bookMatches[index]]['image'],
-            width: 30,
-            fit: BoxFit.cover,
-            errorBuilder: (BuildContext context, Object exception,
-                StackTrace? stackTrace) {
-              return Icon(Icons.wifi_off_rounded);
-            },
-          ),
-        ),
-      ),
-    );
+    return _buildResultsList(context);
   }
 
   @override
@@ -91,41 +66,44 @@ class BookSearchDelegate extends SearchDelegate<String?> {
       multiLine: false,
     );
     bookMatches = bookTitles.keys
-        .where((k) => regExp.hasMatch(bookTitles[k]['title'] + bookTitles[k]['authors']))
+        .where((k) =>
+            regExp.hasMatch(bookTitles[k]['title'] + bookTitles[k]['authors']))
         .toList();
 
-    if (bookMatches.isEmpty){
-      return LeafEmpty(text: 'Sorry couldn\'t find any matches',);
-    }
+    return _buildResultsList(context);
+  }
 
+  Widget _buildResultsList(BuildContext context) {
+    if (bookMatches.isEmpty) {
+      return LeafEmpty(
+        text: 'Sorry couldn\'t find any matches',
+      );
+    }
     return ListView.builder(
       itemCount: bookMatches.length,
-      itemBuilder: (ctx, index) => ListTile(
-        onTap: () {
-          final title = bookTitles[bookMatches[index]]['title'] ?? '';
-          parentContext.read<BooksProvider>().fetchSearchedBook(title);
-          close(context, null);
-        },
-        title: Text(
-          bookTitles[bookMatches[index]]['title'],
-          style: Theme.of(context).textTheme.bodyText2,
-        ),
-        leading: Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: Image.network(
-            bookTitles[bookMatches[index]]['image'],
-            width: 30,
-            fit: BoxFit.cover,
-            errorBuilder: (BuildContext context, Object exception,
-                StackTrace? stackTrace) {
-              return Icon(
-                Icons.wifi_off_rounded,
-                size: 30,
-              );
-            },
+      itemBuilder: (ctx, index) {
+        final title = bookTitles[bookMatches[index]]['title'] ?? '';
+        final image = bookTitles[bookMatches[index]]['image'] ?? '';
+        return ListTile(
+          onTap: () {
+            parentContext.read<BooksProvider>().fetchSearchedBook(title);
+            close(context, null);
+          },
+          title: Text(title, style: Theme.of(context).textTheme.bodyText2),
+          leading: Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: Image.network(
+              image,
+              width: 30,
+              fit: BoxFit.cover,
+              errorBuilder: (BuildContext context, Object exception,
+                  StackTrace? stackTrace) {
+                return Icon(Icons.wifi_off_rounded, size: 30);
+              },
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
