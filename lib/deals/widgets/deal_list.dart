@@ -12,7 +12,6 @@ class DealList extends StatelessWidget {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       separatorBuilder: (_, __) => Divider(),
-      // TODO test when deleting need a key also for profile
       itemBuilder: (context, index) => DealItem(deal: deals[index]),
       itemCount: deals.length,
     );

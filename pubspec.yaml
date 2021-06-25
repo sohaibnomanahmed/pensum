@@ -84,7 +84,7 @@ dependencies:
 
 dev_dependencies:
   flutter_test:
-    sdk: flutter
+    sdk: flutter  
   # splash screen
   flutter_native_splash: ^1.1.8
 
@@ -97,6 +97,9 @@ dev_dependencies:
   # firebase testing
   firebase_auth_mocks: ^0.7.1
   fake_cloud_firestore: ^1.1.2
+
+  # integration test
+  #integration_test: ^1.0.2+3
 
 flutter_icons:
   android: true

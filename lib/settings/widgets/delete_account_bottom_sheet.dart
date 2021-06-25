@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:leaf/authentication/authentication_provider.dart';
 import 'package:leaf/global/functions.dart';
 import 'package:leaf/notifications/notification_provider.dart';
-import 'package:leaf/notifications/notification_service.dart';
 import 'package:leaf/presence/presence_provider.dart';
 import 'package:provider/provider.dart';
 

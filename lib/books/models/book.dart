@@ -28,9 +28,9 @@ class Book {
   factory Book.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>?;
     if (data == null) {
-      throw 'Error creating Book from null value';
+      throw 'Error creating Book from null';
     }
-    final List<dynamic>? titles = data['title'];
+    final List<dynamic>? titles = data['titles'];
     final List<dynamic>? authors = data['authors'];
     final String? image = data['image'];
     final String? language = data['language'];
@@ -49,6 +49,9 @@ class Book {
         edition == null ||
         year == null ||
         deals == null) {
+      print(titles);
+      print(authors);
+      print(image);    
       throw 'Error creating Book from null value';
     }
 

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:leaf/global/functions.dart';
 import 'package:leaf/messages/messages_page.dart';
 import 'package:leaf/notifications/notification_provider.dart';
-import 'package:leaf/presence/presence_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'package:leaf/authentication/authentication_provider.dart';
@@ -56,7 +55,7 @@ class _SettingsListState extends State<SettingsList> {
           ListTile(
             leading: Icon(Icons.feedback_rounded),
             title: Text('Send Feedback'),
-            subtitle: Text('Contact us if you have any issues or requests like adding a new book or a new feature'),
+            subtitle: Text('Report issues, missing books or suggest improvents'),
             onTap: isLoading
                 ? null
                 : () async {

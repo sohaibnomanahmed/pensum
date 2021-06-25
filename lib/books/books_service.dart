@@ -42,16 +42,20 @@ class BooksService {
   }
 
   /// fetch book titles
-  Stream<Map> fetchBookTitles() {
+  Stream<Map<String, dynamic>> fetchBookTitles() {
     return firestore.collection('books').doc('metadata').snapshots().map(
       (snapshot) {
+        Map<String, dynamic> map;
+        map = {};
+        // check if the document exist
         if (snapshot.exists){
+          // check is the document is not null
           final data = snapshot.data();
           if (data != null){
-            return data['titles'] ?? {};
+            return data['titles'] ?? map;
           }    
         }
-        return {};
+        return map;
       },
     );
   }

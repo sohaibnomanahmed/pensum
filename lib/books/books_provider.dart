@@ -8,8 +8,9 @@ import 'models/book.dart';
 
 class BooksProvider with ChangeNotifier{
   late BooksService booksService;
+  final int _pageSize;
 
-  BooksProvider(this.booksService);
+  BooksProvider(this.booksService, [this._pageSize = 10]);
 
   factory BooksProvider.basic(){
     return BooksProvider(BooksService(FirebaseFirestore.instance));
@@ -18,7 +19,6 @@ class BooksProvider with ChangeNotifier{
   List<Book> _books = [];
   List<Book> _cachedBooks = [];
   Map<String, dynamic> _bookTitles = {};
-  final _pageSize = 10;
   var _isLoading = true;
   var _isError = false;
   var _isSearch = false;
@@ -45,7 +45,7 @@ class BooksProvider with ChangeNotifier{
         fetchBookTitles();
       },
       onError: (error) {
-        print(error);
+        print('Error fetching books $error');
         _isError = true;
         _isLoading = false;
         notifyListeners();
@@ -93,12 +93,13 @@ class BooksProvider with ChangeNotifier{
     final stream = booksService.fetchBookTitles();
     _bookTitlesSubscription = stream.listen(
       (bookTitles) {
-        _bookTitles = bookTitles as Map<String, dynamic>;
+        _bookTitles = bookTitles;
         _isError = false;
         _isLoading = false;
         notifyListeners();
       },
       onError: (error) {
+        print('Error feteching book titles $error');
         _isError = true;
         _isLoading = false;
         notifyListeners();

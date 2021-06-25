@@ -3,8 +3,6 @@ import 'package:leaf/global/services.dart';
 import 'package:leaf/presence/widgets/timeago_flutter.dart';
 import 'package:shimmer/shimmer.dart';
 
-import 'package:leaf/presence/presence_service.dart';
-
 /// This widgets as a contrast to others talk directly to a [service] and not through
 /// a [provider], this is done since this widget is used in profile, chat list, deal list and
 /// chat page and there is no need to send over the same stream through 4 different [providers]
