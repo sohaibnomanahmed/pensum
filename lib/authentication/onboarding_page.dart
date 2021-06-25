@@ -4,7 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class OnboardingPage extends StatelessWidget {
   final OverlayEntry? overlayEntry;
-  static const routeName = '/Onboarding';
 
   OnboardingPage(this.overlayEntry, {Key? key}) : super(key: key);
 
@@ -13,28 +12,40 @@ class OnboardingPage extends StatelessWidget {
     return IntroductionScreen(
       pages: [
         PageViewModel(
-            title: 'Deals indicator',
+            title: 'Find you curriculum',
             body:
-                'Search for desired books or authors, the right indicator shows the number of deals for a certain book. Orange indicates there are few books left, light green there are some book and dark green there are many books left.',
+                'Search for desired books or authors, see how many deals are available and follow books to get notifications when new deals arrive.',
             image: Image.asset(
-              'assets/images/onboard1.png',
-              height: 280,
+              'assets/images/book_lover.png',
+              height: 240,
             )),
         PageViewModel(
-            title: 'Fast message',
-            body:
-                'In the deals section you can send messages to people, Pro tip: long press the message button to send a fast message from the same page.',
+            title: 'Send fast message',
+            body: 'In the deals section you can send messages to people, Pro tip: long press the message button to send a fast message from the same page.',
+            // bodyWidget: RichText(
+            //     text: TextSpan(
+            //         style: Theme.of(context).textTheme.bodyText1,
+            //         children: [
+            //       TextSpan(
+            //           text:
+            //               'In the deals section you can send messages to people, '),
+            //       TextSpan(
+            //           text: 'Pro tip: ',
+            //           style: TextStyle(fontWeight: FontWeight.bold)),
+            //       TextSpan(
+            //           text:
+            //               'long press the message button to send a fast message from the same page.'),
+            //     ])),
             image: Image.asset(
-              'assets/images/onboard2.png',
-              height: 280,
+              'assets/images/message_sent.png',
             )),
         PageViewModel(
-            title: 'Chat options',
+            title: 'Share your location',
             body:
-                'In the chat page you can send locations and photos to easily communicate with each other you can also see if the other person in online or not. shapes designed by starline / Freepik',
+                'In the chat you can send your location or select a spesific location, to meetup and easily communicate ',
             image: Image.asset(
-              'assets/images/onboard3.png',
-              height: 280,
+              'assets/images/my_location.png',
+              height: 250,
             )),
       ],
       showSkipButton: true,

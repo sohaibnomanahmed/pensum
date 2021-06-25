@@ -17,7 +17,7 @@ void main() {
       final _firestore = FakeFirebaseFirestore();
       for (var i = 0; i < 25; i++) {
         await _firestore.collection(BooksCollection).add(Book(
-                titles: ['titles'],
+                titles: ['title'],
                 authors: ['authors'],
                 image: 'image',
                 language: 'language',

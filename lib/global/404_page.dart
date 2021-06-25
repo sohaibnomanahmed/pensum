@@ -1,20 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:leaf/global/widgets/leaf_empty.dart';
 
 class PageNotFound extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(elevation: 0),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(50.0),
-            child: Image.asset('assets/images/motor_cycle.png'),
-          ),
-          Text('Page not found', style: Theme.of(context).textTheme.headline4,),
-        ],
-      ),
+      body: LeafEmpty(text: 'Page not found'),
     );
   }
 }

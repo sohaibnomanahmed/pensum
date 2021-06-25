@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:leaf/global/widgets/leaf_empty.dart';
 import 'package:provider/provider.dart';
 
 import '../books_provider.dart';
@@ -92,6 +93,10 @@ class BookSearchDelegate extends SearchDelegate<String?> {
     bookMatches = bookTitles.keys
         .where((k) => regExp.hasMatch(bookTitles[k]['title'] + bookTitles[k]['authors']))
         .toList();
+
+    if (bookMatches.isEmpty){
+      return LeafEmpty(text: 'Sorry couldn\'t find any matches',);
+    }
 
     return ListView.builder(
       itemCount: bookMatches.length,

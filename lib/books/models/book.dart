@@ -30,7 +30,7 @@ class Book {
     if (data == null) {
       throw 'Error creating Book from null';
     }
-    final List<dynamic>? titles = data['titles'];
+    final List<dynamic>? titles = data['title'];
     final List<dynamic>? authors = data['authors'];
     final String? image = data['image'];
     final String? language = data['language'];
@@ -82,7 +82,7 @@ class Book {
 
   Map<String, dynamic> toMap() {
     return {
-      'titles': titles,
+      'title': titles,
       'authors': authors,
       'image': image,
       'language': language,
