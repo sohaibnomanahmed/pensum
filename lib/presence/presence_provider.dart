@@ -1,11 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:leaf/authentication/authentication_service.dart';
-import 'package:leaf/global/services.dart';
+import 'package:leaf/presence/presence_service.dart';
 
 class PresenceProvider with ChangeNotifier {
-  final _authenticationService = AuthenticationService(FirebaseAuth.instance);
-  final _presenceService = GlobalServices.presenceService;
+  final _authenticationService = AuthenticationService();
+  final _presenceService = PresenceService();
 
   /*
    * return a user presence stream, the value will be true if the user is online
@@ -48,10 +47,10 @@ class PresenceProvider with ChangeNotifier {
    * when signing out the subscription should be removed or multiple
    * reconnections are stored
    */
-  Future<void> goOffline() async {
+  Future<void> goOffline({bool signout = false}) async {
     // set the user to be online
     try {
-      await _presenceService.disconnect();
+      await _presenceService.disconnect(signout: signout);
     } catch (error) {
       print('Error setting presence: $error');
     }

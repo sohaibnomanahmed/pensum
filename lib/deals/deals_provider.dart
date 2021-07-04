@@ -1,14 +1,13 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:leaf/authentication/authentication_service.dart';
 import 'package:leaf/deals/deals_service.dart';
 import 'package:leaf/deals/models/deal_filter.dart';
 import 'package:leaf/following/follow_service.dart';
 import 'package:leaf/following/models/Follow.dart';
-import 'package:leaf/global/services.dart';
+import 'package:leaf/notifications/notification_service.dart';
 import 'package:leaf/profile/profile_service.dart';
 
 import '../books/models/book.dart';
@@ -18,11 +17,11 @@ import 'models/deal.dart';
 /// there are made multiple streams, and the [lastDeal] pointer in 
 /// DealService would become wrong without changing the stream
 class DealsProvider with ChangeNotifier {
-  final _authenticationService = AuthenticationService(FirebaseAuth.instance);
-  final _profileService = ProfileService(FirebaseFirestore.instance);
+  final _authenticationService = AuthenticationService();
+  final _profileService = ProfileService();
   final _dealsService = DealsService();
-  final _followService = FollowService(FirebaseFirestore.instance);
-  final _notificationsService = GlobalServices.notificationService;
+  final _followService = FollowService();
+  final _notificationsService = NotificationService();
 
   List<Deal> _deals = [];
   final _pageSize = 10;

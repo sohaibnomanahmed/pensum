@@ -3,15 +3,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'models/Follow.dart';
 
 class FollowService {
-  final FirebaseFirestore firestore;
-  late DocumentSnapshot lastFollow;
-
-  FollowService(this.firestore);
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  late DocumentSnapshot _lastFollow;
 
   /// fetch follows
   Stream<List<Follow>> fetchFollowing(
       {required String uid, required int pageSize}) {
-    return firestore
+    return _firestore
         .collection('profiles')
         .doc(uid)
         .collection('following')
@@ -21,7 +19,7 @@ class FollowService {
         .map(
       (list) {
         if (list.docs.isNotEmpty) {
-          lastFollow = list.docs.last;
+          _lastFollow = list.docs.last;
         }    
         return list.docs
             .map((document) => Follow.fromFirestore(document))
@@ -33,16 +31,16 @@ class FollowService {
   /// fetch and return more follows, from current last. If no more follows return null
   Future<List<Follow>> fetchMoreFollowing(
       {required String uid, required int pageSize}) async {
-    final follows = await firestore
+    final follows = await _firestore
         .collection('profiles')
         .doc(uid)
         .collection('following')
         .orderBy('time')
-        .startAfterDocument(lastFollow)
+        .startAfterDocument(_lastFollow)
         .limit(pageSize)
         .get();
     if (follows.docs.isNotEmpty) {
-      lastFollow = follows.docs.last;
+      _lastFollow = follows.docs.last;
     }
     return follows.docs
         .map((document) => Follow.fromFirestore(document))
@@ -51,7 +49,7 @@ class FollowService {
 
   /// return id of all followings, useful if needed to subscribe or unsubscribe
   Future<List<String>> getAllFollowingIds(String uid) async {
-    final follows = await firestore
+    final follows = await _firestore
         .collection('profiles')
         .doc(uid)
         .collection('following')
@@ -61,7 +59,7 @@ class FollowService {
 
   /// follow to a spesific book
   Future<void> follow({required String uid, required Follow follow}) {
-    return firestore
+    return _firestore
         .collection('profiles')
         .doc(uid)
         .collection('following')
@@ -71,7 +69,7 @@ class FollowService {
 
   /// get following status stream
   Stream<bool> getFollowingStatus({required String uid, required String id}) {
-    return firestore
+    return _firestore
         .collection('profiles')
         .doc(uid)
         .collection('following')
@@ -82,7 +80,7 @@ class FollowService {
 
   /// remove a profile follow
   Future<void> removeFollowing({required String id, required String uid}) {
-    return firestore
+    return _firestore
         .collection('profiles')
         .doc(uid)
         .collection('following')
@@ -93,7 +91,7 @@ class FollowService {
   /// remove a notification for a spesific followed book
   Future<void> removeFollowingNotification(
       {required String uid, required String id}) async {
-    await firestore
+    await _firestore
         .collection('profiles')
         .doc(uid)
         .collection('following')

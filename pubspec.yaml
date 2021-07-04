@@ -83,6 +83,8 @@ dependencies:
   introduction_screen: ^2.1.0
 
 dev_dependencies:
+  #integration_test:
+  #  sdk: flutter
   flutter_test:
     sdk: flutter  
   # splash screen
@@ -97,9 +99,6 @@ dev_dependencies:
   # firebase testing
   firebase_auth_mocks: ^0.7.1
   fake_cloud_firestore: ^1.1.2
-
-  # integration test
-  #integration_test: ^1.0.2+3
 
 flutter_icons:
   android: true

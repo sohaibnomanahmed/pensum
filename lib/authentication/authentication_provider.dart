@@ -1,8 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:leaf/authentication/authentication_service.dart';
-import 'package:leaf/global/services.dart';
 import 'package:leaf/profile/profile_service.dart';
 
 import '../profile/models/profile.dart';
@@ -11,20 +9,8 @@ import '../profile/models/profile.dart';
 /// provider to have an [errorMessage] variable, this is so since authentication
 /// from firebase gives usefull feedback to the user on error whihc then are dispalyed
 class AuthenticationProvider with ChangeNotifier {
-  final AuthenticationService authenticationService;
-  final ProfileService profileService;
-
-  AuthenticationProvider({
-    required this.authenticationService,
-    required this.profileService,
-  });
-
-  factory AuthenticationProvider.basic() {
-    return AuthenticationProvider(
-      authenticationService: GlobalServices.authenticationService,
-      profileService: ProfileService(FirebaseFirestore.instance),
-    );
-  }
+  final AuthenticationService authenticationService = AuthenticationService();
+  final ProfileService profileService = ProfileService();
 
   var _isLoading = false;
   final _defaultMessage = 'Error: Somehting went wrong, please try again';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:leaf/global/services.dart';
+import 'package:leaf/presence/presence_service.dart';
 import 'package:leaf/presence/widgets/timeago_flutter.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -25,7 +25,7 @@ class _PresenceBubbleState extends State<PresenceBubble> {
          * https://medium.com/codechai/realtime-database-in-flutter-bef0f29e3378 
          */   
     return StreamBuilder(
-      stream: GlobalServices.presenceService.getUserPresenceStream(widget.uid),
+      stream: PresenceService().getUserPresenceStream(widget.uid),
       builder: (context, snap) {
         if (snap.connectionState == ConnectionState.waiting) {
           // return shimmer

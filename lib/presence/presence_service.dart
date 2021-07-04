@@ -4,12 +4,10 @@ import 'dart:async';
 import 'package:firebase_database/firebase_database.dart';
 
 class PresenceService {
-  final FirebaseDatabase database;
+  final FirebaseDatabase database = FirebaseDatabase.instance;
   late StreamSubscription subscription;
   late StreamSubscription subsub;
   late DatabaseReference con;
-
-  PresenceService(this.database);
 
   /// Configure user presence
   Future<void> configureUserPresence(String uid) async {
@@ -73,7 +71,7 @@ class PresenceService {
   }
 
   /// Remove connection for this device when signing out
-  Future<void> disconnect({bool signout = false}) async {
+  Future<void> disconnect({required bool signout}) async {
     if (signout){
       await subscription.cancel();
       await subsub.cancel();
