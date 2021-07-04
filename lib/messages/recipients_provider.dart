@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:leaf/authentication/authentication_service.dart';
@@ -7,7 +6,7 @@ import 'package:leaf/messages/recipients_service.dart';
 import 'models/recipient.dart';
 
 class RecipientsProvider with ChangeNotifier {
-  final _authenticationService = AuthenticationService(FirebaseAuth.instance);
+  final _authenticationService = AuthenticationService();
   final _recipientsService = RecipientsService();
 
   List<Recipient> _recipients = [];

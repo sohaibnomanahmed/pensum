@@ -74,7 +74,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (ctx) => AuthenticationProvider.basic(),
+          create: (ctx) => AuthenticationProvider(),
         ),
         StreamProvider(
           initialData: null,

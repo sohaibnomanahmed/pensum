@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   List<Widget> get _pages => [
         CupertinoTabView(
             builder: (_) => ChangeNotifierProvider(
-                create: (_) => BooksProvider.basic(), child: BooksPage()),
+                create: (_) => BooksProvider(), child: BooksPage()),
             onGenerateRoute: dealsGeneratedRoutes),
         CupertinoTabView(
             builder: (ctx) => ChangeNotifierProvider(

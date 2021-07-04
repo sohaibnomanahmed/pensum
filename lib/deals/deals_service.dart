@@ -7,14 +7,14 @@ import 'models/deal_filter.dart';
 /// from multiple tabs in the app therefore, does each tab page have their own 
 /// [Dealservice] object in their respective [provider], to not overlap same data. 
 class DealsService {
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  late DocumentSnapshot lastDeal;
-  late DocumentSnapshot lastFilteredDeal;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  late DocumentSnapshot _lastDeal;
+  late DocumentSnapshot _lastFilteredDeal;
 
   /// fetch deals
   Stream<List<Deal>> fetchDeals(
       {required String isbn, required int pageSize}) {
-    return firestore
+    return _firestore
         .collection('books/' + isbn + '/deals')
         .orderBy('price')
         .limit(pageSize)
@@ -22,7 +22,7 @@ class DealsService {
         .map(
       (list) {
         if (list.docs.isNotEmpty) {
-          lastDeal = list.docs.last;
+          _lastDeal = list.docs.last;
         }
         return list.docs
             .map((document) => Deal.fromFirestore(document))
@@ -34,14 +34,14 @@ class DealsService {
   /// fetch and return more deals, from current last. If no more deals return null
   Future<List<Deal>> fetchMoreDeals(
       {required String isbn, required int pageSize}) async {
-    final deals = await firestore
+    final deals = await _firestore
         .collection('books/' + isbn + '/deals')
         .orderBy('price')
-        .startAfterDocument(lastDeal)
+        .startAfterDocument(_lastDeal)
         .limit(pageSize)
         .get();
     if (deals.docs.isNotEmpty) {
-      lastDeal = deals.docs.last;
+      _lastDeal = deals.docs.last;
     }
     return deals.docs.map((document) => Deal.fromFirestore(document)).toList();
   }
@@ -55,7 +55,7 @@ class DealsService {
     required String quality,
     required int pageSize,
   }) {
-    var query = firestore
+    var query = _firestore
         .collection('books/' + isbn + '/deals')
         .orderBy('price')
         .where('price', isGreaterThanOrEqualTo: priceAbove)
@@ -70,7 +70,7 @@ class DealsService {
     // get the deals matching the query
     return query.snapshots().map((list) {
       if (list.docs.isNotEmpty) {
-        lastFilteredDeal = list.docs.last;
+        _lastFilteredDeal = list.docs.last;
       }
       // map the deals to the Deal model
       return list.docs.map((doc) => Deal.fromFirestore(doc)).toList();
@@ -83,10 +83,10 @@ class DealsService {
     required int pageSize,
     required DealFilter dealFilter,
   }) async {
-    var query = firestore
+    var query = _firestore
         .collection('books/' + isbn + '/deals')
         .orderBy('price')
-        .startAfterDocument(lastFilteredDeal)
+        .startAfterDocument(_lastFilteredDeal)
         .where('price', isGreaterThanOrEqualTo: dealFilter.priceAbove)
         .where('price', isLessThanOrEqualTo: dealFilter.priceBelow)
         .limit(pageSize);
@@ -100,19 +100,19 @@ class DealsService {
     final deals = await query.get();
     // map the deals to the Deal model
     if (deals.docs.isNotEmpty) {
-      lastFilteredDeal = deals.docs.last;
+      _lastFilteredDeal = deals.docs.last;
     }
     return deals.docs.map((document) => Deal.fromFirestore(document)).toList();
   }
 
   /// get a new deal id
   String getDealId(String productId) {
-    return firestore.collection('books').doc(productId).collection('deals').doc().id;
+    return _firestore.collection('books').doc(productId).collection('deals').doc().id;
   }
 
   /// add deal to a spesific book
   Future<void> setDeal({required Deal deal, required String id}) {
-    return firestore
+    return _firestore
         .collection('books')
         .doc(deal.pid)
         .collection('deals')
@@ -122,7 +122,7 @@ class DealsService {
 
   /// delete a deal
   Future<void> deleteDeal({required String pid, required String id}) {
-    return firestore
+    return _firestore
         .collection('books')
         .doc(pid)
         .collection('deals')

@@ -1,20 +1,13 @@
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
-import 'package:leaf/books/books_service.dart';
 
+import 'books_service.dart';
 import 'models/book.dart';
 
 class BooksProvider with ChangeNotifier{
-  late BooksService booksService;
-  final int _pageSize;
-
-  BooksProvider(this.booksService, [this._pageSize = 10]);
-
-  factory BooksProvider.basic(){
-    return BooksProvider(BooksService(FirebaseFirestore.instance));
-  }
+  late BooksService booksService = BooksService();
+  final int _pageSize = 10;
 
   List<Book> _books = [];
   List<Book> _cachedBooks = [];

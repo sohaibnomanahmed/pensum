@@ -1,6 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -19,8 +17,8 @@ import 'models/recipient.dart';
 import 'models/message.dart';
 
 class MessagesProvider with ChangeNotifier {
-  final _authenticationService = AuthenticationService(FirebaseAuth.instance);
-  final _notificationService = NotificationService(FirebaseFirestore.instance, FirebaseMessaging.instance);
+  final _authenticationService = AuthenticationService();
+  final _notificationService = NotificationService();
   final _messagesService = MessagesService();
   final _recipientService = RecipientsService();
   final _imageUploadService = ImageUploadService();
