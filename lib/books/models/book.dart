@@ -48,10 +48,7 @@ class Book {
         pages == null ||
         edition == null ||
         year == null ||
-        deals == null) {
-      print(titles);
-      print(authors);
-      print(image);    
+        deals == null) {  
       throw 'Error creating Book from null value';
     }
 

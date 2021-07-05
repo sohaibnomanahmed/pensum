@@ -87,9 +87,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     // subcribe to all topics
     context.read<NotificationProvider>().subcribeToAllTopics();
 
-    // track if paused or resumed etc..
+    // track if paused or resumed etc.. and set up presence
     WidgetsBinding.instance!.addObserver(this);
-    Provider.of<PresenceProvider>(context, listen: false).configurePresence();
+    context.read<PresenceProvider>().configurePresence();
   }
 
   @override
@@ -97,11 +97,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     super.didChangeAppLifecycleState(state);
 
     if (state == AppLifecycleState.paused) {
-      Provider.of<PresenceProvider>(context, listen: false).goOffline();
+      context.read<PresenceProvider>().goOffline();
     }
 
     if (state == AppLifecycleState.resumed) {
-      Provider.of<PresenceProvider>(context, listen: false).goOnline();
+      context.read<PresenceProvider>().goOnline();
     }
   }
 

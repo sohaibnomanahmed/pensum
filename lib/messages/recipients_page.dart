@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:leaf/global/widgets/paging_view.dart';
 import 'package:provider/provider.dart';
 
 import 'package:leaf/messages/recipients_provider.dart';
@@ -11,7 +12,6 @@ class RecipientsPage extends StatefulWidget {
 }
 
 class _RecipientsPageState extends State<RecipientsPage>{
-  late bool lock;
   @override
   void initState() {
     super.initState();
@@ -20,7 +20,6 @@ class _RecipientsPageState extends State<RecipientsPage>{
 
   @override
   Widget build(BuildContext context) {
-    lock = false;
     final isLoading = context.watch<RecipientsProvider>().isLoading;
     return Scaffold(
         appBar: CupertinoNavigationBar(
@@ -32,18 +31,11 @@ class _RecipientsPageState extends State<RecipientsPage>{
       ),
         body: isLoading
             ? Center(child: CircularProgressIndicator())
-            : NotificationListener<ScrollNotification>(
-                          onNotification: (ScrollNotification scrollInfo) {
-                            if (scrollInfo.metrics.pixels >
-                                (scrollInfo.metrics.maxScrollExtent * 0.8)) {
-                              if (!lock){
-                                lock = true;  
+            : PagingView(
+                          action: () =>  
                                 context
                                     .read<RecipientsProvider>()
-                                    .fetchMoreRecipients();
-                              }
-                            }
-                            return true;
-                          },child: RecipientsList()));
+                                    .fetchMoreRecipients(),
+                          child: RecipientsList()));
   }
 }

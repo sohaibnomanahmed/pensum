@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:leaf/global/widgets/paging_view.dart';
 import 'package:leaf/presence/widgets/presence_bubble.dart';
 import 'package:leaf/profile/profile_page.dart';
 import 'package:provider/provider.dart';
@@ -25,26 +26,15 @@ class MessagesPage extends StatefulWidget {
 }
 
 class _MessagesPageState extends State<MessagesPage> {
-  late MessagesProvider messagesProvider;
-  late bool lock;
-
   @override
   void initState() {
     super.initState();
     context.read<MessagesProvider>().unsubscribeFromChatNotifications();
     context.read<MessagesProvider>().fetchMessages(widget.rid);
-    messagesProvider = Provider.of<MessagesProvider>(context, listen: false);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    messagesProvider.subscribeToChatNotifications();
   }
 
   @override
   Widget build(BuildContext context) {
-    lock = false;
     final isLoading = context.watch<MessagesProvider>().isLoading;
     final isError = context.watch<MessagesProvider>().isError;
     return Scaffold(
@@ -81,19 +71,11 @@ class _MessagesPageState extends State<MessagesPage> {
                   child: Column(
                     children: [
                       Expanded(
-                        child: NotificationListener<ScrollNotification>(
-                          onNotification: (ScrollNotification scrollInfo) {
-                            if (scrollInfo.metrics.pixels >
-                                (scrollInfo.metrics.maxScrollExtent * 0.8)) {
-                              if (!lock) {
-                                lock = true;
+                        child: PagingView(
+                          action: () =>
                                 context
                                     .read<MessagesProvider>()
-                                    .fetchMoreMessages(widget.rid);
-                              }
-                            }
-                            return true;
-                          },
+                                    .fetchMoreMessages(widget.rid),
                           child: MessagesList(),
                         ),
                       ),

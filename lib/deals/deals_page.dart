@@ -3,6 +3,7 @@ import 'package:leaf/deals/widgets/blurred_image_app_bar.dart';
 import 'package:leaf/deals/widgets/deal_list.dart';
 import 'package:leaf/global/functions.dart';
 import 'package:leaf/global/widgets/leaf_error.dart';
+import 'package:leaf/global/widgets/paging_view.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
@@ -27,7 +28,6 @@ class _DealsPageState extends State<DealsPage> {
   final GlobalKey _one = GlobalKey();
   final GlobalKey _two = GlobalKey();
   final GlobalKey _three = GlobalKey();
-  late bool lock;
 
   @override
   void initState() {
@@ -54,7 +54,6 @@ class _DealsPageState extends State<DealsPage> {
 
   @override
   Widget build(BuildContext context) {
-    lock = false;
     final isFilter = context.watch<DealsProvider>().isFilter;
     final isLoading = context.watch<DealsProvider>().isLoading;
     final isError = context.watch<DealsProvider>().isError;
@@ -63,17 +62,9 @@ class _DealsPageState extends State<DealsPage> {
     final isFollowing = context.watch<DealsProvider>().isFollowing;
     return Scaffold(
       appBar: BlurredImageAppBar(widget.book, _one, _two),
-      body: NotificationListener<ScrollNotification>(
-        onNotification: (ScrollNotification scrollInfo) {
-          if (scrollInfo.metrics.pixels >
-              (scrollInfo.metrics.maxScrollExtent * 0.8)) {
-            if (!lock) {
-              lock = true;
-              context.read<DealsProvider>().fetchMoreDeals(widget.book.isbn);
-            }
-          }
-          return true;
-        },
+      body: PagingView(
+        action: () =>
+              context.read<DealsProvider>().fetchMoreDeals(widget.book.isbn),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,

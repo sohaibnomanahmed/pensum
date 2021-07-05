@@ -53,7 +53,6 @@ class MessagesProvider with ChangeNotifier {
     final stream = _messagesService.fetchMessages(
         sid: user.uid, rid: rid, pageSize: _pageSize);
     _subscription = stream.listen((messages) {
-      print(messages);
       messages.reversed.toList().forEach((message) {
         message.isMe = message.sid == user.uid;
         // if not already loaded, add to _message list
@@ -309,6 +308,7 @@ class MessagesProvider with ChangeNotifier {
   /// subscribes to the chat topic of the user so that the notifications will apear
   /// dont need to return if action was succesfull or not
   void subscribeToChatNotifications() async {
+    print('SSUUUBWDDD');
     final user = _authenticationService.currentUser!;
     await _notificationService.subscribeToTopic(user.uid);
   }
@@ -317,7 +317,7 @@ class MessagesProvider with ChangeNotifier {
   @override
   void dispose() async {
     super.dispose();
-    _messages.clear();
+    subscribeToChatNotifications();
     await _subscription.cancel();
   }
 }
