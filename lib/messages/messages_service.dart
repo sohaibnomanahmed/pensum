@@ -4,8 +4,8 @@ import 'models/message.dart';
 import 'models/recipient.dart';
 
 class MessagesService {
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  late DocumentSnapshot lastMessage;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  late DocumentSnapshot _lastMessage;
 
   /// fetch messages, sometimes fetches old messaes then the 10 new,
   /// this will make the ordering wrong as if there was 13 new the 3 wont 
@@ -15,7 +15,7 @@ class MessagesService {
     required String sid,
     required String rid,
   }) {
-    return firestore
+    return _firestore
         .collection('chats')
         .doc(sid)
         .collection('recipients')
@@ -27,7 +27,7 @@ class MessagesService {
         .map(
       (list) {
         if (list.docs.isNotEmpty) {
-          lastMessage = list.docs.last;
+          _lastMessage = list.docs.last;
         }
         return list.docs
             .map((document) => Message.fromFirestore(document))
@@ -42,18 +42,18 @@ class MessagesService {
     required String sid,
     required String rid,
   }) async {
-    final messages = await firestore
+    final messages = await _firestore
         .collection('chats')
         .doc(sid)
         .collection('recipients')
         .doc(rid)
         .collection('messages')
         .orderBy('time', descending: true)
-        .startAfterDocument(lastMessage)
+        .startAfterDocument(_lastMessage)
         .limit(pageSize)
         .get();
     if (messages.docs.isNotEmpty) {
-      lastMessage = messages.docs.last;
+      _lastMessage = messages.docs.last;
     }
     return messages.docs
         .map((document) => Message.fromFirestore(document))
@@ -68,14 +68,14 @@ class MessagesService {
     required Recipient recipient,
   }) async {
     // store message info for the sender
-    await firestore
+    await _firestore
         .collection('chats')
         .doc(sid)
         .collection('recipients')
         .doc(rid)
         .set(recipient.toMap(), SetOptions(merge: true));
     // store message for sender
-    await firestore
+    await _firestore
         .collection('chats')
         .doc(sid)
         .collection('recipients')
@@ -91,7 +91,7 @@ class MessagesService {
     required String rid,
     required Map<String, bool> message,
   }) {
-    return firestore
+    return _firestore
         .collection('chats')
         .doc(rid)
         .collection('recipients')
