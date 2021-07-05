@@ -308,7 +308,6 @@ class MessagesProvider with ChangeNotifier {
   /// subscribes to the chat topic of the user so that the notifications will apear
   /// dont need to return if action was succesfull or not
   void subscribeToChatNotifications() async {
-    print('SSUUUBWDDD');
     final user = _authenticationService.currentUser!;
     await _notificationService.subscribeToTopic(user.uid);
   }

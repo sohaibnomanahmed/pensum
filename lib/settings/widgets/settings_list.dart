@@ -16,6 +16,7 @@ class SettingsList extends StatefulWidget {
 
 class _SettingsListState extends State<SettingsList> {
   bool resetBtn = false;
+  bool feedbackBtn = false;
   bool signOutBtn = false;
 
   @override
@@ -27,7 +28,7 @@ class _SettingsListState extends State<SettingsList> {
       child: Column(
         children: [
           ListTile(
-              leading: isLoading && resetBtn
+              leading: resetBtn
                   ? SizedBox(
                       height: 20,
                       width: 20,
@@ -38,7 +39,7 @@ class _SettingsListState extends State<SettingsList> {
               onTap: isLoading
                   ? null
                   : () async {
-                      resetBtn = true;
+                      setState(() => resetBtn = true);
                       await ButtonFunctions.onPressHandler(
                         context: context,
                         action: () => context
@@ -49,17 +50,22 @@ class _SettingsListState extends State<SettingsList> {
                         successMessage:
                             'Reset password email sent, please check your inbox',
                       );
-                      setState(() {
-                        resetBtn = false;
-                      });
+                      setState(() => resetBtn = false);
                     }),
           ListTile(
-            leading: Icon(Icons.feedback_rounded),
+            leading: feedbackBtn
+                  ? SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(),
+                    )
+                  : Icon(Icons.feedback_rounded),
             title: Text('Send Feedback'),
             subtitle: Text('Report issues, missing books or suggest improvents'),
             onTap: isLoading
                 ? null
                 : () async {
+                    setState(() => feedbackBtn = true);
                     final serviceAccount = await context
                         .read<AuthenticationProvider>()
                         .getAdminAccount();
@@ -85,10 +91,11 @@ class _SettingsListState extends State<SettingsList> {
                         ),
                       );
                     }
+                    setState(() => feedbackBtn = false);
                   },
           ),
           ListTile(
-              leading: isLoading && signOutBtn
+              leading: signOutBtn
                   ? SizedBox(
                       height: 20,
                       width: 20,
@@ -99,7 +106,7 @@ class _SettingsListState extends State<SettingsList> {
               onTap: isLoading
                   ? null
                   : () async {
-                    signOutBtn = true;
+                    setState(() => signOutBtn = true);
                     await ButtonFunctions.onPressHandler(
                       context: context,
                       action: () async { 
@@ -112,9 +119,7 @@ class _SettingsListState extends State<SettingsList> {
                           .read<AuthenticationProvider>()
                           .signOut();},
                       errorMessage: 'Something went wrong, please try again');
-                      setState(() {
-                        signOutBtn = false;
-                      });
+                      setState(() => signOutBtn = false);
                       }),
           ListTile(
             leading: Icon(Icons.delete_rounded),
