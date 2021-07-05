@@ -3,15 +3,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'models/recipient.dart';
 
 class RecipientsService {
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  late DocumentSnapshot lastRecipient;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  late DocumentSnapshot _lastRecipient;
 
   /// fetch recipients
   Stream<List<Recipient>> fetchRecipients({
     required String sid,
     required int pageSize,
   }) {
-    return firestore
+    return _firestore
         .collection('chats')
         .doc(sid)
         .collection('recipients')
@@ -21,7 +21,7 @@ class RecipientsService {
         .map(
       (list) {
         if (list.docs.isNotEmpty) {
-          lastRecipient = list.docs.last;
+          _lastRecipient = list.docs.last;
         }
         return list.docs
             .map((document) => Recipient.fromFirestore(document))
@@ -35,16 +35,16 @@ class RecipientsService {
     required String sid,
     required int pageSize,
   }) async {
-    final recipients = await firestore
+    final recipients = await _firestore
         .collection('chats')
         .doc(sid)
         .collection('recipients')
         .orderBy('time', descending: true)
-        .startAfterDocument(lastRecipient)
+        .startAfterDocument(_lastRecipient)
         .limit(pageSize)
         .get();
     if (recipients.docs.isNotEmpty) {
-      lastRecipient = recipients.docs.last;
+      _lastRecipient = recipients.docs.last;
     }
     return recipients.docs
         .map((document) => Recipient.fromFirestore(document))
@@ -57,7 +57,7 @@ class RecipientsService {
     required String rid,
     required Map<String, bool> recipient,
   }) {
-    return firestore
+    return _firestore
         .collection('chats')
         .doc(sid)
         .collection('recipients')

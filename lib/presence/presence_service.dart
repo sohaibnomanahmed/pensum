@@ -4,20 +4,20 @@ import 'dart:async';
 import 'package:firebase_database/firebase_database.dart';
 
 class PresenceService {
-  final FirebaseDatabase database = FirebaseDatabase.instance;
-  late StreamSubscription subscription;
-  late StreamSubscription subsub;
-  late DatabaseReference con;
+  final FirebaseDatabase _database = FirebaseDatabase.instance;
+  late StreamSubscription _subscription;
+  late StreamSubscription _subsub;
+  late DatabaseReference _con;
 
   /// Configure user presence
   Future<void> configureUserPresence(String uid) async {
     final myConnectionsRef =
-        database.reference().child('presence').child(uid).child('connections');
+        _database.reference().child('presence').child(uid).child('connections');
     final lastOnlineRef =
-        database.reference().child('presence').child(uid).child('lastOnline');
+        _database.reference().child('presence').child(uid).child('lastOnline');
 
     // Needs to go back online if once gone offline i.g. logging out and inn
-    await database.goOnline();    
+    await _database.goOnline();    
 
     /*
       Need to have an extra listener just so, there some listener left after onDisconnect
@@ -28,24 +28,24 @@ class PresenceService {
       https://stackoverflow.com/questions/53069484/firebase-realtime-database-info-connected-false-when-it-should-be-true
       https://firebase.googleblog.com/2013/06/how-to-build-presence-system.html
      */
-    subsub = database
+    _subsub = _database
         .reference()
         .child('presence')
         .child(uid)
         .onValue
         .listen((event) {});
 
-    subscription = database.reference().child('.info/connected').onValue.listen((event) {
+    _subscription = _database.reference().child('.info/connected').onValue.listen((event) {
       if (event.snapshot.value) {
         // We're connected (or reconnected)! Do anything here that should happen only if online (or on reconnect)
-        con = myConnectionsRef.push();
+        _con = myConnectionsRef.push();
         
         // When I disconnect remove this device
-        con.onDisconnect().remove();
+        _con.onDisconnect().remove();
         
         // Add this device to my connections list
         // this value could contain info about the device or a timestamp too
-        con.set(true);
+        _con.set(true);
         
         // When I disconnect, update the last time I was seen online
         lastOnlineRef.onDisconnect().set(ServerValue.timestamp);
@@ -55,7 +55,7 @@ class PresenceService {
 
   /// Get connection status
   Stream<dynamic> getUserPresenceStream(String uid){
-    return database.reference().child('presence').child(uid).onValue.map((event) {
+    return _database.reference().child('presence').child(uid).onValue.map((event) {
       final presenceData = event.snapshot.value;
       if (presenceData['connections'] == null){
         final lastSeen = DateTime.fromMillisecondsSinceEpoch(presenceData['lastOnline']);
@@ -67,15 +67,15 @@ class PresenceService {
 
   /// Connect back to the firebase realtime database
   void connect(){
-    database.goOnline();
+    _database.goOnline();
   }
 
   /// Remove connection for this device when signing out
   Future<void> disconnect({required bool signout}) async {
     if (signout){
-      await subscription.cancel();
-      await subsub.cancel();
+      await _subscription.cancel();
+      await _subsub.cancel();
     }
-    await database.goOffline();
+    await _database.goOffline();
   }
 }
