@@ -60,6 +60,8 @@ class DealsProvider with ChangeNotifier {
     _dealsSubscription = stream.listen(
       (deals) {
         _deals = deals;
+        notifyListeners();
+        // so that two subscriptions might not be added
         if (_followSubscribtion == null){
           getFollowStatus(isbn);
         }

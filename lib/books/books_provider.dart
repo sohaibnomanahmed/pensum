@@ -35,6 +35,7 @@ class BooksProvider with ChangeNotifier{
     _booksSubscription = stream.listen(
       (books) {
         _books = books;
+        notifyListeners();
         // so that two subscriptions might not be added
         if (_bookTitles.isEmpty){
           fetchBookTitles();
