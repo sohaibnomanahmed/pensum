@@ -35,7 +35,10 @@ class BooksProvider with ChangeNotifier{
     _booksSubscription = stream.listen(
       (books) {
         _books = books;
-        fetchBookTitles();
+        // so that two subscriptions might not be added
+        if (_bookTitles.isEmpty){
+          fetchBookTitles();
+        }
       },
       onError: (error) {
         print('Error fetching books $error');
