@@ -28,7 +28,7 @@ class BookSearchBar extends StatelessWidget {
                   delegate: BookSearchDelegate(context, bookTitles),
                 ),
         icon: Icon(Icons.search),
-        label: Text('Search books'),
+        label: Text('Search for books or authors'),
       ),
     );
   }
