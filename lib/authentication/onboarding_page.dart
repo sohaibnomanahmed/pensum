@@ -17,7 +17,7 @@ class OnboardingPage extends StatelessWidget {
                 'Search for desired books or authors, see how many deals are available and follow books to get notifications when new deals arrive.',
             image: Image.asset(
               'assets/images/book_lover.png',
-              height: 240,
+              height: 250,
             )),
         PageViewModel(
             title: 'Send fast message',
@@ -38,6 +38,7 @@ class OnboardingPage extends StatelessWidget {
             //     ])),
             image: Image.asset(
               'assets/images/message_sent.png',
+              height: 250,
             )),
         PageViewModel(
             title: 'Share your location',
