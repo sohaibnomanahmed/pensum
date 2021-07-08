@@ -1,4 +1,4 @@
-# leaf
+# <img width="40" alt="eco-playstore" src="https://user-images.githubusercontent.com/42720743/124920860-1315a080-dff8-11eb-9d03-05d399f4ebf4.png"> leaf
 
 [Privacy Policy](privacy.md)\
 [Support](support.md)
