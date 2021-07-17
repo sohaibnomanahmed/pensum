@@ -5,12 +5,11 @@ import 'package:flutter/foundation.dart';
 import 'books_service.dart';
 import 'models/book.dart';
 
-class BooksProvider with ChangeNotifier{
+class BooksProvider with ChangeNotifier {
   late BooksService booksService = BooksService();
   final int _pageSize = 10;
 
   List<Book> _books = [];
-  List<Book> _cachedBooks = [];
   Map<String, dynamic> _bookTitles = {};
   var _isLoading = true;
   var _isError = false;
@@ -25,7 +24,6 @@ class BooksProvider with ChangeNotifier{
   bool get isError => _isError;
   bool get isSearch => _isSearch;
 
-  
   /// Subsbribe to the book stream, Should be called in the [init state] method of the page
   /// from where it is called, stores the result in [books] then calls [fetchBookTitles]
   /// if an error accours the stream will be canceled, and we will set [isError]
@@ -37,8 +35,11 @@ class BooksProvider with ChangeNotifier{
         _books = books;
         notifyListeners();
         // so that two subscriptions might not be added
-        if (_bookTitles.isEmpty){
+        if (_bookTitles.isEmpty) {
           fetchBookTitles();
+        } else {
+          _isLoading = false;
+          notifyListeners();
         }
       },
       onError: (error) {
@@ -52,15 +53,15 @@ class BooksProvider with ChangeNotifier{
   }
 
   /// refetch books when an error occurs, reset [loading] and [error]
-  /// then call [fetchBooks] again to remake the stream 
-  void reFetchBooks() async{
+  /// then call [fetchBooks] again to remake the stream
+  void reFetchBooks() async {
     _isLoading = true;
     _isError = false;
     notifyListeners();
     fetchBooks();
   }
 
-  /// fetch more books, starts with setting a [silent loader] so that the method does 
+  /// fetch more books, starts with setting a [silent loader] so that the method does
   /// not get called again. Check if [books] is empty or [isError] or [isSearch] is set
   /// add fetched books at the end of [books], catch errors if any and return
   Future<void> fetchMoreBooks() async {
@@ -70,10 +71,11 @@ class BooksProvider with ChangeNotifier{
       return;
     }
 
+    // get more books
     List<Book> moreBooks;
-    try{
+    try {
       moreBooks = await booksService.fetchMoreBooks(_pageSize);
-    } catch (error){
+    } catch (error) {
       print('Failed to fetch more books: $error');
       return;
     }
@@ -83,7 +85,7 @@ class BooksProvider with ChangeNotifier{
   }
 
   /// Subscbribe to the book titles stream, should only be called from [fetchBooks]
-  /// store the result in [bookTitles] and stop [loading] if an error accours 
+  /// store the result in [bookTitles] and stop [loading] if an error accours
   /// the stream will be canceled, and we will set [isError]
   void fetchBookTitles() {
     // get book titles
@@ -105,40 +107,48 @@ class BooksProvider with ChangeNotifier{
     );
   }
 
-  
   /// Searches for all books matching a certain title from [firebase] and sets [isSearch] flag
   /// if successfull lists the found books in [books] and cashe prevoius books in [cashedBooks]
   /// to be restored when search is cleared, do not store prevoius searches
   /// if an error occurs sets [isError]
-  Future<void> fetchSearchedBook(String title) async {
-    // only store the loaded books, when not searching
-    // else on double search you get the previous search
-    if (!_isSearch){
-      _cachedBooks = _books;
-    }
+  Future<void> fetchSearchedBook(String isbn) async {
     // get books that fits a cetain title
     _isSearch = true;
     _isLoading = true;
     notifyListeners();
-    try{
-      _books = await booksService.searchBooksByTitle(title);
-    } catch (error){
-      print('Failed to fetch books: $error');
-      _isError = true;
-    }
-    _isLoading = false;
-    notifyListeners();
+    final _stream = booksService.searchBooks(isbn);
+    await _booksSubscription.cancel();
+    _booksSubscription = _stream.listen(
+      (books) {
+        _books = books;
+        _isLoading = false;
+        notifyListeners();
+      },
+      onError: (error) {
+        print('Error fetching searched books $error');
+        _isError = true;
+        _isLoading = false;
+        notifyListeners();
+      },
+      cancelOnError: true,
+    );
   }
 
   /// Restores the [chashed books], when a search is called
   /// and turns off [isSearch] flag
-  void clearSearch(){
+  void clearSearch() async {
     _isLoading = true;
-    _isSearch = false;
     notifyListeners();
-    _books = _cachedBooks;
-    _isLoading = false;
-    notifyListeners();
+    try{
+      await _booksSubscription.cancel();
+      _isSearch = false;
+      fetchBooks();
+    } catch (error){
+      print('Error clearing search $error');
+      _isLoading = false;
+      _isError = true;
+      notifyListeners();
+    }
   }
 
   /// Dispose when the provider is destroyed, cancel the book subscription

@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:leaf/authentication/onboarding_page.dart';
+import 'package:leaf/authentication/update_page.dart';
+import 'package:new_version/new_version.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -54,17 +56,22 @@ Future<void> main() async {
   }
   // check if onboarding is needed
   _sharedPreferences = await SharedPreferences.getInstance();
+  // check if logged in
   await FirebaseAuth.instance.authStateChanges().isEmpty;
+  // check if update is needed
+  final newVersion = NewVersion();
+  status = await newVersion.getVersionStatus();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent, // for Android
       statusBarIconBrightness: Brightness.dark, // for Android
       statusBarBrightness: Brightness.light // for IOS
-      ));
+      ));    
   runApp(MyApp());
 }
 
 // shared prefrences to check if onboarding is complete or not
 late SharedPreferences _sharedPreferences;
+late VersionStatus? status;
 bool lock = false;
 
 class MyApp extends StatelessWidget {
@@ -110,7 +117,7 @@ class MyApp extends StatelessWidget {
         //           borderRadius: BorderRadius.circular(10))),
         // ),
         //ThemeData.dark(),
-        home: Consumer<User?>(
+        home: status!.canUpdate ? UpdatePage(status: status) : Consumer<User?>(
           builder: (context, user, child) {
             if (_sharedPreferences.getBool('ONBOARD') ?? true && !lock) {
               // avoid race conditions
@@ -126,10 +133,10 @@ class MyApp extends StatelessWidget {
                 : MultiProvider(
                     providers: [
                       ChangeNotifierProvider<NotificationProvider>(
-                        create: (ctx) => NotificationProvider(),
+                        create: (ctx) => NotificationProvider()
                       ),
                       ChangeNotifierProvider<PresenceProvider>(
-                        create: (ctx) => PresenceProvider(),
+                        create: (ctx) => PresenceProvider()
                       ),
                     ],
                     child: HomePage(),

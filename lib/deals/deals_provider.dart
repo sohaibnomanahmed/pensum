@@ -64,6 +64,9 @@ class DealsProvider with ChangeNotifier {
         // so that two subscriptions might not be added
         if (_followSubscribtion == null){
           getFollowStatus(isbn);
+        } else {
+          _isLoading = false;
+          notifyListeners();
         }
       },
       onError: (error) {
@@ -96,7 +99,7 @@ class DealsProvider with ChangeNotifier {
       return;
     }
 
-    // get more books
+    // get more deals
     List<Deal> moreDeals;
     try {
       if (dealFilter.isEmpty) {
@@ -207,7 +210,7 @@ class DealsProvider with ChangeNotifier {
 
   /// cancel the filtered deals stream and call [fetchDeals] to restore all
   /// deals, return true if successfull and false if an error occurs
-  Future<bool> clearFilter(String isbn) async {
+  void clearFilter(String isbn) async {
     _isLoading = true;
     notifyListeners();
     try {
@@ -218,10 +221,9 @@ class DealsProvider with ChangeNotifier {
     } catch (error){
       print('Error clearing filter $error');
       _isLoading = false;
+      _isError = true;
       notifyListeners();
-      return false;
     }
-    return true;
   }
 
   /// follow a [Book], by subscribing to its id, so that [notifications] can

@@ -86,7 +86,7 @@ class BookSearchDelegate extends SearchDelegate<String?> {
         final image = bookTitles[bookMatches[index]]['image'] ?? '';
         return ListTile(
           onTap: () {
-            parentContext.read<BooksProvider>().fetchSearchedBook(title);
+            parentContext.read<BooksProvider>().fetchSearchedBook(bookMatches[index]);
             close(context, null);
           },
           title: Text(title, style: Theme.of(context).textTheme.bodyText2),

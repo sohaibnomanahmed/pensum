@@ -77,12 +77,14 @@ class BooksService {
   }
 
   /// Search books by title
-  Future<List<Book>> searchBooksByTitle(String title) async {
-    final books = await _firestore
+  Stream<List<Book>> searchBooks(String isbn){
+    print(isbn);
+    return _firestore
         .collection('books')
-        .orderBy('year', descending: true)
-        .where('title', arrayContains: title)
-        .get();
-    return books.docs.map((document) => Book.fromFirestore(document)).toList();
+        .where('isbn', isEqualTo: isbn)
+        .snapshots()
+        .map((books) => books.docs
+            .map((document) => Book.fromFirestore(document))
+            .toList());
   }
 }
