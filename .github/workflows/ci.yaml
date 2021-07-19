@@ -77,4 +77,4 @@ jobs:
         env: 
           FIREBASE_ANDROID: ${{ secrets.FIREBASE_ANDROID }}
         run: echo $FIREBASE_ANDROID > ./android/app/google-services.json 
-      - run: flutter build apk    
+      - run: flutter build appbundle --profile  

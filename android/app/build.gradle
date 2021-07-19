@@ -59,6 +59,8 @@ android {
         release {
             signingConfig signingConfigs.release
         }
+        profile {
+        }
     }
 }
 
