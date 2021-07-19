@@ -7,7 +7,7 @@ class ImagePickerService {
   /// version 0.8.0+1: on iOS the image is rotated
   Future<File?> pickImage(ImageSource source) async {
     final picker = ImagePicker();
-    final pickedFile = await picker.getImage(source: source,); //maxWidth: 2000);
+    final pickedFile = await picker.pickImage(source: source); //maxWidth: 2000);
     return pickedFile == null ? null : File(pickedFile.path) ;
   }
 }

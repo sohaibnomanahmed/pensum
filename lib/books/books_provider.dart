@@ -57,6 +57,7 @@ class BooksProvider with ChangeNotifier {
   void reFetchBooks() async {
     _isLoading = true;
     _isError = false;
+    _isSearch = false;
     notifyListeners();
     fetchBooks();
   }

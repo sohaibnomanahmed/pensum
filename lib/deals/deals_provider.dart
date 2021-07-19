@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
@@ -34,11 +33,6 @@ class DealsProvider with ChangeNotifier {
   bool _isFollowing = false;
   late StreamSubscription _dealsSubscription;
   StreamSubscription? _followSubscribtion;
-
-  final int id = Random().nextInt(100);
-  DealsProvider(){
-    print('Creating deal with id $id');
-  }
 
   // getters
   bool get isLoading => _isLoading;
@@ -84,6 +78,7 @@ class DealsProvider with ChangeNotifier {
   void refetchDeals(String isbn) async {
     _isLoading = true;
     _isError = false;
+    _isFilter = false;
     notifyListeners();
     fetchDeals(isbn);
   }
@@ -260,7 +255,6 @@ class DealsProvider with ChangeNotifier {
   /// certain book, store result in [isFollowing] default is false i.g. no wifi
   /// if an error occurs set [isError]
   void getFollowStatus(String isbn) async {
-    print('Ad follow streaam for id: $id book: $isbn');
     final user = _authenticationService.currentUser!;
     final stream =
         _followService.getFollowingStatus(uid: user.uid, id: isbn);
@@ -284,13 +278,7 @@ class DealsProvider with ChangeNotifier {
   @override
   void dispose() async {
     super.dispose();
-    print('Disposing dealprovider wiht id: $id');
-    print(_dealsSubscription);
-    print(_followSubscribtion);
     await _dealsSubscription.cancel();
     await _followSubscribtion?.cancel();
-    print('Shoudl be canceld for: $id');
-    print(_dealsSubscription);
-    print(_followSubscribtion);
   }
 }

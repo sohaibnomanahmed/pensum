@@ -261,7 +261,7 @@ SPEC CHECKSUMS:
   GoogleUtilities: f8a43108b38a68eebe8b3540e1f4f2d28843ce20
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   image_cropper: f1668dd8d2cad2d357955caad15a40547856edcb
-  image_picker: 50e7c7ff960e5f58faa4d1f4af84a771c671bc4a
+  image_picker: e06f7a68f000bd36f552c1847e33cda96ed31f1f
   leveldb-library: 50c7b45cbd7bf543c81a468fe557a16ae3db8729
   location: 3a2eed4dd2fab25e7b7baf2a9efefe82b512d740
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
