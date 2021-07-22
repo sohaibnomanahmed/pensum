@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:leaf/global/functions.dart';
+import 'package:leaf/global/utils.dart';
 import 'package:leaf/messages/widgets/message_action_sheet.dart';
 import 'package:provider/provider.dart';
 
@@ -25,6 +25,9 @@ class _MessageBarState extends State<MessageBar> {
   Widget build(BuildContext context) {
     return TextField(
       controller: _controller,
+      keyboardType: TextInputType.multiline,
+      minLines: 1,
+      maxLines: 5,
       decoration: InputDecoration(
           prefixIcon: IconButton(
             icon: Icon(Icons.add),
@@ -54,7 +57,7 @@ class _MessageBarState extends State<MessageBar> {
                         _message = '';
                       });
                       _controller.clear();
-                      await ButtonFunctions.onPressHandler(
+                      await onPressHandler(
                           context: context,
                           action: () async => await context
                               .read<MessagesProvider>()

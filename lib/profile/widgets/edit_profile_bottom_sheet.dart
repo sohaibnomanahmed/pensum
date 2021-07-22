@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:leaf/global/functions.dart';
+import 'package:leaf/global/utils.dart';
 import 'package:leaf/profile/models/profile.dart';
 import 'package:provider/provider.dart';
 
@@ -58,7 +58,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
               ElevatedButton(
                 onPressed: (_firstname.isEmpty || _lastname.isEmpty)
                     ? null
-                    : () async => ButtonFunctions.onPressHandler(
+                    : () async => onPressHandler(
                           context: context,
                           popScreen: true,
                           action: () async => await context

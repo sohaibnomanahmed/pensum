@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:leaf/global/functions.dart';
+import 'package:leaf/global/utils.dart';
 import 'package:provider/provider.dart';
 
 import 'package:leaf/following/follow_provider.dart';
@@ -38,7 +38,7 @@ class FollowItem extends StatelessWidget {
           IconButton(
             icon:
                 Icon(Icons.delete_rounded, color: Theme.of(context).errorColor),
-            onPressed: () => ButtonFunctions.onPressHandler(
+            onPressed: () => onPressHandler(
               context: context,
               action: () async =>
                   await context.read<FollowProvider>().unfollow(follow.pid),

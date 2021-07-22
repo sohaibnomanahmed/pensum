@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:leaf/global/functions.dart';
+import 'package:leaf/global/utils.dart';
 import 'package:provider/provider.dart';
 
 import '../authentication_provider.dart';
@@ -68,7 +68,7 @@ class _CreateAccountBottomSheetState extends State<CreateAccountBottomSheet> {
                     : () async {
                         // remove softkeayboard
                         FocusScope.of(context).unfocus();
-                        await ButtonFunctions.onPressHandler(
+                        await onPressHandler(
                           context: context,
                           action: () async => await context
                               .read<AuthenticationProvider>()

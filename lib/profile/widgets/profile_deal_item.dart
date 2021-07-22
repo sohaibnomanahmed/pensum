@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:leaf/deals/deals_provider.dart';
 import 'package:leaf/deals/widgets/add_deal_bottom_sheet.dart';
-import 'package:leaf/global/functions.dart';
+import 'package:leaf/global/utils.dart';
 import 'package:leaf/profile/profile_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -76,7 +76,7 @@ class ProfileDealItem extends StatelessWidget {
                     IconButton(
                       icon: Icon(Icons.delete_rounded,
                           color: Theme.of(context).errorColor),
-                      onPressed: () => ButtonFunctions.onPressHandler(
+                      onPressed: () => onPressHandler(
                         context: context,
                         action: () async => await context
                             .read<ProfileProvider>()

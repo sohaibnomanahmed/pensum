@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:leaf/deals/widgets/blurred_image_app_bar.dart';
 import 'package:leaf/deals/widgets/deal_list.dart';
-import 'package:leaf/global/functions.dart';
+import 'package:leaf/global/utils.dart';
 import 'package:leaf/global/widgets/leaf_error.dart';
 import 'package:leaf/global/widgets/paging_view.dart';
 import 'package:provider/provider.dart';
@@ -86,7 +86,7 @@ class _DealsPageState extends State<DealsPage> {
                     style: ElevatedButton.styleFrom(tapTargetSize: MaterialTapTargetSize.shrinkWrap),
                     onPressed: (isLoading || isFollowing)
                         ? null
-                        : () => ButtonFunctions.onPressHandler(
+                        : () => onPressHandler(
                               context: context,
                               action: () async => await context
                                   .read<DealsProvider>()

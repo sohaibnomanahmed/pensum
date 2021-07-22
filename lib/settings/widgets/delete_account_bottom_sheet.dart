@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:leaf/authentication/authentication_provider.dart';
-import 'package:leaf/global/functions.dart';
+import 'package:leaf/global/utils.dart';
 import 'package:leaf/notifications/notification_provider.dart';
 import 'package:leaf/presence/presence_provider.dart';
 import 'package:provider/provider.dart';
@@ -59,7 +59,7 @@ class _DeleteAccountBottomSheetState extends State<DeleteAccountBottomSheet> {
             ElevatedButton(
               onPressed: (_password.isEmpty || isLoading)
                   ? null
-                  : () async => ButtonFunctions.onPressHandler(
+                  : () async => onPressHandler(
                       context: context,
                       action: () async {
                         // unsubscribe from all topics

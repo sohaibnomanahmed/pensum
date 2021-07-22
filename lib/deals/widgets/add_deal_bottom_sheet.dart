@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:leaf/global/functions.dart';
+import 'package:leaf/global/utils.dart';
 import 'package:provider/provider.dart';
 
 import '../data/place_data.dart';
@@ -105,7 +105,7 @@ class _AddDealBottomSheetState extends State<AddDealBottomSheet> {
                 onPressed:
                     (_price.isEmpty || _quality.isEmpty || _place.isEmpty)
                         ? null
-                        : () => ButtonFunctions.onPressHandler(
+                        : () => onPressHandler(
                               context: context,
                               popScreen: true,
                               action: () async =>

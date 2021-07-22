@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:leaf/global/functions.dart';
+import 'package:leaf/global/utils.dart';
 import 'package:provider/provider.dart';
 
 import '../authentication_provider.dart';
@@ -37,7 +37,7 @@ class _ResetPasswordBottomSheetState extends State<ResetPasswordBottomSheet> {
               ElevatedButton(
                 onPressed: (isLoading)
                     ? null
-                    : () async => ButtonFunctions.onPressHandler(
+                    : () async => onPressHandler(
                           context: context,
                           action: () => context
                               .read<AuthenticationProvider>()

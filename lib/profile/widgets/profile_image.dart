@@ -1,7 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:leaf/global/functions.dart';
+import 'package:leaf/global/utils.dart';
 import 'package:leaf/images/photo_page.dart';
 import 'package:leaf/presence/widgets/presence_bubble.dart';
 import 'package:provider/provider.dart';
@@ -37,7 +37,7 @@ class ProfileImage extends StatelessWidget {
                 mini: true,
                 onPressed: isLoading
                     ? null
-                    : () => ButtonFunctions.onPressHandler(
+                    : () => onPressHandler(
                           context: context,
                           action: () async => await context
                               .read<ProfileProvider>()

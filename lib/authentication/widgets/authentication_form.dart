@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:leaf/authentication/authentication_provider.dart';
-import 'package:leaf/global/functions.dart';
+import 'package:leaf/global/utils.dart';
 import 'package:provider/provider.dart';
 
 import 'create_account_bottom_sheet.dart';
@@ -62,7 +62,7 @@ class _AuthenticationFormState extends State<AuthenticationForm> {
                 : () async {
                     // hide soft keayboard
                     FocusScope.of(context).unfocus();
-                    await ButtonFunctions.onPressHandler(
+                    await onPressHandler(
                         context: context,
                         action: () => context
                             .read<AuthenticationProvider>()
