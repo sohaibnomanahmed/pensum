@@ -1,6 +1,6 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart' show kDebugMode;
+import 'package:flutter/foundation.dart' show LicenseEntryWithLineBreaks, LicenseRegistry, kDebugMode;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -65,7 +65,13 @@ Future<void> main() async {
       statusBarColor: Colors.transparent, // for Android
       statusBarIconBrightness: Brightness.dark, // for Android
       statusBarBrightness: Brightness.light // for IOS
-      ));    
+      )); 
+
+  // lisence for fonts
+  LicenseRegistry.addLicense(() async* {
+    final license = await rootBundle.loadString('google_fonts/OFL.txt');
+    yield LicenseEntryWithLineBreaks(['google_fonts'], license);
+  });       
   runApp(MyApp());
 }
 
