@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:leaf/global/functions.dart';
+import 'package:leaf/global/utils.dart';
 import 'package:leaf/messages/messages_page.dart';
 import 'package:leaf/notifications/notification_provider.dart';
 import 'package:leaf/presence/presence_provider.dart';
@@ -40,7 +40,7 @@ class _SettingsListState extends State<SettingsList> {
                   ? null
                   : () async {
                       setState(() => resetBtn = true);
-                      await ButtonFunctions.onPressHandler(
+                      await onPressHandler(
                         context: context,
                         action: () => context
                             .read<AuthenticationProvider>()
@@ -107,7 +107,7 @@ class _SettingsListState extends State<SettingsList> {
                   ? null
                   : () async {
                     setState(() => signOutBtn = true);
-                    await ButtonFunctions.onPressHandler(
+                    await onPressHandler(
                       context: context,
                       action: () async { 
                         // unsubscribe from all topics
