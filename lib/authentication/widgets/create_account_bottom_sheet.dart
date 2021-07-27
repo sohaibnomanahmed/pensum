@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:leaf/global/utils.dart';
+import 'package:leaf/localization/localization.dart';
 import 'package:provider/provider.dart';
 
 import '../authentication_provider.dart';
@@ -19,6 +20,7 @@ class _CreateAccountBottomSheetState extends State<CreateAccountBottomSheet> {
   @override
   Widget build(BuildContext context) {
     final isLoading = context.watch<AuthenticationProvider>().isLoading;
+    final loc = Localization.of(context);
     return SafeArea(
       child: SingleChildScrollView(
         child: Padding(
@@ -42,21 +44,21 @@ class _CreateAccountBottomSheetState extends State<CreateAccountBottomSheet> {
               ),
               TextField(
                 textCapitalization: TextCapitalization.words,
-                decoration: InputDecoration(labelText: 'Firstname'),
+                decoration: InputDecoration(labelText: loc.getTranslatedValue('reg_firstname_hint')),
                 onChanged: (value) => _firstname = value,
               ),
               TextField(
                 textCapitalization: TextCapitalization.words,
-                decoration: InputDecoration(labelText: 'Lastname'),
+                decoration: InputDecoration(labelText: loc.getTranslatedValue('reg_lastname_hint')),
                 onChanged: (value) => _lastname = value,
               ),
               TextField(
                 keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(labelText: 'Email'),
+                decoration: InputDecoration(labelText: loc.getTranslatedValue('reg_email_hint')),
                 onChanged: (value) => _email = value,
               ),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Password'),
+                decoration: InputDecoration(labelText: loc.getTranslatedValue('reg_password_hint')),
                 obscureText: true,
                 onChanged: (value) => _password = value,
               ),
@@ -82,7 +84,7 @@ class _CreateAccountBottomSheetState extends State<CreateAccountBottomSheet> {
                               .read<AuthenticationProvider>()
                               .errorMessage,
                           successMessage:
-                              'Sent email verification, please check your inbox',
+                              loc.getTranslatedValue('reg_success_msg_text'),
                         );
                       },
                 child: isLoading
@@ -91,7 +93,7 @@ class _CreateAccountBottomSheetState extends State<CreateAccountBottomSheet> {
                         width: 20,
                         child: CircularProgressIndicator(),
                       )
-                    : Text('Create Account'),
+                    : Text(loc.getTranslatedValue('reg_btn_text')),
               ),
             ],
           ),

@@ -89,7 +89,9 @@ dev_dependencies:
   #integration_test:
   #  sdk: flutter
   flutter_test:
-    sdk: flutter  
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter    
   # splash screen
   flutter_native_splash: ^1.1.8
 

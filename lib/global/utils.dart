@@ -43,6 +43,7 @@ Future<void> onPressHandler({
   // check if an error occured, only if a error message is provided
   if (!result && (errorMessage != null || lateErrorMessage != null)) {
     if (lateErrorMessage != null) {
+      // TODO translate from firebase
       errorMessage = lateErrorMessage();
     }
     // remove snackbar if existing and show a new with error message

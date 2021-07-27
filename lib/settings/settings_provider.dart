@@ -1,0 +1,1 @@
+// change locale: https://abcdevops.com/blog/2019/07/01/Flutter-Internationalization-with-Manual-Locale-switch.html

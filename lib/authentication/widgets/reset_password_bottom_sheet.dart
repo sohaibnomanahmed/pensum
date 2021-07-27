@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:leaf/global/utils.dart';
+import 'package:leaf/localization/localization.dart';
 import 'package:provider/provider.dart';
 
 import '../authentication_provider.dart';
@@ -16,6 +17,7 @@ class _ResetPasswordBottomSheetState extends State<ResetPasswordBottomSheet> {
   @override
   Widget build(BuildContext context) {
     final isLoading = context.watch<AuthenticationProvider>().isLoading;
+    final loc = Localization.of(context);
     return SafeArea(
       child: SingleChildScrollView(
         child: Padding(
@@ -31,7 +33,7 @@ class _ResetPasswordBottomSheetState extends State<ResetPasswordBottomSheet> {
               ),
               TextField(
                   keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(labelText: 'Email'),
+                  decoration: InputDecoration(labelText: loc.getTranslatedValue('reset_pass_email_hint')),
                   onChanged: (val) => _email = val),
               SizedBox(height: 10),
               ElevatedButton(
@@ -47,7 +49,7 @@ class _ResetPasswordBottomSheetState extends State<ResetPasswordBottomSheet> {
                               .errorMessage,
                           popScreenAfter: true,
                           successMessage:
-                              'Reset password email sent, please check your inbox',
+                              loc.getTranslatedValue('reset_pass_success_msg_text'),
                         ),
                 child: isLoading
                     ? SizedBox(
@@ -55,7 +57,7 @@ class _ResetPasswordBottomSheetState extends State<ResetPasswordBottomSheet> {
                         width: 20,
                         child: CircularProgressIndicator(),
                       )
-                    : Text('Send reset password email'),
+                    : Text(loc.getTranslatedValue('reset_pass_send_btn_text')),
               ),
             ],
           ),

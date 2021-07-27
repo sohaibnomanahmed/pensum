@@ -1,6 +1,7 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart' show LicenseEntryWithLineBreaks, LicenseRegistry, kDebugMode;
+import 'package:flutter/foundation.dart'
+    show LicenseEntryWithLineBreaks, LicenseRegistry, kDebugMode;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:leaf/authentication/onboarding_page.dart';
 import 'package:leaf/authentication/update_page.dart';
+import 'package:leaf/localization/localization.dart';
 import 'package:new_version/new_version.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,6 +24,7 @@ import 'messages/messages_page.dart';
 import 'messages/messages_provider.dart';
 import 'global/404_page.dart';
 import 'notifications/notification_provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 // ------------- FIREBASE EMULATOR -----------------
 // import 'package:flutter/foundation.dart';
@@ -65,13 +68,13 @@ Future<void> main() async {
       statusBarColor: Colors.transparent, // for Android
       statusBarIconBrightness: Brightness.dark, // for Android
       statusBarBrightness: Brightness.light // for IOS
-      )); 
+      ));
 
   // lisence for fonts
   LicenseRegistry.addLicense(() async* {
     final license = await rootBundle.loadString('google_fonts/OFL.txt');
     yield LicenseEntryWithLineBreaks(['google_fonts'], license);
-  });       
+  });
   runApp(MyApp());
 }
 
@@ -123,32 +126,42 @@ class MyApp extends StatelessWidget {
         //           borderRadius: BorderRadius.circular(10))),
         // ),
         //ThemeData.dark(),
-        home: status!.canUpdate ? UpdatePage(status: status) : Consumer<User?>(
-          builder: (context, user, child) {
-            if (_sharedPreferences.getBool('ONBOARD') ?? true && !lock) {
-              // avoid race conditions
-              lock = true;
-              late OverlayEntry onboardingScreen;
-              onboardingScreen = OverlayEntry(
-                  builder: (_) => OnboardingPage(onboardingScreen));
-              WidgetsBinding.instance!.addPostFrameCallback(
-                  (_) => Overlay.of(context)!.insert(onboardingScreen));
-            }
-            return (user == null || !user.emailVerified)
-                ? AuthenticationPage()
-                : MultiProvider(
-                    providers: [
-                      ChangeNotifierProvider<NotificationProvider>(
-                        create: (ctx) => NotificationProvider()
-                      ),
-                      ChangeNotifierProvider<PresenceProvider>(
-                        create: (ctx) => PresenceProvider()
-                      ),
-                    ],
-                    child: HomePage(),
-                  );
-          },
-        ),
+        localizationsDelegates: [
+          Localization.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: [
+          Locale('en', 'US'),
+          Locale('nb', 'NO'),
+        ],
+        home: status!.canUpdate
+            ? UpdatePage(status: status)
+            : Consumer<User?>(
+                builder: (context, user, child) {
+                  if (_sharedPreferences.getBool('ONBOARD') ?? true && !lock) {
+                    // avoid race conditions
+                    lock = true;
+                    late OverlayEntry onboardingScreen;
+                    onboardingScreen = OverlayEntry(
+                        builder: (_) => OnboardingPage(onboardingScreen));
+                    WidgetsBinding.instance!.addPostFrameCallback(
+                        (_) => Overlay.of(context)!.insert(onboardingScreen));
+                  }
+                  return (user == null || !user.emailVerified)
+                      ? AuthenticationPage()
+                      : MultiProvider(
+                          providers: [
+                            ChangeNotifierProvider<NotificationProvider>(
+                                create: (ctx) => NotificationProvider()),
+                            ChangeNotifierProvider<PresenceProvider>(
+                                create: (ctx) => PresenceProvider()),
+                          ],
+                          child: HomePage(),
+                        );
+                },
+              ),
         /**
           * Here we have a list of possible routes from the main navigator, 
           * these will create a page on the whole screen and are listed here for 

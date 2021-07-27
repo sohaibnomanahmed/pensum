@@ -3,6 +3,7 @@ import 'package:leaf/global/utils.dart';
 import 'package:leaf/messages/messages_page.dart';
 import 'package:leaf/notifications/notification_provider.dart';
 import 'package:leaf/presence/presence_provider.dart';
+import 'package:leaf/settings/widgets/location_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 import 'package:leaf/authentication/authentication_provider.dart';
@@ -94,6 +95,15 @@ class _SettingsListState extends State<SettingsList> {
                     setState(() => feedbackBtn = false);
                   },
           ),
+          // ListTile(
+          //   leading: Icon(Icons.translate_rounded),
+          //   title: Text('Language, Location and Currency'),
+          //   onTap: () => showModalBottomSheet(
+          //     isScrollControlled: true,
+          //     context: context,
+          //     builder: (_) => LocationBottomSheet(),
+          //   ),
+          // ),
           ListTile(
               leading: signOutBtn
                   ? SizedBox(

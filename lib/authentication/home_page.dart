@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:leaf/authentication/authentication_provider.dart';
 import 'package:leaf/books/models/book.dart';
+import 'package:leaf/localization/localization.dart';
 import 'package:leaf/notifications/notification_provider.dart';
 import 'package:leaf/notifications/widgets/badge.dart';
 import 'package:leaf/presence/presence_provider.dart';
@@ -121,6 +122,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         context.watch<NotificationProvider>().followingNotification;
     final chatNotification =
         context.watch<NotificationProvider>().chatNotification;
+    final loc = Localization.of(context);    
     return CupertinoTabScaffold(
       controller: _cupertinoTabController,
       tabBar: CupertinoTabBar(
@@ -128,15 +130,15 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           backgroundColor: Theme.of(context).canvasColor.withOpacity(1),
           items: [
             BottomNavigationBarItem(
-                icon: Icon(Icons.chrome_reader_mode), label: 'Books'),
+                icon: Icon(Icons.chrome_reader_mode), label: loc.getTranslatedValue('books_tab_text')),
             BottomNavigationBarItem(
                 icon: chatNotification
                     ? Badge(
                         color: Colors.red[400],
                         child: Icon(Icons.chat_bubble_rounded))
                     : Icon(Icons.chat),
-                label: 'Chat'),
-            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+                label: loc.getTranslatedValue('chats_tab_text')),
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: loc.getTranslatedValue('profile_tab_text')),
             BottomNavigationBarItem(
                 icon: followingNotification
                     ? Badge(
@@ -145,7 +147,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                     : Icon(Icons.notifications_rounded),
                 label: 'Following'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.settings), label: 'Settings'),
+                icon: Icon(Icons.settings), label: loc.getTranslatedValue('settings_tab_text')),
           ]),
       tabBuilder: (context, index) => _pages[index],
     );
