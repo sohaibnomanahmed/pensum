@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:leaf/global/utils.dart';
+import 'package:leaf/localization/localization.dart';
 import 'package:provider/provider.dart';
 
 import 'package:leaf/following/follow_provider.dart';
@@ -12,6 +13,7 @@ class FollowItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = Localization.of(context);
     return ListTile(
       leading: Container(
         height: 90,
@@ -42,8 +44,8 @@ class FollowItem extends StatelessWidget {
               context: context,
               action: () async =>
                   await context.read<FollowProvider>().unfollow(follow.pid),
-              errorMessage: 'Something went wrong, please try again!',
-              successMessage: 'Succesfully unfollowed',
+              errorMessage: loc.getTranslatedValue('unfollow_error_msg_text'),
+              successMessage: loc.getTranslatedValue('unfollow_success_msg_text'),
             ),
           ),
         ],

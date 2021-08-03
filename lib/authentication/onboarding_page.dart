@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:leaf/localization/localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class OnboardingPage extends StatelessWidget {
@@ -9,50 +10,35 @@ class OnboardingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = Localization.of(context);
     return IntroductionScreen(
       pages: [
         PageViewModel(
-            title: 'Find you curriculum',
-            body:
-                'Search for desired books or authors, see how many deals are available and follow books to get notifications when new deals arrive.',
+            title: loc.getTranslatedValue('onboarding_page1_title'),
+            body: loc.getTranslatedValue('onboarding_page1_body'),
             image: Image.asset(
               'assets/images/book_lover.png',
               height: 240,
             )),
         PageViewModel(
-            title: 'Send fast message',
-            body: 'In the deals section you can send messages to people, Pro tip: long press the message button to send a fast message from the same page.',
-            // bodyWidget: RichText(
-            //     text: TextSpan(
-            //         style: Theme.of(context).textTheme.bodyText1,
-            //         children: [
-            //       TextSpan(
-            //           text:
-            //               'In the deals section you can send messages to people, '),
-            //       TextSpan(
-            //           text: 'Pro tip: ',
-            //           style: TextStyle(fontWeight: FontWeight.bold)),
-            //       TextSpan(
-            //           text:
-            //               'long press the message button to send a fast message from the same page.'),
-            //     ])),
+            title: loc.getTranslatedValue('onboarding_page2_title'),
+            body: loc.getTranslatedValue('onboarding_page2_body'),
             image: Image.asset(
               'assets/images/message_sent.png',
               height: 250,
             )),
         PageViewModel(
-            title: 'Share your location',
-            body:
-                'In the chat you can send your location or select a spesific location, to meetup and easily communicate ',
+            title: loc.getTranslatedValue('onboarding_page3_title'),
+            body: loc.getTranslatedValue('onboarding_page3_body'),
             image: Image.asset(
               'assets/images/my_location.png',
               height: 250,
             )),
       ],
       showSkipButton: true,
-      skip: const Text('Skip'),
-      next: const Text('Next'),
-      done: const Text('Done'),
+      skip: Text(loc.getTranslatedValue('skip_btn_txt')),
+      next: Text(loc.getTranslatedValue('next_btn_txt')),
+      done: Text(loc.getTranslatedValue('done_btn_txt')),
       onDone: () async {
         // When done button is press
         final sharedPreferences = await SharedPreferences.getInstance();

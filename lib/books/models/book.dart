@@ -33,6 +33,7 @@ class Book {
     final List<dynamic>? titles = data['title'];
     final List<dynamic>? authors = data['authors'];
     final String? image = data['image'];
+    // TODO translate
     final String? language = data['language'];
     final String? publisher = data['publisher'];
     final String? pages = data['pages'];

@@ -4,6 +4,7 @@ import 'package:leaf/deals/widgets/deal_list.dart';
 import 'package:leaf/global/utils.dart';
 import 'package:leaf/global/widgets/leaf_error.dart';
 import 'package:leaf/global/widgets/paging_view.dart';
+import 'package:leaf/localization/localization.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
@@ -60,6 +61,7 @@ class _DealsPageState extends State<DealsPage> {
     final isFollowBtnLoading =
         context.watch<DealsProvider>().isFollowBtnLoading;
     final isFollowing = context.watch<DealsProvider>().isFollowing;
+    final loc = Localization.of(context);
     return Scaffold(
       appBar: BlurredImageAppBar(widget.book, _one, _two),
       body: PagingView(
@@ -77,8 +79,7 @@ class _DealsPageState extends State<DealsPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Showcase(
                   key: _three,
-                  description:
-                      'Follow a book to receive notifications on new deals',
+                  description: loc.getTranslatedValue('showcase_follow_btn_text'),
                   contentPadding: EdgeInsets.all(10),
                   shapeBorder: RoundedRectangleBorder(),
                   showArrow: false,
@@ -92,9 +93,9 @@ class _DealsPageState extends State<DealsPage> {
                                   .read<DealsProvider>()
                                   .followBook(widget.book),
                               successMessage:
-                                  'Succesfully started following this book',
+                                  loc.getTranslatedValue('follow_success_msg_text'),
                               errorMessage:
-                                  'Something went wrong, please try again!',
+                                  loc.getTranslatedValue('follow_error_msg_text'),
                             ),
                     child: isFollowBtnLoading
                         ? SizedBox(
@@ -102,7 +103,7 @@ class _DealsPageState extends State<DealsPage> {
                             width: 20,
                             child: CircularProgressIndicator(),
                           )
-                        : Text('Follow'),
+                        : Text(loc.getTranslatedValue('follow_btn_text')),
                   ),
                 ),
               ),
@@ -127,7 +128,7 @@ class _DealsPageState extends State<DealsPage> {
           ? FloatingActionButton.extended(
               onPressed: () =>
                   context.read<DealsProvider>().clearFilter(widget.book.isbn),
-              label: Text('Clear Filter'),
+              label: Text(loc.getTranslatedValue('clear_filter_btn_text')),
               icon: Icon(Icons.clear_all_rounded),
             )
           : null,

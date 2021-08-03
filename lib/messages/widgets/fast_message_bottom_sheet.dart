@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:leaf/localization/localization.dart';
 
 import 'message_bar.dart';
 
@@ -15,6 +16,7 @@ class FastMessageBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = Localization.of(context);
     return SafeArea(
           child: Container(
         child: Column(
@@ -25,7 +27,7 @@ class FastMessageBottomSheet extends StatelessWidget {
               leading: CircleAvatar(
                 backgroundImage: NetworkImage(receiverImage),
               ),
-              title: Text('Send fast message to:'),
+              title: Text(loc.getTranslatedValue('fast_message_title')),
               subtitle: Text(receiverName),
             ),
             MessageBar(

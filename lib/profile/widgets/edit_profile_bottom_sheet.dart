@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:leaf/global/utils.dart';
+import 'package:leaf/localization/localization.dart';
 import 'package:leaf/profile/models/profile.dart';
 import 'package:provider/provider.dart';
 
@@ -32,6 +33,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = Localization.of(context);
     return Container(
       child: SingleChildScrollView(
         child: Padding(
@@ -45,13 +47,13 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
               TextFormField(
                 textCapitalization: TextCapitalization.words,
                 initialValue: _firstname.isEmpty ? null : _firstname,
-                decoration: InputDecoration(labelText: 'Firstname'),
+                decoration: InputDecoration(labelText: loc.getTranslatedValue('edit_profile_firstname_hint')),
                 onChanged: (value) => _firstname = value,
               ),
               TextFormField(
                 textCapitalization: TextCapitalization.words,
                 initialValue: _lastname.isEmpty ? null : _lastname,
-                decoration: InputDecoration(labelText: 'Lastname'),
+                decoration: InputDecoration(labelText: loc.getTranslatedValue('edit_profile_lastname_hint')),
                 onChanged: (value) => _lastname = value,
               ),
               SizedBox(height: 10),
@@ -67,10 +69,10 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
                                   firstname: Profile.capitalizaName(_firstname),
                                   lastname: Profile.capitalizaName(_lastname)),
                           errorMessage:
-                              'Something went wrong, please try again!',
-                          successMessage: 'Succesfully edited profile',
+                              loc.getTranslatedValue('edit_profile_error_msg_hint'),
+                          successMessage: loc.getTranslatedValue('edit_profile_success_msg_hint'),
                         ),
-                child: Text('Edit profile'),
+                child: Text(loc.getTranslatedValue('edit_profile_btn_text')),
               )
             ],
           ),

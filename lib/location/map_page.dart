@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:leaf/localization/localization.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MapPage extends StatefulWidget {
@@ -20,6 +21,7 @@ class _MapPageState extends State<MapPage> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = Localization.of(context);
     return Scaffold(
       body: GoogleMap(
         initialCameraPosition: CameraPosition(
@@ -54,7 +56,7 @@ class _MapPageState extends State<MapPage> {
           if (_currentPosition != null)
             FloatingActionButton.extended(
               onPressed: () => Navigator.of(context).pop(_currentPosition),
-              label: Text('Send Location'),
+              label: Text(loc.getTranslatedValue('send_location_btn_text')),
               icon: Icon(Icons.location_on_rounded),
               backgroundColor: Colors.deepOrange,
             ),
@@ -81,7 +83,7 @@ class _MapPageState extends State<MapPage> {
                   throw "Couldn't launch URL";
                 }
               },
-              label: Text('Open in Google Maps'),
+              label: Text(loc.getTranslatedValue('open_in_google_maps_btn_text')),
               icon: Icon(Icons.location_on_rounded),
             )
         ],

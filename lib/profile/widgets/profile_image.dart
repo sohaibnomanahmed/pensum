@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:leaf/global/utils.dart';
 import 'package:leaf/images/photo_page.dart';
+import 'package:leaf/localization/localization.dart';
 import 'package:leaf/presence/widgets/presence_bubble.dart';
 import 'package:provider/provider.dart';
 
@@ -17,6 +18,7 @@ class ProfileImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isLoading = context.read<ProfileProvider>().isLoading;
+    final loc = Localization.of(context);
     return Stack(
       alignment: Alignment.bottomRight,
       children: [
@@ -42,8 +44,8 @@ class ProfileImage extends StatelessWidget {
                           action: () async => await context
                               .read<ProfileProvider>()
                               .setProfileImage(ImageSource.gallery),
-                          errorMessage: 'Error occured changing profile image',
-                          successMessage: 'Successfully changed profile image',
+                          errorMessage: loc.getTranslatedValue('dit_profile_image_error_msg_txt'),
+                          successMessage: loc.getTranslatedValue('edit_profile_image_success_msg_text'),
                         ),
                 child: Icon(Icons.edit),
               )

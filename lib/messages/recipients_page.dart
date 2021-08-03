@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:leaf/global/widgets/paging_view.dart';
+import 'package:leaf/localization/localization.dart';
 import 'package:provider/provider.dart';
 
 import 'package:leaf/messages/recipients_provider.dart';
@@ -21,11 +22,12 @@ class _RecipientsPageState extends State<RecipientsPage>{
   @override
   Widget build(BuildContext context) {
     final isLoading = context.watch<RecipientsProvider>().isLoading;
+    final loc = Localization.of(context);
     return Scaffold(
         appBar: CupertinoNavigationBar(
         leading: Icon(Icons.forum_rounded, size: 50, color: Theme.of(context).splashColor,),
         middle:
-            Text('Messages', style: Theme.of(context).textTheme.headline6!.copyWith(
+            Text(loc.getTranslatedValue('recipients_page_topbar_title'), style: Theme.of(context).textTheme.headline6!.copyWith(
               color: Theme.of(context).hintColor
             )),
       ),

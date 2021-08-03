@@ -2,6 +2,7 @@ import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
 import 'package:leaf/global/widgets/leaf_error.dart';
+import 'package:leaf/localization/localization.dart';
 import 'package:leaf/messages/messages_page.dart';
 import 'package:provider/provider.dart';
 
@@ -33,6 +34,7 @@ class _ProfilePageState extends State<ProfilePage> {
     final profile = context.watch<ProfileProvider>().profile;
     final isLoading = context.watch<ProfileProvider>().isLoading;
     final isError = context.watch<ProfileProvider>().isError;
+    final loc = Localization.of(context);
     return Scaffold(
       body: isLoading
           ? Center(child: CircularProgressIndicator())
@@ -85,7 +87,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline5),
-                                    Text('Member since: ' +
+                                    Text(loc.getTranslatedValue('member_since_text') + ' ' +
                                         DateFormat('y')
                                             .format(profile.creationTime)),
                                     profile.isMe
@@ -107,7 +109,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                     ),
                                                   ),
                                                 ),
-                                            child: Text('Edit Profile'))
+                                            child: Text(loc.getTranslatedValue('edit_profile_btn_text')))
                                         : ElevatedButton(
                                             style: ElevatedButton.styleFrom(
                                                 primary: Theme.of(context)
@@ -122,7 +124,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                       'image': profile.imageUrl,
                                                       'name': profile.fullName
                                                     }),
-                                            child: Text('Send message'))
+                                            child: Text(loc.getTranslatedValue('send_message_btn_text')))
                                   ],
                                 ),
                               )
@@ -131,7 +133,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ListTile(
                             leading: Icon(Icons.spa_rounded,
                                 color: Theme.of(context).primaryColor),
-                            title: Text('Deals'),
+                            title: Text(loc.getTranslatedValue('deals_title_text')),
                           ),
                           Divider(height: 1),
                           ProfileDealsList(),

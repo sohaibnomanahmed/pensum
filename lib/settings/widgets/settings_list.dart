@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:leaf/global/utils.dart';
+import 'package:leaf/localization/localization.dart';
 import 'package:leaf/messages/messages_page.dart';
 import 'package:leaf/notifications/notification_provider.dart';
 import 'package:leaf/presence/presence_provider.dart';
@@ -25,6 +26,7 @@ class _SettingsListState extends State<SettingsList> {
     final isLoading = context.watch<AuthenticationProvider>().isLoading;
     final email = context.watch<AuthenticationProvider>().email;
     final scaffoldMessenger = ScaffoldMessenger.of(context);
+    final loc = Localization.of(context);
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -36,7 +38,7 @@ class _SettingsListState extends State<SettingsList> {
                       child: CircularProgressIndicator(),
                     )
                   : Icon(Icons.lock_rounded),
-              title: Text('Reset Password'),
+              title: Text(loc.getTranslatedValue('settings_list_reset_pass_text')),
               onTap: isLoading
                   ? null
                   : () async {
@@ -49,7 +51,7 @@ class _SettingsListState extends State<SettingsList> {
                         lateErrorMessage: () =>
                             context.read<AuthenticationProvider>().errorMessage,
                         successMessage:
-                            'Reset password email sent, please check your inbox',
+                            loc.getTranslatedValue('reset_pass_success_msg_text'),
                       );
                       setState(() => resetBtn = false);
                     }),
@@ -61,8 +63,8 @@ class _SettingsListState extends State<SettingsList> {
                       child: CircularProgressIndicator(),
                     )
                   : Icon(Icons.feedback_rounded),
-            title: Text('Send Feedback'),
-            subtitle: Text('Report issues, missing books or suggest improvents'),
+            title: Text(loc.getTranslatedValue('settings_list_send_feedback_title')),
+            subtitle: Text(loc.getTranslatedValue('settings_list_send_feedback_subtitle')),
             onTap: isLoading
                 ? null
                 : () async {
@@ -87,7 +89,7 @@ class _SettingsListState extends State<SettingsList> {
                         SnackBar(
                           backgroundColor: Theme.of(context).errorColor,
                           content: Text(
-                            'Something went wrong trying to get the service Account!',
+                            loc.getTranslatedValue('settings_send_feedback_error_msg'),
                           ),
                         ),
                       );
@@ -95,15 +97,15 @@ class _SettingsListState extends State<SettingsList> {
                     setState(() => feedbackBtn = false);
                   },
           ),
-          // ListTile(
-          //   leading: Icon(Icons.translate_rounded),
-          //   title: Text('Language, Location and Currency'),
-          //   onTap: () => showModalBottomSheet(
-          //     isScrollControlled: true,
-          //     context: context,
-          //     builder: (_) => LocationBottomSheet(),
-          //   ),
-          // ),
+          ListTile(
+            leading: Icon(Icons.translate_rounded),
+            title: Text('Language, Location and Currency'),
+            onTap: () => showModalBottomSheet(
+              isScrollControlled: true,
+              context: context,
+              builder: (_) => LocationBottomSheet(),
+            ),
+          ),
           ListTile(
               leading: signOutBtn
                   ? SizedBox(
@@ -112,7 +114,7 @@ class _SettingsListState extends State<SettingsList> {
                       child: CircularProgressIndicator(),
                     )
                   : Icon(Icons.exit_to_app_rounded),
-              title: Text('Sign out'),
+              title: Text(loc.getTranslatedValue('settings_list_log_out_text')),
               onTap: isLoading
                   ? null
                   : () async {
@@ -128,12 +130,12 @@ class _SettingsListState extends State<SettingsList> {
                         return context
                           .read<AuthenticationProvider>()
                           .signOut();},
-                      errorMessage: 'Something went wrong, please try again');
+                      errorMessage: loc.getTranslatedValue('settings_log_out_error_msg'));
                       setState(() => signOutBtn = false);
                       }),
           ListTile(
             leading: Icon(Icons.delete_rounded),
-            title: Text('Delete Account'),
+            title: Text(loc.getTranslatedValue('settings_list_delete_account_text')),
             onTap: () => showModalBottomSheet(
               isScrollControlled: true,
               context: context,

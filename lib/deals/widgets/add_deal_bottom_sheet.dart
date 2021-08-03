@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:leaf/global/utils.dart';
+import 'package:leaf/localization/localization.dart';
 import 'package:provider/provider.dart';
 
 import '../data/place_data.dart';
@@ -45,6 +46,7 @@ class _AddDealBottomSheetState extends State<AddDealBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = Localization.of(context);
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Container(
@@ -60,7 +62,7 @@ class _AddDealBottomSheetState extends State<AddDealBottomSheet> {
               // Makse sure the value matches a value in items
               DropdownButtonFormField(
                 value: _price.isEmpty ? null : _price,
-                hint: Text('Select price'),
+                hint: Text(loc.getTranslatedValue('select_price_hint')),
                 onChanged: (String? value) => value == null ? null : setState(() {
                   _price = value;
                 }),
@@ -71,7 +73,7 @@ class _AddDealBottomSheetState extends State<AddDealBottomSheet> {
               ),
               DropdownButtonFormField(
                 value: _quality.isEmpty ? null : _quality,
-                hint: Text('Select quality'),
+                hint: Text(loc.getTranslatedValue('select_quality_hint')),
                 onChanged: (String? value) => value == null ? null : setState(() {
                   _quality = value;
                 }),
@@ -82,7 +84,7 @@ class _AddDealBottomSheetState extends State<AddDealBottomSheet> {
               ),
               DropdownButtonFormField(
                 value: _place.isEmpty ? null : _place,
-                hint: Text('Select place'),
+                hint: Text(loc.getTranslatedValue('select_place_hint')),
                 onChanged: (String? value) => value == null ? null : setState(() {
                   _place = value;
                 }),
@@ -98,7 +100,7 @@ class _AddDealBottomSheetState extends State<AddDealBottomSheet> {
                 minLines: 3,
                 maxLines: 3,
                 decoration:
-                    InputDecoration(labelText: 'Description (Optional)'),
+                    InputDecoration(labelText: loc.getTranslatedValue('deal_description_hint')),
                 onChanged: (value) => _description = value,
               ),
               ElevatedButton(
@@ -120,10 +122,10 @@ class _AddDealBottomSheetState extends State<AddDealBottomSheet> {
                                         description: _description,
                                       ),
                               errorMessage:
-                                  'Something went wrong, please try again!',
-                              successMessage: 'Succesfully added deal',
+                                  loc.getTranslatedValue('add_deal_error_msg_text'),
+                              successMessage: loc.getTranslatedValue('add_deal_success_msg_text'),
                             ),
-                child: Text('Add deal'),
+                child: Text(loc.getTranslatedValue('add_deal_btn_text')),
               ),
             ],
           ),

@@ -54,7 +54,7 @@ class _AuthenticationFormState extends State<AuthenticationForm> {
                   builder: (_) => ResetPasswordBottomSheet(),
                 );
               },
-              child: Text(loc.getTranslatedValue('reset_password_btn_text')),
+              child: Text(loc.getTranslatedValue('reset_pass_btn_text')),
             ),
           ),
           // log in button
@@ -94,7 +94,7 @@ class _AuthenticationFormState extends State<AuthenticationForm> {
                   builder: (_) => CreateAccountBottomSheet(),
                 );
               },
-              child: Text(loc.getTranslatedValue('register_btn_text')))
+              child: Text(loc.getTranslatedValue('reg_btn_text')))
         ],
       ),
     );

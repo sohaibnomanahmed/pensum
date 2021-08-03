@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:leaf/books/models/book.dart';
+import 'package:leaf/localization/localization.dart';
 import 'package:provider/provider.dart';
 import 'package:showcaseview/showcaseview.dart';
 
@@ -24,6 +25,7 @@ class BlurredImageAppBar extends StatelessWidget with PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = Localization.of(context);
     return AppBar(
       brightness: Brightness.dark,
       title: Text(book.titles.first),
@@ -47,7 +49,7 @@ class BlurredImageAppBar extends StatelessWidget with PreferredSizeWidget {
       actions: [
         Showcase(
           key: two,
-          description: 'Filter deals by price, place or quality',
+          description: loc.getTranslatedValue('showcase_filter_btn_text'),
           shapeBorder: CircleBorder(),
           contentPadding: EdgeInsets.all(10),
           showArrow: false,
@@ -65,7 +67,7 @@ class BlurredImageAppBar extends StatelessWidget with PreferredSizeWidget {
         ),
         Showcase(
           key: one,
-          description: 'Add a new deal to this book',
+          description: loc.getTranslatedValue('showcase_add_btn_text'),
           shapeBorder: CircleBorder(),
           contentPadding: EdgeInsets.all(10),
           showArrow: false,

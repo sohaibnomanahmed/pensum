@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:leaf/global/utils.dart';
+import 'package:leaf/localization/localization.dart';
 import 'package:leaf/messages/widgets/message_action_sheet.dart';
 import 'package:provider/provider.dart';
 
@@ -23,6 +24,7 @@ class _MessageBarState extends State<MessageBar> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = Localization.of(context);
     return TextField(
       controller: _controller,
       keyboardType: TextInputType.multiline,
@@ -67,9 +69,9 @@ class _MessageBarState extends State<MessageBar> {
                                 receiverName: widget.receiverName,
                                 receiverImage: widget.receiverImage,
                               ),
-                          errorMessage: 'Something went wrong!');
+                          errorMessage: loc.getTranslatedValue('send_message_error_msg_text'));
                     }),
-          hintText: 'Send a message...',
+          hintText: loc.getTranslatedValue('send_message_hint_text'),
           border: InputBorder.none,
           focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: Theme.of(context).primaryColor))),

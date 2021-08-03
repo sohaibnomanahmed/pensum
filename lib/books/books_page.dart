@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:leaf/global/widgets/paging_view.dart';
+import 'package:leaf/localization/localization.dart';
 import 'package:provider/provider.dart';
 
 import 'widgets/book_list.dart';
@@ -22,6 +23,7 @@ class _BooksPageState extends State<BooksPage> {
   @override
   Widget build(BuildContext context) {
     final isSearch = context.watch<BooksProvider>().isSearch;
+    final loc = Localization.of(context);
     return Scaffold(
       body: PagingView(
         action: context.read<BooksProvider>().fetchMoreBooks,
@@ -45,7 +47,7 @@ class _BooksPageState extends State<BooksPage> {
       floatingActionButton: isSearch
           ? FloatingActionButton.extended(
               onPressed: () => context.read<BooksProvider>().clearSearch(),
-              label: Text('Clear Search'),
+              label: Text(loc.getTranslatedValue('clear_search_btn_text')),
               icon: Icon(Icons.search_off_rounded),
             )
           : null,

@@ -1,3 +1,6 @@
-Now avaiable in US, California
+Now includes
+* Location: US, California
+* Currency: USD
+* Language: Norwegian
 UI improvements
 Bug fixes

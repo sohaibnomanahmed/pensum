@@ -1,6 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:leaf/images/photo_page.dart';
+import 'package:leaf/localization/localization.dart';
 import '../../books/models/book.dart';
 
 class BookInfo extends StatelessWidget {
@@ -10,6 +11,7 @@ class BookInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = Localization.of(context);
     return Card(
       clipBehavior: Clip.antiAlias,
       child: Row(
@@ -46,7 +48,7 @@ class BookInfo extends StatelessWidget {
                   ListTile(
                     dense: true,
                     leading: Icon(Icons.description),
-                    title: Text(book.pages + ' p.'),
+                    title: Text(book.pages + loc.getTranslatedValue('deal_item_page_count_suffix')),
                   ),
                 if (book.edition.isNotEmpty)
                   ListTile(

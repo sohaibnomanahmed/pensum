@@ -18,6 +18,14 @@ class Localization {
     'nb': NB_LANG,
   };
 
+  String getTimeAgoLocale(){
+    const timeAgoLocale = {
+      'en': 'en_short',
+      'nb': 'nb_NO_short'
+    };
+    return timeAgoLocale[locale.languageCode]!;
+  }
+
   String getTranslatedValue(String key){
     return _localizedValues[locale.languageCode]![key]!;
   }

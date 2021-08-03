@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:leaf/localization/localization.dart';
 import 'package:leaf/presence/presence_service.dart';
 import 'package:leaf/presence/widgets/timeago_flutter.dart';
 import 'package:shimmer/shimmer.dart';
@@ -65,7 +66,7 @@ class _PresenceBubbleState extends State<PresenceBubble> {
                     style: TextStyle(color: Colors.white),
                   ),
                   date: presence as DateTime,
-                  locale: 'en_short',
+                  locale: Localization.of(context).getTimeAgoLocale(),
                 ),
               ),
             ),

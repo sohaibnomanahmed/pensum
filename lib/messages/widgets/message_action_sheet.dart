@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:leaf/localization/localization.dart';
 import 'package:leaf/location/map_page.dart';
 import 'package:provider/provider.dart';
 
@@ -20,6 +21,7 @@ class MessageActionSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = Localization.of(context);
     return CupertinoActionSheet(
       actions: [
         CupertinoActionSheetAction(
@@ -34,7 +36,7 @@ class MessageActionSheet extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Flexible(child: Text('Camera', overflow: TextOverflow.ellipsis)),
+              Flexible(child: Text(loc.getTranslatedValue('camera_action'), overflow: TextOverflow.ellipsis)),
               Icon(Icons.camera_rounded, color: Theme.of(context).hintColor)
             ],
           ),
@@ -53,7 +55,7 @@ class MessageActionSheet extends StatelessWidget {
             children: [
               Flexible(
                   child:
-                      Text('Photo Library', overflow: TextOverflow.ellipsis)),
+                      Text(loc.getTranslatedValue('photo_library_action'), overflow: TextOverflow.ellipsis)),
               Icon(Icons.photo_rounded, color: Theme.of(context).hintColor)
             ],
           ),
@@ -72,7 +74,7 @@ class MessageActionSheet extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Flexible(
-                  child: Text('Current Location',
+                  child: Text(loc.getTranslatedValue('current_location_action'),
                       overflow: TextOverflow.ellipsis)),
               Icon(Icons.location_on_rounded,
                   color: Theme.of(context).hintColor)
@@ -107,7 +109,7 @@ class MessageActionSheet extends StatelessWidget {
             children: [
               Flexible(
                   child:
-                      Text('Select Location', overflow: TextOverflow.ellipsis)),
+                      Text(loc.getTranslatedValue('select_location_action'), overflow: TextOverflow.ellipsis)),
               Icon(Icons.map_rounded, color: Theme.of(context).hintColor)
             ],
           ),
@@ -117,7 +119,7 @@ class MessageActionSheet extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: Text('Cancel')),
+          child: Text(loc.getTranslatedValue('cancel_action'))),
     );
   }
 }

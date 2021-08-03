@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:leaf/deals/deals_provider.dart';
 import 'package:leaf/deals/widgets/add_deal_bottom_sheet.dart';
 import 'package:leaf/global/utils.dart';
+import 'package:leaf/localization/localization.dart';
 import 'package:leaf/profile/profile_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -15,6 +16,7 @@ class ProfileDealItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final profile = context.watch<ProfileProvider>().profile;
+    final loc = Localization.of(context);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -81,8 +83,8 @@ class ProfileDealItem extends StatelessWidget {
                         action: () async => await context
                             .read<ProfileProvider>()
                             .deleteProfileDeal(pid: deal.pid, id: deal.id),
-                        errorMessage: 'Error deleting deal',
-                        successMessage: 'Succesfully deleted the deal',
+                        errorMessage: loc.getTranslatedValue('profile_dealitem_delete_error_msg_text'),
+                        successMessage: loc.getTranslatedValue('profile_dealitem_delete_msg_txt'),
                       ),
                     ),
                   ],

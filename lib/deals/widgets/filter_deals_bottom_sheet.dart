@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:leaf/books/models/book.dart';
+import 'package:leaf/localization/localization.dart';
 import 'package:provider/provider.dart';
 
 import '../data/place_data.dart';
@@ -37,6 +38,7 @@ class _FilterDealsBottomSheetState extends State<FilterDealsBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = Localization.of(context);
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: SingleChildScrollView(
@@ -49,9 +51,9 @@ class _FilterDealsBottomSheetState extends State<FilterDealsBottomSheet> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Price above: ' +
+                Text(loc.getTranslatedValue('price_from_text') + ' ' +
                     _currentRangeValues.start.round().toString()),
-                Text('Price below: ' +
+                Text(loc.getTranslatedValue('price_to_text') +' ' +
                     _currentRangeValues.end.round().toString()),
               ],
             ),
@@ -76,7 +78,7 @@ class _FilterDealsBottomSheetState extends State<FilterDealsBottomSheet> {
             ),
             DropdownButtonFormField(
               value: _quality.isNotEmpty ? _quality: null,
-              hint: Text('Select quality'),
+              hint: Text(loc.getTranslatedValue('filter_quality')),
               onChanged: (String? value) => (value == null) ? null : _quality = value,
               items: qualities
                   .map((quality) =>
@@ -84,7 +86,7 @@ class _FilterDealsBottomSheetState extends State<FilterDealsBottomSheet> {
                   .toList(),
             ),
             DropdownButtonFormField(
-              hint: Text('Add up to 10 places'),
+              hint: Text(loc.getTranslatedValue('filter_place')),
               onChanged: (String? value) => setState(() {
                 // firebase limit on array checks
                 if (value != null && _places.length < 10 && !_places.contains(value)) {
@@ -131,7 +133,7 @@ class _FilterDealsBottomSheetState extends State<FilterDealsBottomSheet> {
                         quality: _quality,
                       );
                 },
-                child: Text('Filter deals'))
+                child: Text(loc.getTranslatedValue('filter_deals_btn_text')))
           ],
         ),
       ),

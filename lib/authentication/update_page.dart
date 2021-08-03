@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:leaf/localization/localization.dart';
 import 'package:new_version/new_version.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -18,6 +19,7 @@ class UpdatePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = Localization.of(context);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -32,11 +34,11 @@ class UpdatePage extends StatelessWidget {
                   color: Theme.of(context).primaryColor,
                 ),
                 contentPadding: EdgeInsets.zero,
-                title: Text('Leaf needs an update'),
-                subtitle: Text('To use this app, update to the latest version: ${status!.storeVersion}'),
+                title: Text(loc.getTranslatedValue('update_title')),
+                subtitle: Text(loc.getTranslatedValue('update_body') + ' ${status!.storeVersion}'),
             ),
             SizedBox(height: 30),
-            ElevatedButton(onPressed: _launchURL, child: Text('Update'))
+            ElevatedButton(onPressed: _launchURL, child: Text(loc.getTranslatedValue('update_btn_text')))
           ],
         ),
       ),
