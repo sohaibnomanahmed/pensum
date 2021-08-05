@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:leaf/localization/localization.dart';
 
 class LeafError extends StatelessWidget {
   final Function reload;
-  final String? args;
+  final dynamic? args;
 
   LeafError(this.reload, [this.args]);
 
@@ -15,12 +16,12 @@ class LeafError extends StatelessWidget {
         children: [
           Image.asset('assets/images/developer_activity.png'),
           SizedBox(height: 20),
-          Text('Something went wrong, we are working on it'),
+          Text(Localization.of(context).getTranslatedValue('leaf_error_msg_text')),
           SizedBox(height: 20),
           OutlinedButton.icon(
             onPressed: () => (args == null) ? reload() : reload(args),
             icon: Icon(Icons.refresh_rounded),
-            label: Text('Try again'),
+            label: Text(Localization.of(context).getTranslatedValue('leaf_error_btn_text')),
           )
         ],
       ),

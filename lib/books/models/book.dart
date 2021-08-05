@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:translator/translator.dart';
 
 class Book {
   final List<dynamic> titles;
   final List<dynamic> authors;
   final String image;
   final String language;
+  late String? translatedLanguage;
   final String publisher;
   final String pages;
   final String edition;
@@ -12,18 +14,17 @@ class Book {
   final String isbn;
   final int deals; // number of deals for this book
 
-  Book({
-    required this.titles,
-    required this.authors,
-    required this.image,
-    required this.language,
-    required this.publisher,
-    required this.pages,
-    required this.edition,
-    required this.year,
-    required this.isbn,
-    required this.deals
-  });
+  Book(
+      {required this.titles,
+      required this.authors,
+      required this.image,
+      required this.language,
+      required this.publisher,
+      required this.pages,
+      required this.edition,
+      required this.year,
+      required this.isbn,
+      required this.deals});
 
   factory Book.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>?;
@@ -33,7 +34,6 @@ class Book {
     final List<dynamic>? titles = data['title'];
     final List<dynamic>? authors = data['authors'];
     final String? image = data['image'];
-    // TODO translate
     final String? language = data['language'];
     final String? publisher = data['publisher'];
     final String? pages = data['pages'];
@@ -49,7 +49,7 @@ class Book {
         pages == null ||
         edition == null ||
         year == null ||
-        deals == null) {  
+        deals == null) {
       throw 'Error creating Book from null value';
     }
 
@@ -64,6 +64,12 @@ class Book {
         year: year,
         deals: deals,
         isbn: doc.id);
+  }
+
+  void translateLanguage(String locale) async {
+    final translator = GoogleTranslator();
+    var translation = await translator.translate(language, to: locale);
+    translatedLanguage = translation.text;
   }
 
   String get getAuthors {

@@ -85,6 +85,9 @@ dependencies:
   # force update
   new_version: ^0.2.2
 
+  # translation
+  translator: ^0.1.7
+
 dev_dependencies:
   #integration_test:
   #  sdk: flutter

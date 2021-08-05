@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:leaf/localization/localization.dart';
 
 import 'books_service.dart';
 import 'models/book.dart';
@@ -27,11 +29,12 @@ class BooksProvider with ChangeNotifier {
   /// Subsbribe to the book stream, Should be called in the [init state] method of the page
   /// from where it is called, stores the result in [books] then calls [fetchBookTitles]
   /// if an error accours the stream will be canceled, and we will set [isError]
-  void fetchBooks() {
+  void fetchBooks(String locale) {
     // get original first batch of books
     final stream = booksService.fetchBooks(_pageSize);
     _booksSubscription = stream.listen(
-      (books) {
+      (books) async {
+        books.forEach((book) => book.translateLanguage(locale));
         _books = books;
         notifyListeners();
         // so that two subscriptions might not be added
@@ -54,24 +57,25 @@ class BooksProvider with ChangeNotifier {
 
   /// refetch books when an error occurs, reset [loading] and [error]
   /// then call [fetchBooks] again to remake the stream
-  void reFetchBooks() async {
+  void reFetchBooks(String locale) async {
     _isLoading = true;
     _isError = false;
     _isSearch = false;
     notifyListeners();
-    fetchBooks();
+    fetchBooks(locale);
   }
 
   /// fetch more books, starts with setting a [silent loader] so that the method does
   /// not get called again. Check if [books] is empty or [isError] or [isSearch] is set
   /// add fetched books at the end of [books], catch errors if any and return
-  Future<void> fetchMoreBooks() async {
+  Future<void> fetchMoreBooks(BuildContext context) async {
     // only get called one time and not on error or in a search
     // Aslo if no lastBook to start from, needs to return
     if (_books.isEmpty || _isError || _isSearch) {
       return;
     }
 
+    final locale = Localization.of(context).locale.languageCode;
     // get more books
     List<Book> moreBooks;
     try {
@@ -80,6 +84,7 @@ class BooksProvider with ChangeNotifier {
       print('Failed to fetch more books: $error');
       return;
     }
+    moreBooks.forEach((book) => book.translateLanguage(locale));
     // add them the end of the messages list
     _books.addAll(moreBooks);
     notifyListeners();
@@ -137,13 +142,13 @@ class BooksProvider with ChangeNotifier {
 
   /// Restores the [chashed books], when a search is called
   /// and turns off [isSearch] flag
-  void clearSearch() async {
+  void clearSearch(String locale) async {
     _isLoading = true;
     notifyListeners();
     try{
       await _booksSubscription.cancel();
       _isSearch = false;
-      fetchBooks();
+      fetchBooks(locale);
     } catch (error){
       print('Error clearing search $error');
       _isLoading = false;

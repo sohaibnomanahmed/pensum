@@ -27,12 +27,12 @@ const NB_LANG = {
     'reg_lastname_hint': 'Etternavn',
     'reg_email_hint': 'E-post',
     'reg_password_hint': 'Passord',
-    'reg_success_msg_text': 'E-post verifikasjon er sent, sjekk inboksen',
+    'reg_success_msg_text': 'E-post verifikasjon er sent, sjekk innboksen din',
 
     // Reset Email Bottom Sheet
     'reset_pass_email_hint': 'E-post',
-    'reset_pass_send_btn_text': 'Send reset password email',
-    'reset_pass_success_msg_text': 'Reset password email sent, please check your inbox',
+    'reset_pass_send_btn_text': 'Send e-post for å tilbakestille password',
+    'reset_pass_success_msg_text': 'E-post for å tilbakestille passord er sent, sjekk innboksen din',
 
     // Home Page Tabs
     'books_tab_text': 'Bøker',
@@ -46,12 +46,12 @@ const NB_LANG = {
     'clear_search_btn_text': 'Fjern søk',
 
     // Deals Page
-    'showcase_follow_btn_text': 'Follow a book to receive notifications on new deals',
-    'showcase_filter_btn_text': 'Filter deals by price, place or quality',
-    'showcase_add_btn_text': 'Add a new deal to this book',
-    'follow_btn_text': 'Follow',
-    'follow_success_msg_text': 'Succesfully started following this book',
-    'follow_error_msg_text': 'Something went wrong, please try again!',
+    'showcase_follow_btn_text': 'Følg en bok for å motta notifikasjoner når nye deals ankommer',
+    'showcase_filter_btn_text': 'Filtrer deals basert på pris, sted eller kvalitet',
+    'showcase_add_btn_text': 'Legg til en ny deal for denne boken',
+    'follow_btn_text': 'Følg',
+    'follow_success_msg_text': 'Startet å følge denne boken',
+    'follow_error_msg_text': 'Noe gikk galt, prøv igjen senere',
     'clear_filter_btn_text': 'Fjern Filter',
 
     // Deal Item
@@ -63,41 +63,41 @@ const NB_LANG = {
     'select_place_hint': 'Velg sted',
     'deal_description_hint': 'Beskrivelse (Valgfritt)',
     'add_deal_btn_text': 'Legg til deal',
-    'add_deal_success_msg_text': 'Succesfully added deal',
-    'add_deal_error_msg_text': 'Something went wrong, please try again!',
+    'add_deal_success_msg_text': 'Ny deal er lagt til',
+    'add_deal_error_msg_text': 'Noe gikk galt, prøv igjen senere',
 
     // Filter Deal Bottom Sheet
     'price_from_text': 'Pris fra:',
     'price_to_text': 'Pris till:',
     'filter_quality': 'Velg kvalitet',
-    'filter_place': 'Add up to 10 places',
+    'filter_place': 'Velg opptil 10 steder',
     'filter_deals_btn_text': 'Filtrer deals',
 
     // Follow Page
     'follow_page_topbar_title': 'Følger',
-    'unfollow_error_msg_text': 'Something went wrong, please try again!',
-    'unfollow_success_msg_text': 'Succesfully unfollowed',
+    'unfollow_error_msg_text': 'Noe gikk galt prøv igjen senere',
+    'unfollow_success_msg_text': 'Sluttet å følge',
 
     // 404 Page
-    'page_not_found_text': 'Page not found',
+    'page_not_found_text': 'Kunne dessverre ikke finne siden',
 
     // Map Page
     'send_location_btn_text': 'Send Lokasjon',
     'open_in_google_maps_btn_text': 'Åpne i Google Maps',
 
     // Fast Message Bottom Sheet
-    'fast_message_title': 'Send fast message to:',
+    'fast_message_title': 'Send fast message til:',
 
     // Message Action Sheet
     'camera_action': 'Kamera',
-    'photo_library_action': 'Photo Library',
-    'current_location_action': 'Current Location',
-    'select_location_action': 'Select Location',
+    'photo_library_action': 'Bilde Galleri',
+    'current_location_action': 'Nåværende lokasjon',
+    'select_location_action': 'Velg lokasjon',
     'cancel_action': 'Avbryt',
 
     // Message Bar
     'send_message_hint_text': 'Send melding...',
-    'send_message_error_msg_text': 'Something went wrong!',
+    'send_message_error_msg_text': 'Noe gikk galt',
 
     // Recipients Page
     'recipients_page_topbar_title': 'Meldinger',
@@ -129,5 +129,9 @@ const NB_LANG = {
     'settings_list_delete_account_text': 'Slett Konto',
 
     // Location Bottom Sheet
-    'change_localization_btn_text': 'Change localization',
+    'change_localization_btn_text': 'Endre lokalisajon',
+
+    // Leaf Error
+    'leaf_error_msg_text': 'Something went wrong, we are working on it',
+    'leaf_error_btn_text': 'Try again',
 };

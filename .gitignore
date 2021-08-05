@@ -55,3 +55,6 @@ storage.rules
 
 # not sure from where maybe firebase cli
 node_modules
+
+# fvm
+.fvm/flutter_sdk

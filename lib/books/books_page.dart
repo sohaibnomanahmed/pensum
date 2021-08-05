@@ -17,7 +17,9 @@ class _BooksPageState extends State<BooksPage> {
   @override
   void initState() {
     super.initState();
-    context.read<BooksProvider>().fetchBooks();
+    WidgetsBinding.instance!.addPostFrameCallback((_) => context
+        .read<BooksProvider>()
+        .fetchBooks(Localization.of(context).locale.languageCode));
   }
 
   @override
@@ -26,7 +28,7 @@ class _BooksPageState extends State<BooksPage> {
     final loc = Localization.of(context);
     return Scaffold(
       body: PagingView(
-        action: context.read<BooksProvider>().fetchMoreBooks,
+        action: () => context.read<BooksProvider>().fetchMoreBooks(context),
         child: AnnotatedRegion<SystemUiOverlayStyle>(
           value: SystemUiOverlayStyle.dark,
           child: SafeArea(
@@ -46,7 +48,9 @@ class _BooksPageState extends State<BooksPage> {
       ),
       floatingActionButton: isSearch
           ? FloatingActionButton.extended(
-              onPressed: () => context.read<BooksProvider>().clearSearch(),
+              onPressed: () => context
+                  .read<BooksProvider>()
+                  .clearSearch(Localization.of(context).locale.languageCode),
               label: Text(loc.getTranslatedValue('clear_search_btn_text')),
               icon: Icon(Icons.search_off_rounded),
             )

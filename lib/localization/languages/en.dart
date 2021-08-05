@@ -130,4 +130,8 @@ const EN_LANG = {
 
     // Location Bottom Sheet
     'change_localization_btn_text': 'Change localization',
+
+    // Leaf Error
+    'leaf_error_msg_text': 'Something went wrong, we are working on it',
+    'leaf_error_btn_text': 'Try again',
 };
