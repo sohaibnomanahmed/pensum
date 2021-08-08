@@ -3,7 +3,7 @@ import 'package:leaf/localization/localization.dart';
 
 class LeafError extends StatelessWidget {
   final Function reload;
-  final dynamic? args;
+  final dynamic args;
 
   LeafError(this.reload, [this.args]);
 

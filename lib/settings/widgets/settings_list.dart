@@ -97,15 +97,15 @@ class _SettingsListState extends State<SettingsList> {
                     setState(() => feedbackBtn = false);
                   },
           ),
-          ListTile(
-            leading: Icon(Icons.translate_rounded),
-            title: Text('Language, Location and Currency'),
-            onTap: () => showModalBottomSheet(
-              isScrollControlled: true,
-              context: context,
-              builder: (_) => LocationBottomSheet(),
-            ),
-          ),
+          // ListTile(
+          //   leading: Icon(Icons.translate_rounded),
+          //   title: Text('Language, Location and Currency'),
+          //   onTap: () => showModalBottomSheet(
+          //     isScrollControlled: true,
+          //     context: context,
+          //     builder: (_) => LocationBottomSheet(),
+          //   ),
+          // ),
           ListTile(
               leading: signOutBtn
                   ? SizedBox(
