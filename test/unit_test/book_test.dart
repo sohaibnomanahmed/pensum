@@ -14,6 +14,7 @@ void main() {
       publisher: '',
       year: '',
       deals: 0,
+      followings: 0,
       authors: ['Jack Frost', 'Bella Hadi', 'Hassan Ali']
     );
     // WHEN: book.getAuthors is called

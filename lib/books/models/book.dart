@@ -12,7 +12,8 @@ class Book {
   final String edition;
   final String year;
   final String isbn;
-  final int deals; // number of deals for this book
+  final int deals;
+  final int followings; // number of deals for this book
 
   Book(
       {required this.titles,
@@ -24,7 +25,9 @@ class Book {
       required this.edition,
       required this.year,
       required this.isbn,
-      required this.deals});
+      required this.deals,
+      required this.followings,
+      });
 
   factory Book.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>?;
@@ -40,6 +43,7 @@ class Book {
     final String? edition = data['edition'];
     final String? year = data['year'];
     final int? deals = data['deals'];
+    final int? followings = data['followings'];
 
     if (titles == null ||
         authors == null ||
@@ -49,7 +53,8 @@ class Book {
         pages == null ||
         edition == null ||
         year == null ||
-        deals == null) {
+        deals == null ||
+        followings == null) {
       throw 'Error creating Book from null value';
     }
 
@@ -63,6 +68,7 @@ class Book {
         edition: edition,
         year: year,
         deals: deals,
+        followings: followings,
         isbn: doc.id);
   }
 
@@ -95,7 +101,8 @@ class Book {
       'edition': edition,
       'year': year,
       'isbn': isbn,
-      'deals': deals
+      'deals': deals,
+      'followings': followings,
     };
   }
 }

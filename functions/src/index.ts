@@ -248,6 +248,24 @@ export const onDeleteDeal = functions.firestore
     return admin.firestore().collection('books').doc(bookISBN).update({deals: FieldValue.increment(-1)})
 });
 
+export const onAddFollow = functions.firestore
+.document('profiles/{uid}/following/{followId}')
+.onCreate(async (_, context) => {
+    // get book isbn
+    const bookISBN = context.params.followId
+    // update book deals count
+    return admin.firestore().collection('books').doc(bookISBN).update({follows: FieldValue.increment(1)})
+});
+
+export const onRemoveFollow = functions.firestore
+.document('profiles/{uid}/following/{followId}')
+.onDelete(async (_, context) => {
+    // get book isbn
+    const bookISBN = context.params.followId
+    // update book deals count
+    return admin.firestore().collection('books').doc(bookISBN).update({follows: FieldValue.increment(-1)})
+});
+
 // auth trigger (user deleted)
 export const onUserDelete = functions.auth.user().onDelete(async user => {
     const promises = []

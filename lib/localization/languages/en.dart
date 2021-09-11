@@ -43,6 +43,7 @@ const EN_LANG = {
     // Books Page
     'book_search_bar_text': 'Search for books or authors',
     'book_deals_count_text': 'Deals:',
+    'book_follows_count_text': 'Followings:',
     'clear_search_btn_text': 'Clear Search',
 
     // Deals Page

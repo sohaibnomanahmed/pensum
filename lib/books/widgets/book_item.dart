@@ -81,6 +81,18 @@ class BookItem extends StatelessWidget {
                                 child: Text(loc.getTranslatedValue('book_deals_count_text') + ' ${book!.deals}',
                                     style:
                                         Theme.of(context).textTheme.caption)),
+                          ),
+                          if (book != null)
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 5, vertical: 2),
+                            decoration: BoxDecoration(
+                                color: Theme.of(context).splashColor,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: FittedBox(
+                                child: Text(loc.getTranslatedValue('book_follows_count_text') + ' ${book!.followings}',
+                                    style:
+                                        Theme.of(context).textTheme.caption)),
                           )
                       ]),
               ],

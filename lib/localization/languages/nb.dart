@@ -43,6 +43,7 @@ const NB_LANG = {
     // Books Page
     'book_search_bar_text': 'Søk etter forfattere eller bøker',
     'book_deals_count_text': 'Deals:',
+    'book_follows_count_text': 'Followings:',
     'clear_search_btn_text': 'Fjern søk',
 
     // Deals Page
