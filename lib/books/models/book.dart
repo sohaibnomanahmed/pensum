@@ -72,7 +72,7 @@ class Book {
         isbn: doc.id);
   }
 
-  void translateLanguage(String locale) async {
+  Future<void> translateLanguage(String locale) async {
     final translator = GoogleTranslator();
     var translation = await translator.translate(language, to: locale);
     translatedLanguage = translation.text;

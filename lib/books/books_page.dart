@@ -28,7 +28,7 @@ class _BooksPageState extends State<BooksPage> {
     final loc = Localization.of(context);
     return Scaffold(
       body: PagingView(
-        action: () => context.read<BooksProvider>().fetchMoreBooks(context),
+        action: () => context.read<BooksProvider>().fetchMoreBooks(loc.locale.languageCode),
         child: AnnotatedRegion<SystemUiOverlayStyle>(
           value: SystemUiOverlayStyle.dark,
           child: SafeArea(

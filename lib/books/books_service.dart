@@ -11,6 +11,7 @@ class BooksService {
     return _firestore
         .collection('books')
         .orderBy('deals', descending: true)
+        .orderBy('followings', descending: true)
         .limit(pageSize)
         .snapshots()
         .map(
@@ -30,6 +31,7 @@ class BooksService {
     final books = await _firestore
         .collection('books')
         .orderBy('deals', descending: true)
+        .orderBy('followings', descending: true)
         .startAfterDocument(_lastBook)
         .limit(pageSize)
         .get();
@@ -64,21 +66,8 @@ class BooksService {
     return Book.fromFirestore(book);
   }
 
-  // increments deals count for a spesific book
-  Future<void> incrementDealsCount(String isbn) async {
-    final docRef = _firestore.collection('books').doc(isbn);
-    return docRef.update(({'deals': FieldValue.increment(1)}));
-  }
-
-  // decrements deals count for a spesific book
-  Future<void> decrementDealsCount(String isbn) async {
-    final docRef = _firestore.collection('books').doc(isbn);
-    return docRef.update(({'deals': FieldValue.increment(-1)}));
-  }
-
   /// Search books by title
   Stream<List<Book>> searchBooks(String isbn){
-    print(isbn);
     return _firestore
         .collection('books')
         .where('isbn', isEqualTo: isbn)

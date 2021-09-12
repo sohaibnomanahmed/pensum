@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:leaf/global/widgets/leaf_empty.dart';
+import 'package:leaf/localization/localization.dart';
 import 'package:provider/provider.dart';
 
 import '../books_provider.dart';
@@ -79,6 +80,7 @@ class BookSearchDelegate extends SearchDelegate<String?> {
         text: 'Sorry couldn\'t find any matches',
       );
     }
+    final locale = Localization.of(context).locale.languageCode;
     return ListView.builder(
       itemCount: bookMatches.length,
       itemBuilder: (ctx, index) {
@@ -86,7 +88,7 @@ class BookSearchDelegate extends SearchDelegate<String?> {
         final image = bookTitles[bookMatches[index]]['image'] ?? '';
         return ListTile(
           onTap: () {
-            parentContext.read<BooksProvider>().fetchSearchedBook(bookMatches[index]);
+            parentContext.read<BooksProvider>().fetchSearchedBook(bookMatches[index], locale);
             close(context, null);
           },
           title: Text(title, style: Theme.of(context).textTheme.bodyText2),

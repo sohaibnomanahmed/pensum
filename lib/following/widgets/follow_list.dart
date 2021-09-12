@@ -3,6 +3,7 @@ import 'package:leaf/deals/deals_page.dart';
 import 'package:leaf/following/follow_provider.dart';
 import 'package:leaf/following/widgets/follow_item.dart';
 import 'package:leaf/global/widgets/leaf_error.dart';
+import 'package:leaf/localization/localization.dart';
 import 'package:provider/provider.dart';
 
 class FollowList extends StatelessWidget {
@@ -23,6 +24,8 @@ class FollowList extends StatelessWidget {
                     final book = await context
                         .read<FollowProvider>()
                         .getFollowedBook(follows[index].pid);
+                    final locale = Localization.of(context).locale.languageCode;    
+                    await book.translateLanguage(locale);    
                     context
                         .read<FollowProvider>()
                         .removeFollowingNotification(follows[index].pid);

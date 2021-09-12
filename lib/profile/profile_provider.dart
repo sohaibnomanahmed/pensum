@@ -121,10 +121,7 @@ class ProfileProvider with ChangeNotifier {
     notifyListeners();
     try {
       // Choose image from image picker service
-      print('get image');
       final image = await _imagePickerService.pickImage(source);
-      print('got image');
-      print(image);
       if (image == null) {
         _isLoading = false;
         notifyListeners();

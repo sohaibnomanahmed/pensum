@@ -4,7 +4,6 @@ import 'package:leaf/localization/localization.dart';
 import 'package:leaf/messages/messages_page.dart';
 import 'package:leaf/notifications/notification_provider.dart';
 import 'package:leaf/presence/presence_provider.dart';
-import 'package:leaf/settings/widgets/location_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 import 'package:leaf/authentication/authentication_provider.dart';

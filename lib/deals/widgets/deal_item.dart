@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:leaf/messages/messages_provider.dart';
 import 'package:leaf/messages/widgets/fast_message_bottom_sheet.dart';
 import 'package:leaf/presence/widgets/presence_bubble.dart';
+import 'package:leaf/profile/profile_page.dart';
 import 'package:provider/provider.dart';
 
 import '../../messages/messages_page.dart';
@@ -77,6 +78,13 @@ class DealItem extends StatelessWidget {
               ),
             ),
           ),
+          onTap: () async {
+                    // navigate to profile page
+                    await Navigator.of(context, rootNavigator: true).pushNamed(
+                      ProfilePage.routeName,
+                      arguments: deal.uid,
+                    );
+                  },
         ),
         if (deal.description.isNotEmpty)
           Padding(

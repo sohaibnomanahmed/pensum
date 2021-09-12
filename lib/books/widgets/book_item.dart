@@ -62,11 +62,12 @@ class BookItem extends StatelessWidget {
                 (book == null)
                     ? Container(
                         height: 14, color: Colors.grey, width: double.infinity)
-                    : Text(book!.getAuthors),
+                    : (book!.getAuthors.isNotEmpty) ? Text(book!.getAuthors) : SizedBox(),
                 (book == null)
                     ? Container(
                         height: 14, color: Colors.grey, width: double.infinity)
                     : Row(children: [
+                        if (book!.year.isNotEmpty)
                         Text(book!.year,
                             style: Theme.of(context).textTheme.caption),
                         SizedBox(width: 5,),    
@@ -82,12 +83,13 @@ class BookItem extends StatelessWidget {
                                     style:
                                         Theme.of(context).textTheme.caption)),
                           ),
+                          SizedBox(width: 5,),
                           if (book != null)
                           Container(
                             padding: EdgeInsets.symmetric(
                                 horizontal: 5, vertical: 2),
                             decoration: BoxDecoration(
-                                color: Theme.of(context).splashColor,
+                                color: Colors.blueGrey[100],
                                 borderRadius: BorderRadius.circular(10)),
                             child: FittedBox(
                                 child: Text(loc.getTranslatedValue('book_follows_count_text') + ' ${book!.followings}',
