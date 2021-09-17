@@ -70,7 +70,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
                                     firstname: Profile.capitalizaName(_firstname),
                                     lastname: Profile.capitalizaName(_lastname)),
                             errorMessage:
-                                loc.getTranslatedValue('edit_profile_error_msg_hint'),
+                                loc.getTranslatedValue('error_msg'),
                             successMessage: loc.getTranslatedValue('edit_profile_success_msg_hint'),
                           ),
                   child: Text(loc.getTranslatedValue('edit_profile_btn_text')),

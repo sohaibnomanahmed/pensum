@@ -88,7 +88,7 @@ class _SettingsListState extends State<SettingsList> {
                         SnackBar(
                           backgroundColor: Theme.of(context).errorColor,
                           content: Text(
-                            loc.getTranslatedValue('settings_send_feedback_error_msg'),
+                            loc.getTranslatedValue('error_msg'),
                           ),
                         ),
                       );
@@ -129,7 +129,7 @@ class _SettingsListState extends State<SettingsList> {
                         return context
                           .read<AuthenticationProvider>()
                           .signOut();},
-                      errorMessage: loc.getTranslatedValue('settings_log_out_error_msg'));
+                      errorMessage: loc.getTranslatedValue('error_msg'));
                       setState(() => signOutBtn = false);
                       }),
           ListTile(

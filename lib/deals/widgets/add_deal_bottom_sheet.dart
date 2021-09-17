@@ -122,7 +122,7 @@ class _AddDealBottomSheetState extends State<AddDealBottomSheet> {
                                         description: _description,
                                       ),
                               errorMessage:
-                                  loc.getTranslatedValue('add_deal_error_msg_text'),
+                                  loc.getTranslatedValue('error_msg'),
                               successMessage: loc.getTranslatedValue('add_deal_success_msg_text'),
                             ),
                 child: Text(loc.getTranslatedValue('add_deal_btn_text')),

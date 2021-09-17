@@ -83,7 +83,7 @@ class ProfileDealItem extends StatelessWidget {
                         action: () async => await context
                             .read<ProfileProvider>()
                             .deleteProfileDeal(pid: deal.pid, id: deal.id),
-                        errorMessage: loc.getTranslatedValue('profile_dealitem_delete_error_msg_text'),
+                        errorMessage: loc.getTranslatedValue('error_msg'),
                         successMessage: loc.getTranslatedValue('profile_dealitem_delete_msg_txt'),
                       ),
                     ),

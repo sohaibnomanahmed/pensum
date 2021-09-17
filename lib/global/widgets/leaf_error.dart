@@ -16,12 +16,12 @@ class LeafError extends StatelessWidget {
         children: [
           Image.asset('assets/images/developer_activity.png'),
           SizedBox(height: 20),
-          Text(Localization.of(context).getTranslatedValue('leaf_error_msg_text')),
+          Text(Localization.of(context).getTranslatedValue('error_msg')),
           SizedBox(height: 20),
           OutlinedButton.icon(
             onPressed: () => (args == null) ? reload() : reload(args),
             icon: Icon(Icons.refresh_rounded),
-            label: Text(Localization.of(context).getTranslatedValue('leaf_error_btn_text')),
+            label: Text(Localization.of(context).getTranslatedValue('error_msg')),
           )
         ],
       ),

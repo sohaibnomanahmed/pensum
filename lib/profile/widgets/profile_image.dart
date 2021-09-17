@@ -44,7 +44,7 @@ class ProfileImage extends StatelessWidget {
                           action: () async => await context
                               .read<ProfileProvider>()
                               .setProfileImage(ImageSource.gallery),
-                          errorMessage: loc.getTranslatedValue('dit_profile_image_error_msg_txt'),
+                          errorMessage: loc.getTranslatedValue('error_msg'),
                           successMessage: loc.getTranslatedValue('edit_profile_image_success_msg_text'),
                         ),
                 child: Icon(Icons.edit),

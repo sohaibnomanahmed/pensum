@@ -4,10 +4,8 @@ const EN_LANG = {
     'onboarding_page1_body': 'Search for desired books or authors, see how many deals or followings are available and follow books to get notifications when new deals arrive.',
     'onboarding_page2_title': 'How to add a deal',
     'onboarding_page2_body': 'Search for the book you want to add a deal to and select it. From there you can add and/or filter deals!',
-    'onboarding_page3_title': 'Edit or delete deals',
-    'onboarding_page3_body': 'In the profile page you can edit or delete deals, as well as update personal information.',
-    'onboarding_page4_title': 'Send fast message',
-    'onboarding_page4_body': 'In the deals section you can send messages to people, Pro tip: long press the message button to send a fast message from the same page.',
+    'onboarding_page3_title': 'Send fast message',
+    'onboarding_page3_body': 'In the deals section you can send messages to people, Pro tip: long press the message button to send a fast message from the same page.',
     'skip_btn_txt': 'Skip',
     'next_btn_txt': 'Next',
     'done_btn_txt': 'Done',
@@ -54,7 +52,6 @@ const EN_LANG = {
     'showcase_add_btn_text': 'Add a new deal to this book',
     'follow_btn_text': 'Follow',
     'follow_success_msg_text': 'Succesfully started following this book',
-    'follow_error_msg_text': 'Something went wrong, please try again!',
     'clear_filter_btn_text': 'Clear Filter',
 
     // Deal Item
@@ -67,7 +64,6 @@ const EN_LANG = {
     'deal_description_hint': 'Description (Optional)',
     'add_deal_btn_text': 'Add deal',
     'add_deal_success_msg_text': 'Succesfully added deal',
-    'add_deal_error_msg_text': 'Something went wrong, please try again!',
 
     // Filter Deal Bottom Sheet
     'price_from_text': 'Price from:',
@@ -78,7 +74,6 @@ const EN_LANG = {
 
     // Follow Page
     'follow_page_topbar_title': 'Following',
-    'unfollow_error_msg_text': 'Something went wrong, please try again!',
     'unfollow_success_msg_text': 'Succesfully unfollowed',
 
     // 404 Page
@@ -100,7 +95,6 @@ const EN_LANG = {
 
     // Message Bar
     'send_message_hint_text': 'Send a message...',
-    'send_message_error_msg_text': 'Something went wrong!',
 
     // Recipients Page
     'recipients_page_topbar_title': 'Messages',
@@ -111,24 +105,19 @@ const EN_LANG = {
     'send_message_btn_text': 'Send message',
     'deals_title_text': 'Deals',
     'profile_dealitem_delete_msg_txt': 'Succesfully deleted the deal',
-    'profile_dealitem_delete_error_msg_text': 'Error deleting deal',
     'edit_profile_image_success_msg_text': 'Successfully changed profile image',
-    'edit_profile_image_error_msg_txt': 'Error occured changing profile image',
 
     // Edit Profile Bottom Sheet
     'edit_profile_firstname_hint': 'Firstname',
     'edit_profile_lastname_hint': 'Lastname',
     'edit_profile_success_msg_hint': 'Succesfully edited profile',
-    'edit_profile_error_msg_hint': 'Something went wrong, please try again!',
 
     // Setting Page
     'setting_page_topbar_title': 'Settings',
     'settings_list_reset_pass_text': 'Reset Password',
     'settings_list_send_feedback_title': 'Send Feedback',
     'settings_list_send_feedback_subtitle': 'Report issues, missing books or suggest improvents',
-    'settings_send_feedback_error_msg': 'Something went wrong trying to get the service Account!',
     'settings_list_log_out_text': 'Sign out',
-    'settings_log_out_error_msg': 'Something went wrong, please try again',
     'settings_list_delete_account_text': 'Delete Account',
 
     // Location Bottom Sheet
@@ -137,4 +126,7 @@ const EN_LANG = {
     // Leaf Error
     'leaf_error_msg_text': 'Something went wrong, we are working on it',
     'leaf_error_btn_text': 'Try again',
+
+    // Global
+    'error_msg': 'Something went wrong, please try again', 
 };

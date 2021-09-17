@@ -95,7 +95,7 @@ class _DealsPageState extends State<DealsPage> {
                               successMessage:
                                   loc.getTranslatedValue('follow_success_msg_text'),
                               errorMessage:
-                                  loc.getTranslatedValue('follow_error_msg_text'),
+                                  loc.getTranslatedValue('error_msg'),
                             ),
                     child: isFollowBtnLoading
                         ? SizedBox(

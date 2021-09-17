@@ -44,7 +44,7 @@ class FollowItem extends StatelessWidget {
               context: context,
               action: () async =>
                   await context.read<FollowProvider>().unfollow(follow.pid),
-              errorMessage: loc.getTranslatedValue('unfollow_error_msg_text'),
+              errorMessage: loc.getTranslatedValue('error_msg'),
               successMessage: loc.getTranslatedValue('unfollow_success_msg_text'),
             ),
           ),

@@ -4,8 +4,8 @@ const NB_LANG = {
     'onboarding_page1_body': 'Søk etter ønskede bøker eller forfattere, se hvor mange tilbud eller følgere som er tilgjengelig og følg bøker for å få notifikasjon når nye tilbud ankommer.',
     'onboarding_page2_title': 'Hvordan legge til et tilbud',
     'onboarding_page2_body': 'Søk etter boken du ønsker å legge et tilbud for derreter velg boken, fra der kan du legge til tilbud og/eller filtrere tilbudene.',
-    'onboarding_page4_title': 'Send rask melding',
-    'onboarding_page4_body': 'På tilbuds siden kan du sende meldinger til andre, Pro tip: Press og hold på sende knappen og du kan sende en rask melding fra samme side.',
+    'onboarding_page3_title': 'Send rask melding',
+    'onboarding_page3_body': 'På tilbuds siden kan du sende meldinger til andre, Pro tip: Press og hold på sende knappen og du kan sende en rask melding fra samme side.',
     'skip_btn_txt': 'Hopp Over',
     'next_btn_txt': 'Neste',
     'done_btn_txt': 'Ferdig',
@@ -42,17 +42,16 @@ const NB_LANG = {
 
     // Books Page
     'book_search_bar_text': 'Søk etter forfattere eller bøker',
-    'book_tilbuder_count_text': 'tilbuder:',
-    'book_follows_count_text': 'Followings:',
+    'book_tilbuder_count_text': 'Tilbuder:',
+    'book_follows_count_text': 'Følgere:',
     'clear_search_btn_text': 'Fjern søk',
 
     // tilbuder Page
     'showcase_follow_btn_text': 'Følg en bok for å motta notifikasjoner når nye tilbuder ankommer',
     'showcase_filter_btn_text': 'Filtrer tilbuder basert på pris, sted eller kvalitet',
-    'showcase_add_btn_text': 'Legg til en ny tilbud for denne boken',
+    'showcase_add_btn_text': 'Legg til et nytt tilbud for denne boken',
     'follow_btn_text': 'Følg',
     'follow_success_msg_text': 'Startet å følge denne boken',
-    'follow_error_msg_text': 'Noe gikk galt, prøv igjen senere',
     'clear_filter_btn_text': 'Fjern Filter',
 
     // tilbud Item
@@ -64,8 +63,7 @@ const NB_LANG = {
     'select_place_hint': 'Velg sted',
     'tilbud_description_hint': 'Beskrivelse (Valgfritt)',
     'add_tilbud_btn_text': 'Legg til tilbud',
-    'add_tilbud_success_msg_text': 'Ny tilbud er lagt til',
-    'add_tilbud_error_msg_text': 'Noe gikk galt, prøv igjen senere',
+    'add_tilbud_success_msg_text': 'Nytt tilbud er lagt til',
 
     // Filter tilbud Bottom Sheet
     'price_from_text': 'Pris fra:',
@@ -76,7 +74,6 @@ const NB_LANG = {
 
     // Follow Page
     'follow_page_topbar_title': 'Følger',
-    'unfollow_error_msg_text': 'Noe gikk galt prøv igjen senere',
     'unfollow_success_msg_text': 'Sluttet å følge',
 
     // 404 Page
@@ -98,7 +95,6 @@ const NB_LANG = {
 
     // Message Bar
     'send_message_hint_text': 'Send melding...',
-    'send_message_error_msg_text': 'Noe gikk galt',
 
     // Recipients Page
     'recipients_page_topbar_title': 'Meldinger',
@@ -107,26 +103,21 @@ const NB_LANG = {
     'member_since_text': 'Medlem siden:',
     'edit_profile_btn_text': 'Endre profil',
     'send_message_btn_text': 'Send melding',
-    'tilbuder_title_text': 'tilbuder',
-    'profile_tilbuditem_delete_msg_txt': 'Succesfully deleted the tilbud',
-    'profile_tilbuditem_delete_error_msg_text': 'Error deleting tilbud',
+    'tilbuder_title_text': 'Tilbuder',
+    'profile_tilbuditem_delete_msg_txt': 'Tilbuden ble slettet',
     'edit_profile_image_success_msg_text': 'Successfully changed profile image',
-    'edit_profile_image_error_msg_txt': 'Error occured changing profile image',
 
     // Edit Profile Bottom Sheet
     'edit_profile_firstname_hint': 'Fornavn',
     'edit_profile_lastname_hint': 'Etternavn',
-    'edit_profile_success_msg_hint': 'Succesfully edited profile',
-    'edit_profile_error_msg_hint': 'Something went wrong, please try again!',
+    'edit_profile_success_msg_hint': 'Profilen ble endret',
 
     // Setting Page
     'setting_page_topbar_title': 'Instillinger',
     'settings_list_reset_pass_text': 'Reset Password',
     'settings_list_send_feedback_title': 'Send Tilbakemelding',
-    'settings_list_send_feedback_subtitle': 'Report issues, missing books or suggest improvents',
-    'settings_send_feedback_error_msg': 'Something went wrong trying to get the service Account!',
-    'settings_list_log_out_text': 'Sign out',
-    'settings_log_out_error_msg': 'Something went wrong, please try again',
+    'settings_list_send_feedback_subtitle': 'Raporter problemer, manglende bøker eller foreslå forbedringer',
+    'settings_list_log_out_text': 'Logg av',
     'settings_list_delete_account_text': 'Slett Konto',
 
     // Location Bottom Sheet
@@ -135,4 +126,7 @@ const NB_LANG = {
     // Leaf Error
     'leaf_error_msg_text': 'Noe gikk galt, vi jobber med saken!',
     'leaf_error_btn_text': 'Prøv igjen',
+
+    // Global
+    'error_msg': 'Noe gikk galt, prøv igjen senere', 
 };

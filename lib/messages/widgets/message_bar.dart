@@ -69,7 +69,7 @@ class _MessageBarState extends State<MessageBar> {
                                 receiverName: widget.receiverName,
                                 receiverImage: widget.receiverImage,
                               ),
-                          errorMessage: loc.getTranslatedValue('send_message_error_msg_text'));
+                          errorMessage: loc.getTranslatedValue('error_msg'));
                     }),
           hintText: loc.getTranslatedValue('send_message_hint_text'),
           border: InputBorder.none,
