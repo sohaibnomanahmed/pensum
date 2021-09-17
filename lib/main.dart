@@ -134,7 +134,7 @@ class MyApp extends StatelessWidget {
         ],
         supportedLocales: [
           Locale('en', 'US'),
-          // Locale('nb', 'NO'),
+          Locale('nb', 'NO'),
         ],
         home: status!.canUpdate
             ? UpdatePage(status: status)

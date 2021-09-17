@@ -35,46 +35,48 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
   Widget build(BuildContext context) {
     final loc = Localization.of(context);
     return Container(
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Icon(Icons.person_pin_circle_rounded,
-                  size: 80, color: Theme.of(context).primaryColor),
-              TextFormField(
-                textCapitalization: TextCapitalization.words,
-                initialValue: _firstname.isEmpty ? null : _firstname,
-                decoration: InputDecoration(labelText: loc.getTranslatedValue('edit_profile_firstname_hint')),
-                onChanged: (value) => _firstname = value,
-              ),
-              TextFormField(
-                textCapitalization: TextCapitalization.words,
-                initialValue: _lastname.isEmpty ? null : _lastname,
-                decoration: InputDecoration(labelText: loc.getTranslatedValue('edit_profile_lastname_hint')),
-                onChanged: (value) => _lastname = value,
-              ),
-              SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: (_firstname.isEmpty || _lastname.isEmpty)
-                    ? null
-                    : () async => onPressHandler(
-                          context: context,
-                          popScreen: true,
-                          action: () async => await context
-                              .read<ProfileProvider>()
-                              .setProfileName(
-                                  firstname: Profile.capitalizaName(_firstname),
-                                  lastname: Profile.capitalizaName(_lastname)),
-                          errorMessage:
-                              loc.getTranslatedValue('edit_profile_error_msg_hint'),
-                          successMessage: loc.getTranslatedValue('edit_profile_success_msg_hint'),
-                        ),
-                child: Text(loc.getTranslatedValue('edit_profile_btn_text')),
-              )
-            ],
+      child: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Icon(Icons.person_pin_circle_rounded,
+                    size: 80, color: Theme.of(context).primaryColor),
+                TextFormField(
+                  textCapitalization: TextCapitalization.words,
+                  initialValue: _firstname.isEmpty ? null : _firstname,
+                  decoration: InputDecoration(labelText: loc.getTranslatedValue('edit_profile_firstname_hint')),
+                  onChanged: (value) => _firstname = value,
+                ),
+                TextFormField(
+                  textCapitalization: TextCapitalization.words,
+                  initialValue: _lastname.isEmpty ? null : _lastname,
+                  decoration: InputDecoration(labelText: loc.getTranslatedValue('edit_profile_lastname_hint')),
+                  onChanged: (value) => _lastname = value,
+                ),
+                SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: (_firstname.isEmpty || _lastname.isEmpty)
+                      ? null
+                      : () async => onPressHandler(
+                            context: context,
+                            popScreen: true,
+                            action: () async => await context
+                                .read<ProfileProvider>()
+                                .setProfileName(
+                                    firstname: Profile.capitalizaName(_firstname),
+                                    lastname: Profile.capitalizaName(_lastname)),
+                            errorMessage:
+                                loc.getTranslatedValue('edit_profile_error_msg_hint'),
+                            successMessage: loc.getTranslatedValue('edit_profile_success_msg_hint'),
+                          ),
+                  child: Text(loc.getTranslatedValue('edit_profile_btn_text')),
+                )
+              ],
+            ),
           ),
         ),
       ),

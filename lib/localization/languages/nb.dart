@@ -1,11 +1,11 @@
 const NB_LANG = {
     // Onboarding Page
-    'onboarding_page1_title': 'Finn ditt pensum',
-    'onboarding_page1_body': 'Søk etter ønskede bøker eller forfattere, se hvor mange deals er tilgjengelig og følg bøker for å få notifikasjon når nye deals ankommer.',
-    'onboarding_page2_title': 'Send rask melding',
-    'onboarding_page2_body': 'På deals siden kan du sende meldinger til andre, Pro tip: Press og hold på sende knappen og du kan sende en rask melding fra samme side.',
-    'onboarding_page3_title': 'Del din lokasjon',
-    'onboarding_page3_body': 'I chatten kan du sende din lokasjon, eller velge en spesifikk lokasjon for å møte og enklere kommunisere med andre.',
+    'onboarding_page1_title': 'Velkommen til Leaf',
+    'onboarding_page1_body': 'Søk etter ønskede bøker eller forfattere, se hvor mange tilbud eller følgere som er tilgjengelig og følg bøker for å få notifikasjon når nye tilbud ankommer.',
+    'onboarding_page2_title': 'Hvordan legge til et tilbud',
+    'onboarding_page2_body': 'Søk etter boken du ønsker å legge et tilbud for derreter velg boken, fra der kan du legge til tilbud og/eller filtrere tilbudene.',
+    'onboarding_page4_title': 'Send rask melding',
+    'onboarding_page4_body': 'På tilbuds siden kan du sende meldinger til andre, Pro tip: Press og hold på sende knappen og du kan sende en rask melding fra samme side.',
     'skip_btn_txt': 'Hopp Over',
     'next_btn_txt': 'Neste',
     'done_btn_txt': 'Ferdig',
@@ -42,37 +42,37 @@ const NB_LANG = {
 
     // Books Page
     'book_search_bar_text': 'Søk etter forfattere eller bøker',
-    'book_deals_count_text': 'Deals:',
+    'book_tilbuder_count_text': 'tilbuder:',
     'book_follows_count_text': 'Followings:',
     'clear_search_btn_text': 'Fjern søk',
 
-    // Deals Page
-    'showcase_follow_btn_text': 'Følg en bok for å motta notifikasjoner når nye deals ankommer',
-    'showcase_filter_btn_text': 'Filtrer deals basert på pris, sted eller kvalitet',
-    'showcase_add_btn_text': 'Legg til en ny deal for denne boken',
+    // tilbuder Page
+    'showcase_follow_btn_text': 'Følg en bok for å motta notifikasjoner når nye tilbuder ankommer',
+    'showcase_filter_btn_text': 'Filtrer tilbuder basert på pris, sted eller kvalitet',
+    'showcase_add_btn_text': 'Legg til en ny tilbud for denne boken',
     'follow_btn_text': 'Følg',
     'follow_success_msg_text': 'Startet å følge denne boken',
     'follow_error_msg_text': 'Noe gikk galt, prøv igjen senere',
     'clear_filter_btn_text': 'Fjern Filter',
 
-    // Deal Item
-    'deal_item_page_count_suffix': ' s.',
+    // tilbud Item
+    'tilbud_item_page_count_suffix': ' s.',
 
-    // Add Deal Bottom Sheet
+    // Add tilbud Bottom Sheet
     'select_price_hint': 'Velg pris',
     'select_quality_hint': 'Velg kvalitet',
     'select_place_hint': 'Velg sted',
-    'deal_description_hint': 'Beskrivelse (Valgfritt)',
-    'add_deal_btn_text': 'Legg til deal',
-    'add_deal_success_msg_text': 'Ny deal er lagt til',
-    'add_deal_error_msg_text': 'Noe gikk galt, prøv igjen senere',
+    'tilbud_description_hint': 'Beskrivelse (Valgfritt)',
+    'add_tilbud_btn_text': 'Legg til tilbud',
+    'add_tilbud_success_msg_text': 'Ny tilbud er lagt til',
+    'add_tilbud_error_msg_text': 'Noe gikk galt, prøv igjen senere',
 
-    // Filter Deal Bottom Sheet
+    // Filter tilbud Bottom Sheet
     'price_from_text': 'Pris fra:',
     'price_to_text': 'Pris till:',
     'filter_quality': 'Velg kvalitet',
     'filter_place': 'Velg opptil 10 steder',
-    'filter_deals_btn_text': 'Filtrer deals',
+    'filter_tilbuder_btn_text': 'Filtrer tilbuder',
 
     // Follow Page
     'follow_page_topbar_title': 'Følger',
@@ -107,9 +107,9 @@ const NB_LANG = {
     'member_since_text': 'Medlem siden:',
     'edit_profile_btn_text': 'Endre profil',
     'send_message_btn_text': 'Send melding',
-    'deals_title_text': 'Deals',
-    'profile_dealitem_delete_msg_txt': 'Succesfully deleted the deal',
-    'profile_dealitem_delete_error_msg_text': 'Error deleting deal',
+    'tilbuder_title_text': 'tilbuder',
+    'profile_tilbuditem_delete_msg_txt': 'Succesfully deleted the tilbud',
+    'profile_tilbuditem_delete_error_msg_text': 'Error deleting tilbud',
     'edit_profile_image_success_msg_text': 'Successfully changed profile image',
     'edit_profile_image_error_msg_txt': 'Error occured changing profile image',
 
@@ -133,6 +133,6 @@ const NB_LANG = {
     'change_localization_btn_text': 'Endre lokalisajon',
 
     // Leaf Error
-    'leaf_error_msg_text': 'Something went wrong, we are working on it',
-    'leaf_error_btn_text': 'Try again',
+    'leaf_error_msg_text': 'Noe gikk galt, vi jobber med saken!',
+    'leaf_error_btn_text': 'Prøv igjen',
 };

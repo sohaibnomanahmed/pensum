@@ -24,14 +24,21 @@ class OnboardingPage extends StatelessWidget {
             title: loc.getTranslatedValue('onboarding_page2_title'),
             body: loc.getTranslatedValue('onboarding_page2_body'),
             image: Image.asset(
-              'assets/images/message_sent.png',
-              height: 250,
+              'assets/images/add_deal.png',
+              height: 240,
             )),
+            // PageViewModel(
+            // title: loc.getTranslatedValue('onboarding_page3_title'),
+            // body: loc.getTranslatedValue('onboarding_page3_body'),
+            // image: Image.asset(
+            //   'assets/images/profile.png',
+            //   height: 275,
+            // )),  
         PageViewModel(
-            title: loc.getTranslatedValue('onboarding_page3_title'),
-            body: loc.getTranslatedValue('onboarding_page3_body'),
+            title: loc.getTranslatedValue('onboarding_page4_title'),
+            body: loc.getTranslatedValue('onboarding_page4_body'),
             image: Image.asset(
-              'assets/images/my_location.png',
+              'assets/images/message_sent.png',
               height: 250,
             )),
       ],
