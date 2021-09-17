@@ -22,7 +22,7 @@ jobs:
           java-version: "12.x"
       - uses: subosito/flutter-action@v1
         with:
-          channel: 'stable'    
+          channel: '2.0.6'    
 
       # Run flutter commands to test code
       - run: flutter pub get
@@ -42,7 +42,7 @@ jobs:
   #         java-version: "12.x"
   #     - uses: subosito/flutter-action@v1
   #       with:
-  #         channel: 'stable'  
+  #         channel: '2.0.6'  
 
   #     # Run flutter commands to test code
   #     - run: flutter clean
@@ -67,7 +67,7 @@ jobs:
           java-version: "12.x"
       - uses: subosito/flutter-action@v1  
         with:
-          channel: 'stable'   
+          channel: '2.0.6'   
 
       # Run flutter commands to test code
       - run: flutter clean
