@@ -83,7 +83,7 @@ class _MessagesPageState extends State<MessagesPage> {
                         rid: widget.rid,
                         receiverName: widget.receiverName,
                         receiverImage: widget.receiverImage,
-                      )
+                      ),
                     ],
                   ),
                 ),

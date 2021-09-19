@@ -12,11 +12,13 @@ class MessageBottomSheet extends StatelessWidget {
   final String rid;
   final String receiverImage;
   final String receiverName;
+  final Function hideOptions;
 
   const MessageBottomSheet({
     required this.rid,
     required this.receiverName,
     required this.receiverImage,
+    required this.hideOptions,
   });
 
   Widget message_item_builder({
@@ -25,10 +27,10 @@ class MessageBottomSheet extends StatelessWidget {
     required IconData icon,
     required void Function() action,
   }) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(10.0),
-      child: InkWell(
-        onTap: action,
+    return InkWell(
+      onTap: action,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10.0),
         child: Container(
           width: 90,
           padding: EdgeInsets.all(10),
@@ -57,13 +59,13 @@ class MessageBottomSheet extends StatelessWidget {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
           child: Row(
             children: [
               message_item_builder(
                   context: context,
                   action: () {
-                    Navigator.of(context).pop();
+                    hideOptions();
                     context.read<MessagesProvider>().sendImage(
                         source: ImageSource.camera,
                         rid: rid,
@@ -78,7 +80,7 @@ class MessageBottomSheet extends StatelessWidget {
               message_item_builder(
                   context: context,
                   action: () {
-                    Navigator.of(context).pop();
+                    hideOptions();
                     context.read<MessagesProvider>().sendImage(
                         source: ImageSource.gallery,
                         rid: rid,
@@ -93,7 +95,7 @@ class MessageBottomSheet extends StatelessWidget {
               message_item_builder(
                   context: context,
                   action: () {
-                    Navigator.of(context).pop();
+                    hideOptions();
                     context.read<MessagesProvider>().sendLocation(
                           currentLocation: true,
                           rid: rid,
@@ -109,6 +111,7 @@ class MessageBottomSheet extends StatelessWidget {
               message_item_builder(
                   context: context,
                   action: () async {
+                    hideOptions();
                     final selectedLocation =
                         await Navigator.of(context, rootNavigator: true)
                             .push<LatLng>(MaterialPageRoute(
@@ -116,10 +119,7 @@ class MessageBottomSheet extends StatelessWidget {
                                 builder: (ctx) => MapPage(
                                       isSelecting: true,
                                     )));
-                    if (selectedLocation == null) {
-                      Navigator.of(context).pop();
-                    } else {
-                      Navigator.of(context).pop();
+                    if (selectedLocation != null) {
                       await context.read<MessagesProvider>().sendLocation(
                             currentLocation: false,
                             rid: rid,
