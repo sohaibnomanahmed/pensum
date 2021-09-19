@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:leaf/global/widgets/leaf_empty.dart';
+import 'package:leaf/global/widgets/leaf_image.dart';
 import 'package:leaf/localization/localization.dart';
 import 'package:provider/provider.dart';
 
@@ -76,8 +76,9 @@ class BookSearchDelegate extends SearchDelegate<String?> {
 
   Widget _buildResultsList(BuildContext context) {
     if (bookMatches.isEmpty) {
-      return LeafEmpty(
+      return LeafImage(
         text: 'Sorry couldn\'t find any matches',
+        assetImage: 'assets/images/empty_box.png'
       );
     }
     final locale = Localization.of(context).locale.languageCode;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:leaf/global/widgets/leaf_empty.dart';
+import 'package:leaf/global/widgets/leaf_image.dart';
 import 'package:leaf/localization/localization.dart';
 
 class PageNotFound extends StatelessWidget {
@@ -8,7 +8,7 @@ class PageNotFound extends StatelessWidget {
     final loc = Localization.of(context);
     return Scaffold(
       appBar: AppBar(elevation: 0),
-      body: LeafEmpty(text: loc.getTranslatedValue('page_not_found_text')),
+      body: LeafImage(text: loc.getTranslatedValue('page_not_found_text'), assetImage: 'assets/images/empty_box.png',),
     );
   }
 }

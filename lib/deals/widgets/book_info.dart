@@ -42,7 +42,7 @@ class BookInfo extends StatelessWidget {
                   ListTile(
                     dense: true,
                     leading: Icon(Icons.language),
-                    title: book.translatedLanguage != null ? Text(book.translatedLanguage!) : Text(book.language),
+                    title: book.translatedLanguage.isNotEmpty ? Text(book.translatedLanguage) : Text(book.language),
                   ),
                 if (book.pages.isNotEmpty)
                   ListTile(

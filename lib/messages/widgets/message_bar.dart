@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:leaf/global/utils.dart';
 import 'package:leaf/localization/localization.dart';
-import 'package:leaf/messages/widgets/message_action_sheet.dart';
+import 'package:leaf/messages/widgets/message_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 import '../messages_provider.dart';
@@ -34,11 +34,11 @@ class _MessageBarState extends State<MessageBar> {
           prefixIcon: IconButton(
             icon: Icon(Icons.add),
             onPressed: () {
-              showCupertinoModalPopup(
+              showBottomSheet(
                 context: context,
                 builder: (ctx) => ChangeNotifierProvider.value(
                   value: context.read<MessagesProvider>().provider,
-                  child: MessageActionSheet(
+                  child: MessageBottomSheet(
                     rid: widget.rid,
                     receiverName: widget.receiverName,
                     receiverImage: widget.receiverImage,

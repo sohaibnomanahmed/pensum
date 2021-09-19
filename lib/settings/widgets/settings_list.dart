@@ -4,6 +4,7 @@ import 'package:leaf/localization/localization.dart';
 import 'package:leaf/messages/messages_page.dart';
 import 'package:leaf/notifications/notification_provider.dart';
 import 'package:leaf/presence/presence_provider.dart';
+import 'package:leaf/settings/how_to_page.dart';
 import 'package:provider/provider.dart';
 
 import 'package:leaf/authentication/authentication_provider.dart';
@@ -37,7 +38,8 @@ class _SettingsListState extends State<SettingsList> {
                       child: CircularProgressIndicator(),
                     )
                   : Icon(Icons.lock_rounded),
-              title: Text(loc.getTranslatedValue('settings_list_reset_pass_text')),
+              title:
+                  Text(loc.getTranslatedValue('settings_list_reset_pass_text')),
               onTap: isLoading
                   ? null
                   : () async {
@@ -49,21 +51,23 @@ class _SettingsListState extends State<SettingsList> {
                             .resetPassword(email!),
                         lateErrorMessage: () =>
                             context.read<AuthenticationProvider>().errorMessage,
-                        successMessage:
-                            loc.getTranslatedValue('reset_pass_success_msg_text'),
+                        successMessage: loc
+                            .getTranslatedValue('reset_pass_success_msg_text'),
                       );
                       setState(() => resetBtn = false);
                     }),
           ListTile(
             leading: feedbackBtn
-                  ? SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: CircularProgressIndicator(),
-                    )
-                  : Icon(Icons.feedback_rounded),
-            title: Text(loc.getTranslatedValue('settings_list_send_feedback_title')),
-            subtitle: Text(loc.getTranslatedValue('settings_list_send_feedback_subtitle')),
+                ? SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(),
+                  )
+                : Icon(Icons.feedback_rounded),
+            title: Text(
+                loc.getTranslatedValue('settings_list_send_feedback_title')),
+            subtitle: Text(
+                loc.getTranslatedValue('settings_list_send_feedback_subtitle')),
             onTap: isLoading
                 ? null
                 : () async {
@@ -96,6 +100,12 @@ class _SettingsListState extends State<SettingsList> {
                     setState(() => feedbackBtn = false);
                   },
           ),
+          ListTile(
+            leading: Icon(Icons.category_rounded),
+            title: Text('How To Guide'),
+            onTap: () => Navigator.of(context, rootNavigator: true)
+                .pushNamed(HowToPage.routeName),
+          ),
           // ListTile(
           //   leading: Icon(Icons.translate_rounded),
           //   title: Text('Language, Location and Currency'),
@@ -117,24 +127,30 @@ class _SettingsListState extends State<SettingsList> {
               onTap: isLoading
                   ? null
                   : () async {
-                    setState(() => signOutBtn = true);
-                    await onPressHandler(
-                      context: context,
-                      action: () async { 
-                        // unsubscribe from all topics
-                        await context.read<NotificationProvider>().unsubscribeFromAllTopics();
-                        // remove presence
-                        await context.read<PresenceProvider>().goOffline(signout: true);
-                        // sign out
-                        return context
-                          .read<AuthenticationProvider>()
-                          .signOut();},
-                      errorMessage: loc.getTranslatedValue('error_msg'));
+                      setState(() => signOutBtn = true);
+                      await onPressHandler(
+                          context: context,
+                          action: () async {
+                            // unsubscribe from all topics
+                            await context
+                                .read<NotificationProvider>()
+                                .unsubscribeFromAllTopics();
+                            // remove presence
+                            await context
+                                .read<PresenceProvider>()
+                                .goOffline(signout: true);
+                            // sign out
+                            return context
+                                .read<AuthenticationProvider>()
+                                .signOut();
+                          },
+                          errorMessage: loc.getTranslatedValue('error_msg'));
                       setState(() => signOutBtn = false);
-                      }),
+                    }),
           ListTile(
             leading: Icon(Icons.delete_rounded),
-            title: Text(loc.getTranslatedValue('settings_list_delete_account_text')),
+            title: Text(
+                loc.getTranslatedValue('settings_list_delete_account_text')),
             onTap: () => showModalBottomSheet(
               isScrollControlled: true,
               context: context,

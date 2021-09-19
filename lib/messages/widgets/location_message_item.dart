@@ -19,7 +19,30 @@ class LocationImageItem extends StatelessWidget {
       ),
       closedBuilder: (_, __) => Image.network(
         message.image,
+        height: 100,
+        gaplessPlayback: true,
+        width: double.infinity,
         fit: BoxFit.cover,
+        loadingBuilder: (BuildContext context, Widget child,
+            ImageChunkEvent? loadingProgress) {
+          if (loadingProgress == null) return child;
+          return Container(
+            height: 100,
+            color: Theme.of(context).splashColor,
+            child: Center(
+              child: SizedBox(
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(
+                  value: loadingProgress.expectedTotalBytes != null
+                      ? loadingProgress.cumulativeBytesLoaded /
+                          loadingProgress.expectedTotalBytes!
+                      : null,
+                ),
+              ),
+            ),
+          );
+        },
         errorBuilder: (_, __, ___) => Center(
           child: Icon(
             Icons.wifi_off_rounded,

@@ -10,6 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:leaf/authentication/onboarding_page.dart';
 import 'package:leaf/authentication/update_page.dart';
 import 'package:leaf/localization/localization.dart';
+import 'package:leaf/settings/how_to_page.dart';
 import 'package:new_version/new_version.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -202,6 +203,8 @@ class MyApp extends StatelessWidget {
                   child: ProfilePage(uid),
                 ),
               );
+            case HowToPage.routeName:
+              return MaterialPageRoute(builder: (_) => HowToPage());  
             default:
               return MaterialPageRoute(builder: (_) => PageNotFound());
           }

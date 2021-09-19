@@ -29,7 +29,7 @@ class MessagesProvider with ChangeNotifier {
 
   final List<Message> _messages = [];
   final seenMap = {'seen': true};
-  final _pageSize = 10;
+  final _pageSize = 20;
   var _isError = false;
   var _isLoading = true;
   var _messageLoading = false;

@@ -42,7 +42,7 @@ const NB_LANG = {
 
     // Books Page
     'book_search_bar_text': 'Søk etter forfattere eller bøker',
-    'book_tilbuder_count_text': 'Tilbuder:',
+    'book_deals_count_text': 'Tilbud:',
     'book_follows_count_text': 'Følgere:',
     'clear_search_btn_text': 'Fjern søk',
 
@@ -55,22 +55,22 @@ const NB_LANG = {
     'clear_filter_btn_text': 'Fjern Filter',
 
     // tilbud Item
-    'tilbud_item_page_count_suffix': ' s.',
+    'deal_item_page_count_suffix': ' s.',
 
     // Add tilbud Bottom Sheet
     'select_price_hint': 'Velg pris',
     'select_quality_hint': 'Velg kvalitet',
     'select_place_hint': 'Velg sted',
-    'tilbud_description_hint': 'Beskrivelse (Valgfritt)',
-    'add_tilbud_btn_text': 'Legg til tilbud',
-    'add_tilbud_success_msg_text': 'Nytt tilbud er lagt til',
+    'deal_description_hint': 'Beskrivelse (Valgfritt)',
+    'add_deal_btn_text': 'Legg til tilbud',
+    'add_deal_success_msg_text': 'Nytt tilbud er lagt til',
 
     // Filter tilbud Bottom Sheet
     'price_from_text': 'Pris fra:',
     'price_to_text': 'Pris till:',
     'filter_quality': 'Velg kvalitet',
     'filter_place': 'Velg opptil 10 steder',
-    'filter_tilbuder_btn_text': 'Filtrer tilbuder',
+    'filter_deals_btn_text': 'Filtrer tilbuder',
 
     // Follow Page
     'follow_page_topbar_title': 'Følger',
@@ -88,9 +88,9 @@ const NB_LANG = {
 
     // Message Action Sheet
     'camera_action': 'Kamera',
-    'photo_library_action': 'Bilde Galleri',
-    'current_location_action': 'Nåværende lokasjon',
-    'select_location_action': 'Velg lokasjon',
+    'photo_library_action': 'Galleri',
+    'current_location_action': 'Lokasjon',
+    'select_location_action': 'Kart',
     'cancel_action': 'Avbryt',
 
     // Message Bar
@@ -103,8 +103,8 @@ const NB_LANG = {
     'member_since_text': 'Medlem siden:',
     'edit_profile_btn_text': 'Endre profil',
     'send_message_btn_text': 'Send melding',
-    'tilbuder_title_text': 'Tilbuder',
-    'profile_tilbuditem_delete_msg_txt': 'Tilbuden ble slettet',
+    'deals_title_text': 'Tilbud',
+    'profile_dealitem_delete_msg_txt': 'Tilbuden ble slettet',
     'edit_profile_image_success_msg_text': 'Successfully changed profile image',
 
     // Edit Profile Bottom Sheet

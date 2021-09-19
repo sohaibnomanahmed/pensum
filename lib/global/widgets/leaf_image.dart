@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
-class LeafEmpty extends StatelessWidget {
+class LeafImage extends StatelessWidget {
   final String text;
+  final String assetImage;
 
-  const LeafEmpty({Key? key, this.text = ''}) : super(key: key);
+  const LeafImage({Key? key, this.text = '', required this.assetImage}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +14,7 @@ class LeafEmpty extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.asset('assets/images/empty_box.png'),
+            Image.asset(assetImage, width: 300,),
             SizedBox(height: 20),
             Text(text)
           ],

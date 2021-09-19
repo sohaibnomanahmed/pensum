@@ -6,7 +6,7 @@ class Book {
   final List<dynamic> authors;
   final String image;
   final String language;
-  late String? translatedLanguage;
+  late String translatedLanguage;
   final String publisher;
   final String pages;
   final String edition;
@@ -74,8 +74,12 @@ class Book {
 
   Future<void> translateLanguage(String locale) async {
     final translator = GoogleTranslator();
-    var translation = await translator.translate(language, to: locale);
-    translatedLanguage = translation.text;
+    try{
+      var translation = await translator.translate(language, to: locale);
+      translatedLanguage = translation.text;
+    } catch (error){
+      translatedLanguage = '';
+    }
   }
 
   String get getAuthors {
