@@ -203,7 +203,7 @@ class MessagesProvider with ChangeNotifier {
       // TODO needs localization    
       await sendMessage(
           rid: rid,
-          text: 'You sent a gif',
+          text: 'Du sendte en gif',
           receiverName: receiverName,
           receiverImage: receiverImage,
           message: message);
@@ -252,6 +252,7 @@ class MessagesProvider with ChangeNotifier {
       // Upload image to firestore chat
       final user = _authenticationService.currentUser!;
       final time = Timestamp.now();
+      // TODO need localization
       final message = ImageMessage(
           sid: user.uid,
           text: '',
@@ -263,7 +264,7 @@ class MessagesProvider with ChangeNotifier {
           seen: false);
       await sendMessage(
           rid: rid,
-          text: 'You sent a image',
+          text: 'Du sendte et bilde',
           receiverName: receiverName,
           receiverImage: receiverImage,
           message: message);
@@ -313,9 +314,10 @@ class MessagesProvider with ChangeNotifier {
       final user = _authenticationService.currentUser!;
       final time = Timestamp.now();
       final message = LocationMessage(sid: user.uid, text: '', time: time, type: 'location', seen: false, image: imageUrl, address: address, latitude: latitude, longitude: longitude);
+      // TODO need localization
       await sendMessage(
           rid: rid,
-          text: 'You sent a location',
+          text: 'Du sendte en lokasjon',
           receiverName: receiverName,
           receiverImage: receiverImage,
           message: message);
