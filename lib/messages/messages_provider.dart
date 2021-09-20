@@ -7,8 +7,7 @@ import 'package:leaf/authentication/authentication_service.dart';
 import 'package:leaf/images/image_cropper_service.dart';
 import 'package:leaf/images/image_picker_service.dart';
 import 'package:leaf/images/image_upload_service.dart';
-import 'package:leaf/location/google_map_service.dart';
-import 'package:leaf/location/location_service.dart';
+import 'package:leaf/location/map_service.dart';
 import 'package:leaf/messages/messages_service.dart';
 import 'package:leaf/messages/recipients_service.dart';
 import 'package:leaf/notifications/notification_service.dart';
@@ -24,8 +23,7 @@ class MessagesProvider with ChangeNotifier {
   final _imageUploadService = ImageUploadService();
   final _imagePickerService = ImagePickerService();
   final _imageCropperService = ImageCropperService();
-  final _googleMapService = GoogleMapService();
-  final _locationService = LocationService();
+  final _mapService = MapService();
 
   final List<Message> _messages = [];
   final seenMap = {'seen': true};
@@ -179,6 +177,50 @@ class MessagesProvider with ChangeNotifier {
   /// Send image message to a user, pick a image, cropp it and upload it to [storage]
   /// Then call [sendMessage]. There should not be a loader, should feel like contant flow.
   /// If successfull return true, if an error occurs return false
+  Future<bool> sendGif({
+    required int height,
+    required int width,
+    required String url,
+    required String rid,
+    required String receiverName,
+    required String receiverImage,
+  }) async {
+    _messageLoading = true;
+    notifyListeners();
+    try {
+      // Upload image to firestore chat
+      final user = _authenticationService.currentUser!;
+      final time = Timestamp.now();
+      final message = ImageMessage(
+          sid: user.uid,
+          text: '',
+          image: url,
+          height: height,
+          width: width,
+          time: time,
+          type: 'gif',
+          seen: false);
+      // TODO needs localization    
+      await sendMessage(
+          rid: rid,
+          text: 'You sent a gif',
+          receiverName: receiverName,
+          receiverImage: receiverImage,
+          message: message);
+    } catch (error) {
+      print('Error sending message: $error');
+      _messageLoading = false;
+      notifyListeners();
+      return false;
+    }
+    _messageLoading = false;
+    notifyListeners();
+    return true;
+  }
+
+  /// Send image message to a user, pick a image, cropp it and upload it to [storage]
+  /// Then call [sendMessage]. There should not be a loader, should feel like contant flow.
+  /// If successfull return true, if an error occurs return false
   Future<bool> sendImage({
     required ImageSource source,
     required String rid,
@@ -206,6 +248,7 @@ class MessagesProvider with ChangeNotifier {
       }
       // Upload image to firebase storage
       final imageUrl = await _imageUploadService.uploadChatMessageImage(croppedImage);
+      var decodedImage = await decodeImageFromList(croppedImage.readAsBytesSync());
       // Upload image to firestore chat
       final user = _authenticationService.currentUser!;
       final time = Timestamp.now();
@@ -213,6 +256,8 @@ class MessagesProvider with ChangeNotifier {
           sid: user.uid,
           text: '',
           image: imageUrl,
+          height: decodedImage.height,
+          width: decodedImage.width,
           time: time,
           type: 'image',
           seen: false);
@@ -247,17 +292,6 @@ class MessagesProvider with ChangeNotifier {
     _messageLoading = true;
     notifyListeners();
     try {
-      // check if current location
-      if (currentLocation) {
-        final location = await _locationService.getCurrentUserLocation();
-        if (location == null) {
-          _messageLoading = false;
-          notifyListeners();
-          return false;
-        }
-        latitude = location.latitude;
-        longitude = location.longitude;
-      }
       if (latitude == null || longitude == null) {
         print('Error sending location: Lat or Long = null');
         _messageLoading = false;
@@ -265,10 +299,10 @@ class MessagesProvider with ChangeNotifier {
         return false;
       }
       // Get location address
-      final address = await _googleMapService.getPlaceAddress(
+      final address = await _mapService.getPlaceAddress(
           latitude: latitude, longitude: longitude);
       // Get location image
-      final url = _googleMapService.generateLocationPreviewImage(
+      final url = _mapService.generateLocationPreviewImage(
           latitude: latitude, longitude: longitude);
       // Upload image to firebase storage
       final image = await _imageUploadService.urlToFile(url);

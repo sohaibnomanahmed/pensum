@@ -89,8 +89,7 @@ const NB_LANG = {
     // Message Action Sheet
     'camera_action': 'Kamera',
     'photo_library_action': 'Galleri',
-    'current_location_action': 'Lokasjon',
-    'select_location_action': 'Kart',
+    'location_action': 'Lokasjon',
     'cancel_action': 'Avbryt',
 
     // Message Bar

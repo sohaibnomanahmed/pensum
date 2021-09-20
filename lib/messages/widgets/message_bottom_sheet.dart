@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:leaf/localization/localization.dart';
 import 'package:leaf/location/map_page.dart';
+import 'package:leaf/location/map_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:giphy_picker/giphy_picker.dart';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:leaf/messages/messages_provider.dart';
@@ -59,7 +61,7 @@ class MessageBottomSheet extends StatelessWidget {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
           child: Row(
             children: [
               message_item_builder(
@@ -94,31 +96,51 @@ class MessageBottomSheet extends StatelessWidget {
               ),
               message_item_builder(
                   context: context,
-                  action: () {
+                  action: () async {
+                    final gif = await GiphyPicker.pickGif(
+                        decorator: GiphyDecorator(showAppBar: false),
+                        //lang: GiphyLanguage.norwegian,
+                        showPreviewPage: false,
+                        context: context,
+                        apiKey: 'VCJ3XoTAeHnvIwwHAdr3SlTF4V1zq29q');
                     hideOptions();
-                    context.read<MessagesProvider>().sendLocation(
-                          currentLocation: true,
-                          rid: rid,
-                          receiverName: receiverName,
-                          receiverImage: receiverImage,
-                        );
+                    if (gif != null && gif.images.original != null && gif.images.original!.url != null){
+                      final height = int.parse(gif.images.original!.height!);
+                      final width = int.parse(gif.images.original!.width!);
+                      print(height);
+                      print(width);
+                      await context.read<MessagesProvider>().sendGif(
+                        height: height,
+                        width: width,
+                        url: gif.images.original!.url!,
+                        rid: rid,
+                        receiverName: receiverName,
+                        receiverImage: receiverImage);
+                    }
                   },
-                  text: loc.getTranslatedValue('current_location_action'),
-                  icon: Icons.location_on_rounded),
+                  text: 'GIF',
+                  icon: Icons.gif_rounded),
               SizedBox(
                 width: 10,
               ),
               message_item_builder(
                   context: context,
                   action: () async {
-                    hideOptions();
                     final selectedLocation =
                         await Navigator.of(context, rootNavigator: true)
-                            .push<LatLng>(MaterialPageRoute(
-                                fullscreenDialog: true,
-                                builder: (ctx) => MapPage(
-                                      isSelecting: true,
-                                    )));
+                            .push<LatLng>(
+                      MaterialPageRoute(
+                        fullscreenDialog: true,
+                        builder: (ctx) => ChangeNotifierProvider(
+                          create: (_) => MapProvider(),
+                          child: MapPage(
+                            isSelecting: true,
+                          ),
+                        ),
+                      ),
+                    );
+                    // needs to be here since else, the widgets is gone when we return
+                    hideOptions();
                     if (selectedLocation != null) {
                       await context.read<MessagesProvider>().sendLocation(
                             currentLocation: false,
@@ -130,14 +152,9 @@ class MessageBottomSheet extends StatelessWidget {
                           );
                     }
                   },
-                  text: loc.getTranslatedValue('select_location_action'),
-                  icon: Icons.map_rounded),
+                  text: loc.getTranslatedValue('location_action'),
+                  icon: Icons.location_on_rounded),
             ],
-            // cancelButton: CupertinoActionSheetAction(
-            //     onPressed: () {
-            //       Navigator.of(context).pop();
-            //     },
-            //     child: Text(loc.getTranslatedValue('cancel_action'))),
           ),
         ),
       ),

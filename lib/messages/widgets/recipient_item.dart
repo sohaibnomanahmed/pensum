@@ -21,8 +21,10 @@ class RecipientItem extends StatelessWidget {
           PresenceBubble(recipient.rid, 18)
         ],
       ),
-      title: Text(recipient.receiverName),
-      subtitle: Text(recipient.lastMessage),
+      title: Text(recipient.receiverName,
+            overflow: TextOverflow.ellipsis,),
+      subtitle: Text(recipient.lastMessage, maxLines: 2,
+            overflow: TextOverflow.ellipsis,),
       trailing: recipient.notification
           ? CircleAvatar(
               radius: 5, backgroundColor: Theme.of(context).backgroundColor)

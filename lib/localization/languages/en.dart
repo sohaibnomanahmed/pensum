@@ -89,8 +89,7 @@ const EN_LANG = {
     // Message Action Sheet
     'camera_action': 'Camera',
     'photo_library_action': 'Library',
-    'current_location_action': 'Current Location',
-    'select_location_action': 'Select Location',
+    'location_action': 'Location',
     'cancel_action': 'Cancel',
 
     // Message Bar

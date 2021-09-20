@@ -1,5 +1,6 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:leaf/global/parameters.dart';
 import 'package:leaf/images/photo_page.dart';
 import 'package:leaf/messages/models/message.dart';
 
@@ -10,13 +11,17 @@ class ImageMessageItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double? height;
+    if (message.height != null && message.width != null){
+      height = message.height!.toDouble() * (MAX_CHAT_IMAGE_WIDTH/(message.width!.toDouble()));
+    }
     return OpenContainer(
       closedColor: Colors.transparent,
       closedElevation: 0,
       openBuilder: (_, __) => PhotoPage(message.image),
       closedBuilder: (_, __) => Image.network(
         message.image,
-        height: 200,
+        height:  height ?? 200,
         gaplessPlayback: true,
         width: double.infinity,
         fit: BoxFit.cover,
@@ -24,7 +29,7 @@ class ImageMessageItem extends StatelessWidget {
             ImageChunkEvent? loadingProgress) {
           if (loadingProgress == null) return child;
           return Container(
-            height: 200,
+            height: height ?? 200,
             color: Theme.of(context).splashColor,
             child: Center(
               child: SizedBox(

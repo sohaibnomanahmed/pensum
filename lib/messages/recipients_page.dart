@@ -12,7 +12,7 @@ class RecipientsPage extends StatefulWidget {
   _RecipientsPageState createState() => _RecipientsPageState();
 }
 
-class _RecipientsPageState extends State<RecipientsPage>{
+class _RecipientsPageState extends State<RecipientsPage> {
   @override
   void initState() {
     super.initState();
@@ -25,19 +25,24 @@ class _RecipientsPageState extends State<RecipientsPage>{
     final loc = Localization.of(context);
     return Scaffold(
         appBar: CupertinoNavigationBar(
-        leading: Icon(Icons.forum_rounded, size: 50, color: Theme.of(context).splashColor,),
-        middle:
-            Text(loc.getTranslatedValue('recipients_page_topbar_title'), style: Theme.of(context).textTheme.headline6!.copyWith(
-              color: Theme.of(context).hintColor
-            )),
-      ),
+          leading: Icon(
+            Icons.forum_rounded,
+            size: 50,
+            color: Theme.of(context).splashColor,
+          ),
+          middle: Text(
+            loc.getTranslatedValue('recipients_page_topbar_title'),
+            style: Theme.of(context)
+                .textTheme
+                .headline6!
+                .copyWith(color: Theme.of(context).hintColor),
+          ),
+        ),
         body: isLoading
             ? Center(child: CircularProgressIndicator())
             : PagingView(
-                          action: () =>  
-                                context
-                                    .read<RecipientsProvider>()
-                                    .fetchMoreRecipients(),
-                          child: RecipientsList()));
+                action: () =>
+                    context.read<RecipientsProvider>().fetchMoreRecipients(),
+                child: RecipientsList()));
   }
 }

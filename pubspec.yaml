@@ -89,6 +89,9 @@ dependencies:
   # translation
   translator: ^0.1.7
 
+  # giphs
+  giphy_picker: ^2.0.0
+
 dev_dependencies:
   #integration_test:
   #  sdk: flutter

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-class GoogleMapService {
+class MapService{
   /// generate location preview image
   String generateLocationPreviewImage({required double latitude, required double longitude}){
     const GOOGLE_API_KEY = 'AIzaSyASyQrD1FCJEmrPvrcLUWeGcn2pubkqFy8';

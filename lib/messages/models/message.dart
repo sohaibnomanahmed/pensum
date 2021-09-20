@@ -23,14 +23,16 @@ class Message{
     if (data == null) {
       throw 'Error creating Message from null value';
     }
-    // non null-able fields
+    // non null-able fields all messages needs to contain these
     final String? text = data['text'];
     final String? sid = data['sid'];
     final String? type = data['type'];
     final bool? seen = data['seen'];
     final Timestamp? time = data['time'];
-    // non able fields
+    // null able fields, only some type of messages need these fields
     final String? image = data['image'];
+    final int? height = data['height'];
+    final int? width = data['width'];
     final String? address = data['address'];
     final double? latitude = data['latitude'];
     final double? longitude = data['longitude'];
@@ -43,7 +45,7 @@ class Message{
       throw 'Error creating Message from null value';
     }
 
-    if (type == 'image') {
+    if (type == 'image' || type == 'gif') {
       if (image == null) {
       throw 'Error creating Image Message from null value';
     }
@@ -51,6 +53,8 @@ class Message{
           sid: sid,
           text: text,
           image: image,
+          height: height,
+          width: width,
           time: time,
           type: type,
           seen: seen,
@@ -139,6 +143,8 @@ class LocationMessage extends Message {
 
 class ImageMessage extends Message {
   final String image;
+  final int? height;
+  final int? width;
 
   ImageMessage(
       {required sid,
@@ -146,6 +152,8 @@ class ImageMessage extends Message {
       required time,
       required type,
       required seen,
+      required this.height,
+      required this.width,
       required this.image,
       id})
       : super(sid: sid, seen: seen, text: text, time: time, type: type, id: id);
@@ -157,6 +165,8 @@ class ImageMessage extends Message {
       'time': time,
       'sid': sid,
       'image': image,
+      'height': height,
+      'width': width,
       'type': type,
       'seen': seen,
     };

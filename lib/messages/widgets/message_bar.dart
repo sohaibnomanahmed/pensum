@@ -37,58 +37,6 @@ class _MessageBarState extends State<MessageBar> {
   @override
   Widget build(BuildContext context) {
     final loc = Localization.of(context);
-    // return TextField(
-    //   controller: _controller,
-    //   keyboardType: TextInputType.multiline,
-    //   minLines: 1,
-    //   maxLines: 5,
-    //   decoration: InputDecoration(
-    //       prefixIcon: IconButton(
-    //         icon: Icon(Icons.add),
-    //         onPressed: () {
-    //           showBottomSheet(
-    //             context: context,
-    //             builder: (ctx) => ChangeNotifierProvider.value(
-    //               value: context.read<MessagesProvider>().provider,
-    //               child: MessageBottomSheet(
-    //                 rid: widget.rid,
-    //                 receiverName: widget.receiverName,
-    //                 receiverImage: widget.receiverImage,
-    //               ),
-    //             ),
-    //           );
-    //         },
-    //       ),
-    //       suffixIcon: IconButton(
-    //           icon: Icon(Icons.send),
-    //           onPressed: _message.isEmpty
-    //               ? null
-    //               : () async {
-    //                   // we send message cant be set to empty before it is sent
-    //                   final message = _message;
-    //                   // set state to disable button
-    //                   setState(() {
-    //                     _message = '';
-    //                   });
-    //                   _controller.clear();
-    //                   await onPressHandler(
-    //                       context: context,
-    //                       action: () async => await context
-    //                           .read<MessagesProvider>()
-    //                           .sendMessage(
-    //                             text: message,
-    //                             rid: widget.rid,
-    //                             receiverName: widget.receiverName,
-    //                             receiverImage: widget.receiverImage,
-    //                           ),
-    //                       errorMessage: loc.getTranslatedValue('error_msg'));
-    //                 }),
-    //       hintText: loc.getTranslatedValue('send_message_hint_text'),
-    //       border: InputBorder.none,
-    //       focusedBorder: UnderlineInputBorder(
-    //           borderSide: BorderSide(color: Theme.of(context).primaryColor))),
-    //   onChanged: (value) => setState(() => _message = value),
-    // );
     return Column(
       children: [
         Container(
@@ -109,7 +57,8 @@ class _MessageBarState extends State<MessageBar> {
                     minLines: 1,
                     maxLines: 5,
                     decoration: InputDecoration(
-                        hintText: loc.getTranslatedValue('send_message_hint_text'),
+                        hintText:
+                            loc.getTranslatedValue('send_message_hint_text'),
                         focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20),
                             borderSide:
@@ -122,41 +71,39 @@ class _MessageBarState extends State<MessageBar> {
                         fillColor: Colors.grey[200],
                         filled: true,
                         isDense: true),
-                    onChanged: (value) => setState(() {
-                          _message = value;
-                        })),
+                    onChanged: (value) => setState(() => _message = value)),
               ),
               IconButton(
                 icon: Icon(Icons.send),
                 color: Theme.of(context).primaryColorDark,
-                onPressed: _message.trim().isEmpty ? null : () {
-                  // we send message cant be set to empty before it is sent
-    //                   final message = _message;
-    //                   // set state to disable button
-    //                   setState(() {
-    //                     _message = '';
-    //                   });
-    //                   _controller.clear();
-    //                   await onPressHandler(
-    //                       context: context,
-    //                       action: () async => await context
-    //                           .read<MessagesProvider>()
-    //                           .sendMessage(
-    //                             text: message,
-    //                             rid: widget.rid,
-    //                             receiverName: widget.receiverName,
-    //                             receiverImage: widget.receiverImage,
-    //                           ),
-    //                       errorMessage: loc.getTranslatedValue('error_msg'));
-                },
+                onPressed: _message.trim().isEmpty
+                    ? null
+                    : () async {
+                        // we send message cant be set to empty before it is sent
+                        final message = _message;
+                        // set state to disable button
+                        setState(() {
+                          _message = '';
+                        });
+                        _controller.clear();
+                        await onPressHandler(
+                            context: context,
+                            action: () async => await context
+                                .read<MessagesProvider>()
+                                .sendMessage(
+                                  text: message,
+                                  rid: widget.rid,
+                                  receiverName: widget.receiverName,
+                                  receiverImage: widget.receiverImage,
+                                ),
+                            errorMessage: loc.getTranslatedValue('error_msg'));
+                      },
               )
             ],
           ),
         ),
-        AnimatedContainer(
+        Container(
           height: _showMessageOptions ? null : 0,
-          curve: Curves.fastLinearToSlowEaseIn,
-          duration: Duration(seconds: 2),
           child: MessageBottomSheet(
               hideOptions: _showOptions,
               rid: widget.rid,

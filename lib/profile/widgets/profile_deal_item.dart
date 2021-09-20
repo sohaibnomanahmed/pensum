@@ -25,8 +25,6 @@ class ProfileDealItem extends StatelessWidget {
           leading: Container(
             height: 90,
             width: 50,
-            // child: Hero(
-            //   tag: deal.pid,
             child: Image.network(
               deal.productImage,
               errorBuilder: (_, __, ___) => Icon(
@@ -35,7 +33,6 @@ class ProfileDealItem extends StatelessWidget {
               ),
             ),
           ),
-          // ),
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

@@ -15,11 +15,11 @@ class LocationImageItem extends StatelessWidget {
       closedColor: Colors.transparent,
       closedElevation: 0,
       openBuilder: (_, __) => MapPage(
-        initialLocation: LatLng(message.latitude, message.longitude),
+        storedLocation: LatLng(message.latitude, message.longitude),
       ),
       closedBuilder: (_, __) => Image.network(
         message.image,
-        height: 100,
+        height: 130,
         gaplessPlayback: true,
         width: double.infinity,
         fit: BoxFit.cover,
@@ -27,7 +27,7 @@ class LocationImageItem extends StatelessWidget {
             ImageChunkEvent? loadingProgress) {
           if (loadingProgress == null) return child;
           return Container(
-            height: 100,
+            height: 130,
             color: Theme.of(context).splashColor,
             child: Center(
               child: SizedBox(
