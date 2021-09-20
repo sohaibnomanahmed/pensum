@@ -102,7 +102,7 @@ class _SettingsListState extends State<SettingsList> {
           ),
           ListTile(
             leading: Icon(Icons.category_rounded),
-            title: Text('How To Guide'),
+            title: Text(loc.getTranslatedValue('settings_list_howto_text')),
             onTap: () => Navigator.of(context, rootNavigator: true)
                 .pushNamed(HowToPage.routeName),
           ),

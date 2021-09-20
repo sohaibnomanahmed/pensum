@@ -62,7 +62,7 @@ class MessageBubble extends StatelessWidget {
               padding: message.type != 'text'
                   ? EdgeInsets.all(0)
                   : EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-              margin: EdgeInsets.only(top: 12),
+              margin: EdgeInsets.only(top: 8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

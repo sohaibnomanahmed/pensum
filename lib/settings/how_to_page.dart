@@ -11,19 +11,26 @@ class HowToPage extends StatelessWidget {
     return IntroductionScreen(
       pages: [
         PageViewModel(
-            title: loc.getTranslatedValue('onboarding_page2_title'),
-            body: loc.getTranslatedValue('onboarding_page2_body'),
+            title: loc.getTranslatedValue('how_to_page1_title'),
+            body: loc.getTranslatedValue('how_to_page1_body'),
             image: Image.asset(
               'assets/images/add_deal.png',
               height: 240,
             )),
         PageViewModel(
-            title: loc.getTranslatedValue('onboarding_page3_title'),
-            body: loc.getTranslatedValue('onboarding_page3_body'),
+            title: loc.getTranslatedValue('how_to_page2_title'),
+            body: loc.getTranslatedValue('how_to_page2_body'),
+            image: Image.asset(
+              'assets/images/notf.png',
+              height: 250,
+            )),
+        PageViewModel(
+            title: loc.getTranslatedValue('how_to_page3_title'),
+            body: loc.getTranslatedValue('how_to_page3_body'),
             image: Image.asset(
               'assets/images/message_sent.png',
               height: 250,
-            )),    
+            )),     
       ],
       showSkipButton: true,
       skip: Text(loc.getTranslatedValue('skip_btn_txt')),

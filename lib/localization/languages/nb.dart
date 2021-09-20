@@ -3,12 +3,20 @@ const NB_LANG = {
     'onboarding_page1_title': 'Velkommen til Leaf',
     'onboarding_page1_body': 'Søk etter ønskede bøker eller forfattere, se hvor mange tilbud eller følgere som er tilgjengelig og følg bøker for å få notifikasjon når nye tilbud ankommer.',
     'onboarding_page2_title': 'Hvordan legge til et tilbud',
-    'onboarding_page2_body': 'Søk etter boken du ønsker å legge et tilbud for derreter velg boken, fra der kan du legge til tilbud og/eller filtrere tilbudene.',
-    'onboarding_page3_title': 'Send rask melding',
-    'onboarding_page3_body': 'På tilbuds siden kan du sende meldinger til andre, Pro tip: Press og hold på sende knappen og du kan sende en rask melding fra samme side.',
+    'onboarding_page2_body': 'Søk etter boken du ønsker å legge et tilbud for derreter velg boken, fra der kan du legge til tilbud og/eller filtrere tilbudene. Du kan se mer veiledning under instillinger',
+    'onboarding_page3_title': 'Ferdig',
+    'onboarding_page3_body': 'Du er nå klar til å bruke appen',
     'skip_btn_txt': 'Hopp Over',
     'next_btn_txt': 'Neste',
     'done_btn_txt': 'Ferdig',
+
+    // How To Page
+    'how_to_page1_title': 'Hvordan legge til et tilbud',
+    'how_to_page1_body': 'Søk etter boken du ønsker å legge et tilbud for derreter velg boken, fra der kan du legge til tilbud og/eller filtrere tilbudene.',
+    'how_to_page2_title': 'Hvordan motta notifikasjoner',
+    'how_to_page2_body': 'Husk å tillate notifikasjoner i Instillinger -> Leaf -> Notifikasjoner på iOS og Instillinger -> Apper & notifikasjoner -> Leaf -> Notifikasjoner. Stegene kan variere fra android enheter avhangige av leverandør. Hvis dette ikke fungerer prø å reinstallere appen',
+    'how_to_page3_title': 'Hvordan sende en rask melding',
+    'how_to_page3_body': 'I tilbud siden kan du sende meldinger til personer, Pro tip: hold på sende knappen for å sende en melding fra samme side.',
 
     // Update Page
     'update_title': 'Leaf trenger en oppdatering',
@@ -115,9 +123,11 @@ const NB_LANG = {
     'setting_page_topbar_title': 'Instillinger',
     'settings_list_reset_pass_text': 'Reset Password',
     'settings_list_send_feedback_title': 'Send Tilbakemelding',
+    'settings_list_howto_text': 'Bruker Veiledning',
     'settings_list_send_feedback_subtitle': 'Raporter problemer, manglende bøker eller foreslå forbedringer',
     'settings_list_log_out_text': 'Logg av',
     'settings_list_delete_account_text': 'Slett Konto',
+    'delete_account_btn_text': 'Slett Konto',
 
     // Location Bottom Sheet
     'change_localization_btn_text': 'Endre lokalisajon',

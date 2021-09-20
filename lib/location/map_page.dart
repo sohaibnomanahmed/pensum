@@ -30,9 +30,6 @@ class _MapPageState extends State<MapPage> {
     final loc = Localization.of(context);
     final isLoading = context.watch<MapProvider>().isLoading;
     final initialLocation = context.watch<MapProvider>().initialLocation;
-    if (initialLocation != null){
-      _currentPosition = initialLocation;
-    }  
     return Scaffold(
       body: isLoading
           ? Center(child: CircularProgressIndicator())
@@ -46,12 +43,12 @@ class _MapPageState extends State<MapPage> {
                         _currentPosition = position;
                       })
                   : null,
-              markers: (_currentPosition == null && widget.storedLocation == null && widget.isSelecting)
+              markers: (_currentPosition == null && widget.storedLocation == null && initialLocation == null && widget.isSelecting)
                   ? {}
                   : {
                       Marker(
                           markerId: MarkerId('m1'),
-                          position: _currentPosition ?? widget.storedLocation!)
+                          position: widget.storedLocation ?? _currentPosition ?? initialLocation!)
                     },
             ),
       floatingActionButton: Row(
@@ -65,7 +62,7 @@ class _MapPageState extends State<MapPage> {
             child: Icon(Icons.clear),
           ),
           SizedBox(width: 20),
-          if (_currentPosition != null)
+          if ((_currentPosition != null || initialLocation != null) && widget.isSelecting)
             FloatingActionButton.extended(
               elevation: 0,
               onPressed: () => Navigator.of(context).pop(_currentPosition),
@@ -75,6 +72,7 @@ class _MapPageState extends State<MapPage> {
             ),
           if (!widget.isSelecting)
             FloatingActionButton.extended(
+              elevation: 0,
               onPressed: () async {
                 // Here we are supplying the variables that we've created above
                 final lat = widget.storedLocation!.latitude;

@@ -4,13 +4,13 @@ import 'package:location/location.dart';
 
 class MapProvider with ChangeNotifier{
   LatLng? _initialLocation;
-  var _isError = false;
+  //var _isError = false;
   var _isLoading = true;
 
   // getters
   LatLng? get initialLocation => _initialLocation;
   bool get isLoading => _isLoading;
-  bool get isError => _isError;
+  //bool get isError => _isError;
 
   /// get the current location of a user
   void getCurrentUserLocation() async {

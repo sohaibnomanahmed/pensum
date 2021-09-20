@@ -1,1 +1,1 @@
-const double MAX_CHAT_IMAGE_WIDTH = 250;
+const double MAX_CHAT_IMAGE_WIDTH = 200;

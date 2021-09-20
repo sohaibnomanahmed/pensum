@@ -148,7 +148,15 @@ export const onSendMessage = functions.firestore
         const senderImage = senderDoc.data()!.imageUrl
 
         if (snapshot.data()!.type != 'text'){
-            message = senderName + ' sent a ' + snapshot.data()!.type
+            if (snapshot.data()!.type == 'image'){
+                message = senderName + ' sendte et bilde'
+            }
+            if (snapshot.data()!.type == 'location'){
+                message = senderName + ' sendte en lokasjon'
+            }
+            if (snapshot.data()!.type == 'gif'){
+                message = senderName + ' sendte en gif'
+            }
         }
 
         // build the notification
@@ -254,7 +262,7 @@ export const onAddFollow = functions.firestore
     // get book isbn
     const bookISBN = context.params.followId
     // update book deals count
-    return admin.firestore().collection('books').doc(bookISBN).update({follows: FieldValue.increment(1)})
+    return admin.firestore().collection('books').doc(bookISBN).update({followings: FieldValue.increment(1)})
 });
 
 export const onRemoveFollow = functions.firestore
@@ -263,7 +271,7 @@ export const onRemoveFollow = functions.firestore
     // get book isbn
     const bookISBN = context.params.followId
     // update book deals count
-    return admin.firestore().collection('books').doc(bookISBN).update({follows: FieldValue.increment(-1)})
+    return admin.firestore().collection('books').doc(bookISBN).update({followings: FieldValue.increment(-1)})
 });
 
 // auth trigger (user deleted)

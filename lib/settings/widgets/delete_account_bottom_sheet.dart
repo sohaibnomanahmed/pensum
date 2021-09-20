@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:leaf/authentication/authentication_provider.dart';
 import 'package:leaf/global/utils.dart';
+import 'package:leaf/localization/localization.dart';
 import 'package:leaf/notifications/notification_provider.dart';
 import 'package:leaf/presence/presence_provider.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +18,7 @@ class _DeleteAccountBottomSheetState extends State<DeleteAccountBottomSheet> {
   @override
   Widget build(BuildContext context) {
     final isLoading = context.watch<AuthenticationProvider>().isLoading;
+    final loc = Localization.of(context);
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -82,7 +84,7 @@ class _DeleteAccountBottomSheetState extends State<DeleteAccountBottomSheet> {
                       width: 20,
                       child: CircularProgressIndicator(),
                     )
-                  : Text('Delete Account'),
+                  : Text(loc.getTranslatedValue('delete_account_btn_text')),
             ),
           ],
         ),
