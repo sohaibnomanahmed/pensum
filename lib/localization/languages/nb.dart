@@ -3,7 +3,7 @@ const NB_LANG = {
     'onboarding_page1_title': 'Velkommen til Leaf',
     'onboarding_page1_body': 'Søk etter ønskede bøker eller forfattere, se hvor mange tilbud eller følgere som er tilgjengelig og følg bøker for å få notifikasjon når nye tilbud ankommer.',
     'onboarding_page2_title': 'Hvordan legge til et tilbud',
-    'onboarding_page2_body': 'Søk etter boken du ønsker å legge et tilbud for derreter velg boken, fra der kan du legge til tilbud og/eller filtrere tilbudene. Du kan se mer veiledning under instillinger',
+    'onboarding_page2_body': 'Velg boken du ønsker, fra der kan du legge inn tilbud og/eller filtrere tilbudene. Du kan finne veiledningen igjen under instillinger',
     'onboarding_page3_title': 'Ferdig',
     'onboarding_page3_body': 'Du er nå klar til å bruke appen! Hvis boken du er ute etter ikke er synlig, legg inn et ønske om å legge den til fra instillinger',
     'skip_btn_txt': 'Hopp Over',
@@ -47,6 +47,7 @@ const NB_LANG = {
     'chats_tab_text': 'Chat',
     'profile_tab_text': 'Profil',
     'settings_tab_text': 'Instillinger',
+    'follow_tab_text': 'Følger',
 
     // Books Page
     'book_search_bar_text': 'Søk etter forfattere eller bøker',

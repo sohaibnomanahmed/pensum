@@ -50,69 +50,73 @@ class NotificationProvider with ChangeNotifier {
         print('Message also contained a notification: ${message.notification}');
       }
 
-      if (message.data['type'] == 'message') {
-        final id = message.data['id'];
-        final name = message.data['name'];
-        final image = message.data['image'];
-        final text = message.data['message'];
-        ScaffoldMessenger.of(context).hideCurrentSnackBar();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              behavior: SnackBarBehavior.floating,
-              backgroundColor: Theme.of(context).canvasColor,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-              content: ListTile(
-                contentPadding: EdgeInsets.all(0),
-                dense: true,
-                leading: CircleAvatar(backgroundImage: NetworkImage(image)),
-                title: Text(name),
-                subtitle: Text(text),
-                onTap: () {
-                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                  Navigator.pushNamed(
-                    context,
-                    MessagesPage.routeName,
-                    arguments: {'id': id, 'image': image, 'name': name},
-                  );
-                },
-              )),
-        );
-      }
-      if (message.data['type'] == 'book') {
-        //final id = message.data['id'];
-        final title = message.data['title'];
-        final image = message.data['image'];
-        final text = message.data['message'];
-        ScaffoldMessenger.of(context).hideCurrentSnackBar();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              behavior: SnackBarBehavior.floating,
-              backgroundColor: Theme.of(context).canvasColor,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-              content: ListTile(
-                contentPadding: EdgeInsets.all(0),
-                dense: true,
-                leading: Container(
-                  height: 90,
-                  width: 50,
-                  child: Image.network(
-                    image,
-                    errorBuilder: (_, __, ___) => Icon(
-                      Icons.wifi_off_rounded,
-                      color: Theme.of(context).primaryColorDark,
+      print('Naaaame');
+      print(ModalRoute.of(context)!.settings.name);
+      if (ModalRoute.of(context)!.settings.name != MessagesPage.routeName) {
+        if (message.data['type'] == 'message') {
+          final id = message.data['id'];
+          final name = message.data['name'];
+          final image = message.data['image'];
+          final text = message.data['message'];
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: Theme.of(context).canvasColor,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                content: ListTile(
+                  contentPadding: EdgeInsets.all(0),
+                  dense: true,
+                  leading: CircleAvatar(backgroundImage: NetworkImage(image)),
+                  title: Text(name),
+                  subtitle: Text(text),
+                  onTap: () {
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                    Navigator.pushNamed(
+                      context,
+                      MessagesPage.routeName,
+                      arguments: {'id': id, 'image': image, 'name': name},
+                    );
+                  },
+                )),
+          );
+        }
+        if (message.data['type'] == 'book') {
+          //final id = message.data['id'];
+          final title = message.data['title'];
+          final image = message.data['image'];
+          final text = message.data['message'];
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: Theme.of(context).canvasColor,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                content: ListTile(
+                  contentPadding: EdgeInsets.all(0),
+                  dense: true,
+                  leading: Container(
+                    height: 90,
+                    width: 50,
+                    child: Image.network(
+                      image,
+                      errorBuilder: (_, __, ___) => Icon(
+                        Icons.wifi_off_rounded,
+                        color: Theme.of(context).primaryColorDark,
+                      ),
                     ),
                   ),
-                ),
-                title: Text(title),
-                subtitle: Text(text),
-                onTap: () {
-                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                  setCurrentIndex(3);
-                },
-              )),
-        );
+                  title: Text(title),
+                  subtitle: Text(text),
+                  onTap: () {
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                    setCurrentIndex(3);
+                  },
+                )),
+          );
+        }
       }
     });
 

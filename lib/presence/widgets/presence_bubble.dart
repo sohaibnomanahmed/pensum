@@ -8,6 +8,8 @@ import 'package:shimmer/shimmer.dart';
 /// a [provider], this is done since this widget is used in profile, chat list, deal list and
 /// chat page and there is no need to send over the same stream through 4 different [providers]
 class PresenceBubble extends StatefulWidget {
+  static const double smallSize = 20;
+  static const double bigSize = 40;
   final String uid;
   final double size;
 
@@ -44,12 +46,12 @@ class _PresenceBubbleState extends State<PresenceBubble> {
         if (presence == null) {
           return CircleAvatar(
             backgroundColor: Colors.red,
-            radius: widget.size / 2,
+            radius: widget.size / 2.2,
           );
         } else if (presence == true) {
           return CircleAvatar(
             backgroundColor: Colors.green,
-            radius: widget.size / 2,
+            radius: widget.size / 2.2,
           );
         } else {
           return Container(

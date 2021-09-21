@@ -145,7 +145,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         color: Colors.red[400],
                         child: Icon(Icons.notifications_rounded))
                     : Icon(Icons.notifications_rounded),
-                label: 'Following'),
+                label: loc.getTranslatedValue('follow_tab_text')),
             BottomNavigationBarItem(
                 icon: Icon(Icons.settings), label: loc.getTranslatedValue('settings_tab_text')),
           ]),

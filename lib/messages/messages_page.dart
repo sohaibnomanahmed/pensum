@@ -25,12 +25,32 @@ class MessagesPage extends StatefulWidget {
   _MessagesPageState createState() => _MessagesPageState();
 }
 
-class _MessagesPageState extends State<MessagesPage> {
+class _MessagesPageState extends State<MessagesPage> with WidgetsBindingObserver{
   @override
   void initState() {
     super.initState();
     context.read<MessagesProvider>().unsubscribeFromChatNotifications();
     context.read<MessagesProvider>().fetchMessages(widget.rid);
+    WidgetsBinding.instance!.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    if (state == AppLifecycleState.paused) {
+      context.read<MessagesProvider>().subscribeToChatNotifications();
+    }
+
+    if (state == AppLifecycleState.resumed) {
+      context.read<MessagesProvider>().unsubscribeFromChatNotifications();
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    WidgetsBinding.instance!.removeObserver(this);
   }
 
   @override
@@ -59,7 +79,7 @@ class _MessagesPageState extends State<MessagesPage> {
             ],
           ),
         ),
-        trailing: PresenceBubble(widget.rid, 18),
+        trailing: PresenceBubble(widget.rid, PresenceBubble.smallSize),
       ),
       body: isError
           ? Center(

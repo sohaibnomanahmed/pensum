@@ -49,7 +49,7 @@ class ProfileImage extends StatelessWidget {
                         ),
                 child: Icon(Icons.edit),
               )
-            : PresenceBubble(profile.uid, 35)
+            : PresenceBubble(profile.uid, PresenceBubble.bigSize)
       ],
     );
   }

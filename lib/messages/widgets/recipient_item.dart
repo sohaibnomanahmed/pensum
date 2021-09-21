@@ -18,7 +18,7 @@ class RecipientItem extends StatelessWidget {
             child: CircleAvatar(
                 backgroundImage: NetworkImage(recipient.receiverImage)),
           ),
-          PresenceBubble(recipient.rid, 18)
+          PresenceBubble(recipient.rid, PresenceBubble.smallSize)
         ],
       ),
       title: Text(recipient.receiverName,

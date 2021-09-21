@@ -28,7 +28,7 @@ class DealItem extends StatelessWidget {
                 child:
                     CircleAvatar(backgroundImage: NetworkImage(deal.userImage)),
               ),
-              PresenceBubble(deal.uid, 18)
+              PresenceBubble(deal.uid, PresenceBubble.smallSize)
             ],
           ),
           title: Row(
