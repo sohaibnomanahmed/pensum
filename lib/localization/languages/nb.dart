@@ -122,7 +122,7 @@ const NB_LANG = {
 
     // Setting Page
     'setting_page_topbar_title': 'Instillinger',
-    'settings_list_reset_pass_text': 'Reset Password',
+    'settings_list_reset_pass_text': 'Tilbakestill Passord',
     'settings_list_send_feedback_title': 'Send Tilbakemelding',
     'settings_list_howto_text': 'Bruker Veiledning',
     'settings_list_send_feedback_subtitle': 'Raporter problemer, manglende bøker eller foreslå forbedringer',
