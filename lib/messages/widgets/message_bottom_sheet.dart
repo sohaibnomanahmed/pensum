@@ -107,8 +107,6 @@ class MessageBottomSheet extends StatelessWidget {
                     if (gif != null && gif.images.original != null && gif.images.original!.url != null){
                       final height = int.parse(gif.images.original!.height!);
                       final width = int.parse(gif.images.original!.width!);
-                      print(height);
-                      print(width);
                       await context.read<MessagesProvider>().sendGif(
                         height: height,
                         width: width,

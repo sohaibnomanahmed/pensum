@@ -41,11 +41,11 @@ class _MessageBarState extends State<MessageBar> {
       children: [
         Container(
           padding: EdgeInsets.symmetric(vertical: 5.0),
-          child: IntrinsicHeight(
-            child: Row(
+          child: Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 IconButton(
+                    alignment: Alignment.bottomCenter,
                     icon: Icon(
                       _showMessageOptions ? Icons.cancel_sharp : Icons.add,
                       color: Theme.of(context).primaryColorDark,
@@ -68,7 +68,7 @@ class _MessageBarState extends State<MessageBar> {
                               borderRadius: BorderRadius.circular(20),
                               borderSide:
                                   BorderSide(color: Colors.grey[200]!, width: 1)),
-                          contentPadding: EdgeInsets.all(10),
+                          contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                           fillColor: Colors.grey[200],
                           filled: true,
                           isDense: true),
@@ -76,6 +76,7 @@ class _MessageBarState extends State<MessageBar> {
                 ),
                 IconButton(
                   icon: Icon(Icons.send),
+                  alignment: Alignment.bottomCenter,
                   color: Theme.of(context).primaryColorDark,
                   onPressed: _message.trim().isEmpty
                       ? null
@@ -103,7 +104,6 @@ class _MessageBarState extends State<MessageBar> {
               ],
             ),
           ),
-        ),
         Container(
           height: _showMessageOptions ? null : 0,
           child: MessageBottomSheet(

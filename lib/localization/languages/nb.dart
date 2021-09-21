@@ -5,7 +5,7 @@ const NB_LANG = {
     'onboarding_page2_title': 'Hvordan legge til et tilbud',
     'onboarding_page2_body': 'Søk etter boken du ønsker å legge et tilbud for derreter velg boken, fra der kan du legge til tilbud og/eller filtrere tilbudene. Du kan se mer veiledning under instillinger',
     'onboarding_page3_title': 'Ferdig',
-    'onboarding_page3_body': 'Du er nå klar til å bruke appen',
+    'onboarding_page3_body': 'Du er nå klar til å bruke appen! Hvis boken du er ute etter ikke er synlig, legg inn et ønske om å legge den til fra instillinger',
     'skip_btn_txt': 'Hopp Over',
     'next_btn_txt': 'Neste',
     'done_btn_txt': 'Ferdig',

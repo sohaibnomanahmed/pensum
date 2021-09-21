@@ -5,7 +5,7 @@ const EN_LANG = {
     'onboarding_page2_title': 'How to add a deal',
     'onboarding_page2_body': 'Search for the book you want to add a deal to and select it. From there you can add and/or filter deals! You can see more how to guides in the settings tab',
     'onboarding_page3_title': 'Done',
-    'onboarding_page3_body': 'You are now ready to use the app',
+    'onboarding_page3_body': 'You are now ready to use the app! if the books you want are not visible, send a request to add them from settings',
     'skip_btn_txt': 'Skip',
     'next_btn_txt': 'Next',
     'done_btn_txt': 'Done',

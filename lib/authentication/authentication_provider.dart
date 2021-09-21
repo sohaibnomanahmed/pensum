@@ -44,7 +44,7 @@ class AuthenticationProvider with ChangeNotifier {
     try {
       // create user
       final userCredentials = await authenticationService.createUser(
-          email: email, password: password);
+          email: email.trim(), password: password);
       final user = userCredentials.user!;
       final time = user.metadata.creationTime;
       if (time == null) {
@@ -90,7 +90,7 @@ class AuthenticationProvider with ChangeNotifier {
     notifyListeners();
     try {
       final userCredentials =
-          await authenticationService.signIn(email: email, password: password);
+          await authenticationService.signIn(email: email.trim(), password: password);
       final user = userCredentials.user!;
       // send email varification
       if (!user.emailVerified) {
