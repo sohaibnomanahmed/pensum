@@ -62,6 +62,7 @@ const EN_LANG = {
     'follow_btn_text': 'Follow',
     'follow_success_msg_text': 'Succesfully started following this book',
     'clear_filter_btn_text': 'Clear Filter',
+    'empty_list_msg_text': 'There are no deals yet',
 
     // Deal Item
     'deal_item_page_count_suffix': ' p.',

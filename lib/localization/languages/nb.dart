@@ -55,18 +55,19 @@ const NB_LANG = {
     'book_follows_count_text': 'Følgere:',
     'clear_search_btn_text': 'Fjern søk',
 
-    // tilbuder Page
+    // Deals Page
     'showcase_follow_btn_text': 'Følg en bok for å motta notifikasjoner når nye tilbuder ankommer',
     'showcase_filter_btn_text': 'Filtrer tilbuder basert på pris, sted eller kvalitet',
     'showcase_add_btn_text': 'Legg til et nytt tilbud for denne boken',
     'follow_btn_text': 'Følg',
     'follow_success_msg_text': 'Startet å følge denne boken',
     'clear_filter_btn_text': 'Fjern Filter',
+    'empty_list_msg_text': 'Det finnes ingen tilbud enda',
 
-    // tilbud Item
+    // deal Item
     'deal_item_page_count_suffix': ' s.',
 
-    // Add tilbud Bottom Sheet
+    // Add deal Bottom Sheet
     'select_price_hint': 'Velg pris',
     'select_quality_hint': 'Velg kvalitet',
     'select_place_hint': 'Velg sted',
@@ -74,7 +75,7 @@ const NB_LANG = {
     'add_deal_btn_text': 'Legg til tilbud',
     'add_deal_success_msg_text': 'Nytt tilbud er lagt til',
 
-    // Filter tilbud Bottom Sheet
+    // Filter deals Bottom Sheet
     'price_from_text': 'Pris fra:',
     'price_to_text': 'Pris till:',
     'filter_quality': 'Velg kvalitet',
