@@ -82,7 +82,7 @@ class _FilterDealsBottomSheetState extends State<FilterDealsBottomSheet> {
               onChanged: (String? value) => (value == null) ? null : _quality = value,
               items: qualities
                   .map((quality) =>
-                      DropdownMenuItem(value: quality, child: Text(quality)))
+                      DropdownMenuItem(value: quality, child: Text(loc.getTranslatedValue(quality))))
                   .toList(),
             ),
             DropdownButtonFormField(

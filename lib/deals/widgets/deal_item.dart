@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:leaf/localization/localization.dart';
 import 'package:leaf/messages/messages_provider.dart';
 import 'package:leaf/messages/widgets/fast_message_bottom_sheet.dart';
 import 'package:leaf/presence/widgets/presence_bubble.dart';
@@ -15,6 +16,7 @@ class DealItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = Localization.of(context);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -44,7 +46,7 @@ class DealItem extends StatelessWidget {
             children: [
               Flexible(
                   child: Text(deal.place, overflow: TextOverflow.ellipsis)),
-              Text(deal.quality)
+              Text(loc.getTranslatedValue(deal.quality))
             ],
           ),
           trailing: GestureDetector(

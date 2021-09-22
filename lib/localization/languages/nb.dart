@@ -1,11 +1,12 @@
 const NB_LANG = {
     // Onboarding Page
     'onboarding_page1_title': 'Velkommen til Leaf',
-    'onboarding_page1_body': 'Søk etter ønskede bøker eller forfattere, se hvor mange tilbud eller følgere som er tilgjengelig og følg bøker for å få notifikasjon når nye tilbud ankommer.',
+    'onboarding_page1_body': 'Søk etter ønskede bøker eller forfattere, følg bøker for å få notifikasjon når nye tilbud ankommer.',
     'onboarding_page2_title': 'Hvordan legge til et tilbud',
-    'onboarding_page2_body': 'Velg boken du ønsker, fra der kan du legge inn tilbud og/eller filtrere tilbudene. Du kan finne veiledningen igjen under instillinger',
+    'onboarding_page2_body': 'Velg boken du ønsker, trykk på + knappen for å legge inn et tilbud. Du kan finne veiledningen igjen under instillinger',
+    '':'Hvis boken du er ute etter ikke er synlig, legg inn et ønske om å legge den til fra instillinger',
     'onboarding_page3_title': 'Ferdig',
-    'onboarding_page3_body': 'Du er nå klar til å bruke appen! Hvis boken du er ute etter ikke er synlig, legg inn et ønske om å legge den til fra instillinger',
+    'onboarding_page3_body': 'Du er nå klar til å bruke appen!',
     'skip_btn_txt': 'Hopp Over',
     'next_btn_txt': 'Neste',
     'done_btn_txt': 'Ferdig',
@@ -94,7 +95,7 @@ const NB_LANG = {
     'open_in_google_maps_btn_text': 'Åpne i Google Maps',
 
     // Fast Message Bottom Sheet
-    'fast_message_title': 'Send fast message til:',
+    'fast_message_title': 'Send rask melding til:',
 
     // Message Action Sheet
     'camera_action': 'Kamera',
@@ -114,7 +115,7 @@ const NB_LANG = {
     'send_message_btn_text': 'Send melding',
     'deals_title_text': 'Tilbud',
     'profile_dealitem_delete_msg_txt': 'Tilbuden ble slettet',
-    'edit_profile_image_success_msg_text': 'Successfully changed profile image',
+    'edit_profile_image_success_msg_text': 'Profile bildet er endret',
 
     // Edit Profile Bottom Sheet
     'edit_profile_firstname_hint': 'Fornavn',
@@ -140,4 +141,9 @@ const NB_LANG = {
 
     // Global
     'error_msg': 'Noe gikk galt, prøv igjen senere', 
+
+    // Deal Qualitites
+    'New': 'Ny',
+    'As new': 'Som ny',
+    'Used': 'Brukt',
 };

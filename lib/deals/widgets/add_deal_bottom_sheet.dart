@@ -79,7 +79,7 @@ class _AddDealBottomSheetState extends State<AddDealBottomSheet> {
                 }),
                 items: qualities
                     .map((quality) =>
-                        DropdownMenuItem(value: quality, child: Text(quality)))
+                        DropdownMenuItem(value: quality, child: Text(loc.getTranslatedValue(quality))))
                     .toList(),
               ),
               DropdownButtonFormField(

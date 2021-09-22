@@ -204,7 +204,7 @@ class MyApp extends StatelessWidget {
                 ),
               );
             case HowToPage.routeName:
-              return MaterialPageRoute(builder: (_) => HowToPage());  
+              return MaterialPageRoute(builder: (_) => HowToPage());
             default:
               return MaterialPageRoute(builder: (_) => PageNotFound());
           }

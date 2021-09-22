@@ -47,7 +47,7 @@ class ProfileDealItem extends StatelessWidget {
             children: [
               Flexible(
                   child: Text(deal.place, overflow: TextOverflow.ellipsis)),
-              Text(deal.quality)
+              Text(loc.getTranslatedValue(deal.quality))
             ],
           ),
           trailing: !profile!.isMe

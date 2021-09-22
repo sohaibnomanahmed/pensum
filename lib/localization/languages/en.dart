@@ -1,9 +1,9 @@
 const EN_LANG = {
     // Onboarding Page
     'onboarding_page1_title': 'Welcome to Leaf',
-    'onboarding_page1_body': 'Search for desired books or authors, see how many deals or followings are available and follow books to get notifications when new deals arrive.',
+    'onboarding_page1_body': 'Search for desired books or authors, follow books to get notifications when new deals arrive.',
     'onboarding_page2_title': 'How to add a deal',
-    'onboarding_page2_body': 'Select the book you want, from there you can add and/or filter deals! Revisit the guides in the settings tab',
+    'onboarding_page2_body': 'Select the book you want, press the + button to add a deal. Revisit the guides in the settings tab',
     'onboarding_page3_title': 'Done',
     'onboarding_page3_body': 'You are now ready to use the app! if the books you want are not visible, send a request to add them from settings',
     'skip_btn_txt': 'Skip',
@@ -140,4 +140,9 @@ const EN_LANG = {
 
     // Global
     'error_msg': 'Something went wrong, please try again', 
+
+    // Deal Qualitites
+    'New': 'New',
+    'As new': 'As new',
+    'Used': 'Used',
 };
