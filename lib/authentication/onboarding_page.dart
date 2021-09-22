@@ -31,9 +31,23 @@ class OnboardingPage extends StatelessWidget {
             title: loc.getTranslatedValue('onboarding_page3_title'),
             body: loc.getTranslatedValue('onboarding_page3_body'),
             image: Image.asset(
+              'assets/images/meditate.png',
+              height: 250,
+            )),
+        PageViewModel(
+            title: loc.getTranslatedValue('onboarding_page4_title'),
+            body: loc.getTranslatedValue('onboarding_page4_body'),
+            image: Image.asset(
               'assets/images/done.png',
               height: 250,
             )),
+        PageViewModel(
+            title: loc.getTranslatedValue('onboarding_page5_title'),
+            body: loc.getTranslatedValue('onboarding_page5_body'),
+            image: Image.asset(
+              'assets/images/done.png',
+              height: 250,
+            )),        
       ],
       showSkipButton: true,
       skip: Text(loc.getTranslatedValue('skip_btn_txt')),
