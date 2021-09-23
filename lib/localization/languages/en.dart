@@ -1,11 +1,11 @@
 const EN_LANG = {
     // Onboarding Page
     'onboarding_page1_title': 'Welcome to Leaf',
-    'onboarding_page1_body': '',
+    'onboarding_page1_body': 'Welcome to our community, we hope you thrive! Please read through this guide to get a kick start',
     'onboarding_page2_title': 'How to add a deal',
     'onboarding_page2_body': 'Select the book you want, press the ＋ button to add a deal. Revisit the guides in the settings tab',
     'onboarding_page3_title': 'Relax and let the app do the job',
-    'onboarding_page3_body': 'Follow the books you want so other know you are interested and get notifyied on new deals. Add your deals wait for someone to contact you :)',
+    'onboarding_page3_body': 'Follow the books you want so others know you are interested and get notifyied on new deals. Add your deals and wait for someone to contact you :)',
     'onboarding_page4_title': 'Support',
     'onboarding_page4_body': 'If some books a missing or you face an issue, contact Leaf service from settings',
     'onboarding_page5_title': 'Done',
@@ -16,9 +16,9 @@ const EN_LANG = {
 
     // How To Page
     'how_to_page1_title': 'How to add a deal',
-    'how_to_page1_body': 'Search for the book you want to add a deal to and select it. From there you can add and/or filter deals!',
+    'how_to_page1_body': 'Select the book you want, press the ＋ button to add a deal.',
     'how_to_page2_title': 'How to receive notifications',
-    'how_to_page2_body': 'Make sure to turn on notifications in Settings ➞ Leaf ➞ Notifications on iOS and Settings ➞ Apps & notifications ➞ Leaf ➞ Notifications. The steps may vary from android devices based on brand. If this doesent work try to delete and reinstall the app',
+    'how_to_page2_body': 'Make sure to turn on notifications in [Settings ➞ Leaf ➞ Notifications] on iOS and [Settings ➞ Apps & notifications ➞ Leaf ➞ Notifications]. The steps may vary from android devices based on brand. If this doesent work try to delete and reinstall the app',
     'how_to_page3_title': 'How to send a fast message',
     'how_to_page3_body': 'In the deals section you can send messages to people, Pro tip: long press the message button ➤ to send a fast message from the same page.',
 

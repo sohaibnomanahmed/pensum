@@ -91,7 +91,7 @@ class _AuthenticationFormState extends State<AuthenticationForm> {
                           BorderRadius.vertical(top: Radius.circular(5.0))),
                   context: context,
                   isScrollControlled: true,
-                  builder: (_) => CreateAccountBottomSheet(),
+                  builder: (_) => CreateAccountBottomSheet(pre_email: _email, pre_pass: _password,),
                 );
               },
               child: Text(loc.getTranslatedValue('reg_btn_text')))

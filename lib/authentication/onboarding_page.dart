@@ -38,7 +38,7 @@ class OnboardingPage extends StatelessWidget {
             title: loc.getTranslatedValue('onboarding_page4_title'),
             body: loc.getTranslatedValue('onboarding_page4_body'),
             image: Image.asset(
-              'assets/images/done.png',
+              'assets/images/support.png',
               height: 250,
             )),
         PageViewModel(

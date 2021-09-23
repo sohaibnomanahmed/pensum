@@ -6,6 +6,11 @@ import 'package:provider/provider.dart';
 import '../authentication_provider.dart';
 
 class CreateAccountBottomSheet extends StatefulWidget {
+  final String pre_email;
+  final String pre_pass;
+
+  CreateAccountBottomSheet({required this.pre_email, required this.pre_pass});
+
   @override
   _CreateAccountBottomSheetState createState() =>
       _CreateAccountBottomSheetState();
@@ -16,6 +21,13 @@ class _CreateAccountBottomSheetState extends State<CreateAccountBottomSheet> {
   var _password = '';
   var _firstname = '';
   var _lastname = '';
+
+  @override
+    void initState() {
+      super.initState();
+      _email = widget.pre_email;
+      _password = widget.pre_pass;
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -52,12 +64,14 @@ class _CreateAccountBottomSheetState extends State<CreateAccountBottomSheet> {
                 decoration: InputDecoration(labelText: loc.getTranslatedValue('reg_lastname_hint')),
                 onChanged: (value) => _lastname = value,
               ),
-              TextField(
+              TextFormField(
+                initialValue: _email,
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(labelText: loc.getTranslatedValue('reg_email_hint')),
                 onChanged: (value) => _email = value,
               ),
               TextFormField(
+                initialValue: _password,
                 decoration: InputDecoration(labelText: loc.getTranslatedValue('reg_password_hint')),
                 obscureText: true,
                 onChanged: (value) => _password = value,
