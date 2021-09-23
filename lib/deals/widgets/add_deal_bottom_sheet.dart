@@ -93,6 +93,7 @@ class _AddDealBottomSheetState extends State<AddDealBottomSheet> {
                         DropdownMenuItem(value: place, child: Text(place)))
                     .toList(),
               ),
+              SizedBox(height: 10,),
               TextFormField(
                 textCapitalization: TextCapitalization.sentences,
                 maxLength: 150,
@@ -100,7 +101,7 @@ class _AddDealBottomSheetState extends State<AddDealBottomSheet> {
                 minLines: 3,
                 maxLines: 3,
                 decoration:
-                    InputDecoration(labelText: loc.getTranslatedValue('deal_description_hint')),
+                    InputDecoration(hintText: loc.getTranslatedValue('deal_description_hint'),),
                 onChanged: (value) => _description = value,
               ),
               ElevatedButton(
