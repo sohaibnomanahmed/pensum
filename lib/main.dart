@@ -126,7 +126,7 @@ class MyApp extends StatelessWidget {
         //       shape: RoundedRectangleBorder(
         //           borderRadius: BorderRadius.circular(10))),
         // ),
-        //ThemeData.dark(),
+        darkTheme: ThemeData.dark(),
         localizationsDelegates: [
           Localization.delegate,
           GlobalWidgetsLocalizations.delegate,

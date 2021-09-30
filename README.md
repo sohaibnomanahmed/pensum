@@ -8,10 +8,11 @@
 
 A flutter project for buying and selling books, mainly campus curriculum socially. It uses a **MVVM** architecture achieved with the *provider* packages and *firebase* as the backend. All lists iclude **paging** with *ScrollNotification* and lazy loading with use of *ListView.builder* method. The code is now migrated to *Sound Null Safety*. Currently the project includes the following features:
 * Authentication
-* Chat (incl. images and location)
+* Chat (incl. images, GIF and location)
 * Profile
-* Deals filtering
-* Book search
+* Filtering
+* Search
+* Localization
 * Notifications
 * Presence system
 

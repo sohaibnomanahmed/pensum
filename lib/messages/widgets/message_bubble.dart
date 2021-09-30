@@ -25,7 +25,7 @@ class MessageBubble extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (message.type != 'text' && message.type != 'location')
-            Padding(
+              Padding(
                 padding: EdgeInsets.only(top: 10),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -61,36 +61,44 @@ class MessageBubble extends StatelessWidget {
               constraints: BoxConstraints(maxWidth: MAX_CHAT_IMAGE_WIDTH),
               padding: message.type != 'text'
                   ? EdgeInsets.all(0)
-                  : EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                  : EdgeInsets.all(12),
               margin: EdgeInsets.only(top: 8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if(message.type == 'text' || message.type == 'location')
-                  Padding(
-                    padding: message.type != 'text'
-                        ? EdgeInsets.all(8.0)
-                        : EdgeInsets.all(0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(formattedDate,
-                            style: Theme.of(context).textTheme.caption),
-                        SizedBox(width: 5),
-                        Icon(
-                          Icons.check_circle_rounded,
-                          size: 10,
-                          color: message.seen
-                              ? Theme.of(context).primaryColor
-                              : Theme.of(context).splashColor,
-                        )
-                      ],
+                  if (message.type == 'text' || message.type == 'location')
+                    Padding(
+                      padding: message.type != 'text'
+                          ? EdgeInsets.all(8.0)
+                          : EdgeInsets.all(0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(formattedDate,
+                              style: Theme.of(context).textTheme.caption),
+                          SizedBox(width: 5),
+                          Icon(
+                            Icons.check_circle_rounded,
+                            size: 10,
+                            color: message.seen
+                                ? Theme.of(context).primaryColor
+                                : Theme.of(context).splashColor,
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                  if (message.type == 'text') Text(message.text),
-                  if (message.type == 'image') ImageMessageItem(message as ImageMessage),
-                  if (message.type == 'gif') ImageMessageItem(message as ImageMessage),
-                  if (message.type == 'location') LocationImageItem(message as LocationMessage)
+                  if (message.type == 'text')
+                    Text(
+                      message.text,
+                      style: Theme.of(context).textTheme.subtitle1,
+                      //strutStyle: StrutStyle(forceStrutHeight: true),
+                    ),
+                  if (message.type == 'image')
+                    ImageMessageItem(message as ImageMessage),
+                  if (message.type == 'gif')
+                    ImageMessageItem(message as ImageMessage),
+                  if (message.type == 'location')
+                    LocationImageItem(message as LocationMessage)
                 ],
               ),
             ),

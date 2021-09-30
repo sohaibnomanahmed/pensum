@@ -101,6 +101,7 @@ class MessageBottomSheet extends StatelessWidget {
                         decorator: GiphyDecorator(showAppBar: false),
                         //lang: GiphyLanguage.norwegian,
                         showPreviewPage: false,
+                        showAttributionMark: true,
                         context: context,
                         apiKey: 'VCJ3XoTAeHnvIwwHAdr3SlTF4V1zq29q');
                     hideOptions();

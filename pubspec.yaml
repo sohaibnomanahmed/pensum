@@ -90,7 +90,10 @@ dependencies:
   translator: ^0.1.7
 
   # giphs
-  giphy_picker: ^2.0.0
+  #giphy_picker: ^2.0.0
+  giphy_picker:
+    git:
+      url: 'https://github.com/sohaibnoman/giphy_picker.git'
 
 dev_dependencies:
   #integration_test:
