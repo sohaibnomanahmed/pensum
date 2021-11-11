@@ -1,6 +1,6 @@
 # Support
 
-Leaf app offers inn app support under the settings tab, **Send Feedback**. This include issues with the app, missing features and improvement suggestions. If some reason this features does not function as intended, support can be contacted on leaf.flutter@gmail.com. Beneath is a guide for some common tasks in the app.
+Pensum app offers inn app support under the settings tab, **Send Feedback**. This include issues with the app, missing features and improvement suggestions. If some reason this features does not function as intended, support can be contacted on leaf.flutter@gmail.com. Beneath is a guide for some common tasks in the app.
 
 ### Can't find the book I am looking for
 If dont find the book you are looking for in the book search section, please report the missing with its ISBN, by going to the settings tab and selecting **Send Feedback** or sending a mail to leaf.flutter@gmail.com

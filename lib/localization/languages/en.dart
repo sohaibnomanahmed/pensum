@@ -1,13 +1,13 @@
 const EN_LANG = {
     // Onboarding Page
-    'onboarding_page1_title': 'Welcome to Leaf',
-    'onboarding_page1_body': 'Welcome to our community, we hope you thrive! Please read through this guide to get a kick start',
+    'onboarding_page1_title': 'Welcome to Pensum',
+    'onboarding_page1_body': 'Welcome to our community of buying and selling books, we hope you thrive! Please read through this guide to get a kick start',
     'onboarding_page2_title': 'How to add a deal',
     'onboarding_page2_body': 'Select the book you want, press the ＋ button to add a deal. Revisit the guides in the settings tab',
     'onboarding_page3_title': 'Relax and let the app do the job',
     'onboarding_page3_body': 'Follow the books you want so others know you are interested and get notifyied on new deals. Add your deals and wait for someone to contact you :)',
     'onboarding_page4_title': 'Support',
-    'onboarding_page4_body': 'If some books a missing or you face an issue, contact Leaf service from settings',
+    'onboarding_page4_body': 'If some books a missing or you face an issue, contact Pensum service from settings',
     'onboarding_page5_title': 'Done',
     'onboarding_page5_body': 'Congrats, you are now ready to use the app!',
     'skip_btn_txt': 'Skip',
@@ -23,7 +23,7 @@ const EN_LANG = {
     'how_to_page3_body': 'In the deals section you can send messages to people, Pro tip: long press the message button ➤ to send a fast message from the same page.',
 
     // Update Page
-    'update_title': 'Leaf needs an update',
+    'update_title': 'Pensum needs an update',
     'update_body': 'To use this app, update to the latest version:',
     'update_btn_text': 'Update',
 

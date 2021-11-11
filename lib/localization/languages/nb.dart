@@ -1,13 +1,13 @@
 const NB_LANG = {
     // Onboarding Page
-    'onboarding_page1_title': 'Velkommen til Leaf',
-    'onboarding_page1_body': 'Velkommen til vårt samfunn, vi håper du trives! Vennligst les gjennom guiden for å komme best i gang',
+    'onboarding_page1_title': 'Velkommen til Pensum',
+    'onboarding_page1_body': 'Velkommen til vårt samfunn for kjøp og salg av bøker, vi håper du trives! Vennligst les gjennom guiden for å komme best i gang',
     'onboarding_page2_title': 'Hvordan legge til et tilbud',
     'onboarding_page2_body': 'Velg boken du ønsker, trykk på ＋ knappen for å legge inn et tilbud. Du kan finne veiledningen igjen under instillinger',
     'onboarding_page3_title': 'Slapp av og la appen gjøre jobben',
     'onboarding_page3_body': 'Følg bøkene du ønsker så andre vet du er interessert og bli varslet på nye tilbud. Legg in dine tilbud og vent til noen kontakter deg :)',
     'onboarding_page4_title': 'Brukerstøtte',
-    'onboarding_page4_body': 'Hvis en bok mangler eller du møter på utfordringer, kontakt Leaf service fra instillinger',
+    'onboarding_page4_body': 'Hvis en bok mangler eller du møter på utfordringer, kontakt Pensum service fra instillinger',
     'onboarding_page5_title': 'Ferdig',
     'onboarding_page5_body': 'Gratulerer, du er nå klar til å bruke appen!',
     'skip_btn_txt': 'Hopp Over',
@@ -23,7 +23,7 @@ const NB_LANG = {
     'how_to_page3_body': 'I tilbud siden kan du sende meldinger til personer, Pro tip: hold på sende knappen ➤ for å sende en melding fra samme side.',
 
     // Update Page
-    'update_title': 'Leaf trenger en oppdatering',
+    'update_title': 'Pensum trenger en oppdatering',
     'update_body': 'For å fortsette å bruke denne appen, oppdater til siste versjon:',
     'update_btn_text': 'Oppdater',
 
